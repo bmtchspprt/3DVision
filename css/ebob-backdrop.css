@@ -1,0 +1,24 @@
+﻿/* From eBob Tutorial — shared backdrop */
+.backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(17, 24, 39, 0.45);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    user-select: none;
+}
+.backdrop.show { display: flex; }
+.backdrop input, .backdrop textarea, .backdrop select { user-select: text; }
+.backdrop.backdrop-sim-sys-sub { z-index: 1100; }
+
+#backdropDownloads {
+    background: transparent;
+    pointer-events: none;
+}
+
+#backdropDownloads .sim-open-dat-shell {
+    pointer-events: auto;
+}

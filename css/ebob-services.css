@@ -1,0 +1,422 @@
+﻿#backdropServicesMsc.backdrop-services {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 48px;
+  z-index: 420;
+  background: rgba(0, 0, 0, 0.35);
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}
+
+#backdropServicesMsc.backdrop-services.show {
+  display: flex;
+}
+
+#backdropUac {
+  z-index: 1400;
+}
+
+        /* MMC services.msc — room for Name + Description + columns (matches real console proportions) */
+        .modal-services-msc {
+            width: min(920px, calc(100% - 16px));
+            max-width: calc(100% - 16px);
+            height: min(560px, calc(100% - 16px));
+            max-height: calc(100% - 16px);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #a0a0a0;
+            border-radius: 0;
+            overflow: hidden;
+            background: #f0f0f0;
+            font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+            font-size: 12px;
+            color: #000;
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-services-msc.modal-services-msc--max {
+            width: calc(100% - 8px) !important;
+            height: calc(100% - 8px) !important;
+            max-height: none !important;
+        }
+
+        /* Title bar metrics align with Device Manager so shared .dm-winbtns / .dm-cap-btn match */
+        .svc-msc-titlebar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+            height: 32px;
+            min-height: 32px;
+            padding: 0 0 0 8px;
+            box-sizing: border-box;
+            background: #fff;
+            border-bottom: 1px solid #d9d9d9;
+            cursor: default;
+            user-select: none;
+        }
+
+        .svc-msc-titlebar h2 {
+            margin: 0;
+            font-size: 12px;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #000;
+        }
+
+        .svc-msc-menubar {
+            display: flex;
+            gap: 0;
+            padding: 1px 2px;
+            background: #f0f0f0;
+            border-bottom: 1px solid #d9d9d9;
+        }
+
+        .svc-msc-menubar span {
+            padding: 2px 8px;
+            cursor: default;
+            font-size: 12px;
+            color: #000;
+        }
+
+        .svc-msc-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            padding: 2px 4px 3px;
+            background: #f0f0f0;
+            border-bottom: 1px solid #d9d9d9;
+            flex-wrap: wrap;
+        }
+
+        .svc-msc-toolbar .svc-tb-sep {
+            width: 1px;
+            height: 20px;
+            background: #c6c6c6;
+            margin: 0 3px;
+        }
+
+        .svc-msc-toolbar button {
+            min-width: 26px;
+            height: 24px;
+            padding: 0 4px;
+            border: 1px solid transparent;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 0;
+            font-size: 11px;
+            color: #000;
+        }
+
+        .svc-msc-toolbar button:hover:not(:disabled) {
+            border-color: #a7d4f2;
+            background: #e5f3fb;
+        }
+
+        .svc-msc-toolbar button:disabled {
+            opacity: 0.35;
+            cursor: default;
+        }
+
+        .svc-msc-main {
+            flex: 1;
+            display: flex;
+            min-height: 0;
+            background: #fff;
+        }
+
+        .svc-msc-tree {
+            width: 148px;
+            flex-shrink: 0;
+            border-right: 1px solid #d9d9d9;
+            padding: 6px 4px;
+            background: #fff;
+            overflow: auto;
+            font-size: 12px;
+        }
+
+        .svc-msc-tree .svc-tree-sel {
+            background: #cce8ff;
+            color: #000;
+            padding: 1px 4px;
+        }
+
+        .svc-msc-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            min-height: 0;
+            background: #fff;
+        }
+
+        .svc-msc-ext-row {
+            flex: 1;
+            display: flex;
+            min-height: 0;
+        }
+
+        .svc-msc-desc {
+            width: min(200px, 28%);
+            flex-shrink: 0;
+            border-right: 1px solid #d9d9d9;
+            padding: 8px 10px;
+            overflow: auto;
+            background: #fff;
+            font-size: 12px;
+            line-height: 1.45;
+            color: #000;
+        }
+
+        .svc-msc-desc h3 {
+            margin: 0 0 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #000;
+        }
+
+        .svc-msc-desc p {
+            margin: 0 0 8px;
+            color: #000;
+        }
+
+        .svc-msc-desc .svc-desc-links {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #000;
+        }
+
+        .svc-msc-desc .svc-desc-links a {
+            color: #0066cc;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+        .svc-msc-table-wrap {
+            flex: 1;
+            overflow: auto;
+            min-width: 0;
+            min-height: 120px;
+            background: #fff;
+            /* Programmatic focus for keyboard nav â€” no browser â€œfocus rectangleâ€ around the whole list */
+            outline: none;
+        }
+
+        .svc-msc-table-wrap:focus,
+        .svc-msc-table-wrap:focus-visible {
+            outline: none;
+        }
+
+        /* MMC list: no text drag-selection (keeps E-key jump to eBob services from highlighting the pane) */
+        #backdropServicesMsc .modal-services-msc,
+        #backdropServicesMsc .svc-msc-main,
+        #backdropServicesMsc .svc-msc-content,
+        #backdropServicesMsc .svc-msc-ext-row,
+        #backdropServicesMsc .svc-msc-desc,
+        #backdropServicesMsc .svc-msc-table,
+        #backdropServicesMsc .svc-msc-table-wrap,
+        #backdropServicesMsc .svc-desc-links a {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        #backdropServicesMsc ::selection {
+            background: transparent;
+        }
+
+        #backdropServicesMsc ::-moz-selection {
+            background: transparent;
+        }
+
+        .svc-msc-table {
+            width: max(100%, 640px);
+            border-collapse: collapse;
+            table-layout: auto;
+            font-size: 12px;
+            color: #000;
+        }
+
+        .svc-msc-table thead th {
+            text-align: left;
+            padding: 3px 6px;
+            border-bottom: 1px solid #d0d0d0;
+            border-right: 1px solid #e8e8e8;
+            background: #f0f0f0;
+            font-weight: 400;
+            color: #000;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+            white-space: nowrap;
+        }
+
+        .svc-msc-table thead th:nth-child(1) {
+            min-width: 140px;
+        }
+        .svc-msc-table thead th:nth-child(2) {
+            min-width: 220px;
+        }
+        .svc-msc-table thead th:nth-child(3) {
+            min-width: 72px;
+        }
+        .svc-msc-table thead th:nth-child(4) {
+            min-width: 120px;
+        }
+        .svc-msc-table thead th:nth-child(5) {
+            min-width: 100px;
+        }
+
+        .svc-msc-table tbody td {
+            padding: 2px 6px;
+            border-right: 1px solid #ebebeb;
+            border-bottom: 1px solid #ebebeb;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #000;
+        }
+
+        /* Inline text â€” tutorial highlight uses span bounds (text end), not full column width. */
+        #backdropServicesMsc .svc-msc-table tbody td .svc-msc-name-text,
+        #backdropServicesMsc .svc-msc-table tbody td .svc-msc-desc-text {
+            display: inline;
+        }
+
+        .svc-msc-table tbody tr.svc-row {
+            cursor: default;
+            background: #fff;
+        }
+
+        .svc-msc-table tbody tr.svc-row:hover {
+            background: #f5f5f5;
+        }
+
+        .svc-msc-table tbody tr.svc-row-selected {
+            background: #cce8ff;
+            color: #000;
+        }
+
+        .svc-msc-table tbody tr.svc-row-selected td {
+            border-bottom-color: #b0d4f0;
+            color: #000;
+        }
+
+        .svc-msc-table tbody tr.svc-row-selected:hover {
+            background: #b8dfff;
+            color: #000;
+        }
+
+        .svc-msc-tabs {
+            display: flex;
+            gap: 0;
+            padding: 0 6px;
+            border-top: 1px solid #d9d9d9;
+            background: #f0f0f0;
+            flex-shrink: 0;
+        }
+
+        .svc-msc-tabs button {
+            padding: 3px 12px;
+            border: 1px solid transparent;
+            border-bottom: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 12px;
+            margin-bottom: -1px;
+            color: #000;
+        }
+
+        .svc-msc-tabs button.svc-tab-active {
+            background: #fff;
+            border-color: #d9d9d9;
+            border-bottom-color: #fff;
+        }
+
+        .svc-msc-standard .svc-msc-desc {
+            display: none;
+        }
+
+        .svc-ctx-menu {
+            position: fixed;
+            z-index: 1300;
+            min-width: 160px;
+            background: #f0f0f0;
+            border: 1px solid #979797;
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.22);
+            padding: 2px 0;
+            font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+            font-size: 12px;
+        }
+
+        .svc-ctx-menu button {
+            display: block;
+            width: 100%;
+            text-align: left;
+            padding: 4px 22px 4px 26px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 12px;
+            color: #000;
+        }
+
+        .svc-ctx-menu button:hover:not(:disabled) {
+            background: #0078d7;
+            color: #fff;
+        }
+
+        .svc-ctx-menu button:disabled {
+            color: #888;
+            cursor: default;
+        }
+        .dm-winbtns {
+            display: flex;
+            flex-shrink: 0;
+            align-items: center;
+            align-self: stretch;
+            margin: 0;
+        }
+
+        .dm-cap-btn {
+            box-sizing: border-box;
+            width: 46px;
+            height: 100%;
+            min-height: 32px;
+            max-height: 32px;
+            padding: 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 0;
+            color: #1f1f1f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .dm-cap-btn svg {
+            width: 10px;
+            height: 10px;
+            display: block;
+            flex-shrink: 0;
+        }
+
+        .dm-cap-btn:hover {
+            background: rgba(0, 0, 0, 0.06);
+        }
+
+        .dm-cap-btn.dm-close:hover {
+            background: #e81123;
+            color: #fff;
+        }
+
+        .dm-menubar {
+            display: flex;
+            gap: 16px;
+

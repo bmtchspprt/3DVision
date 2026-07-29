@@ -1,0 +1,646 @@
+﻿        .win-start-backdrop {
+            position: fixed;
+            inset: 0;
+            z-index: 901;
+            margin: 0;
+            padding: 0;
+            border: none;
+            background: rgba(0, 0, 0, 0.35);
+            cursor: default;
+        }
+
+        .win-start-backdrop[hidden] {
+            display: none !important;
+        }
+
+        .win-start-menu {
+            position: absolute;
+            left: 0;
+            bottom: calc(100% + 10px);
+            width: min(440px, 96vw);
+            z-index: 902;
+            display: flex;
+            flex-direction: column;
+            background: #2d2d2d;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.55);
+            color: #f3f3f3;
+            font-family: "Segoe UI", system-ui, sans-serif;
+            overflow: hidden;
+            transition: width 0.12s ease;
+        }
+
+        .win-start-menu.win-start-menu--search {
+            width: min(720px, 98vw);
+        }
+
+        .win-start-menu[hidden] {
+            display: none !important;
+        }
+
+        .win-start-top {
+            padding: 12px 12px 0;
+            flex-shrink: 0;
+        }
+
+        .win-start-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            padding: 10px 12px 12px;
+            margin-top: auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            flex-shrink: 0;
+        }
+
+        .win-start-user-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+            padding: 6px 10px 6px 6px;
+            border: none;
+            border-radius: 4px;
+            background: transparent;
+            color: #f0f0f0;
+            font: inherit;
+            font-size: 13px;
+            cursor: default;
+            opacity: 0.85;
+        }
+
+        .win-start-user-avatar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(180deg, #5a9fd8 0%, #3d78b8 100%);
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .win-start-user-name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .win-start-power-wrap {
+            position: relative;
+            flex-shrink: 0;
+            margin-left: auto;
+        }
+
+        .win-start-power-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            padding: 0;
+            border: none;
+            border-radius: 4px;
+            background: transparent;
+            color: #e6e6e6;
+            cursor: pointer;
+        }
+
+        .win-start-power-btn:hover,
+        .win-start-power-btn[aria-expanded="true"] {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .win-start-power-btn svg {
+            width: 18px;
+            height: 18px;
+            display: block;
+        }
+
+        .win-start-power-menu {
+            position: absolute;
+            right: 0;
+            bottom: calc(100% + 6px);
+            top: auto;
+            min-width: 148px;
+            padding: 4px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: #2d2d2d;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+            z-index: 10;
+        }
+
+        .win-start-power-menu[hidden] {
+            display: none !important;
+        }
+
+        .win-start-power-menu button {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            background: transparent;
+            color: #f0f0f0;
+            font: inherit;
+            font-size: 13px;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .win-start-power-menu button:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .win-start-scroll {
+            padding: 16px 16px 20px;
+            overflow: visible;
+        }
+
+        .win-start-search {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .win-start-search svg {
+            flex-shrink: 0;
+            width: 16px;
+            height: 16px;
+            opacity: 0.7;
+        }
+
+        .win-start-search input {
+            flex: 1;
+            min-width: 0;
+            padding: 4px 0;
+            border: none;
+            background: transparent;
+            color: #e6e6e6;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .win-start-search input::placeholder {
+            color: #a0a0a0;
+        }
+
+        .win-start-hdr {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .win-start-link {
+            padding: 2px 8px;
+            border: none;
+            border-radius: 4px;
+            background: transparent;
+            color: #60a5fa;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .win-start-link:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .win-start-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 8px 6px;
+            margin-bottom: 20px;
+        }
+
+        .win-start-tile {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 6px 2px;
+            border: none;
+            border-radius: 4px;
+            background: transparent;
+            color: #e8e8e8;
+            font-size: 11px;
+            line-height: 1.15;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .win-start-tile:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .win-start-tile-ico {
+            box-sizing: border-box;
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            min-height: 40px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: #fff;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .win-start-tile-lbl {
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+
+        /* Generic browser tile icon â€” source asset UXWing Chromium shape; displayed grey via filter */
+        .ico-browser {
+            background-color: transparent;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 40px 40px;
+            background-image: url("../assets/desktop/chromium-icon.svg");
+            filter: grayscale(1) brightness(0.92);
+        }
+        .ico-word {
+            background: #2b579a;
+        }
+        .ico-excel {
+            background: #217346;
+        }
+        .ico-ppt {
+            background: #d24726;
+        }
+        .ico-outlook {
+            background: #0078d4;
+        }
+        .ico-copilot {
+            background: linear-gradient(135deg, #7c3aed, #2563eb);
+        }
+        .ico-store {
+            background: #0078d4;
+        }
+        .ico-photos {
+            background: #9c4fff;
+        }
+        .ico-settings {
+            background: #5c5c5c;
+        }
+        .ico-calc {
+            background: #0078d4;
+        }
+        .ico-clock {
+            background: #0f766e;
+        }
+        .ico-notepad {
+            background: #e8e8e8;
+            color: #333;
+        }
+        .ico-paint {
+            background: #c026d3;
+        }
+        .ico-snip {
+            background: #4b5563;
+        }
+        .ico-onenote {
+            background: #ca64ea;
+        }
+        /* Yellow folder â€” Papirus (GPL-3.0); canvas has margins â€” scale past tile so glyph matches other 40Ã—40 icons */
+        .ico-explorer {
+            background-color: transparent;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 52px 52px;
+            background-image: url("../assets/desktop/folder-icon.svg");
+        }
+
+        .win-start-rec {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 10px;
+            margin-top: 4px;
+        }
+
+        .win-start-rec button {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2px;
+            padding: 10px 10px;
+            border: none;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.04);
+            color: #e8e8e8;
+            font-size: 12px;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .win-start-rec button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .win-start-rec button strong {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .win-start-rec-meta {
+            font-size: 11px;
+            color: #a8a8a8;
+        }
+
+        .win-start-rec-empty {
+            min-height: 36px;
+        }
+
+        /* Start menu search â€” focused single best match panel */
+        .win-search-flyout {
+            padding: 0 12px 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .win-search-flyout[hidden] {
+            display: none !important;
+        }
+
+        .win-search-filters {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 4px 6px;
+            padding: 10px 0 8px;
+            font-size: 12px;
+        }
+
+        .win-search-filter-chip {
+            padding: 4px 10px;
+            border: none;
+            border-radius: 4px;
+            background: transparent;
+            color: #c4c4c4;
+            cursor: pointer;
+            font: inherit;
+        }
+
+        .win-search-filter-chip:hover {
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        .win-search-filter-chip.is-on {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+        }
+
+        .win-search-filters-spacer {
+            flex: 1;
+            min-width: 8px;
+        }
+
+        .win-search-filter-more {
+            padding: 4px 8px;
+            border: none;
+            border-radius: 4px;
+            background: transparent;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .win-search-split {
+            display: flex;
+            flex-direction: row;
+            min-height: 220px;
+            max-height: 340px;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .win-search-left {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            background: rgba(0, 0, 0, 0.2);
+            border-right: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .win-search-cat {
+            font-size: 11px;
+            color: #a0a0a0;
+            padding: 8px 12px 4px;
+            text-transform: none;
+        }
+
+        .win-search-hit {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            text-align: left;
+            padding: 10px 12px;
+            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            color: #fff;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .win-search-hit:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .win-search-hit-meta {
+            font-size: 11px;
+            color: #a8a8a8;
+            margin-top: 2px;
+        }
+
+        .win-search-hit-ico {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            background: linear-gradient(180deg, #5a9fd8 0%, #3d78b8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .win-search-hit-ico svg {
+            width: 18px;
+            height: 18px;
+            fill: #fff;
+        }
+
+        .win-search-hit-ico.win-search-hit-ico-cmd,
+        .win-search-detail-ico.win-search-detail-ico-cmd {
+            background: linear-gradient(180deg, #2c2c2c 0%, #151515 100%);
+            border: 1px solid #3a3a3a;
+        }
+
+        /* KDE breeze-icons: apps/48/utilities-terminal.svg (LGPL) */
+        .win-search-hit-ico.win-search-hit-ico-cmd img.win-search-terminal-ico-img {
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .win-search-detail-ico.win-search-detail-ico-cmd img.win-search-terminal-ico-img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .win-search-hit-ico.win-search-hit-ico-power,
+        .win-search-detail-ico.win-search-detail-ico-power {
+            background: linear-gradient(180deg, #4a4a4a 0%, #2a2a2a 100%);
+            border: 1px solid #555;
+        }
+
+        .win-search-hit-ico.win-search-hit-ico-power svg,
+        .win-search-detail-ico.win-search-detail-ico-power svg {
+            width: 18px;
+            height: 18px;
+            fill: #fff;
+        }
+
+        .win-search-detail-ico.win-search-detail-ico-power svg {
+            width: 28px;
+            height: 28px;
+        }
+
+        .win-search-hit-ico.win-search-hit-ico-devmgr,
+        .win-search-detail-ico.win-search-detail-ico-devmgr {
+            background: linear-gradient(180deg, #7a7a7a 0%, #4a4a4a 100%);
+            border: 1px solid #555;
+        }
+
+        .win-search-hit-ico.win-search-hit-ico-devmgr .win-search-devmgr-ico-img,
+        .win-search-detail-ico.win-search-detail-ico-devmgr .win-search-devmgr-ico-img {
+            display: block;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+            opacity: 0.95;
+        }
+
+        .win-search-hit-ico.win-search-hit-ico-vision img.win-search-vision-ico-img,
+        .win-search-detail-ico.win-search-detail-ico-vision img.win-search-vision-ico-img {
+            width: 22px;
+            height: 22px;
+            display: block;
+        }
+
+        .win-search-detail-ico.win-search-detail-ico-vision img.win-search-vision-ico-img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .ico-vision {
+            background-color: transparent;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: 40px 40px;
+            background-image: url("../assets/images/logo_icon.ico");
+        }
+
+        .win-search-hit-ico.win-search-hit-ico-devmgr .win-search-devmgr-ico-img {
+            width: 22px;
+            height: 22px;
+        }
+
+        .win-search-detail-ico.win-search-detail-ico-devmgr .win-search-devmgr-ico-img {
+            width: 40px;
+            height: 40px;
+        }
+
+        .win-search-blank-below {
+            flex: 1;
+            min-height: 120px;
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .win-search-detail {
+            flex: 0 0 240px;
+            padding: 16px 14px;
+            background: rgba(0, 0, 0, 0.35);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .win-search-detail-ico {
+            width: 48px;
+            height: 48px;
+            border-radius: 6px;
+            background: linear-gradient(180deg, #5a9fd8 0%, #3d78b8 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .win-search-detail-ico svg {
+            width: 28px;
+            height: 28px;
+            fill: #fff;
+        }
+
+        .win-search-detail h3 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .win-search-detail-sub {
+            margin: 0;
+            font-size: 12px;
+            color: #b0b0b0;
+        }
+
+        .win-search-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            margin-top: 8px;
+        }
+
+        .win-search-actions button {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border: none;
+            border-radius: 4px;
+            background: transparent;
+            color: #e8e8e8;
+            font-size: 12px;
+            text-align: left;
+            cursor: pointer;
+        }
+
+        .win-search-actions button:hover {
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .win-start-home[hidden] {
+

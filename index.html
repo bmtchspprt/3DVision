@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D MultiVision Install Guide</title>
+  <link rel="icon" href="assets/images/logo_icon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/desktop.css">
+  <link rel="stylesheet" href="css/ebob-backdrop.css">
+  <link rel="stylesheet" href="css/ebob-filechooser.css">
+  <link rel="stylesheet" href="css/ebob-services.css">
+  <link rel="stylesheet" href="css/ebob-startmenu.css">
+  <link rel="stylesheet" href="css/ebob-uac.css">
+  <link rel="stylesheet" href="css/installer.css">
+  <link rel="stylesheet" href="css/multivision.css">
+  <link rel="stylesheet" href="css/browser.css">
+  <link rel="stylesheet" href="css/install-guide.css">
+</head>
+<body class="desktop-page">
+
+  <div class="page-wrap page-wrap--desktop-mode" id="pageWrap">
+    <div class="desktop-with-taskbar">
+      <div id="simDesktop" class="sim-desktop" aria-hidden="false">
+      <div class="sim-desktop-window-layer">
+      <div class="app-shell" id="visionLoadingShell" hidden>
+        <div class="vision-loading-window" aria-busy="true" aria-label="3D Vision loading">
+          <div class="title-bar">
+            <img class="title-bar-icon" src="assets/images/logo_icon.ico" alt="" width="16" height="16">
+            <span class="title-bar-text">3D Vision Server Connection</span>
+            <div class="title-bar-controls">
+              <button class="title-btn close" type="button" id="btn-loading-close" aria-label="Close">&#10005;</button>
+            </div>
+          </div>
+          <div class="vision-loading-body"></div>
+        </div>
+      </div>
+      <div class="app-shell" id="appShell" hidden>
+        <div class="app-window" role="application" aria-label="3D Vision Server Connection">
+
+    <!-- Title bar -->
+    <div class="title-bar">
+      <img class="title-bar-icon" src="assets/images/logo_icon.ico" alt="" width="16" height="16">
+      <span class="title-bar-text">3D Vision Server Connection</span>
+      <div class="title-bar-controls">
+        <button class="title-btn close" type="button" id="btn-close" aria-label="Close">&#10005;</button>
+      </div>
+    </div>
+
+    <!-- Menu bar -->
+    <nav class="menu-bar" aria-label="Application menu">
+      <div class="menu-dropdown">
+        <button type="button" class="menu-item menu-trigger" id="menu-file" aria-haspopup="menu" aria-expanded="false">File</button>
+        <div class="menu-popup" id="file-menu" role="menu" hidden>
+          <button type="button" class="menu-popup-item" id="menu-browse-folder" role="menuitem">Browse to Local Folder...</button>
+          <div class="menu-separator" role="separator"></div>
+          <button type="button" class="menu-popup-item" id="menu-file-exit" role="menuitem">Exit</button>
+        </div>
+      </div>
+      <div class="menu-dropdown">
+        <button type="button" class="menu-item menu-trigger" id="menu-help" aria-haspopup="menu" aria-expanded="false">Help</button>
+        <div class="menu-popup" id="help-menu" role="menu" hidden>
+          <button type="button" class="menu-popup-item" id="menu-operational-manual" role="menuitem">Operational Manual</button>
+          <div class="menu-separator" role="separator"></div>
+          <button type="button" class="menu-popup-item" id="menu-about" role="menuitem">About</button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main layout -->
+    <div class="main-layout">
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-logo">3DVision</div>
+        <div class="nav-list" role="radiogroup" aria-label="Connection mode">
+          <label class="nav-item">
+            <input type="radio" name="nav-view" value="device-config" checked>
+            <span>Device Configuration (default)</span>
+          </label>
+          <label class="nav-item">
+            <input type="radio" name="nav-view" value="advanced">
+            <span>Advanced Connection</span>
+          </label>
+          <label class="nav-item">
+            <input type="radio" name="nav-view" value="demo">
+            <span>Demo Mode</span>
+          </label>
+        </div>
+      </aside>
+
+      <!-- Content -->
+      <div class="content-panel">
+
+        <!-- Device Configuration view -->
+        <div class="view-panel active" id="view-device-config">
+
+          <fieldset class="fieldset">
+            <legend class="fieldset-title">Connection Type</legend>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="connection-type" value="rs485" checked>
+                RS-485
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="connection-type" value="tcpip">
+                TCP/IP
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="connection-type" value="hart">
+                HART
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="fieldset">
+            <legend class="fieldset-title">Configuration</legend>
+            <div class="form-row">
+              <span class="form-label">Polling Address:</span>
+              <div class="select-wrapper">
+                <select class="select-box" id="polling-address" aria-label="Polling Address"></select>
+                <span class="select-arrow" aria-hidden="true"></span>
+              </div>
+            </div>
+          </fieldset>
+
+          <div id="rs485-section" class="hidden-section visible">
+            <fieldset class="fieldset">
+              <legend class="fieldset-title">Serial Port Selection</legend>
+              <div class="form-row">
+                <span class="form-label">Serial Port:</span>
+                <div class="select-wrapper">
+                  <select class="select-box" id="serial-port" aria-label="Serial Port"></select>
+                  <span class="select-arrow" aria-hidden="true"></span>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+
+          <div id="tcpip-section" class="hidden-section">
+            <fieldset class="fieldset">
+              <legend class="fieldset-title">TCP/IP RS-485 Converter Connection Settings</legend>
+              <div class="form-row-tcp">
+                <span class="form-label-tcp">Connection List:</span>
+                <div class="tcp-connection-row">
+                  <div class="select-wrapper tcp-connection-select">
+                    <select class="select-box" id="tcp-connection-list" aria-label="Connection List"></select>
+                    <span class="select-arrow" aria-hidden="true"></span>
+                  </div>
+                  <button type="button" class="btn-small" id="btn-tcp-add">Add</button>
+                  <button type="button" class="btn-small" id="btn-tcp-delete">Delete</button>
+                </div>
+              </div>
+              <div class="form-row-tcp">
+                <span class="form-label-tcp">Converter IP Address:</span>
+                <input type="text" class="text-input tcp-field-input" id="converter-ip" value="127.0.0.1" aria-label="Converter IP Address">
+              </div>
+              <div class="form-row-tcp">
+                <span class="form-label-tcp">Converter TCP Port:</span>
+                <input type="text" class="text-input tcp-field-input" id="converter-port" value="22222" aria-label="Converter TCP Port">
+              </div>
+            </fieldset>
+          </div>
+
+        </div>
+
+        <!-- Advanced Connection view -->
+        <div class="view-panel" id="view-advanced">
+          <div class="advanced-form">
+            <div class="form-row-adv">
+              <span class="form-label-adv">Server Name:</span>
+              <div class="adv-input-row">
+                <div class="select-wrapper adv-select">
+                  <select class="select-box" id="server-name" aria-label="Server Name">
+                    <option value="localhost" selected>localhost</option>
+                  </select>
+                  <span class="select-arrow" aria-hidden="true"></span>
+                </div>
+                <button type="button" class="btn-edit btn-open-server-config" id="btn-edit-server">Edit...</button>
+              </div>
+            </div>
+            <div class="form-row-adv">
+              <span class="form-label-adv">User Name:</span>
+              <input type="text" class="text-input adv-input" id="user-name" aria-label="User Name">
+            </div>
+            <div class="form-row-adv">
+              <span class="form-label-adv">Password:</span>
+              <input type="password" class="text-input adv-input" id="password" aria-label="Password">
+            </div>
+            <div class="form-row-adv form-row-adv-expander">
+              <div class="expander-block">
+                <button type="button" class="expander-header" id="advanced-expander" aria-expanded="false">
+                  <span class="expander-icon" aria-hidden="true"></span>
+                  <span class="expander-title">Advanced</span>
+                </button>
+                <div class="expander-body" id="advanced-expander-body">
+                  <label class="check-label">
+                    <input type="checkbox" id="stay-signed-in">
+                    Stay Signed In
+                  </label>
+                  <label class="check-label">
+                    <input type="checkbox" id="slow-connection">
+                    Slow Connection
+                  </label>
+                  <div class="check-row-inline">
+                    <label class="check-label">
+                      <input type="checkbox" id="auto-reconnect">
+                      Auto Reconnection after:
+                    </label>
+                    <input type="text" class="text-input reconnect-input" id="reconnect-seconds" value="20" aria-label="Auto Reconnection seconds">
+                    <span class="reconnect-suffix">Seconds</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Demo Mode view -->
+        <div class="view-panel" id="view-demo">
+          <div class="advanced-form">
+            <div class="form-row-adv">
+              <span class="form-label-adv">Server Name:</span>
+              <div class="adv-input-row">
+                <div class="select-wrapper adv-select">
+                  <select class="select-box" id="demo-server-name" aria-label="Server Name">
+                    <option value="localhost" selected>localhost</option>
+                  </select>
+                  <span class="select-arrow" aria-hidden="true"></span>
+                </div>
+                <button type="button" class="btn-edit btn-open-server-config">Edit...</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-bar">
+          <button class="btn" type="button" id="btn-connect">Connect</button>
+          <button class="btn" type="button" id="btn-exit">Exit</button>
+        </div>
+
+      </div>
+    </div>
+        </div>
+      </div>
+
+      <div class="app-shell" id="multiVisionLoadingShell" hidden>
+        <div class="mv-loading-window" aria-busy="true" aria-label="3D MultiVision loading">
+          <div class="title-bar">
+            <img class="title-bar-icon" src="assets/images/logo_icon.ico" alt="" width="16" height="16">
+            <span class="title-bar-text mv-title-text" id="mvLoadingTitleBar">3D MultiVision</span>
+            <div class="title-bar-controls">
+              <button class="title-btn close" type="button" id="btn-mv-loading-close" aria-label="Close">&#10005;</button>
+            </div>
+          </div>
+          <div class="mv-loading-body"></div>
+        </div>
+      </div>
+
+      <div class="app-shell" id="multiVisionShell" hidden>
+        <div class="mv-window" role="application" aria-label="3D MultiVision">
+          <div class="title-bar">
+            <img class="title-bar-icon" src="assets/images/logo_icon.ico" alt="" width="16" height="16">
+            <span class="title-bar-text mv-title-text" id="mvTitleBar">3D MultiVision</span>
+            <div class="title-bar-controls">
+              <button class="title-btn close" type="button" id="btn-mv-close" aria-label="Close">&#10005;</button>
+            </div>
+          </div>
+          <div class="mv-menubar" id="mvMenubar" aria-label="Application menu" role="menubar"></div>
+          <div class="mv-header">
+            <div class="mv-header-brand">
+              <img src="assets/images/multivision/binmaster-header.png" alt="BinMaster">
+              <h1>3D MultiVision</h1>
+            </div>
+            <div class="mv-header-nav">
+              <button type="button" class="mv-header-nav-btn" aria-label="Previous">&#9664;</button>
+              <div class="mv-header-nav-center" id="mvSiteHome" role="button" tabindex="0" title="Site view" aria-label="Return to site Vessels view">
+                <div class="mv-header-nav-icon-wrap">
+                  <img src="assets/images/multivision/site_but_image.png" alt="Aggregates">
+                </div>
+                <span>Aggregat</span>
+              </div>
+              <button type="button" class="mv-header-nav-btn" aria-label="Next">&#9654;</button>
+            </div>
+            <div></div>
+          </div>
+          <div class="mv-toolbar" aria-label="Main toolbar">
+            <button type="button" class="mv-toolbar-btn"><img class="mv-toolbar-btn-icon" src="assets/images/multivision/icon_distance.png" alt="" width="16" height="16"><span>Distance</span></button>
+            <button type="button" class="mv-toolbar-btn"><img class="mv-toolbar-btn-icon" src="assets/images/multivision/icon_connect.png" alt="" width="16" height="16"><span>Connect</span></button>
+            <button type="button" class="mv-toolbar-btn"><img class="mv-toolbar-btn-icon" src="assets/images/multivision/icon_disconnect.png" alt="" width="16" height="16"><span>Disconnect</span></button>
+            <button type="button" class="mv-toolbar-btn"><img class="mv-toolbar-btn-icon" src="assets/images/multivision/icon_load_from_scanner.png" alt="" width="16" height="16"><span>Load from Vessel</span></button>
+            <button type="button" class="mv-toolbar-btn"><img class="mv-toolbar-btn-icon" src="assets/images/multivision/icon_echocurve.png" alt="" width="16" height="16"><span>Echo Curve</span></button>
+            <button type="button" class="mv-toolbar-btn"><img class="mv-toolbar-btn-icon" src="assets/images/multivision/icon_wizard.png" alt="" width="16" height="16"><span>Wizard</span></button>
+            <button type="button" class="mv-toolbar-btn"><img class="mv-toolbar-btn-icon" src="assets/images/multivision/icon_vdc.png" alt="" width="16" height="16"><span>VDC</span></button>
+            <div class="mv-toolbar-spacer"></div>
+            <div class="mv-toolbar-sort">
+              <span>Sort By:</span>
+              <select aria-label="Sort By"><option>All</option></select>
+            </div>
+            <div class="mv-connected"><img class="mv-connected-led" src="assets/images/multivision/led_small_green.png" alt="" width="12" height="12"><span>Connected</span></div>
+          </div>
+          <div class="mv-vessel-strip-wrap">
+            <button type="button" class="mv-vessel-strip-arrow" aria-label="Scroll left">&#9664;</button>
+            <div class="mv-vessel-strip" id="mvVesselStrip"></div>
+            <button type="button" class="mv-vessel-strip-arrow" aria-label="Scroll right">&#9654;</button>
+          </div>
+          <div class="mv-body">
+            <div class="mv-tabs-row">
+              <div class="mv-tabs" role="tablist" id="mvTabs">
+                <button type="button" class="mv-tab is-active" role="tab" data-mv-view="vessels" aria-selected="true">Vessels</button>
+                <button type="button" class="mv-tab" role="tab" data-mv-view="overview" aria-selected="false" hidden>Overview</button>
+                <button type="button" class="mv-tab" role="tab" data-mv-view="logs" aria-selected="false">Logs</button>
+                <button type="button" class="mv-tab mv-tab-overview-only" role="tab" data-mv-view="parameters" aria-selected="false" hidden>Parameters</button>
+                <button type="button" class="mv-tab mv-tab-overview-only" role="tab" data-mv-view="devices" aria-selected="false" hidden>Devices</button>
+              </div>
+              <div class="mv-tabs-scanners" id="mvTabsScanners" hidden>
+                <span>Scanners</span>
+                <select id="mvScannersSelect" aria-label="Scanners"></select>
+              </div>
+            </div>
+            <div class="mv-vessels-grid" id="mvVesselsGrid"></div>
+            <div class="mv-overview" id="mvOverview" hidden>
+              <div class="mv-overview-fit" id="mvOverviewFit">
+                <div class="mv-overview-design" id="mvOverviewDesign">
+                  <div class="mv-overview-left">
+                    <div class="mv-overview-header">
+                      <div class="mv-overview-title">
+                        <img class="mv-overview-title-dot" id="mvOverviewStatusLed" src="assets/images/multivision/led_large_green.png" alt="" width="24" height="24">
+                        <span id="mvOverviewVesselName">Lime Stone (MV)</span>
+                      </div>
+                      <div class="mv-overview-problems" id="mvOverviewProblems" hidden></div>
+                      <div class="mv-overview-meta-row">
+                        <span class="mv-overview-meta-label">Material Type:</span>
+                        <span class="mv-overview-material-value" id="mvOverviewMaterial">Lime Stone</span>
+                        <button type="button" class="mv-overview-material-btn" id="mvOverviewMaterialBtn">Material...</button>
+                      </div>
+                    </div>
+                    <div class="mv-overview-main">
+                      <div class="mv-overview-silo-box">
+                        <div class="mv-overview-silo" id="mvOverviewSilo"></div>
+                      </div>
+                      <div class="mv-overview-fields" id="mvOverviewFields">
+                        <label class="mv-ov-field"><span class="mv-ov-label">Level:</span><input type="text" id="mvOvAvg" readonly tabindex="-1"><span class="mv-ov-unit">m</span></label>
+                        <label class="mv-ov-field"><span class="mv-ov-label">Max. Level:</span><input type="text" id="mvOvMax" readonly tabindex="-1"><span class="mv-ov-unit">m</span></label>
+                        <label class="mv-ov-field"><span class="mv-ov-label">Min. Level:</span><input type="text" id="mvOvMin" readonly tabindex="-1"><span class="mv-ov-unit">m</span></label>
+                        <label class="mv-ov-field"><span class="mv-ov-label">Avg. Level (%):</span><input type="text" id="mvOvAvgPct" readonly tabindex="-1"><span class="mv-ov-unit">%</span></label>
+                        <label class="mv-ov-field"><span class="mv-ov-label">Volume:</span><input type="text" id="mvOvVol" readonly tabindex="-1"><span class="mv-ov-unit">[m*3]</span></label>
+                        <label class="mv-ov-field"><span class="mv-ov-label">Volume (%):</span><input type="text" id="mvOvVolPct" readonly tabindex="-1"><span class="mv-ov-unit">%</span></label>
+                        <label class="mv-ov-field"><span class="mv-ov-label">Mass:</span><input type="text" id="mvOvMass" readonly tabindex="-1"><span class="mv-ov-unit">ton</span></label>
+                        <label class="mv-ov-field"><span class="mv-ov-label">Max Scale Vol.:</span><input type="text" id="mvOvVolCap" readonly tabindex="-1"><span class="mv-ov-unit">[m*3]</span></label>
+                        <label class="mv-ov-field"><span class="mv-ov-label">Max Scale Mass:</span><input type="text" id="mvOvMassCap" readonly tabindex="-1"><span class="mv-ov-unit">ton</span></label>
+                        <label class="mv-ov-field"><span class="mv-ov-label">Temperature:</span><input type="text" id="mvOvTemp" readonly tabindex="-1"><span class="mv-ov-unit">C</span></label>
+                        <label class="mv-ov-field"><span class="mv-ov-label">SNR</span><input type="text" id="mvOvSnr" readonly tabindex="-1"><span class="mv-ov-unit">dB</span></label>
+                        <label class="mv-ov-field"><span class="mv-ov-label">Output Current:</span><input type="text" id="mvOvOut" readonly tabindex="-1"><span class="mv-ov-unit">mA</span></label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mv-overview-right">
+                    <div class="mv-overview-3d-wrap">
+                      <div class="mv-overview-3d-top">
+                        <label class="mv-overview-online"><input type="checkbox" id="mvOverviewOnline" checked> On line</label>
+                      </div>
+                      <div class="mv-overview-mini" id="mvOverviewMini" aria-hidden="true"></div>
+                      <div class="mv-overview-3d" id="mvOverview3d"></div>
+                      <div class="mv-overview-controls">
+                        <div class="mv-overview-zoom">
+                          <button type="button" class="mv-ov-zoom-btn" id="mvZoomIn" title="Zoom in">+</button>
+                          <input type="range" id="mvZoomSlider" min="0" max="50" value="25" aria-label="Zoom">
+                          <button type="button" class="mv-ov-zoom-btn" id="mvZoomOut" title="Zoom out">&minus;</button>
+                        </div>
+                        <div class="mv-overview-dpad" aria-label="Rotate view">
+                          <button type="button" class="mv-ov-pad mv-ov-up" id="mvRotUp" title="Tilt up"></button>
+                          <button type="button" class="mv-ov-pad mv-ov-left" id="mvRotLeft" title="Rotate left"></button>
+                          <button type="button" class="mv-ov-pad mv-ov-center" id="mvRotReset" title="Reset"></button>
+                          <button type="button" class="mv-ov-pad mv-ov-right" id="mvRotRight" title="Rotate right"></button>
+                          <button type="button" class="mv-ov-pad mv-ov-down" id="mvRotDown" title="Tilt down"></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mv-site-logs" id="mvSiteLogs" hidden>
+              <div class="mv-site-logs-inner">
+                <div class="mv-site-logs-toolbar">
+                  <div class="mv-site-logs-units">
+                    <div class="mv-site-logs-unit">
+                      <label for="mvSiteDistUnit">Level/Distance</label>
+                      <select id="mvSiteDistUnit" aria-label="Level/Distance">
+                        <option selected>meter</option>
+                        <option>feet</option>
+                      </select>
+                    </div>
+                    <div class="mv-site-logs-unit">
+                      <label for="mvSiteVolUnit">Volume</label>
+                      <select id="mvSiteVolUnit" aria-label="Volume">
+                        <option selected>meter^3</option>
+                        <option>bushels</option>
+                        <option>liter</option>
+                        <option>feet^3</option>
+                        <option>gallons</option>
+                      </select>
+                    </div>
+                    <div class="mv-site-logs-unit">
+                      <label for="mvSiteMassUnit">Mass</label>
+                      <select id="mvSiteMassUnit" aria-label="Mass">
+                        <option selected>ton</option>
+                        <option>lb</option>
+                        <option>US tons</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="mv-logs-toolbar-icons">
+                    <button type="button" class="mv-logs-icon-btn" id="mvSiteLogsUndoZoom" title="Undo Charts Zoom In" aria-label="Undo Charts Zoom In">
+                      <img src="assets/images/multivision/zoomundo.png" width="16" height="16" alt="">
+                    </button>
+                    <button type="button" class="mv-logs-icon-btn" id="mvSiteLogsChartSettings" title="Chart settings" aria-label="Chart settings">
+                      <img src="assets/images/multivision/setup.png" width="16" height="16" alt="">
+                    </button>
+                  </div>
+                  <label class="mv-logs-online"><input type="checkbox" id="mvSiteLogsOnline" checked> On line</label>
+                  <span class="mv-logs-duration-label">Log Duration:</span>
+                  <input type="text" class="mv-logs-duration mv-site-logs-duration" id="mvSiteLogsDuration" readonly tabindex="-1" value="">
+                  <div class="mv-logs-toolbar-spacer"></div>
+                  <button type="button" class="mv-site-logs-btn" id="mvSiteLogsBrowse">Browse...</button>
+                  <button type="button" class="mv-site-logs-btn" id="mvSiteLogsDownload">Download</button>
+                </div>
+                <div class="mv-site-logs-charts">
+                  <div class="mv-site-log-chart-row">
+                    <div class="mv-log-chart mv-site-log-chart">
+                      <canvas id="mvSiteChartAvg" aria-label="Avg. Level site chart"></canvas>
+                    </div>
+                    <div class="mv-site-logs-legend" id="mvSiteLegendAvg" aria-label="Avg. Level series"></div>
+                  </div>
+                  <div class="mv-site-log-chart-row">
+                    <div class="mv-log-chart mv-site-log-chart">
+                      <canvas id="mvSiteChartVol" aria-label="Volume/Mass percent site chart"></canvas>
+                    </div>
+                    <div class="mv-site-logs-legend" id="mvSiteLegendVol" aria-label="Volume series"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mv-logs" id="mvLogs" hidden>
+              <div class="mv-logs-inner">
+                <div class="mv-logs-toolbar">
+                  <div class="mv-logs-toolbar-icons">
+                    <button type="button" class="mv-logs-icon-btn" id="mvLogsUndoZoom" title="Undo Charts Zoom In" aria-label="Undo Charts Zoom In">
+                      <img src="assets/images/multivision/zoomundo.png" width="16" height="16" alt="">
+                    </button>
+                    <button type="button" class="mv-logs-icon-btn" id="mvLogsChartSettings" title="Chart settings" aria-label="Chart settings">
+                      <img src="assets/images/multivision/setup.png" width="16" height="16" alt="">
+                    </button>
+                  </div>
+                  <label class="mv-logs-online"><input type="checkbox" id="mvLogsOnline" checked> On line</label>
+                  <span class="mv-logs-duration-label">Log Duration:</span>
+                  <input type="text" class="mv-logs-duration" id="mvLogsDuration" readonly tabindex="-1" value="">
+                  <div class="mv-logs-toolbar-spacer"></div>
+                  <button type="button" class="mv-logs-btn" id="mvLogsBrowse">Browse...</button>
+                  <button type="button" class="mv-logs-btn mv-logs-btn--server" id="mvLogsServer">Server Logs...</button>
+                </div>
+                <div class="mv-logs-charts" id="mvLogsCharts">
+                  <div class="mv-log-chart" data-chart="avg">
+                    <canvas id="mvLogChartAvg" aria-label="Avg. Level chart"></canvas>
+                  </div>
+                  <div class="mv-log-chart" data-chart="vol">
+                    <canvas id="mvLogChartVol" aria-label="Volume/Mass percent chart"></canvas>
+                  </div>
+                  <div class="mv-log-chart" data-chart="snr">
+                    <canvas id="mvLogChartSnr" aria-label="SNR chart"></canvas>
+                  </div>
+                  <div class="mv-log-chart" data-chart="temp">
+                    <canvas id="mvLogChartTemp" aria-label="Temperature chart"></canvas>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mv-parameters-page" id="mvParameters" hidden>
+              <div class="mv-parameters-inner">
+                <div class="mv-parameters-scada">
+                  <span class="mv-parameters-scada-label">Vessel Scada ID:</span>
+                  <span class="mv-parameters-scada-value" id="mvParametersScadaId">1</span>
+                </div>
+                <div class="mv-parameters-table" id="mvParametersTable" role="table" aria-label="Vessel parameters"></div>
+              </div>
+            </div>
+            <div class="mv-devices" id="mvDevices" hidden>
+              <div class="mv-devices-cols">
+                <div class="mv-devices-left">
+                  <div class="mv-devices-heading">Connection</div>
+                  <div class="mv-devices-section">
+                    <div class="mv-devices-subhead">Connection Type</div>
+                    <div class="mv-devices-conn-types" role="radiogroup" aria-label="Connection Type">
+                      <label class="mv-devices-radio"><input type="radio" name="mvConnType" value="hart"> HART</label>
+                      <label class="mv-devices-radio"><input type="radio" name="mvConnType" value="gprs"> GPRS</label>
+                      <label class="mv-devices-radio"><input type="radio" name="mvConnType" value="rs485" checked> RS-485</label>
+                      <label class="mv-devices-radio"><input type="radio" name="mvConnType" value="gprs-sms"> GPRS + SMS</label>
+                      <label class="mv-devices-radio"><input type="radio" name="mvConnType" value="tcpip"> TCP/IP</label>
+                      <label class="mv-devices-radio"><input type="radio" name="mvConnType" value="smart-gprs"> Smart GPRS</label>
+                    </div>
+                  </div>
+                  <div class="mv-devices-section" id="mvDevicesConfigSerial">
+                    <div class="mv-devices-heading">Configuration</div>
+                    <div class="mv-devices-field-row">
+                      <span class="mv-devices-field-label" id="mvDevicesSerialLabel">Serial Port:</span>
+                      <div class="mv-devices-combo mv-devices-combo--serial">
+                        <select class="mv-devices-combo-select" id="mvDevicesSerialPort" aria-label="Serial Port">
+                          <option>COM1</option>
+                          <option>COM2</option>
+                          <option>COM3</option>
+                          <option selected>COM4</option>
+                          <option>COM5</option>
+                        </select>
+                        <span class="mv-devices-combo-arrow" aria-hidden="true"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="mv-devices-section" id="mvDevicesConfigExtra" hidden>
+                    <div class="mv-devices-heading">Additional Configuration</div>
+                    <div class="mv-devices-field-row mv-devices-field-row--phone" data-conn-show="phonebook">
+                      <span class="mv-devices-field-label mv-devices-field-label--right">Site Phone Book:</span>
+                      <div class="mv-devices-combo mv-devices-combo--phonebook">
+                        <select class="mv-devices-combo-select" id="mvDevicesPhoneBook" aria-label="Site Phone Book"></select>
+                        <span class="mv-devices-combo-arrow" aria-hidden="true"></span>
+                      </div>
+                      <button type="button" class="mv-devices-action-btn" id="mvDevicesPhoneAdd">Add</button>
+                      <button type="button" class="mv-devices-action-btn" id="mvDevicesPhoneDel">Delete</button>
+                    </div>
+                    <div class="mv-devices-field-row" data-conn-show="phone">
+                      <span class="mv-devices-field-label mv-devices-field-label--right" id="mvDevicesPhoneLabel">Phone Number:</span>
+                      <input type="text" class="mv-devices-input" id="mvDevicesPhoneNumber" value="" aria-label="Phone Number">
+                    </div>
+                    <div class="mv-devices-field-row" data-conn-show="localport">
+                      <span class="mv-devices-field-label mv-devices-field-label--right" id="mvDevicesLocalPortLabel">Local IP Port:</span>
+                      <input type="text" class="mv-devices-input mv-devices-input--port" id="mvDevicesLocalIpPort" value="0" aria-label="Local IP Port">
+                    </div>
+                    <div class="mv-devices-field-row" data-conn-show="tcp">
+                      <span class="mv-devices-field-label mv-devices-field-label--right">Server IP Address:</span>
+                      <input type="text" class="mv-devices-input" id="mvDevicesServerIp" value="" aria-label="Server IP Address">
+                    </div>
+                    <div class="mv-devices-field-row" data-conn-show="tcp">
+                      <span class="mv-devices-field-label mv-devices-field-label--right">Server IP Port:</span>
+                      <input type="text" class="mv-devices-input mv-devices-input--port" id="mvDevicesServerPort" value="0" aria-label="Server IP Port">
+                    </div>
+                    <div class="mv-devices-field-row" data-conn-show="extip">
+                      <span class="mv-devices-field-label mv-devices-field-label--right">External IP Address:</span>
+                      <input type="text" class="mv-devices-input" id="mvDevicesExternalIp" value="" aria-label="External IP Address">
+                    </div>
+                    <div class="mv-devices-field-row" data-conn-show="apn">
+                      <span class="mv-devices-field-label mv-devices-field-label--right">APN:</span>
+                      <input type="text" class="mv-devices-input" id="mvDevicesApn" value="" aria-label="APN">
+                    </div>
+                  </div>
+                </div>
+                <div class="mv-devices-right">
+                  <div class="mv-devices-heading">Device Polling Addresses</div>
+                  <div class="mv-devices-poll-grid">
+                    <div class="mv-devices-poll-col-label">Device Name</div>
+                    <div class="mv-devices-poll-col-label">Polling Address:</div>
+                    <div class="mv-devices-poll-col-spacer" aria-hidden="true"></div>
+                    <div class="mv-devices-poll-name" id="mvDevicesPollName">Carmel Ulpinim</div>
+                    <div class="mv-devices-combo" id="mvDevicesPollCombo">
+                      <select class="mv-devices-combo-select" id="mvDevicesPollAddr" aria-label="Polling Address"></select>
+                      <span class="mv-devices-combo-arrow" aria-hidden="true"></span>
+                    </div>
+                    <button type="button" class="mv-devices-disconnect-btn" id="mvDevicesConnectBtn">Disconnect</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mv-statusbar">
+            <span id="mvStatusText">Scanners General Data retrieve:Completed</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-shell" id="serverAppShell" hidden>
+        <div class="server-app-window" role="application" aria-label="3DVision Server">
+          <div class="title-bar">
+            <img class="title-bar-icon" src="assets/images/logo_icon.ico" alt="" width="16" height="16">
+            <span class="title-bar-text">3DVision Server</span>
+            <div class="title-bar-controls">
+              <button class="title-btn close" type="button" id="btn-server-close" aria-label="Close">&#10005;</button>
+            </div>
+          </div>
+          <div class="server-app-body">
+            <img src="assets/images/logo_icon.ico" width="48" height="48" alt="">
+            <strong>3DVision Server is running.</strong>
+            <span>Data collection and device services are active in the background.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-shell app-shell--chrome" id="visionChromeShell" hidden>
+        <div class="vision-chrome-window" role="presentation" aria-label="3D Vision">
+          <div class="title-bar title-bar--classic">
+            <img class="title-bar-icon" src="assets/images/logo_icon.ico" alt="" width="16" height="16">
+            <span class="title-bar-text">3D Vision</span>
+            <div class="title-bar-controls">
+              <button class="title-btn close title-btn--classic" type="button" id="btn-chrome-close" aria-label="Close">&#10005;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-shell app-shell--browser" id="browserShell" hidden>
+        <div class="browser-window" role="application" aria-label="Browser">
+          <div class="title-bar">
+            <img class="title-bar-icon" src="assets/desktop/chromium-icon.svg" alt="" width="16" height="16">
+            <span class="title-bar-text">BinMaster — 3DVision Download</span>
+            <div class="title-bar-controls">
+              <button class="title-btn close" type="button" id="btn-browser-close" aria-label="Close">&#10005;</button>
+            </div>
+          </div>
+          <div class="browser-chrome">
+            <div class="browser-tabs">
+              <div class="browser-tab">3DVision Download</div>
+            </div>
+            <div class="browser-toolbar">
+              <button type="button" class="browser-nav-btn" aria-hidden="true">&#8592;</button>
+              <button type="button" class="browser-nav-btn" aria-hidden="true">&#8594;</button>
+              <button type="button" class="browser-nav-btn" aria-hidden="true">&#8635;</button>
+              <input class="browser-url" type="text" readonly value="https://www.binmaster.com/downloads/3dvision" aria-label="Address">
+            </div>
+          </div>
+          <div class="browser-page">
+            <div class="browser-hero">
+              <div class="browser-brand">BinMaster</div>
+              <h1>3D MultiVision</h1>
+              <p>Download the Windows installer to set up the 3DVision client and server on this PC.</p>
+              <div class="browser-download-card">
+                <img src="assets/images/logo_icon.ico" alt="">
+                <div class="browser-download-meta">
+                  <strong>BinMaster 3DVision_3.1.010.exe</strong>
+                  <span>Windows installer · 98.2 MB</span>
+                </div>
+                <button type="button" class="browser-download-btn" id="browserDownloadBtn">Download</button>
+              </div>
+              <p class="browser-note" id="browserDownloadStatus">After downloading, open File Manager and run the installer.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+
+        <div class="sim-desktop-icons">
+          <button type="button" class="sim-desktop-icon" id="desktopVisionIcon" title="3DVision" hidden>
+            <img src="assets/images/logo_icon.ico" width="48" height="48" alt="">
+            <span>3DVision</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="win-taskbar-wrap">
+        <div class="win-tray-overflow-backdrop" id="winTrayOverflowBackdrop" hidden aria-hidden="true"></div>
+        <div class="win-tray-overflow" id="winTrayOverflow" hidden role="menu" aria-label="Hidden icons">
+          <button type="button" class="win-tray-overflow-item" id="trayIcon3DServer" title="3D Server" hidden>
+            <img src="assets/images/logo_icon.ico" width="20" height="20" alt="">
+          </button>
+        </div>
+        <div class="win-start-backdrop" id="winStartBackdrop" hidden aria-hidden="true"></div>
+        <div class="win-start-menu" id="winStartMenu" role="dialog" aria-modal="true" aria-labelledby="winStartHeading" hidden>
+          <h2 id="winStartHeading" class="sr-only">App launcher</h2>
+          <div class="win-start-top">
+            <div class="win-start-search">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M11 10.5a4.5 4.5 0 10-1 1l3.2 3.2.7-.7-3.2-3.2zm-5.5.5a4 4 0 110-8 4 4 0 010 8z"/></svg>
+              <input type="search" id="winStartSearch" placeholder="Search for apps, settings, and documents" autocomplete="off" enterkeyhint="search">
+            </div>
+          </div>
+          <div class="win-search-flyout" id="winSearchFlyout" hidden>
+            <div class="win-search-filters" role="toolbar" aria-label="Search filters">
+              <button type="button" class="win-search-filter-chip is-on" disabled>All</button>
+              <button type="button" class="win-search-filter-chip" disabled>Apps</button>
+              <button type="button" class="win-search-filter-chip" disabled>Documents</button>
+              <button type="button" class="win-search-filter-chip" disabled>Web</button>
+              <button type="button" class="win-search-filter-chip" disabled>Preferences</button>
+              <button type="button" class="win-search-filter-chip" disabled>People</button>
+              <button type="button" class="win-search-filter-chip" disabled>Folders</button>
+              <button type="button" class="win-search-filter-chip" disabled>Images</button>
+              <span class="win-search-filters-spacer"></span>
+              <button type="button" class="win-search-filter-more" disabled title="More filters" aria-label="More">&#8943;</button>
+            </div>
+            <div class="win-search-panel" id="winSearchPanel3DVision" hidden>
+              <div class="win-search-split">
+                <div class="win-search-left">
+                  <div class="win-search-cat">Best match</div>
+                  <button type="button" class="win-search-hit" id="winSearchHit3DVision" data-sim-search="3dvision">
+                    <span class="win-search-hit-ico win-search-hit-ico-vision" aria-hidden="true">
+                      <img class="win-search-vision-ico-img" src="assets/images/logo_icon.ico" width="22" height="22" alt="">
+                    </span>
+                    <span>
+                      <div>3DVision</div>
+                      <div class="win-search-hit-meta">App</div>
+                    </span>
+                  </button>
+                  <div class="win-search-blank-below" aria-hidden="true"></div>
+                </div>
+                <div class="win-search-detail">
+                  <div class="win-search-detail-ico win-search-detail-ico-vision" aria-hidden="true">
+                    <img class="win-search-vision-ico-img" src="assets/images/logo_icon.ico" width="40" height="40" alt="">
+                  </div>
+                  <h3>3DVision</h3>
+                  <p class="win-search-detail-sub">App</p>
+                  <div class="win-search-actions">
+                    <button type="button" data-sim-vision="open"><span aria-hidden="true">&#8599;</span> Open</button>
+                    <button type="button" data-sim-vision="loc" disabled><span aria-hidden="true">&#128193;</span> Open file location</button>
+                    <button type="button" data-sim-vision="pstart" disabled><span aria-hidden="true">&#128204;</span> Pin to Start</button>
+                    <button type="button" data-sim-vision="ptask" disabled><span aria-hidden="true">&#128204;</span> Pin to taskbar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="win-search-panel" id="winSearchPanel3DVisionServer" hidden>
+              <div class="win-search-split">
+                <div class="win-search-left">
+                  <div class="win-search-cat">Best match</div>
+                  <button type="button" class="win-search-hit" id="winSearchHit3DVisionServer" data-sim-search="3dvisionserver">
+                    <span class="win-search-hit-ico win-search-hit-ico-vision" aria-hidden="true">
+                      <img class="win-search-vision-ico-img" src="assets/images/logo_icon.ico" width="22" height="22" alt="">
+                    </span>
+                    <span>
+                      <div>3DVision Server</div>
+                      <div class="win-search-hit-meta">App</div>
+                    </span>
+                  </button>
+                  <div class="win-search-blank-below" aria-hidden="true"></div>
+                </div>
+                <div class="win-search-detail">
+                  <div class="win-search-detail-ico win-search-detail-ico-vision" aria-hidden="true">
+                    <img class="win-search-vision-ico-img" src="assets/images/logo_icon.ico" width="40" height="40" alt="">
+                  </div>
+                  <h3>3DVision Server</h3>
+                  <p class="win-search-detail-sub">App</p>
+                  <div class="win-search-actions">
+                    <button type="button" data-sim-visionserver="open"><span aria-hidden="true">&#8599;</span> Open</button>
+                    <button type="button" data-sim-visionserver="loc" disabled><span aria-hidden="true">&#128193;</span> Open file location</button>
+                    <button type="button" data-sim-visionserver="pstart" disabled><span aria-hidden="true">&#128204;</span> Pin to Start</button>
+                    <button type="button" data-sim-visionserver="ptask" disabled><span aria-hidden="true">&#128204;</span> Pin to taskbar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="win-search-panel" id="winSearchPanelServices" hidden>
+              <div class="win-search-split">
+                <div class="win-search-left">
+                  <div class="win-search-cat">Best match</div>
+                  <button type="button" class="win-search-hit" id="winSearchHitServices" data-sim-search="services">
+                    <span class="win-search-hit-ico" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 018.5 12 3.5 3.5 0 0112 8.5a3.5 3.5 0 013.5 3.5 3.5 3.5 0 01-3.5 3.5zm7.94-1.4l-1.42-1.18a6 6 0 00-.11-2.84l1.42-1.18a1 1 0 00.23-1.28l-1-1.73a1 1 0 00-1.28-.23l-1.68.98a6 6 0 00-2.46-1.42l-.26-1.9A1 1 0 0015 2h-2a1 1 0 00-.99.84l-.26 1.9a6 6 0 00-2.46 1.42l-1.68-.98a1 1 0 00-1.28.23l-1 1.73a1 1 0 00.23 1.28l1.42 1.18a6 6 0 000 2.84l-1.42 1.18a1 1 0 00-.23 1.28l1 1.73a1 1 0 001.28.23l1.68-.98a6 6 0 002.46 1.42l.26 1.9a1 1 0 00.99.84h2a1 1 0 00.99-.84l.26-1.9a6 6 0 002.46-1.42l1.68.98a1 1 0 001.28-.23l1-1.73a1 1 0 00-.23-1.28z"/></svg>
+                    </span>
+                    <span>
+                      <div>Services</div>
+                      <div class="win-search-hit-meta">System</div>
+                    </span>
+                  </button>
+                  <div class="win-search-blank-below" aria-hidden="true"></div>
+                </div>
+                <div class="win-search-detail">
+                  <div class="win-search-detail-ico" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path d="M12 15.5A3.5 3.5 0 018.5 12 3.5 3.5 0 0112 8.5a3.5 3.5 0 013.5 3.5 3.5 3.5 0 01-3.5 3.5zm7.94-1.4l-1.42-1.18a6 6 0 00-.11-2.84l1.42-1.18a1 1 0 00.23-1.28l-1-1.73a1 1 0 00-1.28-.23l-1.68.98a6 6 0 00-2.46-1.42l-.26-1.9A1 1 0 0015 2h-2a1 1 0 00-.99.84l-.26 1.9a6 6 0 00-2.46 1.42l-1.68-.98a1 1 0 00-1.28.23l-1 1.73a1 1 0 00.23 1.28l1.42 1.18a6 6 0 000 2.84l-1.42 1.18a1 1 0 00-.23 1.28l1 1.73a1 1 0 001.28.23l1.68-.98a6 6 0 002.46 1.42l.26 1.9a1 1 0 00.99.84h2a1 1 0 00.99-.84l.26-1.9a6 6 0 002.46-1.42l1.68.98a1 1 0 001.28-.23l1-1.73a1 1 0 00-.23-1.28z"/></svg>
+                  </div>
+                  <h3>Services</h3>
+                  <p class="win-search-detail-sub">System</p>
+                  <div class="win-search-actions">
+                    <button type="button" data-sim-svc="open"><span aria-hidden="true">&#8599;</span> Open</button>
+                    <button type="button" data-sim-svc="admin"><span aria-hidden="true">&#128737;</span> Run as administrator</button>
+                    <button type="button" data-sim-svc="loc" disabled><span aria-hidden="true">&#128193;</span> Open file location</button>
+                    <button type="button" data-sim-svc="pstart" disabled><span aria-hidden="true">&#128204;</span> Pin to Start</button>
+                    <button type="button" data-sim-svc="ptask" disabled><span aria-hidden="true">&#128204;</span> Pin to taskbar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="win-search-panel" id="winSearchPanelPower" hidden>
+              <div class="win-search-split">
+                <div class="win-search-left">
+                  <div class="win-search-cat">Best match</div>
+                  <button type="button" class="win-search-hit" id="winSearchHitPower" data-sim-search="power">
+                    <span class="win-search-hit-ico win-search-hit-ico-power" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42A6.95 6.95 0 0119 12a7 7 0 11-14 0 6.95 6.95 0 012.59-5.41L6.17 5.17A8.98 8.98 0 003 12a9 9 0 1018 0 8.98 8.98 0 00-2.17-6.83z"/></svg>
+                    </span>
+                    <span>
+                      <div>Power</div>
+                      <div class="win-search-hit-meta">System</div>
+                    </span>
+                  </button>
+                  <div class="win-search-blank-below" aria-hidden="true"></div>
+                </div>
+                <div class="win-search-detail">
+                  <div class="win-search-detail-ico win-search-detail-ico-power" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42A6.95 6.95 0 0119 12a7 7 0 11-14 0 6.95 6.95 0 012.59-5.41L6.17 5.17A8.98 8.98 0 003 12a9 9 0 1018 0 8.98 8.98 0 00-2.17-6.83z"/></svg>
+                  </div>
+                  <h3>Power</h3>
+                  <p class="win-search-detail-sub">System</p>
+                  <div class="win-search-actions">
+                    <button type="button" data-power-action="lock"><span aria-hidden="true">&#128274;</span> Lock</button>
+                    <button type="button" data-power-action="sleep"><span aria-hidden="true">&#9790;</span> Sleep</button>
+                    <button type="button" data-power-action="shutdown"><span aria-hidden="true">&#9211;</span> Shut down</button>
+                    <button type="button" data-power-action="restart"><span aria-hidden="true">&#8635;</span> Restart</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="win-start-home" id="winStartHomeContent">
+            <div class="win-start-scroll">
+              <div class="win-start-section">
+                <div class="win-start-hdr">
+                  <span id="winStartPinnedHeading">Pinned</span>
+                  <button type="button" class="win-start-link" data-sim-start="all">All &gt;</button>
+                </div>
+                <div class="win-start-grid" aria-labelledby="winStartPinnedHeading">
+                  <button type="button" class="win-start-tile" data-sim-app="3DVision"><span class="win-start-tile-ico ico-vision" aria-hidden="true"></span><span class="win-start-tile-lbl">3DVision</span></button>
+                  <button type="button" class="win-start-tile" data-sim-app="3DVision Server"><span class="win-start-tile-ico ico-vision" aria-hidden="true"></span><span class="win-start-tile-lbl">3DVision Server</span></button>
+                  <button type="button" class="win-start-tile" data-sim-app="Browser"><span class="win-start-tile-ico ico-browser" aria-hidden="true"></span><span class="win-start-tile-lbl">Browser</span></button>
+                  <button type="button" class="win-start-tile" data-sim-app="LibreOffice Writer"><span class="win-start-tile-ico ico-word" aria-hidden="true">W</span><span class="win-start-tile-lbl">LibreOffice Writer</span></button>
+                  <button type="button" class="win-start-tile" data-sim-app="LibreOffice Calc"><span class="win-start-tile-ico ico-excel" aria-hidden="true">X</span><span class="win-start-tile-lbl">LibreOffice Calc</span></button>
+                  <button type="button" class="win-start-tile" data-sim-app="LibreOffice Impress"><span class="win-start-tile-ico ico-ppt" aria-hidden="true">P</span><span class="win-start-tile-lbl">LibreOffice Impress</span></button>
+                  <button type="button" class="win-start-tile" data-sim-app="LetterBox"><span class="win-start-tile-ico ico-outlook" aria-hidden="true">O</span><span class="win-start-tile-lbl">LetterBox</span></button>
+                  <button type="button" class="win-start-tile" data-sim-app="Libre Assistant"><span class="win-start-tile-ico ico-copilot" aria-hidden="true">&#10022;</span><span class="win-start-tile-lbl">Libre Assistant</span></button>
+                  <button type="button" class="win-start-tile" data-sim-app="Open Marketplace"><span class="win-start-tile-ico ico-store" aria-hidden="true">&#9634;</span><span class="win-start-tile-lbl">Open Marketplace</span></button>
+                  <button type="button" class="win-start-tile" data-sim-app="PixGallery"><span class="win-start-tile-ico ico-photos" aria-hidden="true">&#9635;</span><span class="win-start-tile-lbl">PixGallery</span></button>
+                  <button type="button" class="win-start-tile" data-sim-app="System Settings"><span class="win-start-tile-ico ico-settings" aria-hidden="true">&#9881;</span><span class="win-start-tile-lbl">System Settings</span></button>
+                  <button type="button" class="win-start-tile" data-sim-app="QuickCalc"><span class="win-start-tile-ico ico-calc" aria-hidden="true">&#8721;</span><span class="win-start-tile-lbl">QuickCalc</span></button>
+                  <button type="button" class="win-start-tile" data-sim-app="Timekeeper"><span class="win-start-tile-ico ico-clock" aria-hidden="true">&#128336;</span><span class="win-start-tile-lbl">Timekeeper</span></button>
+                  <button type="button" class="win-start-tile" data-sim-app="Scratchpad"><span class="win-start-tile-ico ico-notepad" aria-hidden="true">N</span><span class="win-start-tile-lbl">Scratchpad</span></button>
+                  <button type="button" class="win-start-tile" data-sim-app="OpenPaint"><span class="win-start-tile-ico ico-paint" aria-hidden="true">&#127912;</span><span class="win-start-tile-lbl">OpenPaint</span></button>
+                  <button type="button" class="win-start-tile" data-sim-app="GrabShot"><span class="win-start-tile-ico ico-snip" aria-hidden="true">&#9645;</span><span class="win-start-tile-lbl">GrabShot</span></button>
+                  <button type="button" class="win-start-tile" data-sim-app="OpenNote"><span class="win-start-tile-ico ico-onenote" aria-hidden="true">1</span><span class="win-start-tile-lbl">OpenNote</span></button>
+                  <button type="button" class="win-start-tile" data-sim-app="File Manager"><span class="win-start-tile-ico ico-explorer" aria-hidden="true"></span><span class="win-start-tile-lbl">File Manager</span></button>
+                </div>
+              </div>
+              <div class="win-start-section">
+                <div class="win-start-hdr">
+                  <span id="winStartRecHeading">Recommended</span>
+                  <button type="button" class="win-start-link" data-sim-start="more">More &gt;</button>
+                </div>
+                <div class="win-start-rec win-start-rec-empty" aria-labelledby="winStartRecHeading"></div>
+              </div>
+            </div>
+          </div>
+          <div class="win-start-footer">
+            <button type="button" class="win-start-user-btn" disabled>
+              <span class="win-start-user-avatar" aria-hidden="true">U</span>
+              <span class="win-start-user-name">User</span>
+            </button>
+            <div class="win-start-power-wrap">
+              <button type="button" class="win-start-power-btn" id="winStartPowerBtn" title="Power" aria-label="Power" aria-haspopup="menu" aria-expanded="false" aria-controls="winStartPowerMenu">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42A6.95 6.95 0 0119 12a7 7 0 11-14 0 6.95 6.95 0 012.59-5.41L6.17 5.17A8.98 8.98 0 003 12a9 9 0 1018 0 8.98 8.98 0 00-2.17-6.83z"/></svg>
+              </button>
+              <div class="win-start-power-menu" id="winStartPowerMenu" role="menu" hidden>
+                <button type="button" role="menuitem" data-power-action="lock">Lock</button>
+                <button type="button" role="menuitem" data-power-action="sleep">Sleep</button>
+                <button type="button" role="menuitem" data-power-action="shutdown">Shut down</button>
+                <button type="button" role="menuitem" data-power-action="restart">Restart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <nav class="win-taskbar" aria-label="Desktop taskbar">
+          <div class="win-taskbar-pins">
+            <button type="button" class="win-taskbar-btn" id="winStartBtn" title="App launcher" aria-label="App launcher" aria-expanded="false" aria-haspopup="dialog" aria-controls="winStartMenu">
+              <!-- Lucide layout-grid â€” ISC License, https://lucide.dev/icons/layout-grid -->
+              <svg
+                class="win-taskbar-start-ico lucide lucide-layout-grid"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <rect width="7" height="7" x="3" y="3" rx="1" />
+                <rect width="7" height="7" x="14" y="3" rx="1" />
+                <rect width="7" height="7" x="14" y="14" rx="1" />
+                <rect width="7" height="7" x="3" y="14" rx="1" />
+              </svg>
+            </button>
+            <button type="button" class="win-taskbar-btn" id="taskbarBtnFileMgr" title="File Manager" aria-label="File Manager">
+              <img class="win-taskbar-filemgr-ico" src="assets/desktop/folder-icon.svg" width="24" height="24" alt="" decoding="async">
+            </button>
+            <button type="button" class="win-taskbar-btn" id="taskbarBtnBrowser" title="Browser" aria-label="Browser">
+              <img class="win-taskbar-browser-ico" src="assets/desktop/chromium-icon.svg" width="24" height="24" alt="" decoding="async">
+            </button>
+            <button type="button" class="win-taskbar-btn win-taskbar-vision" id="taskbarBtnVision" title="3DVision" aria-label="3DVision" hidden>
+              <img class="win-taskbar-vision-ico" src="assets/images/logo_icon.ico" width="24" height="24" alt="" decoding="async">
+            </button>
+          </div>
+          <div class="win-taskbar-spacer" aria-hidden="true"></div>
+          <div class="win-taskbar-tray">
+            <button type="button" class="win-taskbar-chevron-btn" id="winTrayChevronBtn" title="Show hidden icons" aria-label="Show hidden icons" aria-expanded="false" hidden>
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 4.5l4.5 5h-9l4.5-5z"/></svg>
+            </button>
+            <span class="win-taskbar-tray-ico win-taskbar-tray-ico--cloud" title="CloudSync">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M4 6a3 3 0 012.5-2.9A4 4 0 0112 6a3 3 0 010 6H5a3 3 0 01-2.8-4A3 3 0 014 6z"/></svg>
+            </span>
+            <span class="win-taskbar-tray-ico" title="Network">
+              <img class="win-taskbar-tray-img" src="assets/desktop/network-tray-icon.svg" width="16" height="16" alt="" decoding="async">
+            </span>
+            <span class="win-taskbar-tray-ico" title="Volume">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="#ddd" d="M8 3v10l-3-3H3V6h2l3-3zm4.5 5a3.5 3.5 0 01-2 3.2V4.8a3.5 3.5 0 012 3.2z"/></svg>
+            </span>
+            <span class="win-taskbar-tray-ico" title="Power">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="#ddd" d="M11 2v2h2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V4h2V2h6zM6 10h4v2H6v-2z"/></svg>
+            </span>
+            <div class="win-taskbar-clock" id="taskbarClock">
+              <span class="win-taskbar-time">â€”</span>
+              <span class="win-taskbar-date">â€”</span>
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <!-- Services console (from eBob Tutorial) -->
+      <div class="backdrop backdrop-services" id="backdropServicesMsc" role="dialog" aria-modal="true" aria-labelledby="svcMscTitle" aria-hidden="true">
+        <div class="modal-services-msc" id="servicesMscShell">
+          <div class="svc-msc-titlebar">
+            <h2 id="svcMscTitle"><span aria-hidden="true">&#9881;</span> Services</h2>
+            <div class="dm-winbtns">
+              <button type="button" class="dm-cap-btn" id="svcMscMin" title="Minimize" aria-label="Minimize">
+                <svg viewBox="0 0 12 12" aria-hidden="true"><path fill="currentColor" d="M0 5.5h12v1H0z"/></svg>
+              </button>
+              <button type="button" class="dm-cap-btn" id="svcMscMax" title="Maximize" aria-label="Maximize">
+                <svg viewBox="0 0 12 12" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1" d="M1.5 2.5h9v7h-9v-7z"/></svg>
+              </button>
+              <button type="button" class="dm-cap-btn dm-close" id="svcMscClose" title="Close" aria-label="Close">
+                <svg viewBox="0 0 12 12" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" d="M2.5 2.5l7 7m0-7l-7 7"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="svc-msc-menubar" role="menubar"><span>File</span><span>Action</span><span>View</span><span>Help</span></div>
+          <div class="svc-msc-toolbar" aria-label="Service actions">
+            <button type="button" disabled aria-hidden="true">&#9664;</button>
+            <button type="button" disabled aria-hidden="true">&#9654;</button>
+            <button type="button" disabled aria-hidden="true">&#8862;</button>
+            <span class="svc-tb-sep"></span>
+            <button type="button" id="svcTbRefresh" title="Refresh">&#8635;</button>
+            <button type="button" title="Help">?</button>
+            <span class="svc-tb-sep"></span>
+            <button type="button" id="svcTbStart" title="Start">&#9654;</button>
+            <button type="button" id="svcTbStop" title="Stop">&#9632;</button>
+            <button type="button" id="svcTbPause" title="Pause" disabled>&#10073;&#10073;</button>
+            <button type="button" id="svcTbRestart" title="Restart">&#8634;</button>
+          </div>
+          <div class="svc-msc-main">
+            <div class="svc-msc-tree"><div class="svc-tree-sel">Services (Local)</div></div>
+            <div class="svc-msc-content" id="svcMscContentInner">
+              <div class="svc-msc-ext-row" id="svcMscExtRow">
+                <div class="svc-msc-desc" id="svcMscDesc">
+                  <h3 id="svcMscDescTitle">â€”</h3>
+                  <p id="svcMscDescBody">Select a service in the list to see its description.</p>
+                  <div class="svc-desc-links" id="svcMscDescLinks" hidden>
+                    <a tabindex="0" data-svc-link="start">Start</a><span> the service, </span>
+                    <a tabindex="0" data-svc-link="stop">stop</a><span> the service, or </span>
+                    <a tabindex="0" data-svc-link="restart">restart</a><span> the service.</span>
+                  </div>
+                </div>
+                <div class="svc-msc-table-wrap" id="svcMscTableScrollWrap" tabindex="-1">
+                  <table class="svc-msc-table" id="svcMscTable" aria-label="Services list">
+                    <thead>
+                      <tr><th>Name</th><th>Description</th><th>Status</th><th>Startup Type</th><th>Log On As</th></tr>
+                    </thead>
+                    <tbody id="svcMscTbody"></tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="svc-msc-tabs" role="tablist">
+                <button type="button" role="tab" id="svcTabExtended" class="svc-tab-active" aria-selected="true">Extended</button>
+                <button type="button" role="tab" id="svcTabStandard" aria-selected="false">Standard</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Downloads folder (eBob GTK file chooser / export dialog shell) -->
+  <div class="backdrop backdrop-sim-sys-sub" id="backdropDownloads" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="downloadsTitleText">
+    <div class="sim-open-dat-shell">
+      <div class="ofi-caption">
+        <div class="ofi-caption-left">
+          <svg class="ofi-caption-ico" viewBox="0 0 16 16" aria-hidden="true">
+            <path d="M2 5h5l1 1h8v8H2V5zm2 2v6h10V8H4V7z"/>
+          </svg>
+          <span id="downloadsTitleText" class="ofi-caption-title">Downloads</span>
+        </div>
+        <div class="ofi-caption-btns">
+          <button type="button" class="ofi-cap-minimize" disabled aria-hidden="true" tabindex="-1" title="Minimize"></button>
+          <button type="button" class="ofi-cap-maximize" disabled aria-hidden="true" tabindex="-1" title="Maximize"></button>
+          <button type="button" class="ofi-cap-close" id="downloadsCapClose" title="Close" aria-label="Close">
+            <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" d="M1 1l10 10M11 1L1 11"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="ofi-ribbon">
+        <button type="button" class="ofi-ico-btn" disabled title="Back" aria-label="Back">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 12l8-8v4h10v4H12v6l-8-8z"/></svg>
+        </button>
+        <button type="button" class="ofi-ico-btn" disabled title="Forward" aria-label="Forward">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M20 12l-8-8v4H4v4h8v6l8-8z"/></svg>
+        </button>
+        <button type="button" class="ofi-ico-btn" disabled title="Recent locations" aria-label="Recent locations">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+        </button>
+        <span class="ofi-nav-sep" aria-hidden="true"></span>
+        <button type="button" class="ofi-ico-btn" disabled title="Up to parent folder" aria-label="Up">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 5L5 14h4v5h6v-5h4L12 5z"/></svg>
+        </button>
+        <div class="ofi-address-wrap" aria-label="Address">
+          <div class="ofi-address-inner">
+            <svg class="ofi-folder-ico" viewBox="0 0 16 16" aria-hidden="true">
+              <path d="M2 5h5l1 1h8v8H2V5zm2 2v6h10V8H4V7z"/>
+            </svg>
+            <span class="ofi-crumb-sep">&gt;</span>
+            <span class="ofi-crumb">User</span>
+            <span class="ofi-crumb-sep">&gt;</span>
+            <span class="ofi-crumb">Downloads</span>
+          </div>
+          <button type="button" class="ofi-address-chev" disabled aria-label="Address history" title="Address history">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 10l5 5 5-5z"/></svg>
+          </button>
+          <button type="button" class="ofi-address-refresh" disabled title="Refresh" aria-label="Refresh">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 4V1L7 6h5V4z"/><path fill="currentColor" d="M12 20v3l5-5h-5v2z"/></svg>
+          </button>
+        </div>
+        <div class="ofi-search-wrap">
+          <svg viewBox="0 0 24 24" aria-hidden="true" class="ofi-search-glyph"><circle cx="10" cy="10" r="3.5" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M15 15l4 4"/></svg>
+          <input type="search" id="downloadsSearch" class="sim-open-dat-search" placeholder="Search Downloads" aria-label="Search Downloads" readonly tabindex="-1" />
+        </div>
+      </div>
+      <div class="sim-open-dat-toolbar2">
+        <button type="button" class="ofi-cmd-btn" disabled>Organize<span class="ofi-chev">&#9662;</span></button>
+        <button type="button" class="ofi-cmd-btn" disabled>New folder</button>
+        <span class="sim-open-dat-tb-spacer"></span>
+        <button type="button" class="ofi-tb-ico" disabled title="View" aria-label="Details view">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h16v2H4v-2z"/></svg>
+        </button>
+        <button type="button" class="ofi-tb-ico" disabled title="Layout" aria-label="Layout">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7h-7v-7zm9 0h7v7h-7v-7z"/></svg>
+        </button>
+        <button type="button" class="ofi-help-btn" disabled title="Help" aria-label="Help">?</button>
+      </div>
+      <div class="sim-open-dat-main">
+        <nav class="sim-open-dat-sidebar" aria-label="Navigation pane">
+          <button type="button" class="ofi-side-item" disabled>
+            <span class="ofi-side-ico" aria-hidden="true">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 8l6-6 6 6v6h-4v-4H6v4H2v-6z"/></svg>
+            </span>
+            <span class="ofi-side-txt">Home</span>
+          </button>
+          <button type="button" class="ofi-side-item" disabled>
+            <span class="ofi-side-ico" aria-hidden="true">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h12v9H2V4zm2 2v5h8V6H4zm1 2l2 2 2-2 3 4H7l4-6z"/></svg>
+            </span>
+            <span class="ofi-side-txt">Gallery</span>
+          </button>
+          <button type="button" class="ofi-side-item" disabled>
+            <span class="ofi-side-ico ofi-side-ico--cloud" aria-hidden="true">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#ffffff" d="M19.35 10.04A7.49 7.49 0 0012 4C9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+            </span>
+            <span class="ofi-side-txt">CloudSync</span>
+          </button>
+          <button type="button" class="ofi-side-item" disabled>
+            <span class="ofi-side-ico" aria-hidden="true">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 3h12v10H2V3zm1 1v7h10V4H3zm4 9h2v2H8v-2z"/></svg>
+            </span>
+            <span class="ofi-side-txt">Desktop</span>
+            <span class="ofi-side-pin" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2h8v12l-4-3-4 3V2z"/></svg></span>
+          </button>
+          <button type="button" class="ofi-side-item sim-open-dat-side--active">
+            <span class="ofi-side-ico" aria-hidden="true">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M11 5v2H5l3.5 3 3.5-3H9V5h2zm-7 9h10v1H4v-1z"/></svg>
+            </span>
+            <span class="ofi-side-txt">Downloads</span>
+            <span class="ofi-side-pin" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2h8v12l-4-3-4 3V2z"/></svg></span>
+          </button>
+          <button type="button" class="ofi-side-item" disabled>
+            <span class="ofi-side-ico" aria-hidden="true">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 5h5l1 1h8v8H2V5zm2 2v6h10V8H4V7z"/></svg>
+            </span>
+            <span class="ofi-side-txt">Documents</span>
+            <span class="ofi-side-pin" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2h8v12l-4-3-4 3V2z"/></svg></span>
+          </button>
+          <button type="button" class="ofi-side-item" disabled>
+            <span class="ofi-side-ico" aria-hidden="true">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 4h12v9H2V4zm2 2v5h8V6H4zm1 2l2 3 1-2 4 5H6l5-8z"/></svg>
+            </span>
+            <span class="ofi-side-txt">Pictures</span>
+            <span class="ofi-side-pin" aria-hidden="true"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2h8v12l-4-3-4 3V2z"/></svg></span>
+          </button>
+        </nav>
+        <div class="sim-open-dat-list-wrap">
+          <table class="sim-open-dat-table" aria-label="Files">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Date modified</th>
+                <th>Type</th>
+                <th>Size</th>
+              </tr>
+            </thead>
+            <tbody id="downloadsFileTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="downloadsCtxMenu" class="svc-ctx-menu" hidden role="menu">
+    <button type="button" data-action="open" role="menuitem">Open</button>
+    <button type="button" data-action="admin" role="menuitem">Run as administrator</button>
+  </div>
+
+  <!-- UAC (eBob Tutorial) -->
+  <div class="backdrop" id="backdropUac" role="dialog" aria-modal="true" aria-labelledby="uacHeading" aria-hidden="true">
+    <div class="modal-uac">
+      <div class="uac-header">
+        <div class="uac-header-top">
+          <span class="uac-brand">User Account Control</span>
+          <button type="button" class="uac-close" id="uacClose" aria-label="Close">&#215;</button>
+        </div>
+        <p class="uac-question" id="uacHeading">Do you want to allow this app to make changes to your device?</p>
+      </div>
+      <div class="uac-main">
+        <div class="uac-shield" aria-hidden="true">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 4L9 9.2V22.5c0 9 6.2 17 15 19.3 8.8-2.3 15-10.3 15-19.3V9.2L24 4z" fill="#0b5cab"/>
+            <rect x="9" y="9" width="14.5" height="14" fill="#2b88d8"/>
+            <rect x="24.5" y="9" width="14.5" height="14" fill="#50a0e8"/>
+            <rect x="9" y="23.5" width="14.5" height="15" fill="#1a6fc4"/>
+            <rect x="24.5" y="23.5" width="14.5" height="15" fill="#0078d4"/>
+            <rect x="22.5" y="9" width="3" height="30" fill="#fff"/>
+            <rect x="9" y="21.5" width="30" height="3" fill="#fff"/>
+          </svg>
+        </div>
+        <div class="uac-main-text">
+          <p class="uac-app" id="uacApp">BinMaster 3DVision_3.1.010.exe</p>
+          <p class="uac-pub" id="uacPub">Verified publisher: APM Automation Solutions Ltd.</p>
+          <button type="button" class="uac-more" id="uacMoreDetails" aria-expanded="false" aria-controls="uacDetails">Show more details</button>
+          <div class="uac-details" id="uacDetails" hidden>
+            <p><strong>Program location:</strong> <span id="uacProgramLoc">C:\Users\UserProfile\Downloads\BinMaster 3DVision_3.1.010.exe</span></p>
+          </div>
+        </div>
+      </div>
+      <footer class="uac-actions">
+        <button type="button" id="uacYes">Yes</button>
+        <button type="button" id="uacNo">No</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Installer language -->
+  <div class="backdrop backdrop-sim-sys-sub" id="backdropInstallerLang" aria-hidden="true">
+    <div class="installer-lang-dialog" role="dialog" aria-label="Installer Language">
+      <div class="installer-lang-titlebar">
+        <img src="assets/images/logo_icon.ico" width="16" height="16" alt="">
+        <span>Installer Language</span>
+        <button type="button" class="installer-title-btn installer-title-btn--close" id="installerLangClose" aria-label="Close">&#10005;</button>
+      </div>
+      <div class="installer-lang-body">
+        <img class="installer-lang-logo" src="assets/images/logo_icon.ico" width="58" height="58" alt="">
+        <div class="installer-lang-fields">
+          <p>Please select a language.</p>
+          <select class="installer-lang-select" id="installerLangSelect">
+            <option value="Chinese (Simplified)">Chinese (Simplified)</option>
+            <option value="Deutsch">Deutsch</option>
+            <option value="English" selected>English</option>
+            <option value="EspaÃ±ol">EspaÃ±ol</option>
+          </select>
+        </div>
+      </div>
+      <div class="installer-lang-footer">
+        <button type="button" class="installer-wiz-btn installer-wiz-btn--default" id="installerLangOk">OK</button>
+        <button type="button" class="installer-wiz-btn" id="installerLangCancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Installer wizard -->
+  <div class="backdrop" id="backdropInstaller" aria-hidden="true">
+    <div class="installer-wizard" role="dialog" aria-label="BinMaster 3DVision Setup">
+      <div class="installer-wizard-titlebar">
+        <img src="assets/images/logo_icon.ico" width="16" height="16" alt="">
+        <span>BinMaster 3DVision Setup</span>
+        <div class="installer-wizard-titlebtns">
+          <button type="button" class="installer-title-btn" disabled aria-hidden="true" tabindex="-1" title="Minimize">&#8211;</button>
+          <button type="button" class="installer-title-btn" disabled aria-hidden="true" tabindex="-1" title="Maximize">&#9634;</button>
+          <button type="button" class="installer-title-btn installer-title-btn--close" id="installerWizardClose" title="Close" aria-label="Close">&#10005;</button>
+        </div>
+      </div>
+      <div class="installer-wizard-inner">
+        <div class="installer-wizard-sidebar" aria-hidden="true"></div>
+        <div class="installer-wizard-content">
+          <div id="installerWizardMain"></div>
+        </div>
+      </div>
+      <div class="installer-wizard-footer" id="installerWizardFooter"></div>
+    </div>
+  </div>
+
+  <!-- Browse for folder -->
+  <div class="backdrop backdrop-sim-sys-sub" id="backdropBrowseFolder" aria-hidden="true">
+    <div class="browse-folder-dialog" role="dialog" aria-label="Browse For Folder">
+      <div class="browse-folder-titlebar">
+        <img src="assets/images/logo_icon.ico" alt="" width="16" height="16">
+        <span>Browse For Folder</span>
+        <button type="button" id="browseFolderClose" aria-label="Close">&#10005;</button>
+      </div>
+      <div class="browse-folder-body">
+        <span>Select Server Local Path Folder</span>
+        <div class="browse-folder-tree" id="browseFolderTree"></div>
+      </div>
+      <div class="browse-folder-footer">
+        <button type="button" class="installer-wiz-btn" id="browseFolderNew">Make New Folder</button>
+        <div class="browse-folder-footer-right">
+          <button type="button" class="installer-wiz-btn installer-wiz-btn--default" id="browseFolderOk">OK</button>
+          <button type="button" class="installer-wiz-btn" id="browseFolderCancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="browse-tooltip" id="browseTooltip" hidden></div>
+  <div id="browseFolderCtxMenu" class="svc-ctx-menu browse-ctx-menu" hidden role="menu" aria-hidden="true">
+    <button type="button" data-action="rename" role="menuitem">Rename</button>
+  </div>
+
+  <!-- Installer message box -->
+  <div class="backdrop backdrop-sim-sys-sub" id="backdropInstallerMsg" aria-hidden="true">
+    <div class="installer-msg-dialog" role="alertdialog" aria-labelledby="installerMsgText" aria-modal="true">
+      <div class="installer-msg-titlebar">
+        <img src="assets/images/logo_icon.ico" alt="" width="16" height="16">
+        <span>BinMaster 3DVision Setup</span>
+        <button type="button" class="installer-title-btn installer-title-btn--close" id="installerMsgClose" aria-label="Close">&#10005;</button>
+      </div>
+      <div class="installer-msg-body">
+        <span class="installer-msg-icon" aria-hidden="true"></span>
+        <p id="installerMsgText"></p>
+      </div>
+      <div class="installer-msg-footer">
+        <button type="button" class="installer-wiz-btn installer-wiz-btn--default" id="installerMsgOk">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Connect error -->
+  <div class="modal-overlay" id="connect-error-overlay" hidden>
+    <div class="installer-msg-dialog" role="alertdialog" aria-labelledby="connectErrorText" aria-modal="true">
+      <div class="installer-msg-titlebar">
+        <img src="assets/images/logo_icon.ico" alt="" width="16" height="16">
+        <span>3D Vision</span>
+        <button type="button" class="installer-title-btn installer-title-btn--close" id="btn-connect-error-close" aria-label="Close">&#10005;</button>
+      </div>
+      <div class="installer-msg-body">
+        <span class="installer-msg-icon" aria-hidden="true"></span>
+        <p id="connectErrorText">Invalid user name or password.</p>
+      </div>
+      <div class="installer-msg-footer">
+        <button type="button" class="installer-wiz-btn installer-wiz-btn--default" id="btn-connect-error-ok">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Server Configuration dialog -->
+  <div class="modal-overlay" id="server-config-overlay" hidden>
+    <div class="config-dialog" role="dialog" aria-labelledby="server-config-title" aria-modal="true">
+      <div class="title-bar">
+        <img class="title-bar-icon" src="assets/images/logo_icon.ico" alt="" width="16" height="16">
+        <span class="title-bar-text" id="server-config-title">Server Configuration</span>
+        <div class="title-bar-controls">
+          <button class="title-btn close" type="button" id="btn-config-close" aria-label="Close">&#10005;</button>
+        </div>
+      </div>
+      <div class="config-dialog-body">
+        <div class="form-row-config">
+          <span class="form-label-config">Server Name:</span>
+          <div class="select-wrapper config-select">
+            <select class="select-box" id="cfg-server-name" aria-label="Server Name">
+              <option value="localhost" selected>localhost</option>
+            </select>
+            <span class="select-arrow" aria-hidden="true"></span>
+          </div>
+        </div>
+        <div class="form-row-config">
+          <span class="form-label-config">Server Address</span>
+          <input type="text" class="text-input config-input" id="cfg-server-address" aria-label="Server Address">
+        </div>
+        <div class="form-row-config">
+          <span class="form-label-config">Server Port:</span>
+          <input type="text" class="text-input config-input" id="cfg-server-port" aria-label="Server Port">
+        </div>
+        <div class="config-dialog-footer">
+          <button class="btn" type="button" id="btn-config-ok">OK</button>
+          <button class="btn" type="button" id="btn-config-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About dialog -->
+  <div class="modal-overlay" id="about-overlay" hidden>
+    <div class="about-dialog" role="dialog" aria-labelledby="about-title" aria-modal="true">
+      <div class="title-bar">
+        <img class="title-bar-icon" src="assets/images/logo_icon.ico" alt="" width="16" height="16">
+        <span class="title-bar-text" id="about-title">About 3D Vision</span>
+        <div class="title-bar-controls">
+          <button class="title-btn close" type="button" id="btn-about-close" aria-label="Close">&#10005;</button>
+        </div>
+      </div>
+      <div class="about-dialog-header">About 3D Vision</div>
+      <div class="about-dialog-body">
+        <div class="about-main">
+          <div class="about-left">
+            <img class="about-binmaster-logo" src="assets/images/logoBinMaster.PNG" alt="BinMaster">
+            <div class="about-product-name">3D Vision</div>
+            <div class="about-version">Version 3.1.010</div>
+            <div class="about-support">
+              <div>Support: 402-434-9102</div>
+              <div>support@binmaster.com</div>
+              <a class="about-link" href="http://www.binmaster.com/" target="_blank" rel="noopener noreferrer">http://www.binmaster.com/</a>
+            </div>
+          </div>
+          <div class="about-right">
+            <img class="about-apm-logo" src="assets/images/apm_logo.png" alt="APM Technology">
+          </div>
+        </div>
+        <div class="about-dialog-footer">
+          <button class="btn" type="button" id="btn-about-ok">OK</button>
+        </div>
+      </div>
+      <div class="about-dialog-warning">
+        Warning: This computer program is protected by copyright law and international treaties. Unauthorized reproduction or distribution of this program, or any portion of it, may result in severe civil and criminal penalties, and will be prosecuted to the maximum extent possible under the law.
+      </div>
+    </div>
+  </div>
+
+  <!-- Exit confirmation -->
+  <div class="modal-overlay" id="exit-confirm-overlay" hidden>
+    <div class="exit-confirm-dialog" role="alertdialog" aria-labelledby="exit-confirm-title" aria-modal="true">
+      <div class="title-bar">
+        <img class="title-bar-icon" src="assets/images/logo_icon.ico" alt="" width="16" height="16">
+        <span class="title-bar-text" id="exit-confirm-title">3D Vision</span>
+        <div class="title-bar-controls">
+          <button class="title-btn close" type="button" id="btn-exit-confirm-close" aria-label="Close">&#10005;</button>
+        </div>
+      </div>
+      <div class="exit-confirm-body">
+        <span class="exit-confirm-icon" aria-hidden="true"></span>
+        <p>The application will be closed. Are you sure?</p>
+      </div>
+      <div class="exit-confirm-footer">
+        <button class="btn" type="button" id="btn-exit-confirm-yes">Yes</button>
+        <button class="btn" type="button" id="btn-exit-confirm-no">No</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="svcCtxMenu" class="svc-ctx-menu" hidden role="menu" aria-hidden="true">
+    <button type="button" role="menuitem" id="svcCtxStart">Start</button>
+    <button type="button" role="menuitem" id="svcCtxStop">Stop</button>
+    <button type="button" role="menuitem" disabled>Pause</button>
+    <button type="button" role="menuitem" disabled>Resume</button>
+    <button type="button" role="menuitem" id="svcCtxRestart">Restart</button>
+  </div>
+
+  <!-- MultiVision vessel context menu -->
+  <div id="mvVesselCtxMenu" class="mv-ctx-menu" hidden role="menu" aria-hidden="true">
+    <button type="button" role="menuitem" data-mv-action="show-3d">Show 3D Profile...</button>
+    <div class="mv-ctx-sep" role="separator"></div>
+    <button type="button" role="menuitem" data-mv-action="connect" disabled>Connect</button>
+    <button type="button" role="menuitem" data-mv-action="disconnect">Disconnect</button>
+    <button type="button" role="menuitem" data-mv-action="load-vessel">Load from Vessel</button>
+    <div class="mv-ctx-sep" role="separator"></div>
+    <button type="button" role="menuitem" data-mv-action="wizard">Device Configuration Wizard...</button>
+    <div class="mv-ctx-sep" role="separator"></div>
+    <button type="button" role="menuitem" data-mv-action="advanced">Advanced Parameters...</button>
+    <button type="button" role="menuitem" data-mv-action="echo">Echo Curve Analysis...</button>
+    <button type="button" role="menuitem" data-mv-action="false-echo">Device False Echo Mapping...</button>
+    <div class="mv-ctx-sep" role="separator"></div>
+    <div class="mv-ctx-submenu-wrap">
+      <button type="button" role="menuitem" class="mv-ctx-has-sub" data-mv-action="edit" aria-haspopup="true">Edit<span class="mv-ctx-arrow">&#9654;</span></button>
+      <div class="mv-ctx-submenu" role="menu" hidden>
+        <button type="button" role="menuitem" data-mv-action="edit-rename">Rename...</button>
+        <button type="button" role="menuitem" data-mv-action="edit-copy">Copy</button>
+      </div>
+    </div>
+    <div class="mv-ctx-sep" role="separator"></div>
+    <button type="button" role="menuitem" data-mv-action="report-server">Generate report (logs data)- Download from server ...</button>
+    <button type="button" role="menuitem" data-mv-action="report-local">Generate report (logs data) - From local folder ...</button>
+    <div class="mv-ctx-sep" role="separator"></div>
+    <button type="button" role="menuitem" data-mv-action="material">Material Selection...</button>
+    <button type="button" role="menuitem" data-mv-action="properties">Properties...</button>
+  </div>
+
+  <!-- MultiVision dynamic dialogs host + message box -->
+  <div id="mvDialogHost"></div>
+  <div class="modal-overlay mv-modal-overlay" id="mvMsgOverlay" hidden>
+    <div class="mv-msg-dialog" role="alertdialog" aria-modal="true" aria-labelledby="mvMsgTitle">
+      <div class="title-bar">
+        <img class="title-bar-icon" src="assets/images/logo_icon.ico" alt="" width="16" height="16">
+        <span class="title-bar-text" id="mvMsgTitle">3D MultiVision</span>
+        <div class="title-bar-controls">
+          <button class="title-btn close" type="button" id="btn-mv-msg-close" aria-label="Close">&#10005;</button>
+        </div>
+      </div>
+      <div class="mv-msg-body">
+        <p id="mvMsgText"></p>
+      </div>
+      <div class="mv-msg-footer">
+        <button class="btn mv-params-btn" type="button" id="btn-mv-msg-yes" hidden>Yes</button>
+        <button class="btn mv-params-btn" type="button" id="btn-mv-msg-no" hidden>No</button>
+        <button class="btn mv-params-btn" type="button" id="btn-mv-msg-ok">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Parameters Definition (Properties) -->
+  <div class="modal-overlay mv-modal-overlay" id="mvParamsOverlay" hidden>
+    <div class="mv-params-dialog" role="dialog" aria-modal="true" aria-labelledby="mvParamsTitle">
+      <div class="title-bar">
+        <img class="title-bar-icon" src="assets/images/logo_icon.ico" alt="" width="16" height="16">
+        <span class="title-bar-text" id="mvParamsTitle">Parameters Definition</span>
+        <div class="title-bar-controls">
+          <button class="title-btn close" type="button" id="btn-mv-params-close" aria-label="Close">&#10005;</button>
+        </div>
+      </div>
+      <div class="mv-params-body">
+        <div class="mv-params-tabs" role="tablist">
+          <button type="button" class="mv-params-tab is-active" role="tab" data-tab="data" aria-selected="true">Data Selection</button>
+          <button type="button" class="mv-params-tab" role="tab" data-tab="alerts" aria-selected="false">Alerts</button>
+          <button type="button" class="mv-params-tab" role="tab" data-tab="general" aria-selected="false">General</button>
+        </div>
+        <div class="mv-params-panels">
+          <div class="mv-params-panel is-active" data-panel="data" role="tabpanel">
+            <div class="mv-params-dual">
+              <div class="mv-params-list-col">
+                <div class="mv-params-list-label">Available</div>
+                <select class="mv-params-list" id="mvParamsAvailable" multiple size="14" aria-label="Available"></select>
+              </div>
+              <div class="mv-params-transfer">
+                <button type="button" class="mv-params-xfer" id="mvParamsMoveRight" title="Add selected">&gt;</button>
+                <button type="button" class="mv-params-xfer" id="mvParamsMoveAllRight" title="Add all">&gt;&gt;</button>
+                <button type="button" class="mv-params-xfer" id="mvParamsMoveLeft" title="Remove selected">&lt;</button>
+                <button type="button" class="mv-params-xfer" id="mvParamsMoveAllLeft" title="Remove all">&lt;&lt;</button>
+              </div>
+              <div class="mv-params-list-col">
+                <div class="mv-params-list-label">Selected</div>
+                <select class="mv-params-list" id="mvParamsSelected" multiple size="14" aria-label="Selected"></select>
+              </div>
+              <div class="mv-params-reorder">
+                <button type="button" class="mv-params-xfer" id="mvParamsMoveUp" title="Move up">&#9650;</button>
+                <button type="button" class="mv-params-xfer" id="mvParamsMoveDown" title="Move down">&#9660;</button>
+              </div>
+            </div>
+          </div>
+          <div class="mv-params-panel" data-panel="alerts" role="tabpanel" hidden>
+            <fieldset class="mv-params-fieldset">
+              <legend>Alert Threshold [%]</legend>
+              <label class="mv-params-alert-row">
+                <input type="checkbox" id="mvAlertMaxEnabled">
+                <span>Maximum</span>
+                <input type="text" class="mv-params-alert-input" id="mvAlertMaxValue" value="100" disabled>
+              </label>
+              <label class="mv-params-alert-row">
+                <input type="checkbox" id="mvAlertMinEnabled">
+                <span>Minimum</span>
+                <input type="text" class="mv-params-alert-input" id="mvAlertMinValue" value="0" disabled>
+              </label>
+            </fieldset>
+          </div>
+          <div class="mv-params-panel" data-panel="general" role="tabpanel" hidden>
+            <fieldset class="mv-params-fieldset">
+              <legend>Output measurement of sections</legend>
+              <div class="mv-params-general-row">
+                <span>Number of sections X axis:</span>
+                <input type="text" class="mv-params-section-input" id="mvSectionsX" value="1">
+                <span class="mv-params-info" title="Information" aria-hidden="true">i</span>
+              </div>
+              <div class="mv-params-general-row">
+                <span>Number of sections Y axis:</span>
+                <input type="text" class="mv-params-section-input" id="mvSectionsY" value="1">
+                <span class="mv-params-info" title="Information" aria-hidden="true">i</span>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <div class="mv-params-footer">
+          <button class="btn mv-params-btn" type="button" id="btn-mv-params-ok">OK</button>
+          <button class="btn mv-params-btn" type="button" id="btn-mv-params-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/vendor/three.min.js"></script>
+  <script src="js/mv-overview-3d.js"></script>
+  <script src="js/mv-wizard-3d.js"></script>
+  <script src="js/desktop.js"></script>
+  <script src="js/startmenu.js"></script>
+  <script src="js/filechooser.js"></script>
+  <script src="js/uac.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/installer.js"></script>
+  <script src="js/browser.js"></script>
+  <script src="js/multivision.js"></script>
+  <script src="js/mv-dialogs.js"></script>
+  <script src="js/mv-menus.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/install-guide.js"></script>
+</body>
+</html>

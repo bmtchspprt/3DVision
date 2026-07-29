@@ -1,0 +1,1145 @@
+/* Installer language dialog — NSIS / Win11 */
+.installer-lang-dialog {
+  width: 396px;
+  max-width: calc(100vw - 24px);
+  background: #f3f3f3;
+  border: 1px solid #707070;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.28);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: 12px;
+  overflow: hidden;
+}
+
+.installer-lang-titlebar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  height: 32px;
+  padding: 0 10px 0 8px;
+  background: #f3f3f3;
+  border-bottom: 1px solid #e0e0e0;
+  font-size: 12px;
+}
+
+.installer-lang-titlebar > span {
+  flex: 1;
+  min-width: 0;
+}
+
+.installer-lang-titlebar img {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.installer-lang-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px 20px 14px;
+  background: #f3f3f3;
+}
+
+.installer-lang-logo {
+  width: 58px;
+  height: 58px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.installer-lang-fields {
+  flex: 1;
+  min-width: 0;
+  padding-top: 2px;
+}
+
+.installer-lang-fields p {
+  margin: 0 0 12px;
+  font-size: 12px;
+  color: #000;
+}
+
+.installer-lang-select {
+  width: 100%;
+  height: 23px;
+  padding: 1px 4px;
+  font: inherit;
+  border: 1px solid #7a7a7a;
+  background: #fff;
+  border-radius: 0;
+}
+
+.installer-lang-footer {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 16px 16px;
+  background: #f3f3f3;
+}
+
+/* NSIS Modern UI wizard */
+.installer-wizard {
+  width: 503px;
+  height: 388px;
+  max-width: calc(100vw - 24px);
+  max-height: calc(100vh - 24px);
+  background: #fff;
+  border: 1px solid #707070;
+  border-radius: 8px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  font-size: 12px;
+}
+
+.installer-wizard-titlebar {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 0 0 8px;
+  background: #f0f0f0;
+  border-bottom: 1px solid #d0d0d0;
+  flex-shrink: 0;
+}
+
+.installer-wizard-titlebar img {
+  width: 16px;
+  height: 16px;
+  margin-right: 6px;
+  flex-shrink: 0;
+}
+
+.installer-wizard-titlebar > span {
+  flex: 1;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.installer-wizard-titlebtns {
+  display: flex;
+  align-items: stretch;
+  height: 32px;
+  margin-left: 8px;
+}
+
+.installer-title-btn {
+  width: 46px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  cursor: default;
+  font-family: "Segoe MDL2 Assets", "Marlett", "Segoe UI", sans-serif;
+  font-size: 10px;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.installer-title-btn:not(:disabled):hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.installer-title-btn:disabled {
+  color: #a0a0a0;
+  cursor: default;
+}
+
+.installer-title-btn--close:hover {
+  background: #e81123;
+  color: #fff;
+}
+
+.installer-lang-titlebar .installer-title-btn {
+  width: 40px;
+  height: 28px;
+}
+
+.installer-wizard-inner {
+  display: flex;
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.installer-wizard--inner .installer-wizard-inner {
+  min-height: 0;
+}
+
+.installer-wizard-sidebar {
+  width: 164px;
+  flex-shrink: 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06) 0%, transparent 35%),
+    linear-gradient(180deg, #1a56c4 0%, #0f358f 42%, #082464 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.installer-wizard-sidebar::before {
+  content: "";
+  position: absolute;
+  right: -36px;
+  bottom: -48px;
+  width: 170px;
+  height: 260px;
+  border: 28px solid rgba(255, 255, 255, 0.07);
+  border-radius: 50%;
+  transform: rotate(-18deg);
+  pointer-events: none;
+}
+
+.installer-wizard-sidebar::after {
+  content: "";
+  position: absolute;
+  right: 8px;
+  bottom: 18px;
+  width: 120px;
+  height: 120px;
+  border-right: 22px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 22px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0 0 100% 0;
+  transform: rotate(8deg);
+  pointer-events: none;
+}
+
+.installer-wizard--inner {
+  --installer-pad-x: 16px;
+}
+
+.installer-wizard--inner .installer-wizard-sidebar {
+  display: none;
+}
+
+.installer-wizard-header-rule {
+  margin: 0;
+  border: none;
+  border-top: 1px solid #d0d0d0;
+}
+
+.installer-wizard-header--welcome h2 {
+  padding-right: 0;
+}
+
+.installer-wizard--welcome .installer-wizard-header {
+  padding: 14px 16px 6px 16px;
+}
+
+.installer-wizard--welcome .installer-wizard-main {
+  padding: 4px 16px 10px;
+}
+
+.installer-wizard-side-badge {
+  position: relative;
+  z-index: 1;
+  width: 58px;
+  height: 58px;
+  margin: 44px auto 0;
+  background: #fff;
+  border: 1px solid #d8d8d8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  image-rendering: pixelated;
+}
+
+.installer-wizard-side-badge svg {
+  display: block;
+}
+
+.installer-wizard-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: #fff;
+  position: relative;
+  overflow: hidden;
+}
+
+#installerWizardMain {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+#installerWizardMain > .installer-wizard-header,
+#installerWizardMain > .installer-wizard-header-rule {
+  flex-shrink: 0;
+}
+
+.installer-wizard-header {
+  padding: 14px 16px 4px 18px;
+  position: relative;
+  min-height: 0;
+}
+
+.installer-wizard--inner .installer-wizard-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 11px var(--installer-pad-x) 5px;
+}
+
+.installer-wizard-header-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.installer-wizard-header h2 {
+  margin: 0 0 2px;
+  padding-right: 0;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: #000;
+}
+
+.installer-wizard--inner .installer-wizard-header h2 {
+  margin: 0 0 1px;
+}
+
+.installer-wizard-header p {
+  margin: 0;
+  padding-right: 0;
+  font-size: 12px;
+  line-height: 1.3;
+  color: #222;
+}
+
+.installer-wizard-logo {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+}
+
+.installer-wizard--welcome .installer-wizard-header {
+  display: block;
+}
+
+.installer-wizard-main {
+  flex: 1 1 0;
+  min-height: 0;
+  padding: 4px 18px 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.installer-wizard--inner .installer-wizard-main {
+  display: flex;
+  flex-direction: column;
+  padding: 10px var(--installer-pad-x) 10px;
+}
+
+.installer-wizard--inner .installer-wizard-main p {
+  margin: 0 0 8px;
+  line-height: 1.35;
+  color: #000;
+}
+
+.installer-wizard--inner .installer-wizard-main p:last-child {
+  margin-bottom: 0;
+}
+
+.installer-wizard--welcome .installer-wizard-main {
+  overflow: auto;
+}
+
+.installer-wizard--welcome .installer-wizard-main p {
+  margin: 0 0 12px;
+  line-height: 1.45;
+  color: #000;
+}
+
+.installer-wizard-main .installer-radio-block {
+  margin: 6px 0 4px 18px;
+  flex-shrink: 0;
+}
+
+.installer-wizard--inner .installer-wizard-main .installer-radio-block {
+  margin: 2px 0 0;
+}
+
+.installer-wizard--inner .installer-wizard-main--radio-spaced .installer-radio-block {
+  margin-top: 42px;
+  margin-left: 18px;
+}
+
+.installer-wizard--inner .installer-wizard-main .installer-radio-block label {
+  margin-bottom: 6px;
+}
+
+.installer-wizard--inner .installer-wizard-main--radio-spaced .installer-radio-block label {
+  margin-bottom: 22px;
+}
+
+.installer-wizard--inner .installer-wizard-main--radio-spaced .installer-radio-block label:last-child {
+  margin-bottom: 0;
+}
+
+.installer-wizard--inner .installer-radio-block--setup label {
+  margin-bottom: 28px;
+}
+
+.installer-wizard--inner .installer-radio-block--users label {
+  margin-bottom: 18px;
+}
+
+.installer-wizard--inner .installer-radio-block--run-as label {
+  margin-bottom: 20px;
+}
+
+.installer-wizard-main .installer-radio-block label {
+  display: block;
+  margin-bottom: 14px;
+  cursor: pointer;
+  color: #000;
+}
+
+.installer-wizard-main .installer-radio-block .installer-radio-desc {
+  display: block;
+  margin: 2px 0 0 22px;
+  color: #000;
+}
+
+.installer-wizard-main--radio-spaced .installer-radio-block {
+  margin: 42px 0 0 18px;
+}
+
+.installer-wizard-main--radio-spaced .installer-radio-block label {
+  margin-bottom: 22px;
+}
+
+.installer-wizard-main--radio-spaced .installer-radio-block label:last-child {
+  margin-bottom: 0;
+}
+
+.installer-radio-block--setup label {
+  margin-bottom: 28px;
+}
+
+.installer-radio-block--users label {
+  margin-bottom: 18px;
+}
+
+.installer-radio-block--run-as label {
+  margin-bottom: 20px;
+}
+
+.installer-wizard-main--server-path .installer-fieldset--spaced {
+  margin-top: 42px;
+}
+
+.installer-wizard--inner .installer-wizard-main--server-path .installer-fieldset--spaced {
+  margin-top: 42px;
+}
+
+.installer-wizard-main--install-location {
+  display: flex;
+  flex-direction: column;
+}
+
+.installer-install-location-bottom {
+  margin-top: auto;
+  flex-shrink: 0;
+}
+
+.installer-install-location-bottom .installer-fieldset {
+  margin-top: 0;
+}
+
+.installer-install-location-bottom .installer-space-info {
+  margin-top: 4px;
+}
+
+.installer-license-box {
+  width: 100%;
+  height: 88px;
+  min-height: 88px;
+  max-height: 88px;
+  border: 1px solid #7a7a7a;
+  padding: 4px 6px;
+  overflow: auto;
+  font-size: 11px;
+  line-height: 1.35;
+  background: #fff;
+  resize: none;
+  flex-shrink: 0;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+.installer-components-wrap {
+  --installer-components-box-h: 140px;
+  display: grid;
+  grid-template-columns: 132px 172px minmax(0, 1fr);
+  grid-template-rows: var(--installer-components-box-h);
+  column-gap: 10px;
+  margin-top: 4px;
+  flex: 0 0 auto;
+  align-content: start;
+  align-items: start;
+}
+
+.installer-wizard--inner .installer-components-wrap {
+  margin-top: 2px;
+}
+
+.installer-components-aside {
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: var(--installer-components-box-h);
+  min-width: 0;
+}
+
+.installer-components-aside .installer-components-label {
+  margin-bottom: 0;
+}
+
+.installer-components-aside .installer-space-info {
+  margin-top: 0;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.installer-components-center {
+  grid-column: 2;
+  min-width: 0;
+  align-self: start;
+}
+
+.installer-components-wrap > .installer-desc-group {
+  grid-column: 3;
+  align-self: start;
+  min-width: 0;
+  margin: 0;
+}
+
+.installer-components-label {
+  display: block;
+  font-size: 12px;
+  color: #000;
+  margin-bottom: 4px;
+}
+
+.installer-wizard-main--components {
+  display: flex;
+  flex-direction: column;
+}
+
+.installer-wizard-main--components > p {
+  flex-shrink: 0;
+}
+
+.installer-wizard-main--components .installer-space-info {
+  margin-top: 0;
+  font-size: 12px;
+}
+
+.installer-wizard--inner .installer-fieldset {
+  margin-top: 2px;
+}
+
+.installer-wizard--inner .installer-components-wrap .installer-desc-group {
+  margin-top: 0;
+}
+
+.installer-wizard--inner .installer-space-info {
+  margin-top: 4px;
+}
+
+.installer-wizard--inner .installer-progress-wrap {
+  margin-top: 8px;
+}
+
+.installer-wizard--inner .installer-startmenu-noshortcuts {
+  margin-top: 4px;
+}
+
+.installer-listbox {
+  width: 100%;
+  height: var(--installer-components-box-h, 140px);
+  min-height: var(--installer-components-box-h, 140px);
+  max-height: var(--installer-components-box-h, 140px);
+  border: 1px solid #7a7a7a;
+  margin-top: 0;
+  overflow: auto;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.installer-listbox-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 1px 4px;
+  cursor: default;
+  font-size: 12px;
+  line-height: 18px;
+  user-select: none;
+}
+
+.installer-listbox-item:hover:not(.installer-listbox-item--sel) {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.installer-listbox-item--sel {
+  background: #0078d7;
+  color: #fff;
+  outline: 1px dotted #fff;
+  outline-offset: -2px;
+}
+
+.installer-listbox-item--sel input:disabled {
+  opacity: 1;
+}
+
+.installer-desc-panel {
+  margin-top: 0;
+  overflow: auto;
+  font-size: 12px;
+  color: #000;
+  line-height: 1.35;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.installer-desc-group {
+  position: relative;
+  height: var(--installer-components-box-h, 140px);
+  margin: 0;
+  padding: 8px;
+  border: 1px solid #7a7a7a;
+  box-sizing: border-box;
+  background: #fff;
+}
+
+.installer-desc-legend {
+  position: absolute;
+  top: -7px;
+  left: 6px;
+  padding: 0 4px;
+  font-size: 12px;
+  line-height: 1;
+  color: #000;
+  background: #fff;
+}
+
+.installer-desc-group .installer-desc-panel {
+  border: none;
+  padding: 0;
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+  background: transparent;
+}
+
+.installer-desc-panel--placeholder {
+  color: #808080;
+}
+
+.installer-fieldset {
+  border: 1px solid #a0a0a0;
+  padding: 8px 10px 10px;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.installer-fieldset legend {
+  padding: 0 4px;
+  font-size: 12px;
+}
+
+.installer-path-row {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.installer-path-row input[type="text"] {
+  flex: 1;
+  padding: 3px 6px;
+  font: inherit;
+  border: 1px solid #7a7a7a;
+}
+
+.installer-path-row input[type="text"].installer-path-input--readonly {
+  background: #f0f0f0;
+  color: #6d6d6d;
+  cursor: default;
+}
+
+.installer-path-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.installer-path-btns button {
+  min-width: 100px;
+  padding: 3px 10px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.installer-startmenu-input {
+  width: 100%;
+  padding: 2px 4px;
+  margin: 4px 0;
+  font: inherit;
+  border: 1px solid #7a7a7a;
+  flex-shrink: 0;
+}
+
+.installer-startmenu-list {
+  width: 100%;
+  height: 100px;
+  min-height: 100px;
+  max-height: 100px;
+  border: 1px solid #7a7a7a;
+  overflow: auto;
+  background: #fff;
+  flex-shrink: 0;
+}
+
+.installer-startmenu-list button {
+  display: block;
+  width: 100%;
+  padding: 2px 8px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font: inherit;
+  cursor: pointer;
+}
+
+.installer-startmenu-list button:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.installer-startmenu-list button.is-selected {
+  background: #0078d7;
+  color: #fff;
+}
+
+.installer-space-info {
+  margin-top: 6px;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+.installer-progress-wrap {
+  margin-top: 12px;
+  flex-shrink: 0;
+}
+
+.installer-progress-bar {
+  height: 18px;
+  border: 1px solid #7a7a7a;
+  background: #fff;
+  margin-top: 8px;
+  overflow: hidden;
+}
+
+.installer-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(180deg, #3d8fd9 0%, #2b7fc8 100%);
+  transition: width 0.2s ease;
+}
+
+.installer-progress-bar--green .installer-progress-fill {
+  background: linear-gradient(180deg, #3cb371 0%, #2e9b5e 100%);
+}
+
+.installer-extract-label {
+  margin-bottom: 8px;
+}
+
+.installer-startmenu-noshortcuts {
+  display: block;
+  margin-top: 6px;
+  flex-shrink: 0;
+}
+
+.installer-show-details {
+  margin-top: 10px;
+  padding: 3px 12px;
+  font: inherit;
+  cursor: pointer;
+  border: 1px solid #0078d4;
+  background: #fff;
+  border-radius: 3px;
+}
+
+#backdropInstaller,
+#backdropInstallerLang,
+#backdropBrowseFolder,
+#backdropInstallerMsg {
+  z-index: 1300;
+}
+
+.installer-wizard-footer {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0;
+  background: #f0f0f0;
+  border-top: 1px solid #d0d0d0;
+  flex: 0 0 58px;
+  min-height: 58px;
+  overflow: hidden;
+}
+
+.installer-wizard--welcome .installer-wizard-footer,
+.installer-wizard-footer:not(:has(.installer-wizard-footer-brand)) {
+  flex: 0 0 44px;
+  min-height: 44px;
+  flex-direction: row;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 10px 12px;
+}
+
+.installer-wizard-footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px var(--installer-pad-x, 12px) 0;
+  flex-shrink: 0;
+}
+
+.installer-wizard-brand {
+  color: #808080;
+  font-size: 11px;
+  white-space: nowrap;
+}
+
+.installer-wizard-brand-line {
+  flex: 1;
+  height: 1px;
+  background: #c8c8c8;
+}
+
+.installer-wizard-footer-btns {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 4px var(--installer-pad-x, 12px) 8px;
+  flex-shrink: 0;
+}
+
+.installer-wiz-btn {
+  min-width: 75px;
+  height: 23px;
+  padding: 0 14px;
+  font: inherit;
+  cursor: pointer;
+  border: 1px solid #adadad;
+  background: linear-gradient(180deg, #fdfdfd 0%, #e8e8e8 100%);
+  border-radius: 2px;
+  color: #000;
+}
+
+.installer-wiz-btn:disabled {
+  color: #838383;
+  cursor: default;
+  background: #f0f0f0;
+}
+
+.installer-wiz-btn--default {
+  border-color: #0078d4;
+  box-shadow: inset 0 0 0 1px #0078d4;
+}
+
+.installer-wiz-btn:not(:disabled):hover {
+  background: linear-gradient(180deg, #fff 0%, #ececec 100%);
+}
+
+/* Browse for folder */
+.browse-folder-dialog {
+  width: 420px;
+  background: #f0f0f0;
+  border: 1px solid #888;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: 12px;
+}
+
+.browse-folder-titlebar {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 8px;
+  gap: 6px;
+}
+
+.browse-folder-body {
+  padding: 10px 12px;
+}
+
+.browse-folder-tree {
+  height: 280px;
+  border: 1px solid #7a7a7a;
+  background: #fff;
+  overflow: auto;
+  margin-top: 8px;
+  padding: 2px 0;
+}
+
+.browse-tree-item {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-height: 22px;
+  padding: 1px 6px 1px 0;
+  cursor: default;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.browse-tree-item:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.browse-tree-item--sel {
+  background: #0078d7;
+  color: #fff;
+}
+
+.browse-tree-item--sel:hover {
+  background: #0078d7;
+}
+
+.browse-tree-item--hover {
+  background: #cce8ff;
+  color: #000;
+}
+
+.browse-tree-chevron {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+}
+
+.browse-tree-chevron::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 4px;
+  border: 4px solid transparent;
+  border-left-color: #444;
+}
+
+.browse-tree-chevron--open::before {
+  left: 4px;
+  top: 6px;
+  border-left-color: transparent;
+  border-top-color: #444;
+}
+
+.browse-tree-chevron--empty {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.browse-tree-item--sel .browse-tree-chevron::before {
+  border-left-color: #fff;
+}
+
+.browse-tree-item--sel .browse-tree-chevron--open::before {
+  border-left-color: transparent;
+  border-top-color: #fff;
+}
+
+.browse-tree-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px 16px;
+}
+
+.browse-tree-icon--folder {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23f4d35e' d='M1 4h5l1 1h8v8H1z'/%3E%3Cpath fill='%23e8b820' d='M1 4h5l1 1h8v1H1z'/%3E%3C/svg%3E");
+}
+
+.browse-tree-icon--desktop {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect fill='%238ec5ff' x='1' y='2' width='14' height='10' rx='1'/%3E%3Crect fill='%23c8e0ff' x='2' y='3' width='12' height='7'/%3E%3Crect fill='%23666' x='6' y='12' width='4' height='2'/%3E%3C/svg%3E");
+}
+
+.browse-tree-icon--documents {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23f4d35e' d='M2 2h8l3 3v9H2z'/%3E%3Cpath fill='%23fff' d='M10 2v3h3'/%3E%3C/svg%3E");
+}
+
+.browse-tree-icon--downloads {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle fill='%234caf50' cx='8' cy='8' r='7'/%3E%3Cpath fill='%23fff' d='M8 4v5M5 8l3 3 3-3' stroke='%23fff' stroke-width='1.2'/%3E%3C/svg%3E");
+}
+
+.browse-tree-icon--music {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle fill='%23e91e8c' cx='8' cy='8' r='7'/%3E%3Ctext x='8' y='11' text-anchor='middle' fill='%23fff' font-size='8'%3E♪%3C/text%3E%3C/svg%3E");
+}
+
+.browse-tree-icon--pictures {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect fill='%234fc3f7' x='1' y='2' width='14' height='12' rx='1'/%3E%3Ccircle fill='%23ffeb3b' cx='5' cy='6' r='2'/%3E%3Cpath fill='%2381c784' d='M1 12l4-4 3 3 2-2 5 5z'/%3E%3C/svg%3E");
+}
+
+.browse-tree-icon--videos {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect fill='%239c27b0' x='1' y='3' width='14' height='10' rx='1'/%3E%3Cpolygon fill='%23fff' points='6,5 11,8 6,11'/%3E%3C/svg%3E");
+}
+
+.browse-tree-icon--onedrive {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%230078d4' d='M2 11h12c1 0 2-1 2-2s-1-2-2-2c0-2-2-3-4-3-1 0-2 0-3 1-1-2-3-3-5-2C1 3 0 5 0 7c-1 0-2 1-2 2s1 2 2 2z' transform='translate(0 1)'/%3E%3C/svg%3E");
+}
+
+.browse-tree-icon--drive {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect fill='%23666' x='1' y='4' width='14' height='9' rx='1'/%3E%3Crect fill='%23aaa' x='2' y='5' width='12' height='6'/%3E%3Ccircle fill='%23444' cx='4' cy='13' r='1'/%3E%3C/svg%3E");
+}
+
+.browse-tree-icon--pc {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect fill='%238ec5ff' x='2' y='2' width='12' height='9' rx='1'/%3E%3Crect fill='%23666' x='6' y='12' width='4' height='2'/%3E%3C/svg%3E");
+}
+
+.browse-tree-icon--library {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23f4d35e' d='M1 3h5v10H1zm5 0h4v10H6zm4 0h5v10h-5z'/%3E%3C/svg%3E");
+}
+
+.browse-tree-icon--network {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect fill='%238ec5ff' x='1' y='5' width='14' height='8' rx='1'/%3E%3Ccircle fill='%234caf50' cx='12' cy='3' r='2'/%3E%3C/svg%3E");
+}
+
+.browse-tree-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.browse-folder-footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 12px 12px;
+}
+
+.browse-folder-footer-right {
+  display: flex;
+  gap: 8px;
+}
+
+.browse-tooltip {
+  position: fixed;
+  z-index: 1500;
+  padding: 4px 8px;
+  background: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  font-size: 11px;
+  pointer-events: none;
+}
+
+.browse-tooltip[hidden] {
+  display: none !important;
+}
+
+.browse-ctx-menu {
+  position: fixed;
+  z-index: 1510;
+}
+
+.browse-ctx-menu[hidden] {
+  display: none !important;
+}
+
+.browse-tree-item--renaming {
+  background: #fff;
+  color: #000;
+}
+
+.browse-tree-rename-input {
+  flex: 1;
+  min-width: 0;
+  height: 18px;
+  margin: -1px 0;
+  padding: 0 3px;
+  font: inherit;
+  line-height: 18px;
+  border: 1px solid #0078d7;
+  outline: 1px solid #0078d7;
+  box-sizing: border-box;
+  background: #fff;
+  color: #000;
+}
+
+.installer-msg-dialog {
+  width: 360px;
+  max-width: calc(100vw - 24px);
+  background: #f0f0f0;
+  border: 1px solid #888;
+  border-radius: 8px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  font-size: 12px;
+  overflow: hidden;
+}
+
+.installer-msg-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 8px;
+  background: #f0f0f0;
+}
+
+.installer-msg-titlebar > span {
+  flex: 1;
+  min-width: 0;
+}
+
+.installer-msg-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 16px 12px;
+  background: #f0f0f0;
+}
+
+.installer-msg-icon {
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  background: center / contain no-repeat
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%23f4c542' d='M16 2 2 28h28z'/%3E%3Cpath fill='%23231f20' d='M15 12h2v9h-2zm0 11h2v2h-2z'/%3E%3C/svg%3E");
+}
+
+.installer-msg-body p {
+  margin: 4px 0 0;
+  line-height: 1.4;
+  color: #000;
+}
+
+.installer-msg-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 12px 12px;
+  background: #f0f0f0;
+}

@@ -1,0 +1,169 @@
+/* Guided install coach marks — 3DInstallGuide only */
+
+.ig-root {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  pointer-events: none;
+  font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+.ig-root.ig-blocking {
+  pointer-events: auto;
+}
+
+.ig-dim {
+  position: absolute;
+  inset: 0;
+  background: rgba(12, 18, 28, 0.55);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.ig-root.ig-dim-on .ig-dim {
+  opacity: 1;
+}
+
+.ig-spotlight {
+  position: absolute;
+  border: 2px solid #f0c14b;
+  border-radius: 6px;
+  box-shadow: 0 0 0 9999px rgba(12, 18, 28, 0.55), 0 0 0 3px rgba(240, 193, 75, 0.35);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease, top 0.15s ease, left 0.15s ease, width 0.15s ease, height 0.15s ease;
+  z-index: 1;
+}
+
+.ig-root.ig-spot-on .ig-spotlight {
+  opacity: 1;
+}
+
+.ig-card {
+  position: absolute;
+  z-index: 2;
+  width: min(360px, calc(100vw - 32px));
+  background: #f7f4ee;
+  color: #1a1f2a;
+  border: 1px solid #c9c0b0;
+  border-radius: 10px;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
+  padding: 14px 16px 12px;
+  pointer-events: auto;
+}
+
+.ig-card-kicker {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6b6358;
+  margin-bottom: 4px;
+}
+
+.ig-card-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 6px;
+  line-height: 1.25;
+}
+
+.ig-card-body {
+  font-size: 13px;
+  line-height: 1.45;
+  margin: 0 0 12px;
+  color: #2c3340;
+}
+
+.ig-card-body code {
+  font-family: Consolas, "Courier New", monospace;
+  background: #ebe6dc;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 12px;
+}
+
+.ig-card-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.ig-btn {
+  appearance: none;
+  border: 1px solid #8a8174;
+  background: #fff;
+  color: #1a1f2a;
+  border-radius: 4px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.ig-btn:hover {
+  background: #f0ebe3;
+}
+
+.ig-btn--primary {
+  background: #2f5d3a;
+  border-color: #2f5d3a;
+  color: #fff;
+}
+
+.ig-btn--primary:hover {
+  background: #254a2e;
+}
+
+.ig-progress {
+  margin-left: auto;
+  font-size: 11px;
+  color: #6b6358;
+}
+
+.ig-pulse {
+  animation: ig-pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes ig-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 9999px rgba(12, 18, 28, 0.55), 0 0 0 3px rgba(240, 193, 75, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 9999px rgba(12, 18, 28, 0.55), 0 0 0 8px rgba(240, 193, 75, 0.15);
+  }
+}
+
+.mv-blank-project {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 280px;
+  color: #5a6472;
+  text-align: center;
+  gap: 8px;
+  padding: 24px;
+}
+
+.mv-blank-project strong {
+  color: #2c3340;
+  font-size: 15px;
+}
+
+.mv-blank-project span {
+  font-size: 13px;
+  max-width: 320px;
+  line-height: 1.4;
+}
+
+body.ig-mode .win-start-tile[data-sim-app="3DVision"],
+body.ig-mode .win-start-tile[data-sim-app="3DVision Server"] {
+  display: none;
+}
+
+body.ig-mode.ig-installed .win-start-tile[data-sim-app="3DVision"],
+body.ig-mode.ig-installed .win-start-tile[data-sim-app="3DVision Server"] {
+  display: inline-flex;
+}
