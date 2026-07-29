@@ -793,7 +793,7 @@
       "<p>BinMaster 3DVision has been installed on your computer.</p>" +
       "<p>Click <strong>Finish</strong> to close this wizard.</p>" +
       '<label style="display:block;margin-top:16px;">' +
-      '<input type="checkbox" id="launchClient"> Run BinMaster 3DVision client?</label>' +
+      '<input type="checkbox" id="launchClient" checked> Run BinMaster 3DVision client?</label>' +
       "</div>";
 
     renderFooter([
