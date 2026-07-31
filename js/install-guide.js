@@ -200,7 +200,7 @@
       id: "components-uncheck-server",
       title: "Client files only",
       body:
-        "Uncheck <strong>Server app files</strong>. Leave <strong>Client app files</strong> checked — this PC only needs the remote viewer.",
+        "Click the <strong>check mark</strong> next to <strong>Server app files</strong> to uncheck it. Leave <strong>Client app files</strong> checked — this PC only needs the remote viewer.",
       getTarget: function () {
         var server = document.getElementById("comp-server");
         if (server && !server.checked) {
@@ -573,11 +573,6 @@
       if (forLab && forLab.contains(e.target)) return true;
     }
 
-    var listItem = target.closest && target.closest(".installer-listbox-item");
-    if (listItem && e.target.closest && e.target.closest(".installer-listbox-item") === listItem) {
-      return true;
-    }
-
     // Merged choice+Next: allow the radio group while choosing
     if (step.id === "custom-install" && e.target.closest && e.target.closest("#setupTypeCustom, label[for='setupTypeCustom']")) {
       return true;
@@ -891,12 +886,7 @@
     var el = document.querySelector(selector);
     if (el && el.matches && el.matches('input[type="radio"], input[type="checkbox"]')) {
       var label = el.closest("label");
-      if (label) {
-        el = label;
-      } else {
-        var listItem = el.closest(".installer-listbox-item");
-        if (listItem) el = listItem;
-      }
+      if (label) el = label;
     }
     if (!el || el.hidden || el.offsetParent === null) {
       if (spot) spot.hidden = true;

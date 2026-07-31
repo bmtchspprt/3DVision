@@ -556,18 +556,8 @@
           showPlaceholderDesc();
         });
         row.addEventListener("click", function (event) {
-          if (item.disabled) {
-            state.selectedComponent = item.id;
-            renderList();
-            return;
-          }
-          if (item.id === "server") {
-            var nextChecked =
-              event.target.tagName === "INPUT"
-                ? event.target.checked
-                : !state.serverComponent;
-            state.serverComponent = nextChecked;
-            state.selectedComponent = item.id;
+          if (event.target.tagName === "INPUT" && !item.disabled) {
+            state.serverComponent = event.target.checked;
             rebuildSteps();
             updateSpace();
             window.dispatchEvent(
@@ -577,7 +567,6 @@
                   : "install-guide:server-unchecked"
               )
             );
-            renderList();
             return;
           }
           state.selectedComponent = item.id;
