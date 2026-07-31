@@ -8,7 +8,6 @@
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { createHash } from "crypto";
 import JavaScriptObfuscator from "javascript-obfuscator";
 import CleanCSS from "clean-css";
 
@@ -341,31 +340,14 @@ async function main() {
   fs.writeFileSync(outFile, html, "utf8");
   const outSize = fs.statSync(outFile).size;
 
-  const readme = `# 3D MultiVision Install Guide (distribution)
-
-Open \`index.html\` in Chrome or Edge (double-click or drag into the browser).
-
-This is a **single self-contained HTML file** for hosting or GitHub Pages:
-- Styles inlined and minified
-- Images / icons embedded
-- Application logic obfuscated
-
-The editable source tree is not included in this folder.
-
-Built: ${new Date().toISOString()}  
-Size: ${(outSize / 1024 / 1024).toFixed(2)} MB
-`;
-  fs.writeFileSync(path.join(DIST, "README.md"), readme, "utf8");
-
-  const hash = createHash("sha256").update(html).digest("hex").slice(0, 16);
-  fs.writeFileSync(
-    path.join(DIST, "BUILD.txt"),
-    `sha256_16=${hash}\nbytes=${outSize}\n`,
-    "utf8"
-  );
+  // Keep dist/ to index.html only — no README or BUILD sidecar files.
+  for (const extra of ["README.md", "BUILD.txt"]) {
+    const p = path.join(DIST, extra);
+    if (fs.existsSync(p)) fs.unlinkSync(p);
+  }
 
   console.log(`Wrote ${outFile} (${(outSize / 1024 / 1024).toFixed(2)} MB)`);
-  console.log("Upload dist/ (or just dist/index.html) to GitHub / GitHub Pages.");
+  console.log("Upload dist/index.html to GitHub / GitHub Pages.");
 }
 
 main().catch((err) => {
