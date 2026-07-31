@@ -1343,8 +1343,12 @@
     if (scadaEl) {
       scadaEl.textContent = String(vessel.scadaId != null ? vessel.scadaId : 1);
     }
-    // VesselScannersParamsUC.SetRowNames() — label | unit | scanner column
-    var lvl = isViewLevel ? "Level" : "Dist";
+    // VesselScannersParamsUC.SetRowNames() / UpdateData — label | unit | scanner column
+    // Units column is blank for inventory rows (cols 0–5); values FlowDirection=RightToLeft.
+    var avgLbl = isViewLevel ? "Avg Level:" : "Avg Distance:";
+    var maxLbl = isViewLevel ? "Max Level:" : "Max Distance:";
+    var minLbl = isViewLevel ? "Min Level:" : "Min Distance:";
+    var pctLbl = isViewLevel ? "Avg Level:" : "Avg Distance:";
     var rows = [
       { label: "Device Name:", unit: "", value: vessel.scannerName || vessel.short, header: true },
       { label: "Poll Address:", unit: "", value: String(vessel.poll) },
@@ -1352,10 +1356,10 @@
       { label: "Hardware:", unit: "", value: String(vessel.hardware != null ? vessel.hardware : "-") },
       { label: "Firmware:", unit: "", value: vessel.firmware || "-" },
       { label: "Device Type:", unit: "", value: vessel.deviceType || "MV" },
-      { label: "Avg " + lvl + ":", unit: "m", value: m.avg.toFixed(2) },
-      { label: "Max " + lvl + ":", unit: "m", value: m.max.toFixed(2) },
-      { label: "Min " + lvl + ":", unit: "m", value: m.min.toFixed(2) },
-      { label: "Avg " + lvl + ":", unit: "%", value: (m.avgLevelPct != null ? m.avgLevelPct : 0).toFixed(2) },
+      { label: avgLbl, unit: "m", value: m.avg.toFixed(2) },
+      { label: maxLbl, unit: "m", value: m.max.toFixed(2) },
+      { label: minLbl, unit: "m", value: m.min.toFixed(2) },
+      { label: pctLbl, unit: "%", value: (m.avgLevelPct != null ? m.avgLevelPct : 0).toFixed(2) },
       { label: "Volume:", unit: "[m*3]", value: m.volM3.toFixed(2) },
       { label: "Volume:", unit: "%", value: m.fill.toFixed(2) },
       { label: "Mass:", unit: "ton", value: m.massT == null ? "-" : m.massT.toFixed(2) },
@@ -1379,6 +1383,27 @@
         "</div>";
     });
     table.innerHTML = html;
+    window.requestAnimationFrame(function () {
+      fitParametersScale();
+    });
+  }
+
+  function fitParametersScale() {
+    var fit = document.getElementById("mvParametersFit");
+    var design = document.getElementById("mvParametersDesign");
+    if (!fit || !design || !mvParameters || mvParameters.hidden) {
+      return;
+    }
+    // VesselScannersParamsUC: ~324×490 design (scada + 18×24 rows + margins)
+    var designW = 324;
+    var designH = 490;
+    var availW = fit.clientWidth || designW;
+    var availH = fit.clientHeight || designH;
+    var scale = Math.min(availW / designW, availH / designH, 1);
+    if (!isFinite(scale) || scale <= 0) {
+      scale = 1;
+    }
+    design.style.transform = "scale(" + scale + ")";
   }
 
   function syncDevicesConnTypeUi() {
@@ -2053,6 +2078,11 @@
         refreshSiteLogsCharts();
       });
       updateMvStatus();
+    } else if (currentMvView === "parameters") {
+      window.requestAnimationFrame(function () {
+        fitParametersScale();
+      });
+      refreshDetailView(findVessel(selectedVesselId));
     } else if (currentMvView === "logs" || vesselDetailMode) {
       refreshDetailView(findVessel(selectedVesselId));
     }
@@ -2532,6 +2562,9 @@
     window.addEventListener("resize", function () {
       if (currentMvView === "overview") {
         fitOverviewScale();
+      }
+      if (currentMvView === "parameters") {
+        fitParametersScale();
       }
       if (currentMvView === "logs" && !vesselDetailMode) {
         refreshSiteLogsCharts();

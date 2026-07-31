@@ -1087,38 +1087,66 @@
   height: 100%;
 }
 
-/* Parameters page (VesselScannersParamsUC) */
+/* Parameters page — VesselScannersParamsUC.xaml (decompiled)
+ * Scada strip Height=40 Margin=12,0,0,0; grid rows Height=24; cols 140/50/110.
+ * Scale-to-fit so the design height packs into the tab body without scrolling.
+ */
 .mv-parameters-page {
   flex: 1;
   min-height: 0;
-  overflow: auto;
+  overflow: hidden;
   background: #e8edf2;
-  padding: 10px 14px 14px;
+  padding: 0;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
-.mv-parameters-inner,
-.mv-parameters-panel {
-  min-height: calc(100% - 2px);
-  padding: 4px 8px 12px;
+.mv-parameters-fit {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.mv-parameters-design {
+  /* Approximate UC layout: scada 40 + gap + 18×24 rows + bottom margin */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 324px;
+  height: 490px;
+  transform-origin: top left;
+  box-sizing: border-box;
 }
 
 .mv-parameters-scada {
   display: flex;
-  align-items: baseline;
-  gap: 10px;
-  margin-bottom: 14px;
+  align-items: center;
+  gap: 0;
+  height: 40px;
+  margin: 0 0 0 12px;
   font-family: Arial, sans-serif;
   font-size: 12px;
   color: #697477;
+  box-sizing: border-box;
 }
 
 .mv-parameters-scada-label {
   font-weight: 700;
+  width: 110px;
+  flex-shrink: 0;
 }
 
 .mv-parameters-scada-value {
   min-width: 40px;
+  margin-left: 0;
+}
+
+.mv-parameters-scroll {
+  margin: 6px 12px 12px;
+  box-sizing: border-box;
 }
 
 .mv-parameters-table {
@@ -1130,9 +1158,8 @@
   font-family: Arial, sans-serif;
   font-size: 12px;
   color: #51585a;
-  width: max-content;
-  max-width: 100%;
-  border-top: 1px solid #cbCDD3;
+  width: 300px;
+  border: none;
 }
 
 .mv-param-label,
@@ -1140,9 +1167,10 @@
 .mv-param-value {
   height: 24px;
   line-height: 24px;
-  border-bottom: 1px solid #e4e7ea;
-  padding: 0 4px;
+  border: none;
+  padding: 0 2px 0 0;
   box-sizing: border-box;
+  background: transparent;
 }
 
 .mv-param-label {
@@ -1152,7 +1180,7 @@
 
 .mv-param-unit {
   justify-self: start;
-  color: #697477;
+  color: #51585a;
   white-space: nowrap;
 }
 
@@ -1161,15 +1189,12 @@
   text-align: right;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-  background: #fff;
-  border-left: 1px solid #e4e7ea;
-  border-right: 1px solid #e4e7ea;
 }
 
 .mv-param-value.is-header {
   font-weight: 700;
-  background: #f2f2f4;
-  text-align: center;
+  text-align: right;
+  background: transparent;
 }
 
 /* Devices page — flat headings only (WPF GroupBox BorderThickness=0) */

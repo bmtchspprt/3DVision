@@ -43,9 +43,8 @@ body.desktop-page {
   align-items: stretch;
   -webkit-user-select: none;
   user-select: none;
-  min-height: min(var(--vision-app-column-height, 704px), calc(100vh - 24px));
-  height: min(880px, calc(100vh - 24px));
-  max-height: calc(100vh - 24px);
+  min-height: var(--vision-app-column-height, 704px);
+  max-height: min(880px, 88dvh);
 }
 
 .desktop-with-taskbar input,
@@ -103,9 +102,8 @@ body.desktop-page {
   position: relative;
   z-index: 1;
   flex: 1 1 auto;
-  min-height: 0;
-  height: auto;
-  max-height: none;
+  min-height: var(--vision-app-column-height, 704px);
+  max-height: min(880px, 88dvh);
   border: 1px solid #2a3a4a;
   border-bottom: none;
   box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.35);

@@ -1,0 +1,22 @@
+---
+description: Always use 3D decompiled WPF/code as MultiVision UI source of truth
+alwaysApply: true
+---
+
+# Reference: 3D decompiled code (not the Emulator remake)
+
+When implementing or fixing MultiVision UI, dialogs, vessel views, **Parameters**, Advanced Parameters, wizards, menus, or other app chrome in this Install Guide fork, **always compare against the decompiled 3D Vision sources**:
+
+`C:\Users\cody.krehnke\Documents\3D Emulator\decompiled`
+
+Typical paths inside that tree:
+
+- `locator\APM.VesselGeom\` — views like StartPageUC, vessel params UCs
+- `locator\3DVisionGui\APM\WPF\` — wizards, Advanced Params, dialogs, models
+
+## Rules
+
+1. **Prefer decompiled XAML + C#** over the HTML remake in `Documents\3D Emulator\js` / `css` when those disagree or look unfinished.
+2. `Documents\3D Emulator` (the remake) is a convenience fork — do **not** treat its web CSS as authoritative if the decompile shows a different layout, sizing, or packing.
+3. Before changing Parameters / Overview / AdvParams / wizards, open the matching decompiled `.xaml` / `.cs` (e.g. `VesselScannersParamsUC`) and match sizes, margins, fonts, and row counts so the page fits like the real app (no unnecessary scrolling).
+4. The user should not need to re-state this path; assume it for any “make it look like 3D / MultiVision / the real app” request.
