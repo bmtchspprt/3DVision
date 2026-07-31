@@ -643,8 +643,8 @@
     var pad = 16;
     var cw = card.offsetWidth || 320;
     var ch = card.offsetHeight || 160;
-    // Dock right so the card stays clear of browser / Setup
-    var left = Math.max(pad, window.innerWidth - cw - pad);
+    // Dock left — leave the center/right clear for browser and Setup
+    var left = pad;
     var top = pad;
 
     if (nearRect) {

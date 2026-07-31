@@ -174,7 +174,8 @@
 
   function placeBrowserLeft() {
     if (!shell) return;
-    shell.style.left = "20px";
+    // Sit just to the right of the left-docked guide card (~320px + padding)
+    shell.style.left = "360px";
     shell.style.top = "36px";
     shell.dataset.positioned = "true";
   }
