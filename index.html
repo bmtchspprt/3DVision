@@ -1369,7 +1369,10 @@
         </div>
         <div class="form-row-config">
           <span class="form-label-config">Server Address</span>
-          <input type="text" class="text-input config-input" id="cfg-server-address" aria-label="Server Address">
+          <div class="config-address-wrap" id="cfg-server-address-wrap">
+            <div class="config-address-ghost" id="cfg-server-address-ghost" aria-hidden="true"></div>
+            <input type="text" class="text-input config-input" id="cfg-server-address" aria-label="Server Address" autocomplete="off" spellcheck="false">
+          </div>
         </div>
         <div class="form-row-config">
           <span class="form-label-config">Server Port:</span>

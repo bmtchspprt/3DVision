@@ -273,10 +273,10 @@
       title: "Enter the Host IP",
       body:
         "The address box is the <strong>Host IP</strong> — the IP of the Host/Server computer (not this Client PC). " +
-        "Replace <code>127.0.0.1</code> with that address. For this example, type <code>" +
+        "Type the ghosted address — next key is highlighted. For this example: <code>" +
         EXAMPLE_HOST_IP +
         "</code>.",
-      target: "#cfg-server-address",
+      target: "#cfg-server-address-wrap",
       advanceOn: "install-guide:host-ip-ok",
       pointer: "right",
     },
@@ -395,6 +395,13 @@
     })[0];
     if (installBtn) {
       installBtn.body = "Click <strong>Install</strong> to begin the client install.";
+    }
+    var connectBtn = steps.filter(function (s) {
+      return s.id === "click-connect";
+    })[0];
+    if (connectBtn) {
+      connectBtn.body =
+        "Click <strong>Connect</strong>. You will open the Host project — it already has a vessel with live readings.";
     }
     return steps;
   }
@@ -591,7 +598,12 @@
       e.target.closest &&
       e.target.closest("#server-config-overlay")
     ) {
-      if (step.id === "enter-host-ip" && e.target.closest("#cfg-server-address")) return true;
+      if (
+        step.id === "enter-host-ip" &&
+        e.target.closest("#cfg-server-address-wrap, #cfg-server-address")
+      ) {
+        return true;
+      }
       if (step.id === "server-config-ok" && e.target.closest("#btn-config-ok")) return true;
     }
 
@@ -758,6 +770,9 @@
     if (typeof window.setBrowserUrlTypingCoach === "function") {
       window.setBrowserUrlTypingCoach(false);
     }
+    if (typeof window.setServerAddressTypingCoach === "function") {
+      window.setServerAddressTypingCoach(false);
+    }
     // Stay in guide chrome — hide coach card only; do not return to install-type picker.
     if (card) card.hidden = true;
     clearHighlight();
@@ -861,6 +876,7 @@
       target === "#btnBrowseServer" ||
       target === "#btn-edit-server" ||
       target === "#btn-config-ok" ||
+      target === "#cfg-server-address-wrap" ||
       target === "#browserUrl" ||
       target === "#browserUrlWrap"
     ) {
@@ -966,6 +982,14 @@
       window.setBrowserUrlTypingCoach(false);
     }
 
+    if (step.id === "enter-host-ip") {
+      if (typeof window.setServerAddressTypingCoach === "function") {
+        window.setServerAddressTypingCoach(true, EXAMPLE_HOST_IP);
+      }
+    } else if (typeof window.setServerAddressTypingCoach === "function") {
+      window.setServerAddressTypingCoach(false);
+    }
+
     if (step.id === "advanced-connection" || step.id === "enter-username") {
       if (typeof window.closeBrowser === "function") {
         window.closeBrowser();
@@ -995,17 +1019,6 @@
         try {
           passFocus.focus();
         } catch (err2) {
-          /* ignore */
-        }
-      }
-    }
-    if (step.id === "enter-host-ip") {
-      var addrEl = document.getElementById("cfg-server-address");
-      if (addrEl) {
-        try {
-          addrEl.focus();
-          addrEl.select();
-        } catch (err3) {
           /* ignore */
         }
       }

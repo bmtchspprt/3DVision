@@ -30,10 +30,14 @@
   const serverConfigOverlay = document.getElementById("server-config-overlay");
   const cfgServerName = document.getElementById("cfg-server-name");
   const cfgServerAddress = document.getElementById("cfg-server-address");
+  const cfgServerAddressWrap = document.getElementById("cfg-server-address-wrap");
+  const cfgServerAddressGhost = document.getElementById("cfg-server-address-ghost");
   const cfgServerPort = document.getElementById("cfg-server-port");
   const btnConfigOk = document.getElementById("btn-config-ok");
   const btnConfigCancel = document.getElementById("btn-config-cancel");
   const btnConfigClose = document.getElementById("btn-config-close");
+  var addressTypingCoach = false;
+  var addressTypeTarget = "";
   const editServerButtons = document.querySelectorAll(".btn-open-server-config");
   const menuFile = document.getElementById("menu-file");
   const fileMenu = document.getElementById("file-menu");
@@ -205,16 +209,83 @@
     return serverNameSelect;
   }
 
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function updateAddressGhost() {
+    if (!cfgServerAddressGhost || !cfgServerAddress || !addressTypingCoach) return;
+    var typed = cfgServerAddress.value;
+    var target = addressTypeTarget;
+    var html = "";
+    var i = 0;
+    var matched = true;
+    for (; i < typed.length && i < target.length; i++) {
+      var want = target.charAt(i);
+      var got = typed.charAt(i);
+      if (matched && got === want) {
+        html += '<span class="g-ok">' + escapeHtml(got) + "</span>";
+      } else {
+        matched = false;
+        html += '<span class="g-bad">' + escapeHtml(got) + "</span>";
+      }
+    }
+    for (; i < typed.length; i++) {
+      html += '<span class="g-bad">' + escapeHtml(typed.charAt(i)) + "</span>";
+    }
+    if (typed.length < target.length) {
+      html += '<span class="g-next">' + escapeHtml(target.charAt(typed.length)) + "</span>";
+      if (typed.length + 1 < target.length) {
+        html +=
+          '<span class="g-rest">' + escapeHtml(target.slice(typed.length + 1)) + "</span>";
+      }
+    }
+    cfgServerAddressGhost.innerHTML =
+      html ||
+      '<span class="g-next">' +
+        escapeHtml(target.charAt(0)) +
+        "</span>" +
+        '<span class="g-rest">' +
+        escapeHtml(target.slice(1)) +
+        "</span>";
+  }
+
+  function setServerAddressTypingCoach(on, target) {
+    addressTypingCoach = !!on;
+    addressTypeTarget = addressTypingCoach ? String(target || "") : "";
+    if (!cfgServerAddressWrap || !cfgServerAddress) return;
+    if (addressTypingCoach) {
+      cfgServerAddressWrap.classList.add("is-typing");
+      cfgServerAddress.value = "";
+      updateAddressGhost();
+      try {
+        cfgServerAddress.focus();
+      } catch (err) {
+        /* ignore */
+      }
+    } else {
+      cfgServerAddressWrap.classList.remove("is-typing");
+      if (cfgServerAddressGhost) cfgServerAddressGhost.innerHTML = "";
+    }
+  }
+
   function openServerConfig() {
     activeServerSelect = getActiveServerSelect();
     cfgServerName.value = activeServerSelect.value;
-    cfgServerAddress.value = savedServerAddress || DEFAULT_SERVER_ADDRESS;
+    if (!addressTypingCoach) {
+      cfgServerAddress.value = savedServerAddress || DEFAULT_SERVER_ADDRESS;
+    }
     cfgServerPort.value = savedServerPort || DEFAULT_SERVER_PORT;
     serverConfigOverlay.hidden = false;
     window.dispatchEvent(new CustomEvent("install-guide:server-config-opened"));
   }
 
   function closeServerConfig() {
+    setServerAddressTypingCoach(false);
     serverConfigOverlay.hidden = true;
   }
 
@@ -226,6 +297,7 @@
     }
     savedServerAddress = (cfgServerAddress.value || "").trim() || DEFAULT_SERVER_ADDRESS;
     savedServerPort = (cfgServerPort.value || "").trim() || DEFAULT_SERVER_PORT;
+    cfgServerAddress.value = savedServerAddress;
     closeServerConfig();
     window.dispatchEvent(
       new CustomEvent("install-guide:server-config-saved", {
@@ -354,6 +426,23 @@
   });
 
   btnConfigOk.addEventListener("click", saveServerConfig);
+
+  if (cfgServerAddress) {
+    cfgServerAddress.addEventListener("input", function () {
+      if (addressTypingCoach) {
+        updateAddressGhost();
+        if (cfgServerAddress.value === addressTypeTarget) {
+          window.dispatchEvent(
+            new CustomEvent("install-guide:host-ip-ok", {
+              detail: { address: cfgServerAddress.value },
+            })
+          );
+        }
+      }
+    });
+  }
+
+  window.setServerAddressTypingCoach = setServerAddressTypingCoach;
   btnConfigCancel.addEventListener("click", closeServerConfig);
   btnConfigClose.addEventListener("click", closeServerConfig);
 
@@ -453,12 +542,14 @@
       return;
     }
 
+    var isClientGuide = document.body.classList.contains("ig-track-client");
     window.openMultiVisionFromConnect({
       userName: login.displayUser,
       serverHost: serverHost,
-      viewTitle: "(No Project)",
+      viewTitle: isClientGuide ? "Aggregates" : "(No Project)",
       isDemo: false,
-      blankProject: true,
+      blankProject: !isClientGuide,
+      singleVessel: isClientGuide,
     });
   });
 

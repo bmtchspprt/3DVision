@@ -748,10 +748,13 @@
     return "3D MultiVision (" + host + ")";
   }
 
-  function applyVesselDataset(userName, isDemo, blankProject) {
+  function applyVesselDataset(userName, isDemo, blankProject, singleVessel) {
     // Demo Mode always uses the simulated Aggregates dataset (DemoManager / _demo*)
     if (blankProject) {
       VESSELS = [];
+    } else if (singleVessel) {
+      // Client viewer joining an existing Host project — one live vessel reading
+      VESSELS = [JSON.parse(JSON.stringify(VESSELS_DEMO[0]))];
     } else if (isDemo) {
       VESSELS = VESSELS_DEMO.slice();
     } else {
@@ -2365,7 +2368,8 @@
     applyVesselDataset(
       connection.userName || (connection.isDemo ? "demoUser" : "stech"),
       !!connection.isDemo,
-      !!connection.blankProject
+      !!connection.blankProject,
+      !!connection.singleVessel
     );
     renderVessels();
     vesselDetailMode = false;
@@ -2741,6 +2745,7 @@
     connection.userName = connection.userName || (connection.isDemo ? "demoUser" : "stech");
     connection.serverHost = connection.serverHost || "127.0.0.1:22222";
     connection.blankProject = !!connection.blankProject;
+    connection.singleVessel = !!connection.singleVessel;
     connection.viewTitle = connection.blankProject
       ? "(No Project)"
       : connection.viewTitle || "Aggregates";
@@ -2773,7 +2778,7 @@
         signalReady();
       }
 
-      if (connection.blankProject && !connection.tease) {
+      if (!connection.tease) {
         window.dispatchEvent(new CustomEvent("install-guide:connected"));
       }
     }
