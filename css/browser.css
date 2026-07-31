@@ -3,6 +3,8 @@
 .app-shell--browser {
   width: 780px;
   height: 560px;
+  left: 16px;
+  top: 36px;
 }
 
 .browser-window {
