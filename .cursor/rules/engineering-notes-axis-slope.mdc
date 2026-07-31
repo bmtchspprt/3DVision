@@ -1,0 +1,32 @@
+---
+description: Tech notes on vessel axis points and 30° slope sensor placement (reference only)
+alwaysApply: true
+---
+
+# Engineering notes — axis points & 30° slope (reference only)
+
+Source: BinMaster tech guidance. **Do not bake this into emulator geometry, fill math, or 3D rendering** unless the user explicitly asks to implement it. Keep it as domain knowledge for future guide tips / tech notes for installers.
+
+## Axis points (Wizard → Dimensions)
+
+- First number = **X** axis point from center
+- Second number = **Y** axis point from center
+- Third number = **Z** axis point from center
+- In software: **Wizard** → dimensions portion of the silo → **Next** at the bottom → axis points are listed there
+- **All points are in feet**
+
+## 30° slope correction (center sensor on cone/hopper)
+
+The **30° slope must be accounted for** when measuring from center along the slope.
+
+Use **cosine of 30° ≈ 0.866**:
+
+`slope distance = desired horizontal distance from center ÷ 0.866`
+
+Example — want sensor **10 ft** from center horizontally:
+
+`10 ÷ 0.866 ≈ 11.54` → measure about **11.5 ft down the slope** from center
+
+## Future use
+
+If the install guide or docs need a tech note for customers/techs placing sensors, surface this in plain language. Do not change MultiVision emulator behavior from this note alone.
