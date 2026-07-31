@@ -32,7 +32,7 @@
       uacApp.textContent = "BinMaster 3DVision_3.1.010.exe";
     }
     if (uacPub) {
-      uacPub.textContent = "Verified publisher: APM Automation Solutions Ltd.";
+      uacPub.textContent = "Verified publisher: BinMaster Sensors & Technologies Ltd.";
     }
     if (uacProgramLoc) {
       uacProgramLoc.textContent = "C:\\Users\\UserProfile\\Downloads\\BinMaster 3DVision_3.1.010.exe";
