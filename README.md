@@ -9,5 +9,5 @@ This is a **single self-contained HTML file** for hosting or GitHub Pages:
 
 The editable source tree is not included in this folder.
 
-Built: 2026-07-31T19:14:14.049Z  
-Size: 12.77 MB
+Built: 2026-07-31T20:40:46.940Z  
+Size: 12.76 MB
