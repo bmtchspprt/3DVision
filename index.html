@@ -646,7 +646,10 @@
               <button type="button" class="browser-nav-btn" aria-hidden="true">&#8592;</button>
               <button type="button" class="browser-nav-btn" aria-hidden="true">&#8594;</button>
               <button type="button" class="browser-nav-btn" aria-hidden="true">&#8635;</button>
-              <input class="browser-url" id="browserUrl" type="text" value="" placeholder="Search Google or type a URL" aria-label="Address" autocomplete="off" spellcheck="false">
+              <div class="browser-url-wrap" id="browserUrlWrap">
+                <div class="browser-url-ghost" id="browserUrlGhost" aria-hidden="true"></div>
+                <input class="browser-url" id="browserUrl" type="text" value="" placeholder="Search Google or type a URL" aria-label="Address" autocomplete="off" spellcheck="false">
+              </div>
             </div>
           </div>
           <div class="browser-page" id="browserPageBlank">

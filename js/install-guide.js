@@ -39,8 +39,8 @@
       id: "type-url",
       title: "Open the downloads site",
       body:
-        "In the address bar, type <code>support.binmaster.com/downloads</code> and press <strong>Enter</strong>.",
-      target: "#browserUrl",
+        "Type the ghosted address in the bar — next key is highlighted. When finished, press <strong>Enter</strong>.",
+      target: "#browserUrlWrap",
       advanceOn: "install-guide:downloads-page",
       pointer: "bottom",
     },
@@ -402,7 +402,72 @@
       window.resetBrowserForGuide();
     }
     if (typeof window.openBrowser === "function") {
-      window.openBrowser({ blank: true });
+      window.openBrowser({ blank: true, typingCoach: true });
+    } else if (typeof window.setBrowserUrlTypingCoach === "function") {
+      window.setBrowserUrlTypingCoach(true);
+    }
+  }
+
+  function setGuiding(on) {
+    document.body.classList.toggle("ig-guiding", !!on);
+  }
+
+  function isClickAllowed(e) {
+    if (!document.body.classList.contains("ig-guiding")) return true;
+    // Install-type picker handles its own clicks
+    if (modeMenu && !modeMenu.hidden && !modeMenu.classList.contains("ig-mode-menu--hidden")) {
+      return !!(e.target.closest && e.target.closest("#igModeMenu"));
+    }
+    if (e.target.closest && e.target.closest("#igCard, .ig-card, #igPrimary")) return true;
+    if (e.target.closest && e.target.closest("#igBootCurtain")) return true;
+
+    var step = currentStep();
+    if (!step) return false;
+    if (step.blocking) return false;
+
+    var sel = stepTarget(step);
+    if (!sel) return false;
+
+    var target = document.querySelector(sel);
+    if (!target) return false;
+
+    if (target === e.target || target.contains(e.target)) return true;
+
+    var label = target.closest && target.closest("label");
+    if (label && label.contains(e.target)) return true;
+
+    if (target.id) {
+      var forLab = document.querySelector('label[for="' + target.id + '"]');
+      if (forLab && forLab.contains(e.target)) return true;
+    }
+
+    // Merged choice+Next: allow the radio group while choosing
+    if (step.id === "custom-install" && e.target.closest && e.target.closest("#setupTypeCustom, label[for='setupTypeCustom']")) {
+      return true;
+    }
+    if (step.id === "service-install" && e.target.closest && e.target.closest("#runAsService, label[for='runAsService']")) {
+      return true;
+    }
+    if (step.id === "license-accept" && e.target.closest && e.target.closest("#licenseAccept, label[for='licenseAccept']")) {
+      return true;
+    }
+    if (step.id === "type-url" && e.target.closest && e.target.closest("#browserUrlWrap, #browserUrl")) {
+      return true;
+    }
+
+    return false;
+  }
+
+  function guideInteractionGuard(e) {
+    if (isClickAllowed(e)) return;
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    if (card) {
+      card.classList.remove("ig-card--deny");
+      // reflow for re-trigger
+      void card.offsetWidth;
+      card.classList.add("ig-card--deny");
     }
   }
 
@@ -486,6 +551,7 @@
       resizeBound = null;
     }
     hideModeMenu();
+    setGuiding(false);
     if (card) {
       card.hidden = true;
       card.classList.add("ig-card--hidden");
@@ -532,6 +598,7 @@
     guideTrack = mode === "client" ? "client" : "host";
     hideModeMenu();
     stopTeaseBackground();
+    setGuiding(true);
     if (card) {
       card.hidden = false;
       card.classList.remove("ig-card--hidden");
@@ -545,6 +612,10 @@
     if (resizeBound) {
       window.removeEventListener("resize", resizeBound);
       resizeBound = null;
+    }
+    setGuiding(false);
+    if (typeof window.setBrowserUrlTypingCoach === "function") {
+      window.setBrowserUrlTypingCoach(false);
     }
     // Stay in guide chrome — hide coach card only; do not return to install-type picker.
     if (card) card.hidden = true;
@@ -572,8 +643,8 @@
     var pad = 16;
     var cw = card.offsetWidth || 320;
     var ch = card.offsetHeight || 160;
-    // Always dock left so the card stays clear of Setup / dialogs
-    var left = pad;
+    // Dock right so the card stays clear of browser / Setup
+    var left = Math.max(pad, window.innerWidth - cw - pad);
     var top = pad;
 
     if (nearRect) {
@@ -584,7 +655,6 @@
         nearRect.top < cardBox.bottom &&
         nearRect.bottom > cardBox.top;
       if (overlaps) {
-        // Nudge down below the highlight if the left corner is occupied
         top = Math.min(
           Math.max(pad, nearRect.bottom + pad),
           Math.max(pad, window.innerHeight - ch - pad)
@@ -648,7 +718,8 @@
       target === "#browseFolderOk" ||
       target === "#browseFolderNew" ||
       target === "#btnBrowseServer" ||
-      target === "#browserUrl"
+      target === "#browserUrl" ||
+      target === "#browserUrlWrap"
     ) {
       return "bottom";
     }
@@ -745,6 +816,11 @@
 
     if (step.id === "type-url") {
       openBlankBrowser();
+      if (typeof window.setBrowserUrlTypingCoach === "function") {
+        window.setBrowserUrlTypingCoach(true);
+      }
+    } else if (typeof window.setBrowserUrlTypingCoach === "function") {
+      window.setBrowserUrlTypingCoach(false);
     }
 
     if (step.id === "advanced-connection" || step.id === "enter-username") {
@@ -829,6 +905,9 @@
   }
 
   function wireEvents() {
+    document.addEventListener("click", guideInteractionGuard, true);
+    document.addEventListener("mousedown", guideInteractionGuard, true);
+    document.addEventListener("pointerdown", guideInteractionGuard, true);
     [
       "install-guide:browser-opened",
       "install-guide:downloads-page",

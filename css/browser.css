@@ -63,8 +63,66 @@
   cursor: default;
 }
 
-.browser-url {
+.browser-url-wrap {
+  position: relative;
   flex: 1;
+  min-width: 0;
+  height: 28px;
+}
+
+.browser-url-ghost {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  padding: 0 12px;
+  border-radius: 14px;
+  font-size: 12px;
+  font-family: Consolas, "Courier New", monospace;
+  line-height: 28px;
+  white-space: pre;
+  overflow: hidden;
+  pointer-events: none;
+  background: #fff;
+  border: 1px solid #dadce0;
+  box-sizing: border-box;
+}
+
+.browser-url-wrap.is-typing .browser-url-ghost {
+  display: block;
+}
+
+.browser-url-wrap.is-typing .browser-url {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  color: transparent;
+  caret-color: #202124;
+  font-family: Consolas, "Courier New", monospace;
+}
+
+.browser-url-ghost .g-ok {
+  color: #188038;
+}
+
+.browser-url-ghost .g-bad {
+  color: #d93025;
+  background: #fce8e6;
+}
+
+.browser-url-ghost .g-next {
+  color: #202124;
+  background: #e8f0fe;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px #aecbfa;
+}
+
+.browser-url-ghost .g-rest {
+  color: #9aa0a6;
+}
+
+.browser-url {
+  width: 100%;
   height: 28px;
   border: 1px solid #dadce0;
   border-radius: 14px;
@@ -72,6 +130,7 @@
   font-size: 12px;
   background: #fff;
   color: #202124;
+  box-sizing: border-box;
 }
 
 .browser-page {

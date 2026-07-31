@@ -8,15 +8,19 @@
   var downloadStatus = document.getElementById("browserDownloadStatus");
   var taskbarBtn = document.getElementById("taskbarBtnBrowser");
   var urlInput = document.getElementById("browserUrl");
+  var urlWrap = document.getElementById("browserUrlWrap");
+  var urlGhost = document.getElementById("browserUrlGhost");
   var blankPage = document.getElementById("browserPageBlank");
   var downloadsPage = document.getElementById("browserPageDownloads");
   var titleText = shell ? shell.querySelector(".title-bar-text") : null;
   var tabText = shell ? shell.querySelector(".browser-tab") : null;
   var downloaded = false;
   var currentView = "blank";
+  var typingCoach = false;
 
   var DOWNLOADS_HOST = "support.binmaster.com";
   var DOWNLOADS_PATH = "/downloads";
+  var TYPE_TARGET = "support.binmaster.com/downloads";
 
   function bringToFront() {
     if (!shell) return;
@@ -36,7 +40,6 @@
     var s = String(raw || "").trim();
     if (!s) return "";
     s = s.replace(/^\s+|\s+$/g, "");
-    // Allow users to omit scheme
     if (!/^https?:\/\//i.test(s)) {
       s = "https://" + s.replace(/^\/+/, "");
     }
@@ -57,19 +60,76 @@
     return n.host === DOWNLOADS_HOST && (n.path === DOWNLOADS_PATH || n.path === DOWNLOADS_PATH + "/");
   }
 
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function updateUrlGhost() {
+    if (!urlGhost || !urlInput || !typingCoach) return;
+    var typed = urlInput.value;
+    var html = "";
+    var i = 0;
+    var matched = true;
+    for (; i < typed.length && i < TYPE_TARGET.length; i++) {
+      var want = TYPE_TARGET.charAt(i);
+      var got = typed.charAt(i);
+      if (matched && got.toLowerCase() === want.toLowerCase()) {
+        html += '<span class="g-ok">' + escapeHtml(got) + "</span>";
+      } else {
+        matched = false;
+        html += '<span class="g-bad">' + escapeHtml(got) + "</span>";
+      }
+    }
+    // Extra typed chars beyond target
+    for (; i < typed.length; i++) {
+      html += '<span class="g-bad">' + escapeHtml(typed.charAt(i)) + "</span>";
+    }
+    if (typed.length < TYPE_TARGET.length) {
+      html += '<span class="g-next">' + escapeHtml(TYPE_TARGET.charAt(typed.length)) + "</span>";
+      if (typed.length + 1 < TYPE_TARGET.length) {
+        html +=
+          '<span class="g-rest">' + escapeHtml(TYPE_TARGET.slice(typed.length + 1)) + "</span>";
+      }
+    }
+    urlGhost.innerHTML = html || '<span class="g-next">' + escapeHtml(TYPE_TARGET.charAt(0)) + "</span>" +
+      '<span class="g-rest">' + escapeHtml(TYPE_TARGET.slice(1)) + "</span>";
+  }
+
+  function setUrlTypingCoach(on) {
+    typingCoach = !!on;
+    if (!urlWrap || !urlInput) return;
+    if (typingCoach) {
+      urlWrap.classList.add("is-typing");
+      urlInput.placeholder = "";
+      urlInput.value = "";
+      updateUrlGhost();
+      try {
+        urlInput.focus();
+      } catch (err) {
+        /* ignore */
+      }
+    } else {
+      urlWrap.classList.remove("is-typing");
+      urlInput.placeholder = "Search Google or type a URL";
+      if (urlGhost) urlGhost.innerHTML = "";
+    }
+  }
+
   function showBlank() {
     currentView = "blank";
     if (blankPage) blankPage.hidden = false;
     if (downloadsPage) downloadsPage.hidden = true;
     if (titleText) titleText.textContent = "New Tab";
     if (tabText) tabText.textContent = "New Tab";
-    if (urlInput && document.activeElement !== urlInput) {
-      // keep whatever they typed unless empty
-    }
   }
 
   function showDownloads() {
     currentView = "downloads";
+    setUrlTypingCoach(false);
     if (blankPage) blankPage.hidden = true;
     if (downloadsPage) downloadsPage.hidden = false;
     if (titleText) titleText.textContent = "Tools & Downloads — BinMaster Support";
@@ -83,13 +143,11 @@
   function navigateFromUrlBar() {
     if (!urlInput) return;
     var raw = urlInput.value;
-    if (isDownloadsUrl(raw)) {
-      var n = normalizeUrl(raw);
-      if (n) urlInput.value = "https://support.binmaster.com/downloads";
+    if (isDownloadsUrl(raw) || raw.toLowerCase() === TYPE_TARGET) {
+      urlInput.value = "https://support.binmaster.com/downloads";
       showDownloads();
       return;
     }
-    // Unknown URL — stay on a blank-ish error feel
     showBlank();
     if (titleText) titleText.textContent = "Page not available";
     if (tabText) tabText.textContent = "Unavailable";
@@ -114,20 +172,25 @@
     showBlank();
   }
 
+  function placeBrowserLeft() {
+    if (!shell) return;
+    shell.style.left = "20px";
+    shell.style.top = "36px";
+    shell.dataset.positioned = "true";
+  }
+
   function openBrowser(opts) {
     opts = opts || {};
     if (!shell) return;
     shell.hidden = false;
     shell.classList.remove("app-shell--minimized");
-    if (!shell.dataset.positioned) {
-      // Leave room for left-docked guide card
-      shell.style.left = "360px";
-      shell.style.top = "36px";
-      shell.dataset.positioned = "true";
-    }
+    placeBrowserLeft();
     bringToFront();
     if (opts.blank) {
       resetBrowserForGuide();
+      if (opts.typingCoach) {
+        setUrlTypingCoach(true);
+      }
       if (urlInput) {
         setTimeout(function () {
           try {
@@ -145,6 +208,7 @@
 
   function closeBrowser() {
     if (!shell) return;
+    setUrlTypingCoach(false);
     shell.hidden = true;
     shell.classList.add("app-shell--minimized");
     shell.classList.remove("app-shell--focused");
@@ -180,7 +244,9 @@
     }
     if (taskbarBtn) {
       taskbarBtn.addEventListener("click", function () {
-        openBrowser({ blank: currentView === "blank" && !(urlInput && isDownloadsUrl(urlInput.value)) });
+        openBrowser({
+          blank: currentView === "blank" && !(urlInput && isDownloadsUrl(urlInput.value)),
+        });
       });
     }
     if (shell) {
@@ -194,8 +260,8 @@
         }
       });
       urlInput.addEventListener("input", function () {
-        if (isDownloadsUrl(urlInput.value)) {
-          // Don't auto-navigate on every keystroke — wait for Enter
+        if (typingCoach) updateUrlGhost();
+        if (isDownloadsUrl(urlInput.value) || urlInput.value.toLowerCase() === TYPE_TARGET) {
           window.dispatchEvent(
             new CustomEvent("install-guide:url-typed", {
               detail: { value: urlInput.value, ready: true },
@@ -213,6 +279,10 @@
   window.closeBrowser = closeBrowser;
   window.resetBrowserForGuide = resetBrowserForGuide;
   window.navigateBrowserUrl = navigateFromUrlBar;
+  window.setBrowserUrlTypingCoach = setUrlTypingCoach;
+  window.getBrowserUrlTypeTarget = function () {
+    return TYPE_TARGET;
+  };
   window.isBrowserDownloadsPage = function () {
     return currentView === "downloads";
   };

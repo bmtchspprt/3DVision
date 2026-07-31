@@ -235,11 +235,24 @@
       btn.type = "button";
       btn.className = "installer-wiz-btn";
       btn.textContent = spec.label;
-      btn.disabled = !!spec.disabled;
+      var guiding = document.body.classList.contains("ig-guiding");
+      var isCancel = String(spec.label).toLowerCase() === "cancel";
+      btn.disabled = !!spec.disabled || (guiding && isCancel);
+      if (guiding && isCancel) {
+        btn.title = "Stay on the guided steps — Cancel is disabled.";
+        btn.classList.add("installer-wiz-btn--locked");
+      }
       if (spec.default) {
         btn.classList.add("installer-wiz-btn--default");
       }
-      btn.addEventListener("click", spec.onClick);
+      btn.addEventListener("click", function (ev) {
+        if (btn.disabled) {
+          ev.preventDefault();
+          ev.stopPropagation();
+          return;
+        }
+        spec.onClick(ev);
+      });
       btnRow.appendChild(btn);
     });
     wizardFooter.appendChild(btnRow);
