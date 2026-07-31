@@ -2368,6 +2368,9 @@
   }
 
   function closeMultiVision() {
+    if (multiVisionShell) {
+      multiVisionShell.classList.remove("mv-shell--tease");
+    }
     hideMultiVisionWindows();
     show3DServerTrayIcon();
   }
@@ -2701,18 +2704,6 @@
   }
 
   window.openMultiVisionFromConnect = function (connection) {
-    if (multiVisionLoading) {
-      return;
-    }
-    if (
-      multiVisionShell &&
-      !multiVisionShell.hidden &&
-      !multiVisionShell.classList.contains("app-shell--minimized")
-    ) {
-      bringToFront(multiVisionShell);
-      return;
-    }
-
     connection = connection || {};
     connection.userName = connection.userName || (connection.isDemo ? "demoUser" : "stech");
     connection.serverHost = connection.serverHost || "127.0.0.1:22222";
@@ -2721,16 +2712,63 @@
       ? "(No Project)"
       : connection.viewTitle || "Aggregates";
     connection.isDemo = !!connection.isDemo;
+    connection.tease = !!connection.tease;
+    connection.instant = !!connection.instant || connection.tease;
+    connection.openOverviewId = connection.openOverviewId || null;
     activeConnection = connection;
+
+    function afterOpen() {
+      if (connection.openOverviewId) {
+        openVesselOverview(connection.openOverviewId);
+      }
+      if (connection.tease && multiVisionShell) {
+        multiVisionShell.classList.add("mv-shell--tease");
+      } else if (multiVisionShell) {
+        multiVisionShell.classList.remove("mv-shell--tease");
+      }
+      if (connection.blankProject && !connection.tease) {
+        window.dispatchEvent(new CustomEvent("install-guide:connected"));
+      }
+    }
+
+    if (multiVisionLoading && !connection.instant) {
+      return;
+    }
+
+    if (
+      multiVisionShell &&
+      !multiVisionShell.hidden &&
+      !multiVisionShell.classList.contains("app-shell--minimized")
+    ) {
+      bringToFront(multiVisionShell);
+      afterOpen();
+      return;
+    }
+
+    if (connection.instant) {
+      if (loadingTimer) {
+        clearTimeout(loadingTimer);
+        loadingTimer = null;
+      }
+      multiVisionLoading = false;
+      if (multiVisionLoadingShell) {
+        multiVisionLoadingShell.hidden = true;
+        multiVisionLoadingShell.classList.add("app-shell--minimized");
+      }
+      showMultiVisionMain(connection);
+      afterOpen();
+      if (typeof window.closeVisionClient === "function") {
+        window.closeVisionClient();
+      }
+      return;
+    }
 
     multiVisionLoading = true;
     showMultiVisionLoading(connection);
 
     loadingTimer = window.setTimeout(function () {
       finishMultiVisionLaunch(connection);
-      if (connection.blankProject) {
-        window.dispatchEvent(new CustomEvent("install-guide:connected"));
-      }
+      afterOpen();
     }, LOAD_MS);
 
     requestAnimationFrame(function () {

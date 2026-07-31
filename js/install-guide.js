@@ -337,20 +337,26 @@
     pointer = document.getElementById("igPointer");
     card = document.getElementById("igCard");
     document.getElementById("igPrimary").addEventListener("click", onPrimary);
-    modeMenu.querySelectorAll("[data-mode]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        onModeChosen(btn.getAttribute("data-mode"));
-      });
-    });
-    modeMenu.querySelectorAll("[data-info]").forEach(function (btn) {
-      btn.addEventListener("click", function (e) {
+    // Event delegation — reliable even when clicking the inner label span
+    modeMenu.addEventListener("click", function (e) {
+      var infoBtn = e.target.closest ? e.target.closest("[data-info]") : null;
+      if (infoBtn && modeMenu.contains(infoBtn)) {
         e.preventDefault();
         e.stopPropagation();
-        toggleInstallInfo(btn.getAttribute("data-info"));
-      });
+        toggleInstallInfo(infoBtn.getAttribute("data-info"));
+        return;
+      }
+      var modeBtn = e.target.closest ? e.target.closest("[data-mode]") : null;
+      if (modeBtn && modeMenu.contains(modeBtn)) {
+        e.preventDefault();
+        e.stopPropagation();
+        onModeChosen(modeBtn.getAttribute("data-mode"));
+      }
     });
     document.addEventListener("click", function (e) {
-      if (!modeMenu || modeMenu.hidden) return;
+      if (!modeMenu || modeMenu.hidden || modeMenu.classList.contains("ig-mode-menu--hidden")) {
+        return;
+      }
       if (e.target.closest && e.target.closest(".ig-mode-info, .ig-mode-tip")) return;
       hideInstallTips();
     });
@@ -421,17 +427,42 @@
     if (taskbarBtn) taskbarBtn.hidden = false;
   }
 
+  function stopTeaseBackground() {
+    document.body.classList.remove("ig-tease");
+    if (typeof window.closeMultiVision === "function") {
+      window.closeMultiVision();
+    }
+  }
+
+  function startTeaseBackground() {
+    document.body.classList.add("ig-tease");
+    if (typeof window.openMultiVisionFromConnect !== "function") return;
+    window.openMultiVisionFromConnect({
+      userName: "demoUser",
+      serverHost: "127.0.0.1:22222",
+      viewTitle: "Aggregates",
+      isDemo: true,
+      blankProject: false,
+      tease: true,
+      instant: true,
+      openOverviewId: "lime-stone",
+    });
+  }
+
   function enterFreeMode() {
     clearPoll();
     if (resizeBound) {
       window.removeEventListener("resize", resizeBound);
       resizeBound = null;
     }
-    if (modeMenu) modeMenu.hidden = true;
-    if (card) card.hidden = true;
+    hideModeMenu();
+    if (card) {
+      card.hidden = true;
+      card.classList.add("ig-card--hidden");
+    }
     clearHighlight();
     if (root) root.hidden = true;
-    document.body.classList.remove("ig-mode");
+    document.body.classList.remove("ig-mode", "ig-tease");
     document.body.classList.add("ig-free-mode");
     markInstalledUi();
     if (typeof window.openMultiVisionFromConnect === "function") {
@@ -441,19 +472,40 @@
         viewTitle: "Aggregates",
         isDemo: true,
         blankProject: false,
+        openOverviewId: "lime-stone",
+        instant: true,
       });
     }
     window.dispatchEvent(new CustomEvent("install-guide:free-mode"));
   }
 
+  function hideModeMenu() {
+    if (!modeMenu) return;
+    modeMenu.hidden = true;
+    modeMenu.classList.add("ig-mode-menu--hidden");
+    modeMenu.setAttribute("aria-hidden", "true");
+  }
+
+  function revealModeMenu() {
+    if (!modeMenu) return;
+    modeMenu.hidden = false;
+    modeMenu.classList.remove("ig-mode-menu--hidden");
+    modeMenu.setAttribute("aria-hidden", "false");
+  }
+
   function onModeChosen(mode) {
+    if (!mode) return;
     if (mode === "free") {
       enterFreeMode();
       return;
     }
     guideTrack = mode === "client" ? "client" : "host";
-    if (modeMenu) modeMenu.hidden = true;
-    if (card) card.hidden = false;
+    hideModeMenu();
+    stopTeaseBackground();
+    if (card) {
+      card.hidden = false;
+      card.classList.remove("ig-card--hidden");
+    }
     stepIndex = 0;
     renderStep();
   }
@@ -635,8 +687,11 @@
     var steps = getSteps();
 
     root.hidden = false;
-    if (modeMenu) modeMenu.hidden = true;
-    if (card) card.hidden = false;
+    hideModeMenu();
+    if (card) {
+      card.hidden = false;
+      card.classList.remove("ig-card--hidden");
+    }
 
     var kicker = document.getElementById("igKicker");
     if (kicker) {
@@ -793,10 +848,14 @@
   function showModeMenu() {
     ensureDom();
     root.hidden = false;
-    if (modeMenu) modeMenu.hidden = false;
-    if (card) card.hidden = true;
+    revealModeMenu();
+    if (card) {
+      card.hidden = true;
+      card.classList.add("ig-card--hidden");
+    }
     clearHighlight();
     clearPoll();
+    startTeaseBackground();
   }
 
   function boot() {

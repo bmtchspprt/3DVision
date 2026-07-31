@@ -18,8 +18,19 @@
   justify-content: center;
   pointer-events: auto;
   background:
-    linear-gradient(160deg, #1c242e 0%, #2a343f 45%, #1a222b 100%);
+    linear-gradient(160deg, rgba(28, 36, 46, 0.62) 0%, rgba(42, 52, 63, 0.55) 45%, rgba(26, 34, 43, 0.68) 100%);
   padding: 24px;
+}
+
+/* display:flex above beats bare [hidden] in some engines — force hide */
+.ig-mode-menu[hidden],
+.ig-mode-menu.ig-mode-menu--hidden {
+  display: none !important;
+}
+
+.ig-card[hidden],
+.ig-card.ig-card--hidden {
+  display: none !important;
 }
 
 .ig-mode-panel {
@@ -176,6 +187,17 @@
 
 .ig-mode-free:hover {
   color: #2c3340;
+}
+
+/* Tease: live MultiVision (Connected + 3D silo) under the install-type overlay */
+body.ig-tease #multiVisionShell,
+body.ig-tease #multiVisionLoadingShell {
+  pointer-events: none !important;
+  z-index: 40 !important;
+}
+
+body.ig-tease #multiVisionShell.mv-shell--tease {
+  opacity: 1;
 }
 
 /* Never capture the full screen — only the card itself is interactive */
