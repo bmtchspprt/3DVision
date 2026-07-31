@@ -291,13 +291,31 @@
     root.innerHTML =
       '<div class="ig-mode-menu" id="igModeMenu">' +
       '<div class="ig-mode-panel">' +
-      '<p class="ig-mode-kicker">3D Install Guide</p>' +
-      "<h1>Choose a mode</h1>" +
-      "<p class=\"ig-mode-lead\">Pick how you want to run this simulator.</p>" +
-      '<button type="button" class="ig-mode-btn" data-mode="host">HOST Install</button>' +
-      '<button type="button" class="ig-mode-btn" data-mode="client">Server-Client Remote Viewer</button>' +
-      '<button type="button" class="ig-mode-btn ig-mode-btn--free" data-mode="free">Free mode</button>' +
-      '<p class="ig-mode-hint">Free mode: 3D already installed — Demo Mode silos, no guided steps.</p>' +
+      '<p class="ig-mode-kicker">3D MultiVision</p>' +
+      "<h1>Choose Install Type</h1>" +
+      '<div class="ig-mode-list" role="list">' +
+      '<div class="ig-mode-row" role="listitem">' +
+      '<button type="button" class="ig-mode-btn" data-mode="host">' +
+      '<span class="ig-mode-btn-label">Host Install</span>' +
+      "</button>" +
+      '<button type="button" class="ig-mode-info" data-info="host" aria-label="About Host Install" title="About Host Install">' +
+      '<span class="ig-mode-info-ico" aria-hidden="true">i</span>' +
+      "</button>" +
+      '<div class="ig-mode-tip" id="igTipHost" hidden>' +
+      "This is the designated Server PC install." +
+      "</div></div>" +
+      '<div class="ig-mode-row" role="listitem">' +
+      '<button type="button" class="ig-mode-btn" data-mode="client">' +
+      '<span class="ig-mode-btn-label">Server-Client Remote Viewer</span>' +
+      "</button>" +
+      '<button type="button" class="ig-mode-info" data-info="client" aria-label="About Server-Client Remote Viewer" title="About Server-Client Remote Viewer">' +
+      '<span class="ig-mode-info-ico" aria-hidden="true">i</span>' +
+      "</button>" +
+      '<div class="ig-mode-tip" id="igTipClient" hidden>' +
+      "This is the workstation that accesses the database using the Server IP." +
+      "</div></div>" +
+      "</div>" +
+      '<button type="button" class="ig-mode-free" data-mode="free">Free mode (installed — Demo silos)</button>' +
       "</div></div>" +
       '<div class="ig-dim" aria-hidden="true"></div>' +
       '<div class="ig-spotlight ig-pulse" id="igSpotlight" hidden></div>' +
@@ -310,7 +328,6 @@
       '<p class="ig-card-body" id="igBody"></p>' +
       '<div class="ig-card-actions">' +
       '<button type="button" class="ig-btn ig-btn--primary" id="igPrimary" hidden>Continue</button>' +
-      '<button type="button" class="ig-btn" id="igSkip" hidden>Skip highlight</button>' +
       '<span class="ig-progress" id="igProgress"></span>' +
       "</div></div>";
     document.body.appendChild(root);
@@ -320,14 +337,53 @@
     pointer = document.getElementById("igPointer");
     card = document.getElementById("igCard");
     document.getElementById("igPrimary").addEventListener("click", onPrimary);
-    document.getElementById("igSkip").addEventListener("click", function () {
-      goNext();
-    });
     modeMenu.querySelectorAll("[data-mode]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         onModeChosen(btn.getAttribute("data-mode"));
       });
     });
+    modeMenu.querySelectorAll("[data-info]").forEach(function (btn) {
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        toggleInstallInfo(btn.getAttribute("data-info"));
+      });
+    });
+    document.addEventListener("click", function (e) {
+      if (!modeMenu || modeMenu.hidden) return;
+      if (e.target.closest && e.target.closest(".ig-mode-info, .ig-mode-tip")) return;
+      hideInstallTips();
+    });
+  }
+
+  function hideInstallTips() {
+    ["igTipHost", "igTipClient"].forEach(function (id) {
+      var tip = document.getElementById(id);
+      if (tip) tip.hidden = true;
+    });
+    if (modeMenu) {
+      modeMenu.querySelectorAll(".ig-mode-info.is-open").forEach(function (b) {
+        b.classList.remove("is-open");
+        b.setAttribute("aria-expanded", "false");
+      });
+    }
+  }
+
+  function toggleInstallInfo(which) {
+    var tipId = which === "client" ? "igTipClient" : "igTipHost";
+    var tip = document.getElementById(tipId);
+    var btn = modeMenu
+      ? modeMenu.querySelector('.ig-mode-info[data-info="' + which + '"]')
+      : null;
+    var wasOpen = tip && !tip.hidden;
+    hideInstallTips();
+    if (!wasOpen && tip) {
+      tip.hidden = false;
+      if (btn) {
+        btn.classList.add("is-open");
+        btn.setAttribute("aria-expanded", "true");
+      }
+    }
   }
 
   function currentStep() {
@@ -408,7 +464,9 @@
       window.removeEventListener("resize", resizeBound);
       resizeBound = null;
     }
-    if (root) root.hidden = true;
+    // Stay in guide chrome — hide coach card only; do not return to install-type picker.
+    if (card) card.hidden = true;
+    clearHighlight();
     window.dispatchEvent(new CustomEvent("install-guide:finished"));
   }
 
@@ -591,15 +649,12 @@
       "Step " + (stepIndex + 1) + " of " + steps.length;
 
     var primary = document.getElementById("igPrimary");
-    var skip = document.getElementById("igSkip");
     if (step.blocking) {
       primary.hidden = false;
       primary.textContent = step.primary || "Continue";
-      skip.hidden = true;
       root.classList.add("ig-blocking");
     } else {
       primary.hidden = true;
-      skip.hidden = true;
       root.classList.remove("ig-blocking");
     }
 
