@@ -22,7 +22,9 @@ If the user asks to publish/push:
 
 1. Commit any outstanding local changes first.
 2. Rebuild the obfuscated `dist/` when the published artifact must stay in sync with source (`npm run build`).
-3. Push to the configured publish remote/branch.
+3. Push the `dist/` folder to the **publish** remote with:
+   `git subtree push --prefix dist publish master`
+4. Publish remote: `https://github.com/binmastercody/3d.git` (GitHub Pages site).
 
 ## Do not
 
