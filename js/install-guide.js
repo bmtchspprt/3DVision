@@ -25,8 +25,9 @@
 
   var WIZ_NEXT = "#installerWizardFooter .installer-wiz-btn--default";
 
-  /* Host and Client share the same tutorial for now. */
-  var HOST_STEPS = [
+  var EXAMPLE_HOST_IP = "192.168.1.28";
+
+  var STEPS_THROUGH_USERS = [
     {
       id: "welcome",
       title: "Install 3D MultiVision",
@@ -128,11 +129,20 @@
       advanceOn: "install-guide:page-components",
       pointer: "bottom",
     },
+  ];
+
+  var HOST_SERVICE_STEPS = [
     {
       id: "components-next",
       title: "Choose components",
       body: "Keep <strong>Server app files</strong> checked, then click <strong>Next</strong>.",
-      target: WIZ_NEXT,
+      getTarget: function () {
+        var server = document.getElementById("comp-server");
+        if (server && server.checked) {
+          return WIZ_NEXT;
+        }
+        return "#comp-server";
+      },
       advanceOn: "install-guide:page-runAsService",
       pointer: "bottom",
     },
@@ -183,6 +193,27 @@
       advanceOn: "install-guide:page-installLocation",
       pointer: "bottom",
     },
+  ];
+
+  var CLIENT_COMPONENT_STEPS = [
+    {
+      id: "components-uncheck-server",
+      title: "Client files only",
+      body:
+        "Uncheck <strong>Server app files</strong>. Leave <strong>Client app files</strong> checked — this PC only needs the remote viewer.",
+      getTarget: function () {
+        var server = document.getElementById("comp-server");
+        if (server && !server.checked) {
+          return WIZ_NEXT;
+        }
+        return "#comp-server";
+      },
+      advanceOn: "install-guide:page-installLocation",
+      pointer: "right",
+    },
+  ];
+
+  var STEPS_INSTALL_FINISH = [
     {
       id: "install-loc-next",
       title: "Install location",
@@ -195,7 +226,7 @@
     {
       id: "install-btn",
       title: "Install",
-      body: "Click <strong>Install</strong> to begin the service install.",
+      body: "Click <strong>Install</strong> to begin the install.",
       target: WIZ_NEXT,
       advanceOn: "install-guide:page-installing",
       pointer: "bottom",
@@ -215,6 +246,9 @@
       advanceOn: "install-guide:install-complete",
       pointer: "bottom",
     },
+  ];
+
+  var STEPS_ADVANCED_START = [
     {
       id: "advanced-connection",
       title: "Choose Advanced Connection",
@@ -223,6 +257,40 @@
       advanceOn: "install-guide:advanced-selected",
       pointer: "right",
     },
+  ];
+
+  var CLIENT_HOST_IP_STEPS = [
+    {
+      id: "edit-server",
+      title: "Edit the server connection",
+      body: "Click <strong>Edit...</strong> next to the server name.",
+      target: "#btn-edit-server",
+      advanceOn: "install-guide:server-config-opened",
+      pointer: "bottom",
+    },
+    {
+      id: "enter-host-ip",
+      title: "Enter the Host IP",
+      body:
+        "The address box is the <strong>Host IP</strong> — the IP of the Host/Server computer (not this Client PC). " +
+        "Replace <code>127.0.0.1</code> with that address. For this example, type <code>" +
+        EXAMPLE_HOST_IP +
+        "</code>.",
+      target: "#cfg-server-address",
+      advanceOn: "install-guide:host-ip-ok",
+      pointer: "right",
+    },
+    {
+      id: "server-config-ok",
+      title: "Save the Host IP",
+      body: "Click <strong>OK</strong> to save the Host IP.",
+      target: "#btn-config-ok",
+      advanceOn: "install-guide:server-config-saved",
+      pointer: "bottom",
+    },
+  ];
+
+  var STEPS_LOGIN_CONNECT = [
     {
       id: "enter-username",
       title: "Enter user name",
@@ -247,6 +315,9 @@
       advanceOn: "install-guide:connected",
       pointer: "bottom",
     },
+  ];
+
+  var HOST_PROJECT_STEPS = [
     {
       id: "blank-project",
       title: "Start page",
@@ -279,8 +350,60 @@
     },
   ];
 
+  function cloneSteps(list) {
+    return list.map(function (step) {
+      var copy = {};
+      Object.keys(step).forEach(function (key) {
+        copy[key] = step[key];
+      });
+      return copy;
+    });
+  }
+
+  function buildHostSteps() {
+    var steps = [].concat(
+      cloneSteps(STEPS_THROUGH_USERS),
+      cloneSteps(HOST_SERVICE_STEPS),
+      cloneSteps(STEPS_INSTALL_FINISH),
+      cloneSteps(STEPS_ADVANCED_START),
+      cloneSteps(STEPS_LOGIN_CONNECT),
+      cloneSteps(HOST_PROJECT_STEPS)
+    );
+    var installBtn = steps.filter(function (s) {
+      return s.id === "install-btn";
+    })[0];
+    if (installBtn) {
+      installBtn.body = "Click <strong>Install</strong> to begin the service install.";
+    }
+    return steps;
+  }
+
+  function buildClientSteps() {
+    var steps = [].concat(
+      cloneSteps(STEPS_THROUGH_USERS),
+      cloneSteps(CLIENT_COMPONENT_STEPS),
+      cloneSteps(STEPS_INSTALL_FINISH),
+      cloneSteps(STEPS_ADVANCED_START),
+      cloneSteps(CLIENT_HOST_IP_STEPS),
+      cloneSteps(STEPS_LOGIN_CONNECT)
+    );
+    steps[0].title = "Install the Client viewer";
+    steps[0].body =
+      "This guide installs the Client (remote viewer) on a second PC. You will uncheck Server files, then point Advanced Connection at the Host IP. A blank browser will open — type the downloads address yourself.";
+    var installBtn = steps.filter(function (s) {
+      return s.id === "install-btn";
+    })[0];
+    if (installBtn) {
+      installBtn.body = "Click <strong>Install</strong> to begin the client install.";
+    }
+    return steps;
+  }
+
+  var HOST_STEPS = buildHostSteps();
+  var CLIENT_STEPS = buildClientSteps();
+
   function getSteps() {
-    return HOST_STEPS;
+    return guideTrack === "client" ? CLIENT_STEPS : HOST_STEPS;
   }
 
   function ensureDom() {
@@ -312,7 +435,7 @@
       '<span class="ig-mode-info-ico" aria-hidden="true">i</span>' +
       "</button>" +
       '<div class="ig-mode-tip" id="igTipClient" hidden>' +
-      "This is the workstation that accesses the database using the Server IP." +
+      "Install Client only on a second PC, then enter the Host IP in Advanced Connection → Edit." +
       "</div></div>" +
       "</div>" +
       '<button type="button" class="ig-mode-free" data-mode="free">Free mode (installed — Demo silos)</button>' +
@@ -412,6 +535,15 @@
     document.body.classList.toggle("ig-guiding", !!on);
   }
 
+  function setTrackClass() {
+    document.body.classList.remove("ig-track-host", "ig-track-client");
+    if (guideTrack === "client") {
+      document.body.classList.add("ig-track-client");
+    } else {
+      document.body.classList.add("ig-track-host");
+    }
+  }
+
   function isClickAllowed(e) {
     if (!document.body.classList.contains("ig-guiding")) return true;
     // Install-type picker handles its own clicks
@@ -441,6 +573,11 @@
       if (forLab && forLab.contains(e.target)) return true;
     }
 
+    var listItem = target.closest && target.closest(".installer-listbox-item");
+    if (listItem && e.target.closest && e.target.closest(".installer-listbox-item") === listItem) {
+      return true;
+    }
+
     // Merged choice+Next: allow the radio group while choosing
     if (step.id === "custom-install" && e.target.closest && e.target.closest("#setupTypeCustom, label[for='setupTypeCustom']")) {
       return true;
@@ -453,6 +590,14 @@
     }
     if (step.id === "type-url" && e.target.closest && e.target.closest("#browserUrlWrap, #browserUrl")) {
       return true;
+    }
+    if (
+      (step.id === "enter-host-ip" || step.id === "server-config-ok") &&
+      e.target.closest &&
+      e.target.closest("#server-config-overlay")
+    ) {
+      if (step.id === "enter-host-ip" && e.target.closest("#cfg-server-address")) return true;
+      if (step.id === "server-config-ok" && e.target.closest("#btn-config-ok")) return true;
     }
 
     return false;
@@ -596,6 +741,7 @@
       return;
     }
     guideTrack = mode === "client" ? "client" : "host";
+    setTrackClass();
     hideModeMenu();
     stopTeaseBackground();
     setGuiding(true);
@@ -718,6 +864,8 @@
       target === "#browseFolderOk" ||
       target === "#browseFolderNew" ||
       target === "#btnBrowseServer" ||
+      target === "#btn-edit-server" ||
+      target === "#btn-config-ok" ||
       target === "#browserUrl" ||
       target === "#browserUrlWrap"
     ) {
@@ -743,7 +891,12 @@
     var el = document.querySelector(selector);
     if (el && el.matches && el.matches('input[type="radio"], input[type="checkbox"]')) {
       var label = el.closest("label");
-      if (label) el = label;
+      if (label) {
+        el = label;
+      } else {
+        var listItem = el.closest(".installer-listbox-item");
+        if (listItem) el = listItem;
+      }
     }
     if (!el || el.hidden || el.offsetParent === null) {
       if (spot) spot.hidden = true;
@@ -856,6 +1009,17 @@
         }
       }
     }
+    if (step.id === "enter-host-ip") {
+      var addrEl = document.getElementById("cfg-server-address");
+      if (addrEl) {
+        try {
+          addrEl.focus();
+          addrEl.select();
+        } catch (err3) {
+          /* ignore */
+        }
+      }
+    }
 
     highlight(stepTarget(step), stepPointer(step));
 
@@ -879,6 +1043,12 @@
         window.dispatchEvent(new CustomEvent("install-guide:password-ok"));
       }
     }
+    if (step.id === "enter-host-ip") {
+      var addr = document.getElementById("cfg-server-address");
+      if (addr && addr.value.trim() === EXAMPLE_HOST_IP) {
+        window.dispatchEvent(new CustomEvent("install-guide:host-ip-ok"));
+      }
+    }
     if (step.id === "advanced-connection") {
       var adv = document.querySelector('input[name="nav-view"][value="advanced"]');
       if (adv && adv.checked) {
@@ -897,6 +1067,10 @@
     var step = currentStep();
     if (step && step.advanceOn === name) {
       if (name === "install-guide:project-created") {
+        endGuide();
+        return;
+      }
+      if (name === "install-guide:connected" && guideTrack === "client") {
         endGuide();
         return;
       }
@@ -935,6 +1109,9 @@
       "install-guide:page-finish",
       "install-guide:install-complete",
       "install-guide:advanced-selected",
+      "install-guide:server-config-opened",
+      "install-guide:host-ip-ok",
+      "install-guide:server-config-saved",
       "install-guide:username-ok",
       "install-guide:password-ok",
       "install-guide:connected",

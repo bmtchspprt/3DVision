@@ -556,10 +556,28 @@
           showPlaceholderDesc();
         });
         row.addEventListener("click", function (event) {
-          if (event.target.tagName === "INPUT" && !item.disabled) {
-            state.serverComponent = event.target.checked;
+          if (item.disabled) {
+            state.selectedComponent = item.id;
+            renderList();
+            return;
+          }
+          if (item.id === "server") {
+            var nextChecked =
+              event.target.tagName === "INPUT"
+                ? event.target.checked
+                : !state.serverComponent;
+            state.serverComponent = nextChecked;
+            state.selectedComponent = item.id;
             rebuildSteps();
             updateSpace();
+            window.dispatchEvent(
+              new CustomEvent(
+                state.serverComponent
+                  ? "install-guide:server-checked"
+                  : "install-guide:server-unchecked"
+              )
+            );
+            renderList();
             return;
           }
           state.selectedComponent = item.id;
@@ -575,7 +593,23 @@
 
     renderFooter([
       { label: "< Back", onClick: goBack },
-      { label: "Next >", default: true, onClick: goNext },
+      {
+        label: "Next >",
+        default: true,
+        onClick: function () {
+          var clientTrack = document.body.classList.contains("ig-track-client");
+          var hostTrack = document.body.classList.contains("ig-track-host");
+          if (clientTrack && state.serverComponent) {
+            showInstallerMessage("For a Client install, uncheck Server app files.");
+            return;
+          }
+          if (hostTrack && !state.serverComponent) {
+            showInstallerMessage("For a Host install, keep Server app files checked.");
+            return;
+          }
+          goNext();
+        },
+      },
       { label: "Cancel", onClick: cancelInstaller },
     ]);
   }

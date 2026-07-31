@@ -5,6 +5,8 @@
   const DEFAULT_PORTS = ["COM4", "COM17", "COM3", "COM16"];
   const DEFAULT_SERVER_ADDRESS = "127.0.0.1";
   const DEFAULT_SERVER_PORT = "22222";
+  var savedServerAddress = DEFAULT_SERVER_ADDRESS;
+  var savedServerPort = DEFAULT_SERVER_PORT;
 
   const navRadios = document.querySelectorAll('input[name="nav-view"]');
   const viewPanels = document.querySelectorAll(".view-panel");
@@ -206,13 +208,30 @@
   function openServerConfig() {
     activeServerSelect = getActiveServerSelect();
     cfgServerName.value = activeServerSelect.value;
-    cfgServerAddress.value = DEFAULT_SERVER_ADDRESS;
-    cfgServerPort.value = DEFAULT_SERVER_PORT;
+    cfgServerAddress.value = savedServerAddress || DEFAULT_SERVER_ADDRESS;
+    cfgServerPort.value = savedServerPort || DEFAULT_SERVER_PORT;
     serverConfigOverlay.hidden = false;
+    window.dispatchEvent(new CustomEvent("install-guide:server-config-opened"));
   }
 
   function closeServerConfig() {
     serverConfigOverlay.hidden = true;
+  }
+
+  function saveServerConfig() {
+    activeServerSelect.value = cfgServerName.value;
+    if (serverNameSelect && demoServerNameSelect) {
+      serverNameSelect.value = cfgServerName.value;
+      demoServerNameSelect.value = cfgServerName.value;
+    }
+    savedServerAddress = (cfgServerAddress.value || "").trim() || DEFAULT_SERVER_ADDRESS;
+    savedServerPort = (cfgServerPort.value || "").trim() || DEFAULT_SERVER_PORT;
+    closeServerConfig();
+    window.dispatchEvent(
+      new CustomEvent("install-guide:server-config-saved", {
+        detail: { address: savedServerAddress, port: savedServerPort },
+      })
+    );
   }
 
   function setMenuOpen(trigger, popup, open) {
@@ -300,15 +319,6 @@
   function openOperationalManual() {
     closeAllMenus();
     window.open(OPERATIONAL_MANUAL_URL, "_blank", "noopener,noreferrer");
-  }
-
-  function saveServerConfig() {
-    activeServerSelect.value = cfgServerName.value;
-    if (serverNameSelect && demoServerNameSelect) {
-      serverNameSelect.value = cfgServerName.value;
-      demoServerNameSelect.value = cfgServerName.value;
-    }
-    closeServerConfig();
   }
 
   navRadios.forEach(function (radio) {
@@ -414,9 +424,9 @@
     }
 
     const serverHost =
-      (cfgServerAddress.value || DEFAULT_SERVER_ADDRESS) +
+      (savedServerAddress || cfgServerAddress.value || DEFAULT_SERVER_ADDRESS) +
       ":" +
-      (cfgServerPort.value || DEFAULT_SERVER_PORT);
+      (savedServerPort || cfgServerPort.value || DEFAULT_SERVER_PORT);
 
     if (typeof window.openMultiVisionFromConnect !== "function") {
       openConnectError("3D MultiVision is not available.");
