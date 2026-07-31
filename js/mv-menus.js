@@ -360,7 +360,7 @@
 
     switch (action) {
       case "file-new":
-        dlg.open("mv-dlg-project-new");
+        dlg.open("mv-dlg-project-wizard");
         window.dispatchEvent(new CustomEvent("install-guide:new-project-opened"));
         break;
       case "file-open":
@@ -696,7 +696,7 @@
       else if (label.indexOf("Echo") === 0) runAction("dev-echo");
       else if (label === "Wizard") runAction("dev-wizard");
       else if (label === "VDC") runAction("tools-vdc");
-      else if (label === "Distance") {
+      else if (label === "Distance" || label === "Level" || (btn.id === "mvBtnLevelDistance")) {
         if (typeof global.mvToggleDistanceLevel === "function") global.mvToggleDistanceLevel();
       }
     });

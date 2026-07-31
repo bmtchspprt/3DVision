@@ -3535,3 +3535,139 @@
 .mv-edit-project-tree .node { padding: 2px 0; }
 .mv-edit-project-tree .vessel { padding-left: 14px; }
 .mv-edit-project-tree .scanner { padding-left: 28px; color: #445; }
+
+/* WizardWindowProject — Project Creation (720×600), OEM ImagesBin branding */
+#mv-dlg-project-wizard .mv-dialog-body {
+  padding: 0;
+  overflow: hidden;
+  background: #e8eef2;
+  flex: 1;
+  min-height: 0;
+}
+#mv-dlg-project-wizard .mv-dialog {
+  height: 600px;
+  max-height: calc(100vh - 40px);
+  display: flex;
+  flex-direction: column;
+}
+.mv-proj-wiz {
+  height: 100%;
+  box-sizing: border-box;
+}
+.mv-proj-wiz-cols {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+}
+.mv-proj-wiz-left {
+  width: 200px;
+  flex-shrink: 0;
+  padding: 18px 4px 8px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background: #e8eef2;
+}
+.mv-proj-wiz-logo {
+  /* ImagesBin\WizardLogo.JPG is 400×600 BinMaster composite (logo + sensor + slogan) */
+  width: 190px;
+  max-width: 100%;
+  height: auto;
+  max-height: 460px;
+  object-fit: contain;
+  object-position: top center;
+  background: #fff;
+  display: block;
+}
+.mv-proj-wiz-right {
+  flex: 1;
+  min-width: 0;
+  padding: 14px 14px 8px 8px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  background: #e8eef2;
+}
+.mv-proj-wiz-step-header {
+  font-size: 14px;
+  font-weight: 700;
+  color: #4a6a7a;
+  margin: 0 0 6px;
+  padding: 0 4px;
+  flex-shrink: 0;
+}
+.mv-proj-wiz-step-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  padding: 2px 4px 8px;
+}
+.mv-proj-wiz-pane[hidden] {
+  display: none !important;
+}
+.mv-proj-wiz-pane[data-proj-pane="1"] {
+  padding-top: 18px;
+}
+.mv-proj-wiz-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
+}
+.mv-proj-wiz-row label {
+  min-width: 148px;
+  color: #334;
+  font-size: 12px;
+}
+.mv-proj-wiz-row input[type="text"],
+.mv-proj-wiz-row select {
+  width: 140px;
+  flex: 0 0 auto;
+  height: 24px;
+  border: 1px solid #a0a0a0;
+  padding: 2px 6px;
+  font-size: 12px;
+  background: #fff;
+  box-sizing: border-box;
+}
+.mv-proj-wiz-row input[type="text"]:disabled {
+  background: #e8e8e8;
+  color: #555;
+}
+.mv-proj-wiz-box {
+  border: 0;
+  margin: 0 0 10px;
+  padding: 2px 4px 6px;
+  background: transparent;
+  min-width: 0;
+}
+.mv-proj-wiz-box > legend {
+  font-size: 13px;
+  font-weight: 700;
+  color: #4a6a7a;
+  padding: 0 2px;
+}
+.mv-proj-wiz-box.is-hidden {
+  display: none !important;
+}
+.mv-proj-wiz-radios {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px 8px 4px;
+  max-width: 160px;
+}
+.mv-proj-wiz-radio {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #222;
+  white-space: nowrap;
+}
+.mv-proj-wiz-footer {
+  background: #e8eef2;
+  border-top: 1px solid #c5d0d8;
+}

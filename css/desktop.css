@@ -22,13 +22,14 @@ body.desktop-page {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 16px;
+  padding: 12px;
+  box-sizing: border-box;
 }
 
 .page-wrap {
   position: relative;
   width: 100%;
-  max-width: min(1100px, calc(100vw - 32px));
+  max-width: min(1100px, calc(100vw - 24px));
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -42,8 +43,9 @@ body.desktop-page {
   align-items: stretch;
   -webkit-user-select: none;
   user-select: none;
-  min-height: var(--vision-app-column-height, 704px);
-  max-height: min(880px, 88dvh);
+  min-height: min(var(--vision-app-column-height, 704px), calc(100vh - 24px));
+  height: min(880px, calc(100vh - 24px));
+  max-height: calc(100vh - 24px);
 }
 
 .desktop-with-taskbar input,
@@ -101,8 +103,9 @@ body.desktop-page {
   position: relative;
   z-index: 1;
   flex: 1 1 auto;
-  min-height: var(--vision-app-column-height, 704px);
-  max-height: min(880px, 88dvh);
+  min-height: 0;
+  height: auto;
+  max-height: none;
   border: 1px solid #2a3a4a;
   border-bottom: none;
   box-shadow: 2px 4px 12px rgba(0, 0, 0, 0.35);
@@ -145,6 +148,11 @@ body.desktop-page {
   max-width: 120px;
   text-align: center;
   transition: transform 0.18s cubic-bezier(0.34, 1.2, 0.64, 1), filter 0.18s ease;
+}
+
+/* display:flex above overrides the UA [hidden] rule — keep icon off until install finishes */
+.sim-desktop-icon[hidden] {
+  display: none !important;
 }
 
 .sim-desktop-icon:hover {
@@ -211,6 +219,10 @@ body.desktop-page {
   color: inherit;
   flex-shrink: 0;
   transition: background-color 0.12s ease;
+}
+
+.win-taskbar-btn[hidden] {
+  display: none !important;
 }
 
 .win-taskbar-btn:focus-visible {

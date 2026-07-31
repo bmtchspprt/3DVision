@@ -52,10 +52,10 @@
         var ctx = backdrop ? backdrop.getAttribute("data-uac-context") : null;
         hideUac();
         if (ctx === "installer") {
-          window.dispatchEvent(new CustomEvent("install-guide:installer-started"));
           if (typeof window.startInstaller === "function") {
             window.startInstaller();
           }
+          window.dispatchEvent(new CustomEvent("install-guide:installer-started"));
         } else if (typeof window.showServicesMsc === "function") {
           window.showServicesMsc();
         }

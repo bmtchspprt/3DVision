@@ -1,0 +1,31 @@
+---
+description: Require a local git commit after every set of code changes
+alwaysApply: true
+---
+
+# Local git commit after every change
+
+This is a hard requirement for this repository.
+
+## After completing work
+
+Whenever you finish making file changes for a user request (or a coherent chunk of work):
+
+1. **Commit locally** before ending your turn — do not leave modified/untracked work uncommitted unless the user explicitly said not to commit.
+2. Follow the repo's normal git commit protocol (status, diff, log, stage, HEREDOC message, status verify).
+3. Prefer **one commit per completed request/change-set**, not a single mega-commit spanning unrelated tasks when those tasks were separate turns.
+4. Do **not** push unless the user asks to push/publish (or an always-apply rule in this project requires publishing).
+
+## When publishing
+
+If the user asks to publish/push:
+
+1. Commit any outstanding local changes first.
+2. Rebuild the obfuscated `dist/` when the published artifact must stay in sync with source (`npm run build`).
+3. Push to the configured publish remote/branch.
+
+## Do not
+
+- Skip the local commit because the change was "small"
+- Amend unless the user rules' amend conditions are fully met
+- Force-push or rewrite history unless the user explicitly requests it

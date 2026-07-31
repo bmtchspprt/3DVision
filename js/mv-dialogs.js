@@ -164,6 +164,9 @@
         }, 40);
       }
     }
+    if (id === "mv-dlg-project-wizard" && typeof el.__mvProjWizReset === "function") {
+      el.__mvProjWizReset();
+    }
     if (id === "mv-dlg-adv-summary") {
       populateAdvSummary(el);
     }
@@ -560,14 +563,80 @@
       return wrapDialog("mv-dlg-materials", "Material Configuration", 665, body);
     },
 
-    "mv-dlg-project-new": function () {
+    // WizardWindowProject (720×600) + WizardStepProjBase / WizardStepSite
+    "mv-dlg-project-wizard": function () {
+      var stepGeneral =
+        '<div class="mv-proj-wiz-pane" data-proj-pane="1">' +
+        '<div class="mv-proj-wiz-row">' +
+        '<label for="mvProjName">Name:</label>' +
+        '<input type="text" id="mvProjName" value="New_Project" autocomplete="off">' +
+        "</div>" +
+        '<div class="mv-proj-wiz-row">' +
+        '<label for="mvProjNumSites"># Sites:</label>' +
+        '<input type="text" id="mvProjNumSites" value="1" autocomplete="off">' +
+        "</div></div>";
+      var stepSite =
+        '<div class="mv-proj-wiz-pane" data-proj-pane="2" hidden>' +
+        '<fieldset class="mv-proj-wiz-box"><legend>General</legend>' +
+        '<div class="mv-proj-wiz-row">' +
+        '<label for="mvProjSiteName">Site name:</label>' +
+        '<input type="text" id="mvProjSiteName" value="Site1" maxlength="16" autocomplete="off">' +
+        "</div>" +
+        '<div class="mv-proj-wiz-row">' +
+        '<label for="mvProjNumVessels"># Vessels in site:</label>' +
+        '<input type="text" id="mvProjNumVessels" value="1" autocomplete="off">' +
+        "</div>" +
+        '<div class="mv-proj-wiz-row">' +
+        '<label for="mvProjNumDevices"># Devices in vessel:</label>' +
+        '<input type="text" id="mvProjNumDevices" value="1" autocomplete="off">' +
+        "</div></fieldset>" +
+        '<fieldset class="mv-proj-wiz-box"><legend>Connection Type</legend>' +
+        '<div class="mv-proj-wiz-radios" id="mvProjConTypes">' +
+        '<label class="mv-proj-wiz-radio"><input type="radio" name="mvProjConType" value="hart"> HART</label>' +
+        '<label class="mv-proj-wiz-radio"><input type="radio" name="mvProjConType" value="rs485" checked> RS-485</label>' +
+        '<label class="mv-proj-wiz-radio"><input type="radio" name="mvProjConType" value="tcp"> TCP/IP</label>' +
+        "</div></fieldset>" +
+        '<fieldset class="mv-proj-wiz-box" id="mvProjConfigBox"><legend>Configuration</legend>' +
+        '<div class="mv-proj-wiz-row">' +
+        '<label for="mvProjSerialPort">Serial Port:</label>' +
+        // FTDI / SiLabs USB↔RS-485 adapters are preferred first (SimpleClientHelper.MoveFTDIBusAsDefault).
+        '<select id="mvProjSerialPort">' +
+        '<option value="COM3" selected>COM3</option>' +
+        '<option value="COM4">COM4</option>' +
+        '<option value="COM1">COM1</option>' +
+        '<option value="COM2">COM2</option>' +
+        "</select></div></fieldset>" +
+        '<fieldset class="mv-proj-wiz-box is-hidden" id="mvProjAddConfigBox"><legend>Additional Configuration</legend>' +
+        '<div class="mv-proj-wiz-row">' +
+        "<label>Server IP Address:</label>" +
+        '<input type="text" id="mvProjTcpHost" value="" autocomplete="off">' +
+        "</div>" +
+        '<div class="mv-proj-wiz-row">' +
+        "<label>Server IP Port:</label>" +
+        '<input type="text" id="mvProjTcpPort" value="10001" autocomplete="off">' +
+        "</div></fieldset></div>";
+      var body =
+        '<div class="mv-proj-wiz" data-proj-step="1">' +
+        '<div class="mv-proj-wiz-cols">' +
+        '<div class="mv-proj-wiz-left">' +
+        // OEM binMaster: ResomBase.ClientRunImagesDir = ImagesBin → WizardLogo.JPG
+        '<img class="mv-proj-wiz-logo" src="assets/images/ImagesBin/WizardLogo.JPG" alt="BinMaster">' +
+        "</div>" +
+        '<div class="mv-proj-wiz-right">' +
+        '<div class="mv-proj-wiz-step-header" id="mvProjWizStepTitle">Project General</div>' +
+        '<div class="mv-proj-wiz-step-body" id="mvProjWizStepBody">' +
+        stepGeneral +
+        stepSite +
+        "</div></div></div></div>";
       return wrapDialog(
-        "mv-dlg-project-new",
-        "New Project...",
-        480,
-        '<div class="mv-dialog-row"><label>Project name:</label><input type="text" id="mvProjName" value="New Project" style="flex:1"></div>' +
-          '<div class="mv-dialog-row"><label>Location:</label><input type="text" value="C:\\ProgramData\\BinMaster\\3DVision\\Projects" style="flex:1"><button class="btn mv-params-btn" type="button" style="min-width:32px">...</button></div>' +
-          '<label class="mv-check"><input type="checkbox" checked> Create default Aggregates site</label>'
+        "mv-dlg-project-wizard",
+        "Wizard",
+        720,
+        body,
+        '<div class="mv-dialog-footer mv-proj-wiz-footer">' +
+          '<button class="btn mv-params-btn" type="button" id="mvProjWizBack" disabled>&lt; Back</button>' +
+          '<button class="btn mv-params-btn" type="button" id="mvProjWizNext">Next &gt;</button>' +
+          '<button class="btn mv-params-btn" type="button" data-mv-dlg-close="mv-dlg-project-wizard">Cancel</button></div>'
       );
     },
 
@@ -2701,19 +2770,149 @@
     status("Client settings applied.");
   }
 
-  function onDialogOk(id) {
-    if (id === "mv-dlg-device-wizard") {
-      // Next/Finish handled by #mvWizNext — never close via generic OK path.
-      return;
+  function wireProjectWizard(root) {
+    if (!root || root.id !== "mv-dlg-project-wizard" || root.__mvProjWizWired) return;
+    root.__mvProjWizWired = true;
+
+    var shell = root.querySelector(".mv-proj-wiz");
+    var titleEl = root.querySelector("#mvProjWizStepTitle");
+    var backBtn = root.querySelector("#mvProjWizBack");
+    var nextBtn = root.querySelector("#mvProjWizNext");
+    var nameInput = root.querySelector("#mvProjName");
+    var sitesInput = root.querySelector("#mvProjNumSites");
+    var siteNameInput = root.querySelector("#mvProjSiteName");
+    var vesselsInput = root.querySelector("#mvProjNumVessels");
+    var devicesInput = root.querySelector("#mvProjNumDevices");
+    var serialSel = root.querySelector("#mvProjSerialPort");
+    var configBox = root.querySelector("#mvProjConfigBox");
+    var addConfigBox = root.querySelector("#mvProjAddConfigBox");
+    var step = 1;
+
+    function selectedConType() {
+      var checked = root.querySelector('input[name="mvProjConType"]:checked');
+      return checked ? checked.value : "rs485";
     }
-    if (id === "mv-dlg-project-new") {
-      var nameInput = document.getElementById("mvProjName");
-      var projectName = nameInput ? nameInput.value : "New Project";
+
+    function syncConnectionUi() {
+      var type = selectedConType();
+      var isSerial = type === "rs485" || type === "hart";
+      var isTcp = type === "tcp";
+      if (configBox) configBox.classList.toggle("is-hidden", !isSerial);
+      if (addConfigBox) addConfigBox.classList.toggle("is-hidden", !isTcp);
+      if (serialSel) serialSel.disabled = !isSerial;
+    }
+
+    function goStep(n) {
+      step = n === 2 ? 2 : 1;
+      if (shell) shell.setAttribute("data-proj-step", String(step));
+      root.querySelectorAll(".mv-proj-wiz-pane").forEach(function (pane) {
+        var sn = Number(pane.getAttribute("data-proj-pane"));
+        pane.hidden = sn !== step;
+      });
+      if (titleEl) {
+        titleEl.textContent =
+          step === 1 ? "Project General" : "Site # 1 / 1";
+      }
+      // WizardWindowProject.CanBack is always false.
+      if (backBtn) backBtn.disabled = true;
+      if (nextBtn) nextBtn.textContent = step === 1 ? "Next >" : "Finish";
+      if (step === 1 && nameInput) {
+        nameInput.disabled = false;
+        setTimeout(function () {
+          nameInput.focus();
+          nameInput.select();
+        }, 30);
+      }
+      if (step === 2) {
+        syncConnectionUi();
+      }
+    }
+
+    function finishProject() {
+      var projectName = (nameInput && nameInput.value.trim()) || "New_Project";
+      var siteName = (siteNameInput && siteNameInput.value.trim()) || "Site1";
+      var numVessels = vesselsInput ? parseInt(vesselsInput.value, 10) : 1;
+      var numDevices = devicesInput ? parseInt(devicesInput.value, 10) : 1;
+      if (isNaN(numVessels) || numVessels < 1) numVessels = 1;
+      if (isNaN(numDevices) || numDevices < 1) numDevices = 1;
+      var connType = selectedConType();
+      var serialPort =
+        serialSel && serialSel.value ? serialSel.value : "COM3";
       if (typeof global.mvCreateProjectFromGuide === "function") {
-        global.mvCreateProjectFromGuide(projectName);
+        global.mvCreateProjectFromGuide(projectName, {
+          siteName: siteName,
+          numVessels: numVessels,
+          numDevices: numDevices,
+          connType: connType,
+          serialPort: serialPort,
+        });
       }
       status("Project created.");
-      closeDialog(id);
+      closeDialog("mv-dlg-project-wizard");
+    }
+
+    function onNext() {
+      if (step === 1) {
+        var projectName = nameInput ? nameInput.value.trim() : "";
+        if (!projectName) {
+          showMessage("Project name is required.", "Wizard");
+          return;
+        }
+        if (nameInput) nameInput.disabled = true;
+        if (sitesInput) sitesInput.disabled = true;
+        var numSites = sitesInput ? parseInt(sitesInput.value, 10) : 1;
+        if (isNaN(numSites) || numSites < 1) numSites = 1;
+        if (sitesInput) sitesInput.value = String(numSites);
+        if (siteNameInput && !siteNameInput.value.trim()) {
+          siteNameInput.value = "Site1";
+        }
+        if (vesselsInput) vesselsInput.value = "1";
+        if (devicesInput) devicesInput.value = "1";
+        var rs485 = root.querySelector('input[name="mvProjConType"][value="rs485"]');
+        if (rs485) rs485.checked = true;
+        if (serialSel) {
+          serialSel.value = "COM3";
+          if (serialSel.selectedIndex < 0) serialSel.selectedIndex = 0;
+        }
+        goStep(2);
+        window.dispatchEvent(new CustomEvent("install-guide:project-general-next"));
+        return;
+      }
+      finishProject();
+    }
+
+    if (nextBtn) nextBtn.addEventListener("click", onNext);
+    root.querySelectorAll('input[name="mvProjConType"]').forEach(function (radio) {
+      radio.addEventListener("change", syncConnectionUi);
+    });
+
+    root.__mvProjWizReset = function () {
+      if (nameInput) {
+        nameInput.disabled = false;
+        nameInput.value = "New_Project";
+      }
+      if (sitesInput) {
+        sitesInput.disabled = false;
+        sitesInput.value = "1";
+      }
+      if (siteNameInput) siteNameInput.value = "Site1";
+      if (vesselsInput) vesselsInput.value = "1";
+      if (devicesInput) devicesInput.value = "1";
+      if (serialSel) {
+        serialSel.value = "COM3";
+        if (serialSel.selectedIndex < 0) serialSel.selectedIndex = 0;
+      }
+      var rs485 = root.querySelector('input[name="mvProjConType"][value="rs485"]');
+      if (rs485) rs485.checked = true;
+      goStep(1);
+    };
+
+    goStep(1);
+  }
+
+  function onDialogOk(id) {
+    if (id === "mv-dlg-device-wizard" || id === "mv-dlg-project-wizard") {
+      // Next/Finish handled by wizard Next buttons — never close via generic OK path.
       return;
     }
     if (id === "mv-dlg-client-options") {
@@ -2757,6 +2956,7 @@
     wireAdvParamsBeams(root);
     wireMaterials(root);
     wireWizardVessel(root);
+    wireProjectWizard(root);
     root.addEventListener("click", function (e) {
       var closeBtn = e.target.closest("[data-mv-dlg-close]");
       if (closeBtn) {

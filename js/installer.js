@@ -128,7 +128,7 @@
     users: "all",
     clientComponent: true,
     serverComponent: true,
-    runAsService: "service",
+    runAsService: "app",
     serverLocalPath: DEFAULT_SERVER_LOCAL_PATH,
     installPath: "C:\\Program Files (x86)\\BinMaster 3DVision",
     startMenuFolder: "BinMaster 3DVision",
@@ -169,6 +169,7 @@
       backdropLang.classList.add("show");
       backdropLang.setAttribute("aria-hidden", "false");
     }
+    window.dispatchEvent(new CustomEvent("install-guide:lang-shown"));
   }
 
   function hideLangDialog() {
@@ -299,7 +300,6 @@
       renderComponents();
     } else if (step === "runAsService") {
       renderRunAsService();
-      window.dispatchEvent(new CustomEvent("install-guide:service-step"));
     } else if (step === "serverLocalPath") {
       renderServerLocalPath();
     } else if (step === "installLocation") {
@@ -311,6 +311,8 @@
     } else if (step === "finish") {
       renderFinish();
     }
+
+    window.dispatchEvent(new CustomEvent("install-guide:page-" + step));
   }
 
   function wizardWelcomeHeader(title) {
@@ -355,11 +357,11 @@
       '<div class="installer-wizard-main installer-wizard-main--radio-spaced">' +
       "<p>Choose preferred installation type and click Next.</p>" +
       '<div class="installer-radio-block installer-radio-block--setup">' +
-      '<label><input type="radio" name="setupType" value="full"' +
+      '<label><input type="radio" name="setupType" id="setupTypeFull" value="full"' +
       (state.setupType === "full" ? " checked" : "") +
       "> Full install" +
       '<span class="installer-radio-desc">Server and client applications will be installed to default destination folder.</span></label>' +
-      '<label><input type="radio" name="setupType" value="custom"' +
+      '<label><input type="radio" name="setupType" id="setupTypeCustom" value="custom"' +
       (state.setupType === "custom" ? " checked" : "") +
       "> Custom install" +
       '<span class="installer-radio-desc">You may choose individual options to be installed. Recommended for experienced users only.</span></label>' +
@@ -372,15 +374,18 @@
           state.serverComponent = true;
           state.clientComponent = true;
         }
+        if (state.setupType === "custom") {
+          window.dispatchEvent(new CustomEvent("install-guide:custom-selected"));
+        }
       });
     });
 
     renderFooter([
       { label: "< Back", onClick: goBack },
       { label: "Next >", default: true, onClick: function () {
-        if (state.setupType === "full") {
-          state.clientComponent = true;
-          state.serverComponent = true;
+        if (state.setupType !== "custom") {
+          showInstallerMessage("Select Custom install to continue.");
+          return;
         }
         goNext();
       }},
@@ -409,10 +414,10 @@
       "<p>If you accept the terms of the agreement, select the first option below. " +
       "You must accept the agreement to install BinMaster 3DVision. Click Next to continue.</p>" +
       '<div class="installer-radio-block">' +
-      '<label><input type="radio" name="license" value="accept"' +
+      '<label><input type="radio" name="license" id="licenseAccept" value="accept"' +
       (state.licenseAccepted ? " checked" : "") +
       "> I accept the terms of the License Agreement</label>" +
-      '<label><input type="radio" name="license" value="decline"' +
+      '<label><input type="radio" name="license" id="licenseDecline" value="decline"' +
       (!state.licenseAccepted ? " checked" : "") +
       "> I do not accept the terms of the License Agreement</label>" +
       "</div></div>";
@@ -422,6 +427,9 @@
       state.licenseAccepted = wizardBody.querySelector('input[name="license"]:checked').value === "accept";
       if (nextBtn) {
         nextBtn.disabled = !state.licenseAccepted;
+      }
+      if (state.licenseAccepted) {
+        window.dispatchEvent(new CustomEvent("install-guide:license-accepted"));
       }
     }
 
@@ -566,10 +574,10 @@
       "<p>You may choose to run BinMaster 3DVision server as service, which means it will start automatically " +
       "when Windows restarts. Note that the service will use the Local System account.</p>" +
       '<div class="installer-radio-block installer-radio-block--run-as">' +
-      '<label><input type="radio" name="runAs" value="app"' +
+      '<label><input type="radio" name="runAs" id="runAsApp" value="app"' +
       (state.runAsService === "app" ? " checked" : "") +
       "> Install BinMaster 3DVision server as Application</label>" +
-      '<label><input type="radio" name="runAs" value="service"' +
+      '<label><input type="radio" name="runAs" id="runAsService" value="service"' +
       (state.runAsService === "service" ? " checked" : "") +
       "> Install BinMaster 3DVision server as Service</label>" +
       "</div></div>";
@@ -577,12 +585,21 @@
     wizardBody.querySelectorAll('input[name="runAs"]').forEach(function (radio) {
       radio.addEventListener("change", function () {
         state.runAsService = radio.value;
+        if (state.runAsService === "service") {
+          window.dispatchEvent(new CustomEvent("install-guide:service-selected"));
+        }
       });
     });
 
     renderFooter([
       { label: "< Back", onClick: goBack },
-      { label: "Next >", default: true, onClick: goNext },
+      { label: "Next >", default: true, onClick: function () {
+        if (state.runAsService !== "service") {
+          showInstallerMessage("Select Install BinMaster 3DVision server as Service to continue.");
+          return;
+        }
+        goNext();
+      }},
       { label: "Cancel", onClick: cancelInstaller },
     ]);
   }
@@ -903,6 +920,7 @@
       desktop: true,
       "user-profile": true,
       "profile-appdata": true,
+      "this-pc": true,
     };
   }
 
@@ -934,14 +952,16 @@
     if (!parentPath || !/^C:\\/i.test(parentPath)) {
       parentPath = "C:\\";
     }
+    // Service-install tutorial path: creating under C:\ makes BinMaster directly (no rename dance)
+    var preferBinMaster = pathsEqual(parentPath, "C:\\");
     if (!state.browseCreatedFolders[parentPath]) {
       state.browseCreatedFolders[parentPath] = [];
     }
-    var name = "New folder";
+    var name = preferBinMaster ? "BinMaster" : "New folder";
     var existing = getChildNamesForPath(parentPath);
     var counter = 2;
     while (existing.indexOf(name.toLowerCase()) >= 0) {
-      name = "New folder (" + counter + ")";
+      name = preferBinMaster ? "BinMaster (" + counter + ")" : "New folder (" + counter + ")";
       counter += 1;
     }
     state.browseCreatedFolders[parentPath].push({
@@ -949,10 +969,28 @@
       created: new Date().toLocaleString(),
     });
     var newIndex = state.browseCreatedFolders[parentPath].length - 1;
-    state.browseRenaming = { parentPath: parentPath, index: newIndex };
     state.browseSelectionPath = joinBrowsePath(parentPath, name);
     ensureExpandedForPath(parentPath);
+    if (preferBinMaster) {
+      state.browseRenaming = null;
+      renderBrowseTree(true);
+      window.dispatchEvent(
+        new CustomEvent("install-guide:browse-folder-created", {
+          detail: { parentPath: parentPath, path: state.browseSelectionPath },
+        })
+      );
+      if (pathsEqual(state.browseSelectionPath, "C:\\BinMaster")) {
+        window.dispatchEvent(new CustomEvent("install-guide:browse-binmaster-named"));
+      }
+      return;
+    }
+    state.browseRenaming = { parentPath: parentPath, index: newIndex };
     renderBrowseTree(true);
+    window.dispatchEvent(
+      new CustomEvent("install-guide:browse-folder-created", {
+        detail: { parentPath: parentPath, path: state.browseSelectionPath },
+      })
+    );
   }
 
   function startBrowseRename(parentPath, index) {
@@ -995,6 +1033,14 @@
     }
     state.browseRenaming = null;
     renderBrowseTree();
+    window.dispatchEvent(
+      new CustomEvent("install-guide:browse-folder-renamed", {
+        detail: { path: state.browseSelectionPath, name: trimmed },
+      })
+    );
+    if (pathsEqual(state.browseSelectionPath, "C:\\BinMaster")) {
+      window.dispatchEvent(new CustomEvent("install-guide:browse-binmaster-named"));
+    }
   }
 
   function cancelBrowseRename() {
@@ -1042,6 +1088,14 @@
       target === "server"
         ? state.serverLocalPath
         : state.installPath.replace(/\\BinMaster 3DVision$/i, "");
+    // For service server-path browse, land on C:\ so Make New Folder creates C:\BinMaster
+    if (
+      target === "server" &&
+      state.runAsService === "service" &&
+      isAppDataLocalPath(currentPath)
+    ) {
+      currentPath = "C:\\";
+    }
     state.browseSelectionPath = currentPath || DEFAULT_SERVER_LOCAL_PATH;
     setDefaultBrowseExpanded();
     ensureExpandedForPath(state.browseSelectionPath);
@@ -1050,6 +1104,14 @@
     backdropBrowse.classList.add("show");
     backdropBrowse.setAttribute("aria-hidden", "false");
     renderBrowseTree(true);
+    window.dispatchEvent(
+      new CustomEvent("install-guide:browse-opened", {
+        detail: { target: target, path: state.browseSelectionPath },
+      })
+    );
+    if (pathsEqual(state.browseSelectionPath, "C:\\")) {
+      window.dispatchEvent(new CustomEvent("install-guide:browse-c-selected"));
+    }
   }
 
   function closeBrowseDialog() {
@@ -1099,6 +1161,10 @@
     var selected = node.path && pathsEqual(node.path, state.browseSelectionPath);
     var row = document.createElement("div");
     row.className = "browse-tree-item";
+    row.setAttribute("data-browse-id", node.id);
+    if (node.path) {
+      row.setAttribute("data-browse-path", node.path);
+    }
     if (selected) {
       row.classList.add("browse-tree-item--sel");
     }
@@ -1175,6 +1241,12 @@
       row.addEventListener("click", function () {
         if (node.path) {
           state.browseSelectionPath = node.path;
+          if (pathsEqual(node.path, "C:\\")) {
+            window.dispatchEvent(new CustomEvent("install-guide:browse-c-selected"));
+          }
+          if (pathsEqual(node.path, "C:\\BinMaster")) {
+            window.dispatchEvent(new CustomEvent("install-guide:browse-binmaster-selected"));
+          }
         }
         if (hasChildren) {
           state.browseExpanded[node.id] = true;
@@ -1243,6 +1315,14 @@
       }
     }
     closeBrowseDialog();
+    window.dispatchEvent(
+      new CustomEvent("install-guide:browse-ok", {
+        detail: { path: path, target: state.browseTarget },
+      })
+    );
+    if (pathsEqual(path, "C:\\BinMaster")) {
+      window.dispatchEvent(new CustomEvent("install-guide:browse-binmaster-ok"));
+    }
   }
 
   function wireLangDialog() {
@@ -1258,6 +1338,7 @@
         }
         hideLangDialog();
         showWizard();
+        window.dispatchEvent(new CustomEvent("install-guide:lang-ok"));
       });
     }
     if (cancelBtn) {
@@ -1350,6 +1431,9 @@
     document.body.classList.add("ig-installed");
     if (typeof window.closeFileExplorer === "function") {
       window.closeFileExplorer();
+    }
+    if (typeof window.closeBrowser === "function") {
+      window.closeBrowser();
     }
     window.dispatchEvent(
       new CustomEvent("install-guide:install-complete", {

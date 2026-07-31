@@ -6,14 +6,23 @@ Fork of the 3D Emulator remake, focused on a guided first-time install.
 
 ## What this fork teaches
 
-1. Open Browser and download `BinMaster 3DVision_3.1.010.exe`
+1. Open Browser to `https://support.binmaster.com/downloads` and click **3D LevelScanner Software**
 2. Open Downloads / File Manager and run the installer
-3. Complete Setup with **server as Service**
-4. Use **Advanced Connection**
-5. Sign in with `stech` / `techS` and Connect
-6. Land in a **blank project**
-7. Choose **File → New Project...** to get started
+3. Run Setup: **Custom install** → **Service** → Browse → **Make New Folder** creates `C:\BinMaster` → leave Program Files (x86) → Finish
+4. Use **Advanced Connection**, sign in `stech` / `techS`
+5. On the Start page, choose **New Project**
 
-## Run it
+## Run it (source)
 
 Open `index.html` in a browser (same as the Emulator remake).
+
+## Build obfuscated distribution
+
+Produces a single self-contained HTML (assets embedded, JS obfuscated) in `dist/`:
+
+```bash
+npm install
+npm run build
+```
+
+Upload `dist/index.html` (or the whole `dist/` folder) to GitHub / GitHub Pages. Do **not** upload the source `js/`, `css/`, or `assets/` tree if you want the guide harder to reverse-engineer.

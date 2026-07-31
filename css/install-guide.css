@@ -8,46 +8,158 @@
   font-family: "Segoe UI", Tahoma, sans-serif;
 }
 
-.ig-root.ig-blocking {
+/* Full-screen mode picker (before the guided card) */
+.ig-mode-menu {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   pointer-events: auto;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(47, 93, 58, 0.22), transparent 55%),
+    radial-gradient(ellipse at 80% 80%, rgba(40, 55, 70, 0.35), transparent 50%),
+    rgba(18, 24, 32, 0.72);
+  padding: 24px;
+}
+
+.ig-mode-panel {
+  width: min(520px, 100%);
+  background: #fff;
+  border: 2px solid #ffcc33;
+  border-radius: 12px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.4);
+  padding: 28px 28px 24px;
+  text-align: left;
+}
+
+.ig-mode-kicker {
+  margin: 0 0 6px;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b6358;
+}
+
+.ig-mode-panel h1 {
+  margin: 0 0 8px;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1a1f2a;
+  line-height: 1.2;
+}
+
+.ig-mode-lead {
+  margin: 0 0 20px;
+  font-size: 14px;
+  color: #2c3340;
+  line-height: 1.4;
+}
+
+.ig-mode-btn {
+  display: block;
+  width: 100%;
+  margin: 0 0 12px;
+  padding: 16px 18px;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: left;
+  border: 2px solid #2f5d3a;
+  border-radius: 8px;
+  background: #2f5d3a;
+  color: #fff;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.ig-mode-btn:hover {
+  background: #254a2e;
+  border-color: #254a2e;
+}
+
+.ig-mode-btn--free {
+  background: #fff;
+  color: #1a1f2a;
+  border-color: #8a8174;
+  font-weight: 600;
+}
+
+.ig-mode-btn--free:hover {
+  background: #f0ebe3;
+  border-color: #6b6358;
+}
+
+.ig-mode-hint {
+  margin: 4px 0 0;
+  font-size: 12px;
+  color: #6b6358;
+  line-height: 1.4;
+}
+
+/* Never capture the full screen — only the card itself is interactive */
+.ig-root.ig-blocking {
+  pointer-events: none;
 }
 
 .ig-dim {
   position: absolute;
   inset: 0;
-  background: rgba(12, 18, 28, 0.55);
+  background: transparent;
   opacity: 0;
-  transition: opacity 0.2s ease;
   pointer-events: none;
-}
-
-.ig-root.ig-dim-on .ig-dim {
-  opacity: 1;
 }
 
 .ig-spotlight {
   position: absolute;
-  border: 2px solid #f0c14b;
-  border-radius: 6px;
-  box-shadow: 0 0 0 9999px rgba(12, 18, 28, 0.55), 0 0 0 3px rgba(240, 193, 75, 0.35);
+  border: 3px solid #ffcc33;
+  border-radius: 8px;
+  box-shadow:
+    0 0 0 4px rgba(255, 204, 51, 0.45),
+    0 0 18px rgba(255, 204, 51, 0.55);
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.15s ease, top 0.15s ease, left 0.15s ease, width 0.15s ease, height 0.15s ease;
   z-index: 1;
+  background: transparent;
 }
 
 .ig-root.ig-spot-on .ig-spotlight {
   opacity: 1;
 }
 
+.ig-pointer {
+  position: absolute;
+  z-index: 3;
+  width: 48px;
+  height: 48px;
+  pointer-events: none;
+  opacity: 0;
+  transform-origin: 8px 4px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.55));
+  transition: opacity 0.15s ease, top 0.15s ease, left 0.15s ease;
+}
+
+.ig-root.ig-spot-on .ig-pointer {
+  opacity: 1;
+  animation: ig-point 1s ease-in-out infinite;
+}
+
+.ig-pointer svg {
+  display: block;
+  width: 48px;
+  height: 48px;
+}
+
 .ig-card {
   position: absolute;
   z-index: 2;
-  width: min(360px, calc(100vw - 32px));
-  background: #f7f4ee;
+  width: min(320px, calc(100vw - 32px));
+  background: #fff;
   color: #1a1f2a;
-  border: 1px solid #c9c0b0;
-  border-radius: 10px;
+  border: 2px solid #ffcc33;
+  border-radius: 8px;
   box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
   padding: 14px 16px 12px;
   pointer-events: auto;
@@ -128,34 +240,112 @@
 @keyframes ig-pulse {
   0%,
   100% {
-    box-shadow: 0 0 0 9999px rgba(12, 18, 28, 0.55), 0 0 0 3px rgba(240, 193, 75, 0.35);
+    box-shadow:
+      0 0 0 4px rgba(255, 204, 51, 0.45),
+      0 0 18px rgba(255, 204, 51, 0.55);
   }
   50% {
-    box-shadow: 0 0 0 9999px rgba(12, 18, 28, 0.55), 0 0 0 8px rgba(240, 193, 75, 0.15);
+    box-shadow:
+      0 0 0 8px rgba(255, 204, 51, 0.25),
+      0 0 28px rgba(255, 204, 51, 0.7);
+  }
+}
+
+@keyframes ig-point {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-6px, -8px);
   }
 }
 
 .mv-blank-project {
+  display: none;
+}
+
+/* StartPageUC (server mode) — New Project / Open Project */
+.mv-start-page {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 280px;
-  color: #5a6472;
-  text-align: center;
-  gap: 8px;
-  padding: 24px;
+  gap: 20px;
+  width: 100%;
+  min-height: 100%;
+  padding: 32px 24px;
+  box-sizing: border-box;
+  background: #c7d5dd;
 }
 
-.mv-blank-project strong {
-  color: #2c3340;
+.mv-start-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 360px;
+  height: 120px;
+  padding: 0 16px 0 10px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  color: #d3efff;
+  background: linear-gradient(180deg, #727c7f 0%, #364245 100%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.45);
+  font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+.mv-start-card:hover {
+  background: linear-gradient(180deg, #acb2b3 0%, #707b7f 100%);
+}
+
+.mv-start-card:active {
+  background: #697477;
+}
+
+.mv-start-card img {
+  width: 90px;
+  height: 90px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.mv-start-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.mv-start-card-text strong {
   font-size: 15px;
+  font-weight: 700;
+  color: #d3efff;
 }
 
-.mv-blank-project span {
-  font-size: 13px;
-  max-width: 320px;
-  line-height: 1.4;
+.mv-start-card-text span {
+  font-size: 12px;
+  font-weight: 700;
+  color: #d3efff;
+  line-height: 1.25;
+}
+
+.mv-body:has(.mv-start-page) {
+  background: #c7d5dd;
+}
+
+.mv-body:has(.mv-start-page) .mv-tabs-row {
+  display: none;
+}
+
+.mv-vessels-grid:has(.mv-start-page) {
+  background: #c7d5dd;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  padding: 0;
+  overflow: hidden;
 }
 
 body.ig-mode .win-start-tile[data-sim-app="3DVision"],

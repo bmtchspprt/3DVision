@@ -2,3 +2,5 @@
 Thumbs.db
 *.log
 assets/images/extracted/
+node_modules/
+package-lock.json

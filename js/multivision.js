@@ -79,6 +79,15 @@
     OFFLINE: "offline",
   };
 
+  /**
+   * MainScreenMngr.IsViewLevel — default true (Level from vessel bottom).
+   * false = Distance/headspace from device (Z − level).
+   * Toolbar shows the mode you can switch TO (MainToolBar.SetLevelDistamceText).
+   */
+  var isViewLevel = true;
+  // Overview / wizard center geometry default (meters) — matches mv-overview-3d DEMO_CENTER_H.
+  var DEFAULT_VESSEL_HEIGHT = 16;
+
   function isVesselOffline(vessel) {
     return vessel && vessel.connectionStatus === VESSEL_CONNECTION.OFFLINE;
   }
@@ -469,7 +478,126 @@
     if (vessel.scadaId == null) {
       vessel.scadaId = (vessel.poll != null ? Number(vessel.poll) : 0) + 1;
     }
+    // Geometry / calibration (meters). Level + Distance = height.
+    if (vessel.height == null) {
+      // Demo cards: Distance 2.53 + Level 13.47 = 16 (echo curve sample).
+      vessel.height = DEFAULT_VESSEL_HEIGHT;
+    }
+    if (vessel.emptyLevel == null) {
+      vessel.emptyLevel = 0;
+    }
+    if (vessel.fullLevel == null) {
+      vessel.fullLevel = Math.max(0, Number(vessel.height) - 0.5);
+    }
     return vessel;
+  }
+
+  function vesselHeightM(vessel) {
+    ensureVesselParams(vessel);
+    var h = Number(vessel.height);
+    return isFinite(h) && h > 0 ? h : DEFAULT_VESSEL_HEIGHT;
+  }
+
+  function vesselEmptyLevelM(vessel) {
+    ensureVesselParams(vessel);
+    var v = Number(vessel.emptyLevel);
+    return isFinite(v) ? v : 0;
+  }
+
+  function vesselFullLevelM(vessel) {
+    ensureVesselParams(vessel);
+    var v = Number(vessel.fullLevel);
+    return isFinite(v) ? v : Math.max(0, vesselHeightM(vessel) - 0.5);
+  }
+
+  /** PERCENT_LEVEL = (level − empty) / (full − empty) × 100 */
+  function calcLevelPercent(vessel, levelM) {
+    var empty = vesselEmptyLevelM(vessel);
+    var full = vesselFullLevelM(vessel);
+    var span = full - empty;
+    if (span <= 0) return 0;
+    return Math.max(0, Math.min(100, ((Number(levelM) || 0) - empty) / span * 100));
+  }
+
+  /** PERCENT_DISTANCE ≈ distance / (height − empty) × 100 */
+  function calcDistancePercent(vessel, levelM) {
+    var h = vesselHeightM(vessel);
+    var empty = vesselEmptyLevelM(vessel);
+    var denom = h - empty;
+    if (denom <= 0) return 0;
+    var dist = Math.max(0, h - (Number(levelM) || 0));
+    return Math.max(0, Math.min(100, (dist / denom) * 100));
+  }
+
+  /**
+   * Display avg/max/min in current Level or Distance mode.
+   * Distance: avg = H−avgLevel; minDist = H−maxLevel; maxDist = H−minLevel
+   * (MultiScannerCalc.GetMinMaxDistanceLevelValue).
+   */
+  function displayLevelDistance(vessel) {
+    var h = vesselHeightM(vessel);
+    var avgL = Number(vessel.avg) || 0;
+    var maxL = Number(vessel.max) || 0;
+    var minL = Number(vessel.min) || 0;
+    if (isViewLevel) {
+      return {
+        avg: avgL,
+        max: maxL,
+        min: minL,
+        pct: calcLevelPercent(vessel, avgL),
+      };
+    }
+    return {
+      avg: Math.max(0, h - avgL),
+      max: Math.max(0, h - minL),
+      min: Math.max(0, h - maxL),
+      pct: calcDistancePercent(vessel, avgL),
+    };
+  }
+
+  function levelDistanceCardLabel(paramId) {
+    if (paramId === "avg_level") {
+      return isViewLevel ? "Avg. Level:" : "Avg. Dist:";
+    }
+    if (paramId === "max_level") {
+      return isViewLevel ? "Max Level:" : "Max Dist:";
+    }
+    if (paramId === "min_level") {
+      return isViewLevel ? "Min Level:" : "Min Dist:";
+    }
+    if (paramId === "distance_pct") {
+      return isViewLevel ? "Avg. Level %:" : "Avg. Dist %:";
+    }
+    return null;
+  }
+
+  function syncLevelDistanceChrome() {
+    var icon = document.getElementById("mvBtnLevelDistanceIcon");
+    var label = document.getElementById("mvBtnLevelDistanceLabel");
+    // Icon = current mode; text = mode you switch TO (SetLevelDistamceText).
+    if (icon) {
+      icon.src = isViewLevel
+        ? "assets/images/multivision/icon_level.png"
+        : "assets/images/multivision/icon_distance.png";
+    }
+    if (label) {
+      label.textContent = isViewLevel ? "Distance" : "Level";
+    }
+    function setLab(id, text) {
+      var el = document.getElementById(id);
+      if (el) el.textContent = text;
+    }
+    if (isViewLevel) {
+      setLab("mvOvAvgLabel", "Avg. Level:");
+      setLab("mvOvMaxLabel", "Max. Level:");
+      setLab("mvOvMinLabel", "Min. Level:");
+      setLab("mvOvAvgPctLabel", "Avg. Level (%):");
+    } else {
+      setLab("mvOvAvgLabel", "Avg. Dist:");
+      setLab("mvOvMaxLabel", "Max. Dist:");
+      setLab("mvOvMinLabel", "Min. Dist:");
+      setLab("mvOvAvgPctLabel", "Avg. Dist (%):");
+    }
   }
 
   VESSELS.forEach(ensureVesselParams);
@@ -488,12 +616,13 @@
         : density != null
           ? volCap * density
           : null;
+    var disp = displayLevelDistance(vessel);
     return {
-      avg: vessel.avg,
-      max: vessel.max,
-      min: vessel.min,
+      avg: disp.avg,
+      max: disp.max,
+      min: disp.min,
       fill: vessel.fill,
-      avgLevelPct: vessel.avgLevelPct != null ? vessel.avgLevelPct : 0,
+      avgLevelPct: disp.pct,
       massT: massT,
       massUs: massT == null ? null : massT * 1.10231,
       massLb: massT == null ? null : massT * 2204.62,
@@ -531,9 +660,10 @@
       }
       var raw = def.value(metrics);
       var display = raw == null || raw === "" ? "-" : raw;
+      var cardLabel = levelDistanceCardLabel(id) || def.cardLabel;
       rows +=
         "<dt>" +
-        def.cardLabel +
+        cardLabel +
         '</dt><dd class="mv-stat-val">' +
         display +
         '</dd><dd class="mv-stat-unit">' +
@@ -643,9 +773,9 @@
 
   // Dynamic vessel silo — geometry from measured MultiVision card:
   // body ~112px / height ~280+ → aspect ~0.39; roof ~5%; hopper ~6% (shallow obtuse to a point).
-  function buildSiloSvg(vessel) {
+  function buildSiloSvg(vessel, idSuffix) {
     var fill = Math.max(0, Math.min(100, Number(vessel.fill) || 0));
-    var uid = vessel.id.replace(/[^a-z0-9]/gi, "_");
+    var uid = vessel.id.replace(/[^a-z0-9]/gi, "_") + (idSuffix || "");
 
     // Sized to fit 4 cards in the MultiVision window without horizontal scroll.
     var vbW = 92;
@@ -801,10 +931,15 @@
     return true;
   }
 
-  function vesselChipSiloSvg(uid) {
-    // Flat strip icon matched to real MultiVision vessel chip (sampled colors).
-    // Display ~17x32; silo alone is centered in the chip — LED is absolute beside it.
+  function vesselChipSiloSvg(uid, fillPct) {
+    // Flat strip icon; fill height tracks vessel volume % (same as home card silo).
     var clipId = "chipSiloClip_" + uid;
+    var fill = Math.max(0, Math.min(100, Number(fillPct) || 0));
+    var bodyTop = 5.5;
+    var bodyBottom = 32.5;
+    var bodyH = bodyBottom - bodyTop;
+    var fillH = (fill / 100) * bodyH;
+    var fillTop = bodyBottom - fillH;
     return (
       '<svg class="mv-vessel-chip-silo" viewBox="0 0 20 34" width="17" height="32" aria-hidden="true">' +
       "<defs>" +
@@ -815,10 +950,12 @@
       '<g clip-path="url(#' +
       clipId +
       ')">' +
-      '<rect x="2" y="1.5" width="16" height="4" fill="#E8E7EA"/>' +
-      '<rect x="2" y="5.5" width="16" height="3.5" fill="#EEBE6E"/>' +
-      '<rect x="2" y="9" width="16" height="23" fill="#8DBC90"/>' +
-      '<rect x="2" y="21" width="16" height="1.4" fill="#B3686A"/>' +
+      '<rect x="2" y="1.5" width="16" height="31" fill="#E8E7EA"/>' +
+      '<rect x="2" y="' +
+      fillTop.toFixed(2) +
+      '" width="16" height="' +
+      fillH.toFixed(2) +
+      '" fill="#8DBC90"/>' +
       "</g>" +
       '<path d="M2 1.5 H18 V22 L10 32.5 L2 22 Z" fill="none" stroke="#5A5A5C" stroke-width="1.1" stroke-linejoin="miter"/>' +
       "</svg>"
@@ -839,7 +976,7 @@
     chip.innerHTML =
       '<span class="mv-vessel-chip-graphic">' +
       '<span class="mv-vessel-chip-icon">' +
-      vesselChipSiloSvg(vessel.id.replace(/[^a-z0-9]/gi, "_")) +
+      vesselChipSiloSvg(vessel.id.replace(/[^a-z0-9]/gi, "_"), vessel.fill) +
       '<span class="mv-vessel-chip-dot' +
       (offline ? " is-offline" : "") +
       '" title="' +
@@ -1214,6 +1351,7 @@
       scadaEl.textContent = String(vessel.scadaId != null ? vessel.scadaId : 1);
     }
     // VesselScannersParamsUC.SetRowNames() — label | unit | scanner column
+    var lvl = isViewLevel ? "Level" : "Dist";
     var rows = [
       { label: "Device Name:", unit: "", value: vessel.scannerName || vessel.short, header: true },
       { label: "Poll Address:", unit: "", value: String(vessel.poll) },
@@ -1221,10 +1359,10 @@
       { label: "Hardware:", unit: "", value: String(vessel.hardware != null ? vessel.hardware : "-") },
       { label: "Firmware:", unit: "", value: vessel.firmware || "-" },
       { label: "Device Type:", unit: "", value: vessel.deviceType || "MV" },
-      { label: "Avg Level:", unit: "m", value: m.avg.toFixed(2) },
-      { label: "Max Level:", unit: "m", value: m.max.toFixed(2) },
-      { label: "Min Level:", unit: "m", value: m.min.toFixed(2) },
-      { label: "Avg Level:", unit: "%", value: (m.avgLevelPct != null ? m.avgLevelPct : 0).toFixed(2) },
+      { label: "Avg " + lvl + ":", unit: "m", value: m.avg.toFixed(2) },
+      { label: "Max " + lvl + ":", unit: "m", value: m.max.toFixed(2) },
+      { label: "Min " + lvl + ":", unit: "m", value: m.min.toFixed(2) },
+      { label: "Avg " + lvl + ":", unit: "%", value: (m.avgLevelPct != null ? m.avgLevelPct : 0).toFixed(2) },
       { label: "Volume:", unit: "[m*3]", value: m.volM3.toFixed(2) },
       { label: "Volume:", unit: "%", value: m.fill.toFixed(2) },
       { label: "Mass:", unit: "ton", value: m.massT == null ? "-" : m.massT.toFixed(2) },
@@ -1347,16 +1485,31 @@
       return;
     }
     ensureVesselParams(vessel);
+    if (vessel.connType) {
+      deviceConnType =
+        vessel.connType === "tcp" ? "tcpip" : vessel.connType;
+    }
     syncDevicesConnTypeUi();
     var nameEl = document.getElementById("mvDevicesPollName");
     var addrEl = ensureDevicesPollOptions();
     var btn = document.getElementById("mvDevicesConnectBtn");
+    var serialPort = document.getElementById("mvDevicesSerialPort");
     if (nameEl) {
       nameEl.textContent = deviceConnected ? vessel.scannerName : vessel.short + "_" + vessel.poll;
     }
     if (addrEl) {
       var pollVal = Math.max(0, Math.min(63, Number(vessel.poll) || 0));
       addrEl.value = String(pollVal);
+    }
+    if (serialPort && vessel.serialPort) {
+      serialPort.value = vessel.serialPort;
+      if (serialPort.value !== vessel.serialPort) {
+        var opt = document.createElement("option");
+        opt.value = vessel.serialPort;
+        opt.textContent = vessel.serialPort;
+        serialPort.insertBefore(opt, serialPort.firstChild);
+        serialPort.value = vessel.serialPort;
+      }
     }
     if (btn) {
       btn.textContent = deviceConnected ? "Disconnect" : "Connect";
@@ -1974,7 +2127,9 @@
     }
 
     if (mvOverviewSilo) {
-      mvOverviewSilo.innerHTML = '<div class="mv-silo">' + buildSiloSvg(vessel) + "</div>";
+      // Unique gradient/clip ids (_ov) so hidden vessel-card SVGs don't steal fill paint.
+      mvOverviewSilo.innerHTML =
+        '<div class="mv-silo">' + buildSiloSvg(vessel, "_ov") + "</div>";
     }
   }
 
@@ -2015,13 +2170,52 @@
     mvVesselStrip.innerHTML = "";
     mvVesselsGrid.innerHTML = "";
     if (!VESSELS.length) {
-      var blank = document.createElement("div");
-      blank.className = "mv-blank-project";
-      blank.innerHTML =
-        "<strong>No project loaded</strong>" +
-        "<span>This session started with a blank project. Choose <b>File → New Project...</b> to get started.</span>";
-      mvVesselsGrid.appendChild(blank);
+      // Real StartPageUC (server mode): New Project + Open Project cards on #C7D5DD
+      var start = document.createElement("div");
+      start.className = "mv-start-page";
+      start.id = "mvStartPage";
+      start.innerHTML =
+        '<button type="button" class="mv-start-card" id="mvStartNewProject">' +
+        '<img src="assets/images/multivision/icon_new_project.png" alt="" width="90" height="90">' +
+        '<span class="mv-start-card-text">' +
+        "<strong>New Project</strong>" +
+        "<span>Create new project and configure site definition.</span>" +
+        "<span>“New Project” option.</span>" +
+        "</span></button>" +
+        '<button type="button" class="mv-start-card" id="mvStartOpenProject">' +
+        '<img src="assets/images/multivision/icon_recent_project.png" alt="" width="90" height="90">' +
+        '<span class="mv-start-card-text">' +
+        "<strong>Open Project</strong>" +
+        "<span>Open project on Server</span>" +
+        "<span>“Open Project” option.</span>" +
+        "</span></button>";
+      mvVesselsGrid.appendChild(start);
+      var newBtn = document.getElementById("mvStartNewProject");
+      if (newBtn) {
+        newBtn.addEventListener("click", function () {
+          if (window.MvDialogs && typeof window.MvDialogs.open === "function") {
+            window.MvDialogs.open("mv-dlg-project-wizard");
+          } else if (typeof window.mvOpenNewProjectDialog === "function") {
+            window.mvOpenNewProjectDialog();
+          }
+          window.dispatchEvent(new CustomEvent("install-guide:new-project-opened"));
+        });
+      }
+      var openBtn = document.getElementById("mvStartOpenProject");
+      if (openBtn) {
+        openBtn.addEventListener("click", function () {
+          if (window.MvDialogs && typeof window.MvDialogs.status === "function") {
+            window.MvDialogs.status("No recent project on Server.");
+          }
+        });
+      }
+      if (mvVesselStrip.parentElement) {
+        mvVesselStrip.parentElement.hidden = true;
+      }
       return;
+    }
+    if (mvVesselStrip.parentElement) {
+      mvVesselStrip.parentElement.hidden = false;
     }
     VESSELS.forEach(function (vessel) {
       mvVesselStrip.appendChild(renderVesselChip(vessel));
@@ -2135,7 +2329,7 @@
     }
     if (mvStatusText) {
       mvStatusText.textContent = connection.blankProject
-        ? "No project loaded — create a New Project to continue."
+        ? "Ready — choose New Project or Open Project."
         : "Scanners General Data retrieve: Completed " + formatStatusTimestamp();
     }
     applyVesselDataset(
@@ -2568,12 +2762,69 @@
     };
   };
 
-  window.mvCreateProjectFromGuide = function (projectName) {
-    var name = (projectName || "New Project").trim() || "New Project";
-    applyVesselDataset("stech", false, false);
+  window.mvCreateProjectFromGuide = function (projectName, opts) {
+    opts = opts || {};
+    var name = (projectName || "New_Project").trim() || "New_Project";
+    var siteName = (opts.siteName || "Site1").trim() || "Site1";
+    var numVessels = Math.max(1, parseInt(opts.numVessels, 10) || 1);
+    var numDevices = Math.max(1, parseInt(opts.numDevices, 10) || 1);
+    var connType = opts.connType || "rs485";
+    // USB↔RS-485 adapter COM (FTDI / SiLabs) — preferred first in real client.
+    var serialPort = opts.serialPort || "COM3";
+
+    VESSELS = [];
+    for (var i = 0; i < numVessels; i++) {
+      // Default calib matches wizard Full/Empty + Overview 3D center H=16:
+      // emptyLevel=0, fullLevel=15.5, height=16. Level + Distance = height.
+      var heightM = DEFAULT_VESSEL_HEIGHT;
+      var emptyL = 0;
+      var fullL = heightM - 0.5;
+      var avgL = 12.0;
+      var maxL = 13.1;
+      var minL = 10.9;
+      var levelPct = ((avgL - emptyL) / (fullL - emptyL)) * 100;
+      var vessel = {
+        id: "vessel-" + (i + 1),
+        name: "Vessel" + (i + 1) + " (MV)",
+        short: "Vessel" + (i + 1),
+        poll: i,
+        height: heightM,
+        emptyLevel: emptyL,
+        fullLevel: fullL,
+        // Stored as LEVEL meters from vessel bottom (IsViewLevel true).
+        avg: avgL,
+        max: maxL,
+        min: minL,
+        // Volume % aligned with level % so home silo fill matches measurements.
+        fill: Math.round(levelPct * 100) / 100,
+        avgLevelPct: Math.round(levelPct * 100) / 100,
+        color: "#8a5a28",
+        colorLight: "#c4a06a",
+        scannerName: "Scanner " + i,
+        serial: "",
+        hardware: "16",
+        firmware: "2.9.986",
+        deviceType: "MV",
+        scadaId: i + 1,
+        temp: 24.5,
+        snr: 36.4,
+        output: 4 + (levelPct / 100) * 16,
+        connType: connType,
+        serialPort: serialPort,
+        numDevices: numDevices,
+        connectionStatus: VESSEL_CONNECTION.ONLINE,
+      };
+      ensureVesselParams(vessel);
+      VESSELS.push(vessel);
+    }
+
+    deviceConnType = connType === "tcp" ? "tcpip" : connType;
+    selectedVesselId = VESSELS[0] ? VESSELS[0].id : null;
+
     if (activeConnection) {
       activeConnection.blankProject = false;
-      activeConnection.viewTitle = name === "New Project" ? "Aggregates" : name;
+      activeConnection.viewTitle = name;
+      activeConnection.siteName = siteName;
       if (mvTitleBar) {
         mvTitleBar.textContent = buildSessionTitle(activeConnection, true);
       }
@@ -2582,12 +2833,41 @@
     if (siteHome) {
       var label = siteHome.querySelector("span");
       if (label) {
-        label.textContent = (activeConnection && activeConnection.viewTitle) || "Aggregat";
+        // Site strip truncates long names like real Aggregat → Site1
+        label.textContent = siteName.length > 8 ? siteName.slice(0, 8) : siteName;
+      }
+    }
+    var serialEl = document.getElementById("mvDevicesSerialPort");
+    if (serialEl) {
+      var hasOpt = false;
+      for (var s = 0; s < serialEl.options.length; s++) {
+        if (serialEl.options[s].value === serialPort || serialEl.options[s].text === serialPort) {
+          serialEl.selectedIndex = s;
+          hasOpt = true;
+          break;
+        }
+      }
+      if (!hasOpt) {
+        var opt = document.createElement("option");
+        opt.value = serialPort;
+        opt.textContent = serialPort;
+        serialEl.insertBefore(opt, serialEl.firstChild);
+        serialEl.selectedIndex = 0;
+      }
+    }
+    if (typeof syncDevicesConnTypeUi === "function") {
+      try {
+        syncDevicesConnTypeUi();
+      } catch (err) {
+        /* ignore */
       }
     }
     if (mvStatusText) {
       mvStatusText.textContent =
         "Scanners General Data retrieve: Completed " + formatStatusTimestamp();
+    }
+    if (mvVesselStrip && mvVesselStrip.parentElement) {
+      mvVesselStrip.parentElement.hidden = false;
     }
     renderVessels();
     window.dispatchEvent(new CustomEvent("install-guide:project-created"));
@@ -2660,8 +2940,22 @@
     return currentMvView === "devices";
   };
   window.mvToggleDistanceLevel = function () {
+    // MainToolBar.ToggleLevelDistance → flip IsViewLevel, refresh silo cards.
+    isViewLevel = !isViewLevel;
+    syncLevelDistanceChrome();
+    renderVessels();
+    if (vesselDetailMode && selectedVesselId) {
+      var v = findVessel(selectedVesselId);
+      if (v) {
+        fillOverviewLeft(v);
+      }
+    }
     if (window.MvDialogs) {
-      window.MvDialogs.status("Distance / Level display toggled.");
+      window.MvDialogs.status(
+        isViewLevel
+          ? "Display: Level (from vessel bottom)."
+          : "Display: Distance / headspace (from device)."
+      );
     }
   };
 
@@ -2669,5 +2963,6 @@
   wireDragFixed(multiVisionShell);
   wireTray();
   wireControls();
+  syncLevelDistanceChrome();
   renderVessels();
 })();
