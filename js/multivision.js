@@ -931,15 +931,10 @@
     return true;
   }
 
-  function vesselChipSiloSvg(uid, fillPct) {
-    // Flat strip icon; fill height tracks vessel volume % (same as home card silo).
+  function vesselChipSiloSvg(uid) {
+    // Flat strip icon matched to real MultiVision vessel chip (sampled colors).
+    // Static graphic — do not tint from vessel material or live fill %.
     var clipId = "chipSiloClip_" + uid;
-    var fill = Math.max(0, Math.min(100, Number(fillPct) || 0));
-    var bodyTop = 5.5;
-    var bodyBottom = 32.5;
-    var bodyH = bodyBottom - bodyTop;
-    var fillH = (fill / 100) * bodyH;
-    var fillTop = bodyBottom - fillH;
     return (
       '<svg class="mv-vessel-chip-silo" viewBox="0 0 20 34" width="17" height="32" aria-hidden="true">' +
       "<defs>" +
@@ -950,12 +945,10 @@
       '<g clip-path="url(#' +
       clipId +
       ')">' +
-      '<rect x="2" y="1.5" width="16" height="31" fill="#E8E7EA"/>' +
-      '<rect x="2" y="' +
-      fillTop.toFixed(2) +
-      '" width="16" height="' +
-      fillH.toFixed(2) +
-      '" fill="#8DBC90"/>' +
+      '<rect x="2" y="1.5" width="16" height="4" fill="#E8E7EA"/>' +
+      '<rect x="2" y="5.5" width="16" height="3.5" fill="#EEBE6E"/>' +
+      '<rect x="2" y="9" width="16" height="23" fill="#8DBC90"/>' +
+      '<rect x="2" y="21" width="16" height="1.4" fill="#B3686A"/>' +
       "</g>" +
       '<path d="M2 1.5 H18 V22 L10 32.5 L2 22 Z" fill="none" stroke="#5A5A5C" stroke-width="1.1" stroke-linejoin="miter"/>' +
       "</svg>"
@@ -976,7 +969,7 @@
     chip.innerHTML =
       '<span class="mv-vessel-chip-graphic">' +
       '<span class="mv-vessel-chip-icon">' +
-      vesselChipSiloSvg(vessel.id.replace(/[^a-z0-9]/gi, "_"), vessel.fill) +
+      vesselChipSiloSvg(vessel.id.replace(/[^a-z0-9]/gi, "_")) +
       '<span class="mv-vessel-chip-dot' +
       (offline ? " is-offline" : "") +
       '" title="' +
