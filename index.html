@@ -1,10 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="ig-preload">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>3D MultiVision Install Guide</title>
   <link rel="icon" href="assets/images/logo_icon.ico" type="image/x-icon">
+  <style id="ig-boot-critical">
+    /* Cover first paint so the empty desktop never flashes before the guide is ready */
+    html.ig-preload,
+    html.ig-preload body {
+      background: #1c242e !important;
+    }
+    #igBootCurtain {
+      position: fixed;
+      inset: 0;
+      z-index: 100000;
+      background: #1c242e;
+      opacity: 1;
+      transition: opacity 0.55s ease;
+      pointer-events: none;
+    }
+    #igBootCurtain.ig-boot-curtain--out {
+      opacity: 0;
+    }
+  </style>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/desktop.css">
   <link rel="stylesheet" href="css/ebob-backdrop.css">
@@ -17,7 +36,8 @@
   <link rel="stylesheet" href="css/browser.css">
   <link rel="stylesheet" href="css/install-guide.css">
 </head>
-<body class="desktop-page">
+<body class="desktop-page ig-boot-pending">
+  <div id="igBootCurtain" class="ig-boot-curtain" aria-hidden="true"></div>
 
   <div class="page-wrap page-wrap--desktop-mode" id="pageWrap">
     <div class="desktop-with-taskbar">

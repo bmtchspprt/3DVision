@@ -2133,9 +2133,10 @@
     }
   }
 
-  function openVesselOverview(vesselId) {
+  function openVesselOverview(vesselId, done) {
     var vessel = findVessel(vesselId || selectedVesselId);
     if (!vessel) {
+      if (typeof done === "function") done();
       return;
     }
     selectedVesselId = vessel.id;
@@ -2158,7 +2159,13 @@
           if (overview3dApi && overview3dApi.resize) {
             overview3dApi.resize();
           }
+          // One more frame so WebGL can paint before boot curtain lifts
+          window.requestAnimationFrame(function () {
+            if (typeof done === "function") done();
+          });
         });
+      } else if (typeof done === "function") {
+        done();
       }
     });
   }
@@ -2718,14 +2725,28 @@
     activeConnection = connection;
 
     function afterOpen() {
-      if (connection.openOverviewId) {
-        openVesselOverview(connection.openOverviewId);
+      function signalReady() {
+        if (typeof connection.onReady === "function") {
+          try {
+            connection.onReady();
+          } catch (err) {
+            /* ignore */
+          }
+        }
       }
+
       if (connection.tease && multiVisionShell) {
         multiVisionShell.classList.add("mv-shell--tease");
       } else if (multiVisionShell) {
         multiVisionShell.classList.remove("mv-shell--tease");
       }
+
+      if (connection.openOverviewId) {
+        openVesselOverview(connection.openOverviewId, signalReady);
+      } else {
+        signalReady();
+      }
+
       if (connection.blankProject && !connection.tease) {
         window.dispatchEvent(new CustomEvent("install-guide:connected"));
       }

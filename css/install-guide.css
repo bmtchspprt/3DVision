@@ -200,6 +200,27 @@ body.ig-tease #multiVisionShell.mv-shell--tease {
   opacity: 1;
 }
 
+/* Smooth first paint — solid curtain covers until tease + chooser are ready.
+   Keep page content laid out underneath so WebGL can size/paint before reveal. */
+body.ig-boot-ready .ig-mode-panel {
+  animation: ig-boot-fade-in 0.55s ease both;
+}
+
+body.ig-boot-ready #multiVisionShell.mv-shell--tease {
+  animation: ig-boot-fade-in 0.65s ease both;
+}
+
+@keyframes ig-boot-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* Never capture the full screen — only the card itself is interactive */
 .ig-root.ig-blocking {
   pointer-events: none;

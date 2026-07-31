@@ -434,9 +434,38 @@
     }
   }
 
-  function startTeaseBackground() {
+  function finishBootReveal() {
+    if (document.body.classList.contains("ig-boot-ready")) return;
+    window.requestAnimationFrame(function () {
+      window.requestAnimationFrame(function () {
+        document.documentElement.classList.remove("ig-preload");
+        document.body.classList.remove("ig-boot-pending");
+        document.body.classList.add("ig-boot-ready");
+        var curtain = document.getElementById("igBootCurtain");
+        if (curtain) {
+          curtain.classList.add("ig-boot-curtain--out");
+          window.setTimeout(function () {
+            curtain.hidden = true;
+          }, 600);
+        }
+      });
+    });
+  }
+
+  function startTeaseBackground(onReady) {
     document.body.classList.add("ig-tease");
-    if (typeof window.openMultiVisionFromConnect !== "function") return;
+    var readyFired = false;
+    function done() {
+      if (readyFired) return;
+      readyFired = true;
+      if (typeof onReady === "function") onReady();
+    }
+    // Safety: never leave users stuck on the boot curtain
+    window.setTimeout(done, 2500);
+    if (typeof window.openMultiVisionFromConnect !== "function") {
+      done();
+      return;
+    }
     window.openMultiVisionFromConnect({
       userName: "demoUser",
       serverHost: "127.0.0.1:22222",
@@ -446,6 +475,7 @@
       tease: true,
       instant: true,
       openOverviewId: "lime-stone",
+      onReady: done,
     });
   }
 
@@ -855,7 +885,7 @@
     }
     clearHighlight();
     clearPoll();
-    startTeaseBackground();
+    startTeaseBackground(finishBootReveal);
   }
 
   function boot() {
