@@ -278,7 +278,7 @@
         "</code>.",
       target: "#cfg-server-address-wrap",
       advanceOn: "install-guide:host-ip-ok",
-      pointer: "right",
+      pointer: "left",
     },
     {
       id: "server-config-ok",
@@ -886,19 +886,17 @@
     var top;
     var midY = rect.top + rect.height / 2 - 4;
     if (mode === "right") {
-      left = Math.min(
-        rect.right - 20,
-        Math.max(rect.left + 28, Math.min(rect.left + 120, window.innerWidth - size - 8))
-      );
+      left = Math.min(rect.right + 6, window.innerWidth - size - 8);
       top = midY;
     } else if (mode === "left") {
-      left = Math.max(8, rect.left - size + 8);
+      left = Math.max(8, rect.left - size - 4);
       top = midY;
     } else {
+      // Sit fully under the target so typed text stays readable
       left =
         rect.left +
         Math.min(Math.max(rect.width * 0.35, 24), Math.max(rect.width - 24, 24));
-      top = rect.bottom - 10;
+      top = rect.bottom + 6;
     }
     left = Math.max(4, Math.min(left, window.innerWidth - size - 4));
     top = Math.max(4, Math.min(top, window.innerHeight - size - 4));
@@ -921,6 +919,14 @@
   function stepPointer(step) {
     var target = stepTarget(step);
     if (!step) return "bottom";
+    // Keep the pointer off typing fields so ghosted text stays readable
+    if (
+      target === "#cfg-server-address-wrap" ||
+      target === "#user-name-wrap" ||
+      target === "#password-wrap"
+    ) {
+      return "left";
+    }
     if (
       target === WIZ_NEXT ||
       target === "#btn-connect" ||
@@ -929,9 +935,6 @@
       target === "#btnBrowseServer" ||
       target === "#btn-edit-server" ||
       target === "#btn-config-ok" ||
-      target === "#cfg-server-address-wrap" ||
-      target === "#user-name-wrap" ||
-      target === "#password-wrap" ||
       target === "#browserUrl" ||
       target === "#browserUrlWrap"
     ) {
