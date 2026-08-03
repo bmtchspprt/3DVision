@@ -227,6 +227,31 @@
     trigger.setAttribute("aria-expanded", "true");
     menuBarActive = true;
     updateCommHeaders();
+    if (trigger.id === "mv-menu-edit") {
+      updateEditingMenuEnabling();
+    }
+  }
+
+  /** MainScreen.OnMenuEditOpened / EditingMenuEnabling */
+  function updateEditingMenuEnabling() {
+    if (!menubar) return;
+    var state =
+      typeof global.mvGetEditingMenuState === "function"
+        ? global.mvGetEditingMenuState()
+        : null;
+    if (!state) return;
+    var map = {
+      "edit-add-site": state.addSite,
+      "edit-add-vessel": state.addVessel,
+      "edit-add-scanner": state.addScanner,
+      "edit-del-site": state.deleteSite,
+      "edit-del-vessel": state.deleteVessel,
+      "edit-del-scanner": state.deleteScanner,
+    };
+    Object.keys(map).forEach(function (id) {
+      var btn = menubar.querySelector('[data-mv-menu-id="' + id + '"]');
+      if (btn) btn.disabled = !map[id];
+    });
   }
 
   function isTopMenuOpen() {
@@ -421,44 +446,17 @@
         break;
 
       case "edit-add-site":
-        dlg.open("mv-dlg-add-entity");
-        setTimeout(function () {
-          var t = document.getElementById("mvAddType");
-          var n = document.getElementById("mvAddName");
-          if (t) t.value = "Site";
-          if (n) n.value = "Site1";
-        }, 0);
+        dlg.open("mv-dlg-project-wizard", { mode: "site" });
         break;
       case "edit-add-vessel":
-        dlg.open("mv-dlg-add-entity");
-        setTimeout(function () {
-          var t = document.getElementById("mvAddType");
-          var n = document.getElementById("mvAddName");
-          var d = document.getElementById("mvAddDesc");
-          if (t) t.value = "Vessel";
-          if (n) {
-            n.value =
-              typeof window.mvSuggestNextVesselName === "function"
-                ? window.mvSuggestNextVesselName()
-                : "Vessel1";
-            try {
-              n.focus();
-              n.select();
-            } catch (err) {
-              /* ignore */
-            }
-          }
-          if (d) d.value = "";
-        }, 0);
+        dlg.open("mv-dlg-project-wizard", { mode: "vessel" });
         break;
       case "edit-add-scanner":
-        dlg.open("mv-dlg-add-entity");
-        setTimeout(function () {
-          var t = document.getElementById("mvAddType");
-          var n = document.getElementById("mvAddName");
-          if (t) t.value = "Scanner";
-          if (n) n.value = "Scanner 0";
-        }, 0);
+        if (typeof global.mvAddScanner === "function") {
+          global.mvAddScanner();
+        } else {
+          dlg.status("Scanner added.");
+        }
         break;
       case "edit-del-site":
       case "edit-del-vessel":
@@ -665,6 +663,9 @@
           }
           subPopup.hidden = !wasHidden;
           subBtn.classList.toggle("is-open", !subPopup.hidden);
+          if (!subPopup.hidden && (subBtn.getAttribute("data-mv-menu-id") === "edit-add" || subBtn.getAttribute("data-mv-menu-id") === "edit-delete")) {
+            updateEditingMenuEnabling();
+          }
         }
         return;
       }
@@ -704,6 +705,12 @@
       }
       popup.hidden = false;
       item.classList.add("is-open");
+      if (
+        item.getAttribute("data-mv-menu-id") === "edit-add" ||
+        item.getAttribute("data-mv-menu-id") === "edit-delete"
+      ) {
+        updateEditingMenuEnabling();
+      }
     });
   }
 

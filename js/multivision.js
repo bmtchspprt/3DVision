@@ -3017,21 +3017,136 @@
     return "Vessel" + n;
   };
 
-  /**
-   * Edit → Add → Vessel (MainScreen.OnEditAddVessel / MainScreenMngr.AddVesselToSite).
-   * Emulator: append a silo to the site and refresh the home grid.
-   */
-  window.mvAddVessel = function (opts) {
-    opts = opts || {};
-    if (VESSELS.length >= 64) {
-      if (window.MvDialogs && typeof window.MvDialogs.showMessage === "function") {
-        window.MvDialogs.showMessage(
-          "Maximum number of vessels for this site has been reached.",
-          "Add Vessel"
-        );
-      }
-      return null;
+  window.mvGetCurrentSiteName = function () {
+    if (activeConnection && activeConnection.siteName) {
+      return activeConnection.siteName;
     }
+    var siteHome = document.getElementById("mvSiteHome");
+    var label = siteHome && siteHome.querySelector("span");
+    var text = label ? (label.textContent || "").trim() : "";
+    if (text && text !== "(No Project)") return text === "Aggregat" ? "Site1" : text;
+    return "Site1";
+  };
+
+  window.mvSuggestNextSiteName = function () {
+    var n = 1;
+    var used = {};
+    VESSELS.forEach(function (v) {
+      if (v.siteName) used[String(v.siteName).toLowerCase()] = true;
+    });
+    var cur = window.mvGetCurrentSiteName();
+    if (cur) used[String(cur).toLowerCase()] = true;
+    while (used["site" + n]) n += 1;
+    return "Site" + n;
+  };
+
+  /** First defined scanner connection on the current site (locks vessel-add connection type). */
+  window.mvGetFirstSiteConnection = function () {
+    var site = window.mvGetCurrentSiteName();
+    for (var i = 0; i < VESSELS.length; i++) {
+      var v = VESSELS[i];
+      if (v.siteName && v.siteName !== site) continue;
+      if (v.connType || v.serialPort) {
+        return {
+          connType: v.connType || "rs485",
+          serialPort: v.serialPort || "COM3",
+        };
+      }
+    }
+    return null;
+  };
+
+  /**
+   * Display context for Edit menu enablement (MainScreen.EditingMenuEnabling).
+   * Site home → Site; vessel detail tabs → Vessel; Devices → Scanner.
+   */
+  window.mvGetDisplayType = function () {
+    if (currentMvView === "devices") return "scanner";
+    if (
+      vesselDetailMode &&
+      (currentMvView === "overview" ||
+        currentMvView === "parameters" ||
+        currentMvView === "logs")
+    ) {
+      return "vessel";
+    }
+    return "site";
+  };
+
+  window.mvGetSelectedVessel = function () {
+    return findVessel(selectedVesselId) || null;
+  };
+
+  window.mvGetEditingMenuState = function () {
+    var state = {
+      addSite: false,
+      deleteSite: false,
+      addVessel: false,
+      deleteVessel: false,
+      addScanner: false,
+      deleteScanner: false,
+    };
+    var display = window.mvGetDisplayType();
+    var vessel = window.mvGetSelectedVessel();
+    var hasConnected = !!(vessel && !isVesselOffline(vessel));
+    var hasSite =
+      !!(activeConnection && !activeConnection.blankProject) || VESSELS.length > 0;
+
+    if (display === "site") {
+      state.addSite = true;
+      state.addVessel = true;
+      if (vessel && !hasConnected) {
+        state.deleteVessel = true;
+        state.addScanner = true;
+      }
+      state.deleteSite = hasSite;
+    } else if (display === "vessel") {
+      if (vessel && !hasConnected) {
+        state.addScanner = true;
+        state.deleteVessel = true;
+      }
+    } else if (display === "scanner") {
+      if (vessel && isVesselOffline(vessel)) {
+        state.deleteScanner = true;
+      }
+    }
+    return state;
+  };
+
+  var pendingSiteName = null;
+
+  window.mvBeginAddSite = function (siteName) {
+    pendingSiteName = siteName || window.mvSuggestNextSiteName();
+    return pendingSiteName;
+  };
+
+  window.mvCancelAddSite = function () {
+    pendingSiteName = null;
+  };
+
+  function applySiteStripName(siteName) {
+    var siteHome = document.getElementById("mvSiteHome");
+    if (siteHome) {
+      var label = siteHome.querySelector("span");
+      if (label) {
+        label.textContent =
+          siteName.length > 8 ? siteName.slice(0, 8) : siteName;
+      }
+    }
+    if (activeConnection) {
+      activeConnection.siteName = siteName;
+      activeConnection.blankProject = false;
+      if (!activeConnection.viewTitle || activeConnection.viewTitle === "(No Project)") {
+        activeConnection.viewTitle = "Aggregates";
+      }
+      if (mvTitleBar) {
+        mvTitleBar.textContent = buildSessionTitle(activeConnection, true);
+      }
+    }
+  }
+
+  function buildVesselRecord(opts) {
+    opts = opts || {};
     var shortName = (opts.name || "").trim() || window.mvSuggestNextVesselName();
     shortName = shortName.replace(/\s*\(MV\)\s*$/i, "").trim() || window.mvSuggestNextVesselName();
     var idBase = shortName
@@ -3058,6 +3173,7 @@
     var minL = 6.8;
     var levelPct = ((avgL - emptyL) / (fullL - emptyL)) * 100;
     var ref = VESSELS[0] || {};
+    var siteName = opts.siteName || window.mvGetCurrentSiteName();
     var vessel = {
       id: id,
       name: shortName + " (MV)",
@@ -3082,13 +3198,35 @@
       temp: 24.5,
       snr: 36.4,
       output: 4 + (levelPct / 100) * 16,
-      connType: ref.connType || "rs485",
-      serialPort: ref.serialPort || "COM3",
-      numDevices: 1,
-      connectionStatus: VESSEL_CONNECTION.ONLINE,
+      connType: opts.connType || ref.connType || "rs485",
+      serialPort: opts.serialPort || ref.serialPort || "COM3",
+      numDevices: Math.max(1, parseInt(opts.numDevices, 10) || 1),
+      connectionStatus:
+        opts.connectionStatus ||
+        (opts.provisional ? VESSEL_CONNECTION.OFFLINE : VESSEL_CONNECTION.ONLINE),
       description: opts.description || "",
+      siteName: siteName,
     };
     ensureVesselParams(vessel);
+    return vessel;
+  }
+
+  /**
+   * Edit → Add → Vessel (MainScreen.OnEditAddVessel / MainScreenMngr.AddVesselToSite).
+   * Provisional add mirrors real app; cancel deletes last vessel.
+   */
+  window.mvAddVessel = function (opts) {
+    opts = opts || {};
+    if (VESSELS.length >= 64) {
+      if (window.MvDialogs && typeof window.MvDialogs.showMessage === "function") {
+        window.MvDialogs.showMessage(
+          "Maximum number of vessels for this site has been reached.",
+          "Add Vessel"
+        );
+      }
+      return null;
+    }
+    var vessel = buildVesselRecord(opts);
     VESSELS.push(vessel);
 
     if (activeConnection) {
@@ -3100,20 +3238,148 @@
         mvTitleBar.textContent = buildSessionTitle(activeConnection, true);
       }
     }
-    vesselDetailMode = false;
-    selectedVesselId = vessel.id;
-    setMvView("vessels");
+    if (!opts.provisional) {
+      vesselDetailMode = false;
+      selectedVesselId = vessel.id;
+      setMvView("vessels");
+    } else {
+      selectedVesselId = vessel.id;
+    }
     if (mvVesselStrip && mvVesselStrip.parentElement) {
       mvVesselStrip.parentElement.hidden = false;
     }
-    if (mvStatusText) {
+    if (mvStatusText && !opts.silent) {
       mvStatusText.textContent = "Vessel added: " + vessel.name;
     }
     renderVessels();
-    window.dispatchEvent(
-      new CustomEvent("install-guide:vessel-added", { detail: { vesselId: vessel.id } })
-    );
+    if (!opts.provisional) {
+      window.dispatchEvent(
+        new CustomEvent("install-guide:vessel-added", { detail: { vesselId: vessel.id } })
+      );
+    }
     return vessel;
+  };
+
+  window.mvDeleteVessel = function (vesselId, opts) {
+    opts = opts || {};
+    var idx = -1;
+    for (var i = 0; i < VESSELS.length; i++) {
+      if (VESSELS[i].id === vesselId) {
+        idx = i;
+        break;
+      }
+    }
+    if (idx < 0) return false;
+    VESSELS.splice(idx, 1);
+    if (selectedVesselId === vesselId) {
+      selectedVesselId = VESSELS[0] ? VESSELS[0].id : null;
+    }
+    renderVessels();
+    if (!opts.silent && mvStatusText) {
+      mvStatusText.textContent = "Vessel removed.";
+    }
+    return true;
+  };
+
+  /** Finish Vessel Creation — configure provisional + add extras from # Vessels / # Devices. */
+  window.mvCompleteAddVessel = function (opts) {
+    opts = opts || {};
+    var numVessels = Math.max(1, parseInt(opts.numVessels, 10) || 1);
+    var numDevices = Math.max(1, parseInt(opts.numDevices, 10) || 1);
+    var provisional = opts.provisionalId ? findVessel(opts.provisionalId) : null;
+    if (provisional) {
+      provisional.connType = opts.connType || provisional.connType || "rs485";
+      provisional.serialPort = opts.serialPort || provisional.serialPort || "COM3";
+      provisional.numDevices = numDevices;
+      provisional.siteName = opts.siteName || provisional.siteName || window.mvGetCurrentSiteName();
+      ensureVesselParams(provisional);
+    }
+    // Real loop: already have 1 provisional; add remaining NumberVessels-1
+    for (var i = 1; i < numVessels; i++) {
+      window.mvAddVessel({
+        siteName: opts.siteName,
+        connType: opts.connType,
+        serialPort: opts.serialPort,
+        numDevices: numDevices,
+        connectionStatus: VESSEL_CONNECTION.OFFLINE,
+        silent: true,
+      });
+    }
+    vesselDetailMode = false;
+    setMvView("vessels");
+    renderVessels();
+    window.dispatchEvent(
+      new CustomEvent("install-guide:vessel-added", {
+        detail: { vesselId: provisional ? provisional.id : selectedVesselId },
+      })
+    );
+    return true;
+  };
+
+  window.mvCompleteAddSite = function (opts) {
+    opts = opts || {};
+    var siteName = (opts.siteName || pendingSiteName || window.mvSuggestNextSiteName()).trim();
+    var numVessels = Math.max(1, parseInt(opts.numVessels, 10) || 1);
+    var numDevices = Math.max(1, parseInt(opts.numDevices, 10) || 1);
+    pendingSiteName = null;
+    applySiteStripName(siteName);
+    for (var i = 0; i < numVessels; i++) {
+      window.mvAddVessel({
+        siteName: siteName,
+        connType: opts.connType || "rs485",
+        serialPort: opts.serialPort || "COM3",
+        numDevices: numDevices,
+        connectionStatus: VESSEL_CONNECTION.OFFLINE,
+        silent: i > 0,
+      });
+    }
+    vesselDetailMode = false;
+    setMvView("vessels");
+    renderVessels();
+    return true;
+  };
+
+  /** Edit → Add → Scanner (MainScreenMngr.AddScanner) — no wizard. */
+  window.mvAddScanner = function () {
+    var vessel = window.mvGetSelectedVessel();
+    if (!vessel) return false;
+    if (!isVesselOffline(vessel)) {
+      // Menu should already disable when connected; guard anyway.
+      if (window.MvDialogs) {
+        window.MvDialogs.showMessage(
+          "Disconnect the vessel before adding a scanner.",
+          "Add Scanner"
+        );
+      }
+      return false;
+    }
+    var supportMulti = true;
+    var maxScanners = supportMulti ? 50 : 1;
+    var count = Math.max(1, parseInt(vessel.numDevices, 10) || 1);
+    if (count >= maxScanners) {
+      if (window.MvDialogs) {
+        window.MvDialogs.showMessage(
+          supportMulti
+            ? "Maximum number of scanners for this vessel has been reached."
+            : "The only one scanner can be defined per vessel.",
+          "Add Scanner"
+        );
+      }
+      return false;
+    }
+    vessel.numDevices = count + 1;
+    var first = window.mvGetFirstSiteConnection();
+    if (first) {
+      vessel.connType = first.connType;
+      vessel.serialPort = first.serialPort;
+    }
+    ensureVesselParams(vessel);
+    renderVessels();
+    if (currentMvView === "devices") {
+      fillDevicesPage(vessel);
+    }
+    if (window.MvDialogs) window.MvDialogs.status("Scanner added.");
+    return true;
   };
 
   window.mvSetStatusText = function (msg) {

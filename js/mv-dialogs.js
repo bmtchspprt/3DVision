@@ -129,6 +129,13 @@
   function closeDialog(id) {
     var el = $(id);
     if (el) {
+      if (
+        id === "mv-dlg-project-wizard" &&
+        typeof el.__mvProjWizCancel === "function" &&
+        !el.hidden
+      ) {
+        el.__mvProjWizCancel();
+      }
       el.hidden = true;
       var i = openIds.indexOf(id);
       if (i >= 0) openIds.splice(i, 1);
@@ -143,7 +150,7 @@
     hideMessage();
   }
 
-  function openDialog(id) {
+  function openDialog(id, opts) {
     ensureDialog(id);
     var el = $(id);
     if (!el) return;
@@ -164,7 +171,9 @@
         }, 40);
       }
     }
-    if (id === "mv-dlg-project-wizard" && typeof el.__mvProjWizReset === "function") {
+    if (id === "mv-dlg-project-wizard" && typeof el.__mvProjWizConfigure === "function") {
+      el.__mvProjWizConfigure(opts || { mode: "project" });
+    } else if (id === "mv-dlg-project-wizard" && typeof el.__mvProjWizReset === "function") {
       el.__mvProjWizReset();
     }
     if (id === "mv-dlg-adv-summary") {
@@ -591,10 +600,14 @@
         '<input type="text" id="mvProjNumDevices" value="1" autocomplete="off">' +
         "</div></fieldset>" +
         '<fieldset class="mv-proj-wiz-box"><legend>Connection Type</legend>' +
+        // WizardStepSite: 2-col radios — HART/RS-485/TCP | GPRS/GPRS+SMS/Smart GPRS
         '<div class="mv-proj-wiz-radios" id="mvProjConTypes">' +
         '<label class="mv-proj-wiz-radio"><input type="radio" name="mvProjConType" value="hart"> HART</label>' +
+        '<label class="mv-proj-wiz-radio" data-gprs="1"><input type="radio" name="mvProjConType" value="gprs"> GPRS</label>' +
         '<label class="mv-proj-wiz-radio"><input type="radio" name="mvProjConType" value="rs485" checked> RS-485</label>' +
+        '<label class="mv-proj-wiz-radio" data-gprs="1"><input type="radio" name="mvProjConType" value="gprs_sms"> GPRS + SMS</label>' +
         '<label class="mv-proj-wiz-radio"><input type="radio" name="mvProjConType" value="tcp"> TCP/IP</label>' +
+        '<label class="mv-proj-wiz-radio" data-gprs="1"><input type="radio" name="mvProjConType" value="smart_gprs"> Smart GPRS</label>' +
         "</div></fieldset>" +
         '<fieldset class="mv-proj-wiz-box" id="mvProjConfigBox"><legend>Configuration</legend>' +
         '<div class="mv-proj-wiz-row">' +
@@ -616,7 +629,7 @@
         '<input type="text" id="mvProjTcpPort" value="10001" autocomplete="off">' +
         "</div></fieldset></div>";
       var body =
-        '<div class="mv-proj-wiz" data-proj-step="1">' +
+        '<div class="mv-proj-wiz" data-proj-step="1" data-proj-mode="project">' +
         '<div class="mv-proj-wiz-cols">' +
         '<div class="mv-proj-wiz-left">' +
         // OEM binMaster: ResomBase.ClientRunImagesDir = ImagesBin → WizardLogo.JPG
@@ -630,7 +643,7 @@
         "</div></div></div></div>";
       return wrapDialog(
         "mv-dlg-project-wizard",
-        "Wizard",
+        "Project Creation",
         720,
         body,
         '<div class="mv-dialog-footer mv-proj-wiz-footer">' +
@@ -2775,6 +2788,7 @@
     root.__mvProjWizWired = true;
 
     var shell = root.querySelector(".mv-proj-wiz");
+    var winTitle = root.querySelector(".title-bar-text");
     var titleEl = root.querySelector("#mvProjWizStepTitle");
     var backBtn = root.querySelector("#mvProjWizBack");
     var nextBtn = root.querySelector("#mvProjWizNext");
@@ -2786,37 +2800,154 @@
     var serialSel = root.querySelector("#mvProjSerialPort");
     var configBox = root.querySelector("#mvProjConfigBox");
     var addConfigBox = root.querySelector("#mvProjAddConfigBox");
+    var conTypesBox = root.querySelector("#mvProjConTypes");
     var step = 1;
+    // project | site | vessel — WizardWindowProject.SiteDefinType
+    var mode = "project";
+    var completed = false;
+    var provisionalVesselId = null;
+    var connectionLocked = false;
+    // ApplicConfigParams.IsSupportGPR default true
+    var supportGpr = true;
 
     function selectedConType() {
       var checked = root.querySelector('input[name="mvProjConType"]:checked');
       return checked ? checked.value : "rs485";
     }
 
+    function setWinTitle(text) {
+      if (winTitle) winTitle.textContent = text;
+    }
+
+    function setRadioEnabled(value, enabled) {
+      var radio = root.querySelector('input[name="mvProjConType"][value="' + value + '"]');
+      if (radio) radio.disabled = !enabled;
+    }
+
+    function syncGprVisibility() {
+      root.querySelectorAll(".mv-proj-wiz-radio[data-gprs]").forEach(function (lab) {
+        lab.classList.toggle("is-hidden", !supportGpr);
+        var input = lab.querySelector("input");
+        if (input && !supportGpr) {
+          input.disabled = true;
+          if (input.checked) {
+            var rs485 = root.querySelector('input[name="mvProjConType"][value="rs485"]');
+            if (rs485) rs485.checked = true;
+          }
+        }
+      });
+    }
+
+    function syncScannerCountRadios() {
+      // EnableRadioButtonsAccordingToNumScanners: HART/GPRS only when # devices == 1
+      var numDevices = devicesInput ? parseInt(devicesInput.value, 10) : 1;
+      if (isNaN(numDevices) || numDevices < 1) numDevices = 1;
+      var allowRestricted = numDevices === 1;
+      var restricted = ["hart", "gprs", "gprs_sms", "smart_gprs"];
+      var forced = false;
+      restricted.forEach(function (val) {
+        if (connectionLocked) return;
+        var radio = root.querySelector('input[name="mvProjConType"][value="' + val + '"]');
+        if (!radio) return;
+        if (val !== "hart" && !supportGpr) {
+          radio.disabled = true;
+          return;
+        }
+        radio.disabled = !allowRestricted;
+        if (!allowRestricted && radio.checked) {
+          forced = true;
+          radio.checked = false;
+        }
+      });
+      if (forced) {
+        var rs485 = root.querySelector('input[name="mvProjConType"][value="rs485"]');
+        if (rs485) rs485.checked = true;
+      }
+      if (!connectionLocked) {
+        setRadioEnabled("rs485", true);
+        setRadioEnabled("tcp", true);
+      }
+    }
+
     function syncConnectionUi() {
       var type = selectedConType();
       var isSerial = type === "rs485" || type === "hart";
       var isTcp = type === "tcp";
-      if (configBox) configBox.classList.toggle("is-hidden", !isSerial);
-      if (addConfigBox) addConfigBox.classList.toggle("is-hidden", !isTcp);
-      if (serialSel) serialSel.disabled = !isSerial;
+      var isGprs =
+        type === "gprs" || type === "gprs_sms" || type === "smart_gprs";
+      if (configBox) configBox.classList.toggle("is-hidden", !(isSerial || isGprs));
+      if (addConfigBox) addConfigBox.classList.toggle("is-hidden", !isTcp && type !== "gprs_sms" && type !== "smart_gprs");
+      if (type === "tcp") {
+        if (addConfigBox) addConfigBox.classList.remove("is-hidden");
+      }
+      if (serialSel) {
+        serialSel.disabled = connectionLocked || !(isSerial || type === "gprs_sms");
+      }
+      syncScannerCountRadios();
+    }
+
+    function lockConnectionType(locked, connType, serialPort) {
+      connectionLocked = !!locked;
+      if (conTypesBox) conTypesBox.classList.toggle("is-locked", connectionLocked);
+      if (connType) {
+        var radio = root.querySelector(
+          'input[name="mvProjConType"][value="' + connType + '"]'
+        );
+        if (radio) radio.checked = true;
+      }
+      if (serialPort && serialSel) {
+        serialSel.value = serialPort;
+        if (serialSel.selectedIndex < 0) serialSel.selectedIndex = 0;
+      }
+      root.querySelectorAll('input[name="mvProjConType"]').forEach(function (r) {
+        r.disabled = connectionLocked;
+      });
+      if (serialSel && connectionLocked) serialSel.disabled = true;
+      syncConnectionUi();
+    }
+
+    function readSiteCounts() {
+      var numVessels = vesselsInput ? parseInt(vesselsInput.value, 10) : 1;
+      var numDevices = devicesInput ? parseInt(devicesInput.value, 10) : 1;
+      if (isNaN(numVessels) || numVessels < 1) numVessels = 1;
+      if (numVessels > 64) numVessels = 64;
+      if (isNaN(numDevices) || numDevices < 1) numDevices = 1;
+      // Vessel.SupportMultipleScanners default true → MaxMVLScanners 50
+      var maxDev = 50;
+      if (numDevices > maxDev) numDevices = maxDev;
+      if (vesselsInput) vesselsInput.value = String(numVessels);
+      if (devicesInput) devicesInput.value = String(numDevices);
+      return { numVessels: numVessels, numDevices: numDevices };
     }
 
     function goStep(n) {
       step = n === 2 ? 2 : 1;
-      if (shell) shell.setAttribute("data-proj-step", String(step));
+      if (shell) {
+        shell.setAttribute("data-proj-step", String(step));
+        shell.setAttribute("data-proj-mode", mode);
+      }
       root.querySelectorAll(".mv-proj-wiz-pane").forEach(function (pane) {
         var sn = Number(pane.getAttribute("data-proj-pane"));
         pane.hidden = sn !== step;
       });
       if (titleEl) {
-        titleEl.textContent =
-          step === 1 ? "Project General" : "Site # 1 / 1";
+        if (step === 1) {
+          titleEl.textContent = "Project General";
+        } else if (mode === "vessel") {
+          // WizardStepSite.OnStepName → selected site name
+          titleEl.textContent =
+            (siteNameInput && siteNameInput.value.trim()) || "Site1";
+        } else if (mode === "site") {
+          // IsAddSingleSite → empty step name
+          titleEl.textContent = "";
+        } else {
+          titleEl.textContent = "Site # 1 / 1";
+        }
       }
       // WizardWindowProject.CanBack is always false.
       if (backBtn) backBtn.disabled = true;
       if (nextBtn) nextBtn.textContent = step === 1 ? "Next >" : "Finish";
-      if (step === 1 && nameInput) {
+      if (step === 1 && nameInput && mode === "project") {
         nameInput.disabled = false;
         setTimeout(function () {
           nameInput.focus();
@@ -2824,38 +2955,89 @@
         }, 30);
       }
       if (step === 2) {
+        syncGprVisibility();
         syncConnectionUi();
       }
     }
 
     function finishProject() {
+      var counts = readSiteCounts();
       var projectName = (nameInput && nameInput.value.trim()) || "New_Project";
       var siteName = (siteNameInput && siteNameInput.value.trim()) || "Site1";
-      var numVessels = vesselsInput ? parseInt(vesselsInput.value, 10) : 1;
-      var numDevices = devicesInput ? parseInt(devicesInput.value, 10) : 1;
-      if (isNaN(numVessels) || numVessels < 1) numVessels = 1;
-      if (isNaN(numDevices) || numDevices < 1) numDevices = 1;
       var connType = selectedConType();
       var serialPort =
         serialSel && serialSel.value ? serialSel.value : "COM3";
       if (typeof global.mvCreateProjectFromGuide === "function") {
         global.mvCreateProjectFromGuide(projectName, {
           siteName: siteName,
-          numVessels: numVessels,
-          numDevices: numDevices,
+          numVessels: counts.numVessels,
+          numDevices: counts.numDevices,
           connType: connType,
           serialPort: serialPort,
         });
       }
+      completed = true;
+      provisionalVesselId = null;
       status("Project created.");
       closeDialog("mv-dlg-project-wizard");
     }
 
+    function finishVesselOrSite() {
+      var counts = readSiteCounts();
+      var siteName = (siteNameInput && siteNameInput.value.trim()) || "Site1";
+      var connType = selectedConType();
+      var serialPort =
+        serialSel && serialSel.value ? serialSel.value : "COM3";
+      var tcpHost = ($("mvProjTcpHost") && $("mvProjTcpHost").value) || "";
+      var tcpPort = ($("mvProjTcpPort") && $("mvProjTcpPort").value) || "10001";
+
+      if (mode === "vessel") {
+        if (typeof global.mvCompleteAddVessel === "function") {
+          global.mvCompleteAddVessel({
+            provisionalId: provisionalVesselId,
+            siteName: siteName,
+            numVessels: counts.numVessels,
+            numDevices: counts.numDevices,
+            connType: connType,
+            serialPort: serialPort,
+            tcpHost: tcpHost,
+            tcpPort: tcpPort,
+          });
+        }
+        completed = true;
+        provisionalVesselId = null;
+        status("Vessel created.");
+        closeDialog("mv-dlg-project-wizard");
+        return;
+      }
+
+      if (mode === "site") {
+        if (typeof global.mvCompleteAddSite === "function") {
+          global.mvCompleteAddSite({
+            siteName: siteName,
+            numVessels: counts.numVessels,
+            numDevices: counts.numDevices,
+            connType: connType,
+            serialPort: serialPort,
+            tcpHost: tcpHost,
+            tcpPort: tcpPort,
+          });
+        }
+        completed = true;
+        status("Site created.");
+        closeDialog("mv-dlg-project-wizard");
+      }
+    }
+
     function onNext() {
+      if (mode === "vessel" || mode === "site") {
+        finishVesselOrSite();
+        return;
+      }
       if (step === 1) {
         var projectName = nameInput ? nameInput.value.trim() : "";
         if (!projectName) {
-          showMessage("Project name is required.", "Wizard");
+          showMessage("Project name is required.", "Project Creation");
           return;
         }
         if (nameInput) nameInput.disabled = true;
@@ -2874,6 +3056,7 @@
           serialSel.value = "COM3";
           if (serialSel.selectedIndex < 0) serialSel.selectedIndex = 0;
         }
+        lockConnectionType(false);
         goStep(2);
         window.dispatchEvent(new CustomEvent("install-guide:project-general-next"));
         return;
@@ -2885,8 +3068,31 @@
     root.querySelectorAll('input[name="mvProjConType"]').forEach(function (radio) {
       radio.addEventListener("change", syncConnectionUi);
     });
+    if (devicesInput) {
+      devicesInput.addEventListener("change", syncScannerCountRadios);
+      devicesInput.addEventListener("input", syncScannerCountRadios);
+    }
 
-    root.__mvProjWizReset = function () {
+    root.__mvProjWizCancel = function () {
+      if (completed) return;
+      if (mode === "vessel" && provisionalVesselId) {
+        if (typeof global.mvDeleteVessel === "function") {
+          global.mvDeleteVessel(provisionalVesselId, { silent: true });
+        }
+        provisionalVesselId = null;
+      }
+      if (mode === "site" && typeof global.mvCancelAddSite === "function") {
+        global.mvCancelAddSite();
+      }
+    };
+
+    root.__mvProjWizConfigure = function (opts) {
+      opts = opts || {};
+      mode = opts.mode === "vessel" || opts.mode === "site" ? opts.mode : "project";
+      completed = false;
+      provisionalVesselId = null;
+      supportGpr = opts.supportGpr !== false;
+
       if (nameInput) {
         nameInput.disabled = false;
         nameInput.value = "New_Project";
@@ -2895,7 +3101,6 @@
         sitesInput.disabled = false;
         sitesInput.value = "1";
       }
-      if (siteNameInput) siteNameInput.value = "Site1";
       if (vesselsInput) vesselsInput.value = "1";
       if (devicesInput) devicesInput.value = "1";
       if (serialSel) {
@@ -2904,10 +3109,79 @@
       }
       var rs485 = root.querySelector('input[name="mvProjConType"][value="rs485"]');
       if (rs485) rs485.checked = true;
-      goStep(1);
+      syncGprVisibility();
+
+      if (mode === "project") {
+        setWinTitle("Project Creation");
+        if (siteNameInput) {
+          siteNameInput.disabled = false;
+          siteNameInput.value = "Site1";
+        }
+        lockConnectionType(false);
+        goStep(1);
+        return;
+      }
+
+      // WizardShowOnLastPageOnly — open directly on site step with Finish.
+      if (mode === "vessel") {
+        setWinTitle("Vessel Creation");
+        var siteName =
+          (typeof global.mvGetCurrentSiteName === "function" &&
+            global.mvGetCurrentSiteName()) ||
+          "Site1";
+        if (siteNameInput) {
+          siteNameInput.value = siteName;
+          siteNameInput.disabled = true;
+        }
+        // OnEditAddVessel: provisional vessel first; cancel rolls it back.
+        if (typeof global.mvAddVessel === "function") {
+          var provisional = global.mvAddVessel({
+            provisional: true,
+            connectionStatus:
+              global.VESSEL_CONNECTION && global.VESSEL_CONNECTION.OFFLINE
+                ? global.VESSEL_CONNECTION.OFFLINE
+                : "offline",
+            silent: true,
+          });
+          provisionalVesselId = provisional && provisional.id ? provisional.id : null;
+        }
+        var firstConn =
+          typeof global.mvGetFirstSiteConnection === "function"
+            ? global.mvGetFirstSiteConnection()
+            : null;
+        if (firstConn) {
+          lockConnectionType(true, firstConn.connType || "rs485", firstConn.serialPort || "COM3");
+        } else {
+          lockConnectionType(false);
+        }
+        goStep(2);
+        return;
+      }
+
+      if (mode === "site") {
+        setWinTitle("Site Creation");
+        var nextSite =
+          (typeof global.mvSuggestNextSiteName === "function" &&
+            global.mvSuggestNextSiteName()) ||
+          "Site1";
+        if (siteNameInput) {
+          siteNameInput.disabled = false;
+          siteNameInput.value = nextSite;
+        }
+        // OnEditAddSite creates provisional site; we track name for cancel.
+        if (typeof global.mvBeginAddSite === "function") {
+          global.mvBeginAddSite(nextSite);
+        }
+        lockConnectionType(false);
+        goStep(2);
+      }
     };
 
-    goStep(1);
+    root.__mvProjWizReset = function () {
+      root.__mvProjWizConfigure({ mode: "project" });
+    };
+
+    root.__mvProjWizConfigure({ mode: "project" });
   }
 
   function onDialogOk(id) {
@@ -3021,8 +3295,8 @@
     });
   }
 
-  function open(id) {
-    openDialog(id);
+  function open(id, opts) {
+    openDialog(id, opts);
     if (id === "mv-dlg-echo-curve") {
       setTimeout(function () {
         drawEchoDemo($("mvEchoCanvas"));

@@ -3698,11 +3698,16 @@
   display: none !important;
 }
 .mv-proj-wiz-radios {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 10px 8px 4px;
-  max-width: 160px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 36px;
+  row-gap: 14px;
+  padding: 12px 8px 6px;
+  max-width: 340px;
+}
+.mv-proj-wiz-radios.is-locked {
+  opacity: 0.85;
+  pointer-events: none;
 }
 .mv-proj-wiz-radio {
   display: flex;
@@ -3712,6 +3717,13 @@
   font-weight: 400;
   color: #222;
   white-space: nowrap;
+}
+.mv-proj-wiz-radio input:disabled + span,
+.mv-proj-wiz-radio:has(input:disabled) {
+  color: #888;
+}
+.mv-proj-wiz-radio.is-hidden {
+  display: none !important;
 }
 .mv-proj-wiz-footer {
   background: #e8eef2;
