@@ -7,12 +7,27 @@ alwaysApply: true
 
 This is a hard requirement for this repository.
 
+## Commit message style (required)
+
+Keep messages **short and vague**. Prefer:
+
+- `Updated X`
+- `Fixed X`
+- `Added X`
+
+Rules:
+
+1. **One short line only** — no second paragraph, no bullet lists, no “why” essays.
+2. **Never** mention decompile, decompiled sources, XAML dumps, reverse engineering, or internal file/class names from those trees.
+3. **Do not** write detailed changelogs in the commit message.
+4. Do not spell out implementation details (coaching flows, browser quirks, layout math, etc.) in the message.
+
 ## After completing work
 
 Whenever you finish making file changes for a user request (or a coherent chunk of work):
 
 1. **Commit locally** before ending your turn — do not leave modified/untracked work uncommitted unless the user explicitly said not to commit.
-2. Follow the repo's normal git commit protocol (status, diff, log, stage, HEREDOC message, status verify).
+2. Follow the repo's normal git commit protocol (status, diff, log, stage, message, status verify).
 3. Prefer **one commit per completed request/change-set**, not a single mega-commit spanning unrelated tasks when those tasks were separate turns.
 4. Do **not** push unless the user asks to push/publish (or an always-apply rule in this project requires publishing).
 
