@@ -1,6 +1,6 @@
 /**
  * Step-by-step install guide for 3DInstallGuide fork.
- * Modes: HOST Install | Server-Client Remote Viewer | Free (demo silos).
+ * Modes: HOST Install | Client Remote Viewer | Free (demo silos).
  * Flow: blank browser → type downloads URL → Custom + Service install → …
  */
 (function () {
@@ -436,9 +436,9 @@
       "</div></div>" +
       '<div class="ig-mode-row" role="listitem">' +
       '<button type="button" class="ig-mode-btn" data-mode="client">' +
-      '<span class="ig-mode-btn-label">Server-Client Remote Viewer</span>' +
+      '<span class="ig-mode-btn-label">Client Remote Viewer</span>' +
       "</button>" +
-      '<button type="button" class="ig-mode-info" data-info="client" aria-label="About Server-Client Remote Viewer" title="About Server-Client Remote Viewer">' +
+      '<button type="button" class="ig-mode-info" data-info="client" aria-label="About Client Remote Viewer" title="About Client Remote Viewer">' +
       '<span class="ig-mode-info-ico" aria-hidden="true">i</span>' +
       "</button>" +
       '<div class="ig-mode-tip" id="igTipClient" hidden>' +
@@ -956,7 +956,7 @@
     var kicker = document.getElementById("igKicker");
     if (kicker) {
       kicker.textContent =
-        guideTrack === "client" ? "Server-Client Remote Viewer" : "HOST Install guide";
+        guideTrack === "client" ? "Client Remote Viewer" : "HOST Install guide";
     }
     document.getElementById("igTitle").textContent = step.title;
     document.getElementById("igBody").innerHTML = step.body;

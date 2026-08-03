@@ -35,10 +35,38 @@
     hideCtxMenu();
   }
 
-  function launchSelectedInstaller() {
-    if (selectedFile === INSTALLER_EXE && typeof window.showInstallerUac === "function") {
-      window.showInstallerUac();
+  var lastRowClickAt = 0;
+  var lastRowClickName = "";
+  var launchLockUntil = 0;
+
+  function updateRowSelection() {
+    if (!tbody) {
+      return;
     }
+    tbody.querySelectorAll(".sim-open-dat-row").forEach(function (row) {
+      row.classList.toggle(
+        "sim-open-dat-row--sel",
+        row.getAttribute("data-file-name") === selectedFile
+      );
+    });
+  }
+
+  function launchSelectedInstaller() {
+    var now = Date.now();
+    if (now < launchLockUntil) {
+      return;
+    }
+    if (selectedFile !== INSTALLER_EXE || typeof window.showInstallerUac !== "function") {
+      return;
+    }
+    launchLockUntil = now + 700;
+    window.showInstallerUac();
+  }
+
+  function onInstallerRowActivate(fileName) {
+    selectedFile = fileName;
+    updateRowSelection();
+    launchSelectedInstaller();
   }
 
   function renderList() {
@@ -79,17 +107,27 @@
         "<td>" +
         file.size +
         "</td>";
+      // Avoid rebuilding the row on every click — Firefox loses dblclick when the
+      // first click destroys/recreates the <tr>.
       tr.addEventListener("click", function () {
+        var now = Date.now();
+        var sameRow = lastRowClickName === file.name && now - lastRowClickAt < 450;
+        lastRowClickAt = now;
+        lastRowClickName = file.name;
         selectedFile = file.name;
-        renderList();
+        updateRowSelection();
+        if (sameRow) {
+          launchSelectedInstaller();
+        }
       });
-      tr.addEventListener("dblclick", function () {
-        launchSelectedInstaller();
+      tr.addEventListener("dblclick", function (event) {
+        event.preventDefault();
+        onInstallerRowActivate(file.name);
       });
       tr.addEventListener("contextmenu", function (event) {
         event.preventDefault();
         selectedFile = file.name;
-        renderList();
+        updateRowSelection();
         showCtxMenu(event.clientX, event.clientY, file.name === INSTALLER_EXE);
       });
       tbody.appendChild(tr);
