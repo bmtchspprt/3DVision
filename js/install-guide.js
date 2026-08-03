@@ -540,6 +540,28 @@
     }
   }
 
+  function ensureDeviceConfigConnectionView() {
+    if (typeof window.setConnectionNavView === "function") {
+      window.setConnectionNavView("device-config");
+      return;
+    }
+    var device = document.querySelector('input[name="nav-view"][value="device-config"]');
+    var adv = document.querySelector('input[name="nav-view"][value="advanced"]');
+    var demo = document.querySelector('input[name="nav-view"][value="demo"]');
+    if (device) device.checked = true;
+    if (adv) adv.checked = false;
+    if (demo) demo.checked = false;
+    document.querySelectorAll(".view-panel").forEach(function (panel) {
+      panel.classList.toggle("active", panel.id === "view-device-config");
+    });
+  }
+
+  function isAdvancedConnectionViewActive() {
+    var adv = document.querySelector('input[name="nav-view"][value="advanced"]');
+    var panel = document.getElementById("view-advanced");
+    return !!(adv && adv.checked && panel && panel.classList.contains("active"));
+  }
+
   function setGuiding(on) {
     document.body.classList.toggle("ig-guiding", !!on);
   }
@@ -637,22 +659,9 @@
 
   function guideInteractionGuard(e) {
     if (isClickAllowed(e)) return;
+    e.preventDefault();
     e.stopPropagation();
     e.stopImmediatePropagation();
-    // preventDefault on mousedown/pointerdown can block checkbox/radio toggles.
-    // Always cancel click; only preventDefault earlier phases for non-form hits.
-    if (e.type === "click") {
-      e.preventDefault();
-    } else {
-      var tag = e.target && e.target.tagName;
-      var onForm =
-        tag === "INPUT" ||
-        tag === "LABEL" ||
-        (e.target.closest && e.target.closest("label, input"));
-      if (!onForm) {
-        e.preventDefault();
-      }
-    }
     if (card) {
       card.classList.remove("ig-card--deny");
       // reflow for re-trigger
@@ -1019,6 +1028,11 @@
       root.classList.remove("ig-blocking");
     }
 
+    if (step.id === "advanced-connection") {
+      // Always start on Device Configuration so the user must click Advanced Connection.
+      ensureDeviceConfigConnectionView();
+    }
+
     if (step.id === "type-url") {
       openBlankBrowser();
       if (typeof window.setBrowserUrlTypingCoach === "function") {
@@ -1096,8 +1110,7 @@
       }
     }
     if (step.id === "advanced-connection") {
-      var adv = document.querySelector('input[name="nav-view"][value="advanced"]');
-      if (adv && adv.checked) {
+      if (isAdvancedConnectionViewActive()) {
         window.dispatchEvent(new CustomEvent("install-guide:advanced-selected"));
       }
     }

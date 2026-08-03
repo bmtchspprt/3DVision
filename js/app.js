@@ -104,6 +104,15 @@
     });
   }
 
+  function setConnectionNavView(targetView) {
+    navRadios.forEach(function (radio) {
+      radio.checked = radio.value === targetView;
+    });
+    switchNav(targetView);
+  }
+
+  window.setConnectionNavView = setConnectionNavView;
+
   function switchConnectionType(type) {
     rs485Section.classList.toggle("visible", type === "rs485" || type === "hart");
     tcpipSection.classList.toggle("visible", type === "tcpip");
