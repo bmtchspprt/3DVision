@@ -20,3 +20,4 @@ Typical paths inside that tree:
 2. `Documents\3D Emulator` (the remake) is a convenience fork — do **not** treat its web CSS as authoritative if the decompile shows a different layout, sizing, or packing.
 3. Before changing Parameters / Overview / AdvParams / wizards, open the matching decompiled `.xaml` / `.cs` (e.g. `VesselScannersParamsUC`) and match sizes, margins, fonts, and row counts so the page fits like the real app (no unnecessary scrolling).
 4. The user should not need to re-state this path; assume it for any “make it look like 3D / MultiVision / the real app” request.
+5. **Internal use only:** never put “decompiled”, class names from that tree, or reverse-engineering language in **git commits, GitHub history, PR titles, or user-facing docs**. Match UI from those sources; speak about “the real app” / “3D Vision” instead.

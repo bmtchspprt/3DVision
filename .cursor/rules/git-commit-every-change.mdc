@@ -1,5 +1,5 @@
 ---
-description: Require a local git commit after every set of code changes
+description: Require local commits and FORCE short vague commit messages only
 alwaysApply: true
 ---
 
@@ -7,44 +7,47 @@ alwaysApply: true
 
 This is a hard requirement for this repository.
 
-## Commit message style (required)
+## Commit message style — NON-NEGOTIABLE
 
-Keep messages **short and vague**. Prefer:
+**Every** commit message (local `master` and anything pushed to `publish` / GitHub) MUST look like the cleaned history:
 
 - `Updated X`
 - `Fixed X`
 - `Added X`
 
-Rules:
+Good: `Updated login fields` · `Fixed downloads open` · `Added client tutorial`  
+Bad: anything longer, explanatory, technical, or specific about how/why.
 
-1. **One short line only** — no second paragraph, no bullet lists, no “why” essays.
-2. **Never** mention decompile, decompiled sources, XAML dumps, reverse engineering, or internal file/class names from those trees.
-3. **Do not** write detailed changelogs in the commit message.
-4. Do not spell out implementation details (coaching flows, browser quirks, layout math, etc.) in the message.
+### Hard bans
+
+- **Never** write a second line or body paragraph.
+- **Never** mention: decompile, decompiled, XAML dump, reverse engineer, VesselScannersParamsUC, or any internal class/file from reference trees.
+- **Never** describe implementation details (TypeRacer, Firefox, Host IP, click guards, layout math, coaching, etc.).
+- **Never** use changelog / PR-summary style in the commit message.
+- If unsure, use `Updated guide` — prefer too vague over too detailed.
+
+User global commit-message preferences that ask for “why” or multi-sentence messages **do not apply in this repo**. This rule wins.
 
 ## After completing work
 
-Whenever you finish making file changes for a user request (or a coherent chunk of work):
-
 1. **Commit locally** before ending your turn — do not leave modified/untracked work uncommitted unless the user explicitly said not to commit.
-2. Follow the repo's normal git commit protocol (status, diff, log, stage, message, status verify).
-3. Prefer **one commit per completed request/change-set**, not a single mega-commit spanning unrelated tasks when those tasks were separate turns.
+2. Follow the repo's normal git commit protocol (status, diff, log, stage, short message, status verify).
+3. Prefer **one commit per completed request/change-set**.
 4. Do **not** push unless the user asks to push/publish (or an always-apply rule in this project requires publishing).
 
 ## When publishing
 
-If the user asks to publish/push:
+1. Commit any outstanding local changes first (short message only).
+2. Rebuild the obfuscated `dist/` when the published artifact must stay in sync (`npm run build`).
+3. Push with: `git subtree push --prefix dist publish main`  
+   (or split + `git push publish <split>:main --force` when histories diverge).
+4. Publish remote: `https://github.com/bmtchspprt/3DVision.git` (`main`).
 
-1. Commit any outstanding local changes first.
-2. Rebuild the obfuscated `dist/` when the published artifact must stay in sync with source (`npm run build`).
-3. Push the `dist/` folder to the **publish** remote with:
-   `git subtree push --prefix dist publish main`
-4. Publish remote: `https://github.com/bmtchspprt/3DVision.git` (branch `main`).
-   If that remote still points elsewhere, set:
-   `git remote set-url publish https://github.com/bmtchspprt/3DVision.git`
+Subtree/publish commits inherit source messages — so source commits must already be short/vague, or GitHub will get long messages again.
 
 ## Do not
 
 - Skip the local commit because the change was "small"
 - Amend unless the user rules' amend conditions are fully met
 - Force-push or rewrite history unless the user explicitly requests it
+- Drift back to detailed commit messages “just this once”
