@@ -582,6 +582,15 @@
       if (forLab && forLab.contains(e.target)) return true;
     }
 
+    // Components: allow the Server checkbox hit target (label wraps only the box)
+    if (
+      (step.id === "components-uncheck-server" || step.id === "components-next") &&
+      e.target.closest &&
+      e.target.closest("#comp-server, label.installer-comp-check[for='comp-server']")
+    ) {
+      return true;
+    }
+
     // Merged choice+Next: allow the radio group while choosing
     if (step.id === "custom-install" && e.target.closest && e.target.closest("#setupTypeCustom, label[for='setupTypeCustom']")) {
       return true;
@@ -628,9 +637,22 @@
 
   function guideInteractionGuard(e) {
     if (isClickAllowed(e)) return;
-    e.preventDefault();
     e.stopPropagation();
     e.stopImmediatePropagation();
+    // preventDefault on mousedown/pointerdown can block checkbox/radio toggles.
+    // Always cancel click; only preventDefault earlier phases for non-form hits.
+    if (e.type === "click") {
+      e.preventDefault();
+    } else {
+      var tag = e.target && e.target.tagName;
+      var onForm =
+        tag === "INPUT" ||
+        tag === "LABEL" ||
+        (e.target.closest && e.target.closest("label, input"));
+      if (!onForm) {
+        e.preventDefault();
+      }
+    }
     if (card) {
       card.classList.remove("ig-card--deny");
       // reflow for re-trigger

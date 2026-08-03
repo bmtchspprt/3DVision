@@ -544,11 +544,23 @@
           row.classList.add("installer-listbox-item--sel");
         }
         row.innerHTML =
+          '<label class="installer-comp-check"' +
+          (item.disabled ? ' data-disabled="true"' : "") +
+          ' for="comp-' +
+          item.id +
+          '">' +
           '<input type="checkbox"' +
           (item.checked ? " checked" : "") +
           (item.disabled ? " disabled" : "") +
-          ' id="comp-' + item.id + '">' +
-          "<span>" + item.label + "</span>";
+          ' id="comp-' +
+          item.id +
+          '">' +
+          "</label>" +
+          "<span>" +
+          item.label +
+          "</span>";
+
+        var input = row.querySelector("input");
         row.addEventListener("mouseenter", function () {
           showComponentDesc(item.id);
         });
@@ -556,8 +568,23 @@
           showPlaceholderDesc();
         });
         row.addEventListener("click", function (event) {
-          if (event.target.tagName === "INPUT" && !item.disabled) {
-            state.serverComponent = event.target.checked;
+          // Label/text clicks: select the row only (do not toggle via row).
+          if (event.target.tagName === "INPUT") {
+            return;
+          }
+          state.selectedComponent = item.id;
+          renderList();
+        });
+        if (input && !item.disabled) {
+          input.addEventListener("click", function (event) {
+            event.stopPropagation();
+          });
+          input.addEventListener("change", function () {
+            if (item.id !== "server") {
+              return;
+            }
+            state.serverComponent = input.checked;
+            state.selectedComponent = item.id;
             rebuildSteps();
             updateSpace();
             window.dispatchEvent(
@@ -567,11 +594,9 @@
                   : "install-guide:server-unchecked"
               )
             );
-            return;
-          }
-          state.selectedComponent = item.id;
-          renderList();
-        });
+            renderList();
+          });
+        }
         list.appendChild(row);
       });
     }
