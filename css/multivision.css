@@ -92,12 +92,12 @@
 }
 
 .mv-menu-item {
-  display: flex;
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) auto auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 24px;
+  column-gap: 4px;
   width: 100%;
-  padding: 4px 10px 4px 22px;
+  padding: 3px 10px 3px 4px;
   border: none;
   background: transparent;
   font: inherit;
@@ -107,6 +107,7 @@
   cursor: default;
   white-space: nowrap;
   position: relative;
+  box-sizing: border-box;
 }
 
 .mv-menu-item:hover:not(:disabled),
@@ -119,23 +120,35 @@
   color: #a0a0a0;
 }
 
+.mv-menu-item .mv-menu-label {
+  grid-column: 2;
+  justify-self: start;
+  text-align: left;
+}
+
 .mv-menu-item .mv-menu-accel {
+  grid-column: 3;
   color: inherit;
   opacity: 0.85;
   font-size: 11px;
-  margin-left: auto;
-  padding-left: 16px;
+  padding-left: 12px;
+  justify-self: end;
 }
 
 .mv-menu-item .mv-menu-check {
-  position: absolute;
-  left: 6px;
+  grid-column: 1;
+  justify-self: center;
   font-size: 11px;
+  width: 100%;
+  text-align: center;
+  line-height: 1;
 }
 
 .mv-menu-item .mv-menu-arrow {
-  margin-left: 12px;
+  grid-column: 4;
+  margin-left: 4px;
   font-size: 10px;
+  justify-self: end;
 }
 
 .mv-menu-sep {
@@ -277,12 +290,24 @@
   font-size: 11px;
 }
 
+.mv-toolbar-sort select,
+.mv-tabs-scanners select {
+  height: 20px;
+  font-size: 11px;
+  border: 1px solid #7a7a7a;
+  background: #fff;
+  box-sizing: border-box;
+  /* Keep selected text inset — flush-left looks sloppy next to the label */
+  padding: 0 18px 0 6px;
+  text-indent: 0;
+  line-height: 18px;
+}
+
 .mv-toolbar-sort select {
   height: 18px;
   min-width: 72px;
-  font-size: 11px;
-  border: 1px solid #888;
-  background: #fff;
+  border-color: #888;
+  line-height: 16px;
 }
 
 .mv-connected {
@@ -481,10 +506,6 @@
 
 .mv-tabs-scanners select {
   min-width: 140px;
-  height: 20px;
-  font-size: 11px;
-  border: 1px solid #7a7a7a;
-  background: #fff;
 }
 
 .mv-vessels-grid {

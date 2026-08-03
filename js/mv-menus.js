@@ -240,7 +240,10 @@
     var hasSub = node.children && node.children.length;
     var cls = "mv-menu-item" + (hasSub ? " mv-menu-has-sub" : "");
     var disabled = node.disabled ? " disabled" : "";
-    var check = node.checked ? '<span class="mv-menu-check">✓</span>' : "";
+    var check =
+      '<span class="mv-menu-check" aria-hidden="true">' +
+      (node.checked ? "✓" : "") +
+      "</span>";
     var accel = node.accel ? '<span class="mv-menu-accel">' + node.accel + "</span>" : "";
     var arrow = hasSub ? '<span class="mv-menu-arrow">▶</span>' : "";
     var html =
@@ -254,7 +257,7 @@
       disabled +
       ">" +
       check +
-      "<span>" +
+      '<span class="mv-menu-label">' +
       node.label +
       "</span>" +
       accel +
@@ -305,10 +308,15 @@
         (id === "demo-normal" && speed === "Normal") ||
         (id === "demo-slow" && speed === "Slow");
       var check = btn.querySelector(".mv-menu-check");
-      if (want && !check) {
-        btn.insertAdjacentHTML("afterbegin", '<span class="mv-menu-check">✓</span>');
-      } else if (!want && check) {
-        check.remove();
+      if (!check) {
+        btn.insertAdjacentHTML(
+          "afterbegin",
+          '<span class="mv-menu-check" aria-hidden="true"></span>'
+        );
+        check = btn.querySelector(".mv-menu-check");
+      }
+      if (check) {
+        check.textContent = want ? "✓" : "";
       }
     });
   }
@@ -328,23 +336,11 @@
           "comm-load": "Load from Vessel",
         };
     Object.keys(map).forEach(function (id) {
-      var btn = menubar.querySelector('[data-mv-menu-id="' + id + '"] span');
-      if (btn && !btn.classList.contains("mv-menu-accel") && !btn.classList.contains("mv-menu-check")) {
-        // first text span
-      }
       var item = menubar.querySelector('[data-mv-menu-id="' + id + '"]');
-      if (item) {
-        var spans = item.querySelectorAll("span");
-        for (var i = 0; i < spans.length; i++) {
-          if (
-            !spans[i].classList.contains("mv-menu-accel") &&
-            !spans[i].classList.contains("mv-menu-check") &&
-            !spans[i].classList.contains("mv-menu-arrow")
-          ) {
-            spans[i].textContent = map[id];
-            break;
-          }
-        }
+      if (!item) return;
+      var label = item.querySelector(".mv-menu-label");
+      if (label) {
+        label.textContent = map[id];
       }
     });
   }
