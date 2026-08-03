@@ -2881,7 +2881,8 @@
         if (addConfigBox) addConfigBox.classList.remove("is-hidden");
       }
       if (serialSel) {
-        serialSel.disabled = connectionLocked || !(isSerial || type === "gprs_sms");
+        // Serial stays editable even when connection type is locked to the site's first scanner.
+        serialSel.disabled = !(isSerial || type === "gprs_sms");
       }
       syncScannerCountRadios();
     }
@@ -2899,10 +2900,10 @@
         serialSel.value = serialPort;
         if (serialSel.selectedIndex < 0) serialSel.selectedIndex = 0;
       }
+      // IsCouldChangeConnectionType only disables the Connection Type group — not Serial Port.
       root.querySelectorAll('input[name="mvProjConType"]').forEach(function (r) {
         r.disabled = connectionLocked;
       });
-      if (serialSel && connectionLocked) serialSel.disabled = true;
       syncConnectionUi();
     }
 

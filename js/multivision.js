@@ -2217,7 +2217,11 @@
     }
     mvVesselStrip.innerHTML = "";
     mvVesselsGrid.innerHTML = "";
-    if (!VESSELS.length) {
+    // Hide provisional Add-Vessel records until wizard Finish (ReloadProject runs after dialog).
+    var visible = VESSELS.filter(function (v) {
+      return !v.__provisional;
+    });
+    if (!visible.length) {
       // Real StartPageUC (server mode): New Project + Open Project cards on #C7D5DD
       var start = document.createElement("div");
       start.className = "mv-start-page";
@@ -2265,7 +2269,7 @@
     if (mvVesselStrip.parentElement) {
       mvVesselStrip.parentElement.hidden = false;
     }
-    VESSELS.forEach(function (vessel) {
+    visible.forEach(function (vessel) {
       mvVesselStrip.appendChild(renderVesselChip(vessel));
       mvVesselsGrid.appendChild(renderVesselPanel(vessel));
     });
@@ -3040,11 +3044,12 @@
     return "Site" + n;
   };
 
-  /** First defined scanner connection on the current site (locks vessel-add connection type). */
+  /** First defined scanner on the current site (not "connected" — any configured scanner). */
   window.mvGetFirstSiteConnection = function () {
     var site = window.mvGetCurrentSiteName();
     for (var i = 0; i < VESSELS.length; i++) {
       var v = VESSELS[i];
+      if (v.__provisional) continue;
       if (v.siteName && v.siteName !== site) continue;
       if (v.connType || v.serialPort) {
         return {
@@ -3213,7 +3218,7 @@
 
   /**
    * Edit → Add → Vessel (MainScreen.OnEditAddVessel / MainScreenMngr.AddVesselToSite).
-   * Provisional add mirrors real app; cancel deletes last vessel.
+   * Provisional add mirrors real app data create; UI refresh waits until wizard closes.
    */
   window.mvAddVessel = function (opts) {
     opts = opts || {};
@@ -3227,7 +3232,15 @@
       return null;
     }
     var vessel = buildVesselRecord(opts);
+    if (opts.provisional) {
+      vessel.__provisional = true;
+    }
     VESSELS.push(vessel);
+
+    // Provisional: keep in model only — ReloadProject runs after the wizard closes.
+    if (opts.provisional) {
+      return vessel;
+    }
 
     if (activeConnection) {
       activeConnection.blankProject = false;
@@ -3238,13 +3251,9 @@
         mvTitleBar.textContent = buildSessionTitle(activeConnection, true);
       }
     }
-    if (!opts.provisional) {
-      vesselDetailMode = false;
-      selectedVesselId = vessel.id;
-      setMvView("vessels");
-    } else {
-      selectedVesselId = vessel.id;
-    }
+    vesselDetailMode = false;
+    selectedVesselId = vessel.id;
+    setMvView("vessels");
     if (mvVesselStrip && mvVesselStrip.parentElement) {
       mvVesselStrip.parentElement.hidden = false;
     }
@@ -3252,11 +3261,9 @@
       mvStatusText.textContent = "Vessel added: " + vessel.name;
     }
     renderVessels();
-    if (!opts.provisional) {
-      window.dispatchEvent(
-        new CustomEvent("install-guide:vessel-added", { detail: { vesselId: vessel.id } })
-      );
-    }
+    window.dispatchEvent(
+      new CustomEvent("install-guide:vessel-added", { detail: { vesselId: vessel.id } })
+    );
     return vessel;
   };
 
@@ -3270,11 +3277,15 @@
       }
     }
     if (idx < 0) return false;
+    var wasProvisional = !!VESSELS[idx].__provisional;
     VESSELS.splice(idx, 1);
     if (selectedVesselId === vesselId) {
       selectedVesselId = VESSELS[0] ? VESSELS[0].id : null;
     }
-    renderVessels();
+    // Provisional never painted — skip refresh unless something else needs it.
+    if (!wasProvisional || !opts.silent) {
+      renderVessels();
+    }
     if (!opts.silent && mvStatusText) {
       mvStatusText.textContent = "Vessel removed.";
     }
@@ -3292,7 +3303,10 @@
       provisional.serialPort = opts.serialPort || provisional.serialPort || "COM3";
       provisional.numDevices = numDevices;
       provisional.siteName = opts.siteName || provisional.siteName || window.mvGetCurrentSiteName();
+      provisional.connectionStatus = VESSEL_CONNECTION.OFFLINE;
+      delete provisional.__provisional;
       ensureVesselParams(provisional);
+      selectedVesselId = provisional.id;
     }
     // Real loop: already have 1 provisional; add remaining NumberVessels-1
     for (var i = 1; i < numVessels; i++) {
@@ -3305,8 +3319,24 @@
         silent: true,
       });
     }
+    if (activeConnection) {
+      activeConnection.blankProject = false;
+      if (!activeConnection.viewTitle || activeConnection.viewTitle === "(No Project)") {
+        activeConnection.viewTitle = "Aggregates";
+      }
+      if (mvTitleBar) {
+        mvTitleBar.textContent = buildSessionTitle(activeConnection, true);
+      }
+    }
     vesselDetailMode = false;
     setMvView("vessels");
+    if (mvVesselStrip && mvVesselStrip.parentElement) {
+      mvVesselStrip.parentElement.hidden = false;
+    }
+    if (mvStatusText) {
+      mvStatusText.textContent =
+        "Vessel added: " + (provisional ? provisional.name : "");
+    }
     renderVessels();
     window.dispatchEvent(
       new CustomEvent("install-guide:vessel-added", {
