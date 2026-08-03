@@ -2183,8 +2183,16 @@
   color: #fff !important;
 }
 
-.mv-params-btn:hover {
+.mv-params-btn:hover:not(:disabled) {
   background: #244a82 !important;
+}
+
+.mv-params-btn:disabled {
+  background: #c8c8c8 !important;
+  border-color: #a8a8a8 !important;
+  color: #888 !important;
+  cursor: default;
+  opacity: 1;
 }
 
 .mv-vessel-stats dl {
