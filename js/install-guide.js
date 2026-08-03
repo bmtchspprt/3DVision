@@ -345,9 +345,17 @@
     {
       id: "project-finish",
       title: "Finish project creation",
-      body: "Keep defaults (1 vessel, RS-485 on COM3 for USB↔485), then click <strong>Finish</strong> to create the project.",
+      body: "Keep defaults (1 vessel, RS-485 on COM3 for USB↔485), then click <strong>Finish</strong>. Scanners start disconnected — you connect them next.",
       target: "#mvProjWizNext",
       advanceOn: "install-guide:project-created",
+      pointer: "bottom",
+    },
+    {
+      id: "connect-vessel",
+      title: "Connect the vessel",
+      body: "The vessel LED is grey until connected. Click toolbar <strong>Connect</strong> (or Communication → Connect Vessel) to start polling.",
+      target: "#mvToolbarConnect",
+      advanceOn: "install-guide:vessel-connected",
       pointer: "bottom",
     },
   ];
@@ -1123,7 +1131,7 @@
   function onGuideEvent(name) {
     var step = currentStep();
     if (step && step.advanceOn === name) {
-      if (name === "install-guide:project-created") {
+      if (name === "install-guide:vessel-connected") {
         endGuide();
         return;
       }
@@ -1175,6 +1183,7 @@
       "install-guide:new-project-opened",
       "install-guide:project-general-next",
       "install-guide:project-created",
+      "install-guide:vessel-connected",
     ].forEach(function (name) {
       window.addEventListener(name, function () {
         onGuideEvent(name);

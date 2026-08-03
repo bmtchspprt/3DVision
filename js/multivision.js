@@ -101,11 +101,19 @@
     if (!vessel) {
       return false;
     }
-    vessel.connectionStatus =
+    var next =
       status === VESSEL_CONNECTION.OFFLINE
         ? VESSEL_CONNECTION.OFFLINE
         : VESSEL_CONNECTION.ONLINE;
+    vessel.connectionStatus = next;
     renderVessels();
+    if (next === VESSEL_CONNECTION.ONLINE) {
+      window.dispatchEvent(
+        new CustomEvent("install-guide:vessel-connected", {
+          detail: { vesselId: vesselId },
+        })
+      );
+    }
     return true;
   }
 
@@ -2945,7 +2953,7 @@
         connType: connType,
         serialPort: serialPort,
         numDevices: numDevices,
-        connectionStatus: VESSEL_CONNECTION.ONLINE,
+        connectionStatus: VESSEL_CONNECTION.OFFLINE,
       };
       ensureVesselParams(vessel);
       VESSELS.push(vessel);
@@ -3440,6 +3448,7 @@
     renderVessels();
     updateMvStatus();
     if (window.MvDialogs) window.MvDialogs.status("Connect All completed.");
+    window.dispatchEvent(new CustomEvent("install-guide:vessel-connected"));
   };
   window.mvDisconnectAll = function () {
     VESSELS.forEach(function (v) {
