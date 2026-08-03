@@ -278,7 +278,7 @@
         "</code>.",
       target: "#cfg-server-address-wrap",
       advanceOn: "install-guide:host-ip-ok",
-      pointer: "left",
+      pointer: "none",
     },
     {
       id: "server-config-ok",
@@ -876,7 +876,7 @@
   }
 
   function placePointer(rect, mode) {
-    if (!pointer || !rect) {
+    if (!pointer || !rect || mode === "none" || mode === false) {
       if (pointer) pointer.hidden = true;
       return;
     }
@@ -919,13 +919,8 @@
   function stepPointer(step) {
     var target = stepTarget(step);
     if (!step) return "bottom";
-    // Keep the pointer off typing fields so ghosted text stays readable
-    if (
-      target === "#cfg-server-address-wrap" ||
-      target === "#user-name-wrap" ||
-      target === "#password-wrap"
-    ) {
-      return "left";
+    if (step.pointer === "none" || step.id === "enter-host-ip") {
+      return "none";
     }
     if (
       target === WIZ_NEXT ||
