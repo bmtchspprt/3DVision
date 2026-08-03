@@ -658,6 +658,7 @@
       isDemo: false,
       blankProject: !isClientGuide,
       singleVessel: isClientGuide,
+      clientViewer: isClientGuide,
     });
   });
 

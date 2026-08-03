@@ -345,18 +345,62 @@
     {
       id: "project-finish",
       title: "Finish project creation",
-      body: "Keep defaults (1 vessel, RS-485 on COM3 for USB↔485), then click <strong>Finish</strong>. Scanners start disconnected — you connect them next.",
+      body: "Keep defaults (1 vessel, RS-485 on COM3 for USB↔485), then click <strong>Finish</strong>. The vessel starts disconnected until you connect it from Devices.",
       target: "#mvProjWizNext",
       advanceOn: "install-guide:project-created",
       pointer: "bottom",
     },
     {
-      id: "connect-vessel",
-      title: "Connect the vessel",
-      body: "The vessel LED is grey until connected. Click toolbar <strong>Connect</strong> (or Communication → Connect Vessel) to start polling.",
-      target: "#mvToolbarConnect",
-      advanceOn: "install-guide:vessel-connected",
+      id: "open-vessel1",
+      title: "Open Vessel1",
+      body: "Click the <strong>Vessel1</strong> silo icon in the vessel strip to open it.",
+      getTarget: function () {
+        var chip = document.querySelector(
+          '#mvVesselStrip .mv-vessel-chip[data-vessel-id="vessel-1"]'
+        );
+        if (chip) return '#mvVesselStrip .mv-vessel-chip[data-vessel-id="vessel-1"]';
+        var panel = document.querySelector(
+          '#mvVesselsGrid .mv-vessel-panel[data-vessel-id="vessel-1"]'
+        );
+        if (panel) return '#mvVesselsGrid .mv-vessel-panel[data-vessel-id="vessel-1"]';
+        return "#mvVesselStrip .mv-vessel-chip";
+      },
+      advanceOn: "install-guide:vessel-opened",
       pointer: "bottom",
+    },
+    {
+      id: "open-devices-tab",
+      title: "Open Devices",
+      body: "Open the <strong>Devices</strong> tab to configure how this vessel’s scanner talks to the PC.",
+      target: '.mv-tab[data-mv-view="devices"]',
+      advanceOn: "install-guide:devices-tab",
+      pointer: "bottom",
+    },
+    {
+      id: "devices-connection-type",
+      title: "Connection Type",
+      body: "Connection Type is how the <strong>sensors connect to this PC</strong> — typically USB (RS-485 / HART on a COM port) or <strong>TCP/IP</strong> over the network.",
+      target: "#mvDevicesConnTypes",
+      blocking: true,
+      primary: "Continue",
+      pointer: "right",
+    },
+    {
+      id: "devices-polling-address",
+      title: "Polling Address",
+      body: "The <strong>Polling Address</strong> is set on the 3D sensor’s own display screen. Each scanner on the same network needs a unique address.",
+      target: "#mvDevicesPollCombo",
+      blocking: true,
+      primary: "Continue",
+      pointer: "left",
+    },
+    {
+      id: "devices-connect",
+      title: "Connect the scanner",
+      body: "Click the blue <strong>Connect</strong> button next to the polling address to start communication with the sensor.",
+      target: "#mvDevicesConnectBtn",
+      advanceOn: "install-guide:vessel-connected",
+      pointer: "left",
     },
   ];
 
@@ -411,7 +455,7 @@
     })[0];
     if (connectBtn) {
       connectBtn.body =
-        "Click <strong>Connect</strong>. You will open the Host project — it already has a vessel with live readings.";
+        "Click <strong>Connect</strong>. You join the Host project as a viewer — the silo is already connected on the Host. Clients cannot connect scanners.";
     }
     return steps;
   }
@@ -612,6 +656,17 @@
       if (forLab && forLab.contains(e.target)) return true;
     }
 
+    // Host: allow Vessel1 strip icon / home silo for open-vessel1
+    if (
+      step.id === "open-vessel1" &&
+      e.target.closest &&
+      e.target.closest(
+        '#mvVesselStrip .mv-vessel-chip[data-vessel-id="vessel-1"], #mvVesselsGrid .mv-vessel-panel[data-vessel-id="vessel-1"]'
+      )
+    ) {
+      return true;
+    }
+
     // Components: allow the Server checkbox hit target (label wraps only the box)
     if (
       (step.id === "components-uncheck-server" || step.id === "components-next") &&
@@ -688,6 +743,10 @@
     }
     if (step.id === "done") {
       endGuide();
+      return;
+    }
+    if (step.blocking) {
+      goNext();
     }
   }
 
@@ -1126,6 +1185,20 @@
         window.dispatchEvent(new CustomEvent("install-guide:new-project-opened"));
       }
     }
+    if (step.id === "open-devices-tab") {
+      var devicesTab = document.querySelector(
+        '.mv-tab[data-mv-view="devices"].is-active'
+      );
+      if (devicesTab) {
+        window.dispatchEvent(new CustomEvent("install-guide:devices-tab"));
+      }
+    }
+    if (step.id === "open-vessel1") {
+      var ov = document.getElementById("mvOverview");
+      if (ov && !ov.hidden) {
+        window.dispatchEvent(new CustomEvent("install-guide:vessel-opened"));
+      }
+    }
   }
 
   function onGuideEvent(name) {
@@ -1183,6 +1256,8 @@
       "install-guide:new-project-opened",
       "install-guide:project-general-next",
       "install-guide:project-created",
+      "install-guide:vessel-opened",
+      "install-guide:devices-tab",
       "install-guide:vessel-connected",
     ].forEach(function (name) {
       window.addEventListener(name, function () {

@@ -974,12 +974,26 @@
     } else if (singleVessel) {
       // Client viewer joining an existing Host project — one live vessel reading
       VESSELS = [JSON.parse(JSON.stringify(VESSELS_DEMO[0]))];
+      // Host already connected the scanner; Client cannot initiate connection.
+      VESSELS.forEach(function (v) {
+        v.connectionStatus = VESSEL_CONNECTION.ONLINE;
+      });
     } else if (isDemo) {
       VESSELS = VESSELS_DEMO.slice();
     } else {
       VESSELS = userName === "admin" ? VESSELS_ADMIN.slice() : VESSELS_DEMO.slice();
     }
     VESSELS.forEach(ensureVesselParams);
+  }
+
+  function isClientViewerSession() {
+    return !!(
+      (activeConnection && activeConnection.clientViewer) ||
+      (activeConnection && activeConnection.singleVessel) ||
+      (typeof document !== "undefined" &&
+        document.body &&
+        document.body.classList.contains("ig-track-client"))
+    );
   }
 
   function formatStatusTimestamp() {
@@ -1762,6 +1776,13 @@
     }
     if (btn) {
       btn.textContent = deviceConnected ? "Disconnect" : "Connect";
+      // Client remote viewer cannot initiate scanner connections.
+      btn.disabled = isClientViewerSession();
+      if (isClientViewerSession()) {
+        btn.title = "Clients cannot connect scanners — connect from the Host.";
+      } else {
+        btn.removeAttribute("title");
+      }
     }
     fillScannersSelect(vessel, true);
   }
@@ -2246,6 +2267,10 @@
     }
     // "logs" keeps whatever mode we are in (site logs vs vessel logs).
 
+    if (currentMvView === "devices") {
+      window.dispatchEvent(new CustomEvent("install-guide:devices-tab"));
+    }
+
     var vesselsTab = document.querySelector('.mv-tab[data-mv-view="vessels"]');
     var overviewTab = document.querySelector('.mv-tab[data-mv-view="overview"]');
     var logsTab = document.querySelector('.mv-tab[data-mv-view="logs"]');
@@ -2403,6 +2428,9 @@
     renderVessels();
     setMvView("overview");
     fillOverviewLeft(vessel);
+    window.dispatchEvent(
+      new CustomEvent("install-guide:vessel-opened", { detail: { vesselId: vessel.id } })
+    );
     window.requestAnimationFrame(function () {
       fitOverviewScale();
       if (typeof window.mountOverview3D === "function" && mvOverview3d) {
@@ -2642,6 +2670,13 @@
     multiVisionShell.classList.remove("app-shell--minimized");
     ensureDefaultPosition(multiVisionShell);
     bringToFront(multiVisionShell);
+    var tbConnect = document.getElementById("mvToolbarConnect");
+    if (tbConnect) {
+      tbConnect.disabled = isClientViewerSession();
+      tbConnect.title = isClientViewerSession()
+        ? "Clients cannot connect scanners — connect from the Host."
+        : "";
+    }
   }
 
   function finishMultiVisionLaunch(connection) {
@@ -2801,6 +2836,15 @@
     var devicesConnectBtn = document.getElementById("mvDevicesConnectBtn");
     if (devicesConnectBtn) {
       devicesConnectBtn.addEventListener("click", function () {
+        if (isClientViewerSession()) {
+          if (window.MvDialogs) {
+            window.MvDialogs.showMessage(
+              "Clients cannot connect scanners. Connect the vessel on the Host (Server) PC.",
+              "Connect"
+            );
+          }
+          return;
+        }
         var vessel = findVessel(selectedVesselId);
         if (!vessel) return;
         var next = isVesselOffline(vessel)
@@ -3067,6 +3111,7 @@
     connection.serverHost = connection.serverHost || "127.0.0.1:22222";
     connection.blankProject = !!connection.blankProject;
     connection.singleVessel = !!connection.singleVessel;
+    connection.clientViewer = !!connection.clientViewer || connection.singleVessel;
     connection.viewTitle = connection.blankProject
       ? "(No Project)"
       : connection.viewTitle || "Aggregates";
@@ -3743,7 +3788,31 @@
     }
     closeMultiVision();
   };
+  window.mvConnectSelected = function () {
+    if (isClientViewerSession()) {
+      if (window.MvDialogs) {
+        window.MvDialogs.showMessage(
+          "Clients cannot connect scanners. Connect the vessel on the Host (Server) PC.",
+          "Connect"
+        );
+      }
+      return;
+    }
+    if (selectedVesselId) {
+      setVesselConnectionStatus(selectedVesselId, VESSEL_CONNECTION.ONLINE);
+    }
+    if (window.MvDialogs) window.MvDialogs.status("Vessel connected.");
+  };
   window.mvConnectAll = function () {
+    if (isClientViewerSession()) {
+      if (window.MvDialogs) {
+        window.MvDialogs.showMessage(
+          "Clients cannot connect scanners. Connect the vessel on the Host (Server) PC.",
+          "Connect"
+        );
+      }
+      return;
+    }
     VESSELS.forEach(function (v) {
       v.connectionStatus = VESSEL_CONNECTION.ONLINE;
     });
@@ -3759,12 +3828,6 @@
     renderVessels();
     updateMvStatus();
     if (window.MvDialogs) window.MvDialogs.status("Disconnect All completed.");
-  };
-  window.mvConnectSelected = function () {
-    if (selectedVesselId) {
-      setVesselConnectionStatus(selectedVesselId, VESSEL_CONNECTION.ONLINE);
-    }
-    if (window.MvDialogs) window.MvDialogs.status("Vessel connected.");
   };
   window.mvDisconnectSelected = function () {
     if (selectedVesselId) {
