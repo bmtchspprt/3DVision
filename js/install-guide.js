@@ -31,7 +31,7 @@
     {
       id: "welcome",
       title: "Install 3D MultiVision",
-      body: "This guide will show you how to install 3D as a Service. A blank browser will open — you will type the downloads address yourself.",
+      body: "This guide will show you how to install 3D as a Service. A blank browser will open. You will type the downloads address yourself.",
       blocking: true,
       primary: "Start",
       target: null,
@@ -40,7 +40,7 @@
       id: "type-url",
       title: "Open the downloads site",
       body:
-        "Type the ghosted address in the bar — next key is highlighted. When finished, press <strong>Enter</strong>.",
+        "Type the ghosted address in the bar. The next key is highlighted. When finished, press <strong>Enter</strong>.",
       target: "#browserUrlWrap",
       advanceOn: "install-guide:downloads-page",
       pointer: "bottom",
@@ -200,7 +200,7 @@
       id: "components-uncheck-server",
       title: "Client files only",
       body:
-        "Click the <strong>check mark</strong> next to <strong>Server app files</strong> to uncheck it. Leave <strong>Client app files</strong> checked — this PC only needs the remote viewer.",
+        "Click the <strong>check mark</strong> next to <strong>Server app files</strong> to uncheck it. Leave <strong>Client app files</strong> checked. This PC only needs the remote viewer.",
       getTarget: function () {
         var server = document.getElementById("comp-server");
         if (server && !server.checked) {
@@ -272,8 +272,8 @@
       id: "enter-host-ip",
       title: "Enter the Host IP",
       body:
-        "The address box is the <strong>Host IP</strong> — the IP of the Host/Server computer (not this Client PC). " +
-        "Type the ghosted address — next key is highlighted. For this example: <code>" +
+        "The address box is the <strong>Host IP</strong> (the IP of the Host/Server computer, not this Client PC). " +
+        "Type the ghosted address. The next key is highlighted. For this example: <code>" +
         EXAMPLE_HOST_IP +
         "</code>.",
       target: "#cfg-server-address-wrap",
@@ -295,7 +295,7 @@
       id: "enter-username",
       title: "Enter user name",
       body:
-        "Type the ghosted user name — next key is highlighted. For this guide: <code>stech</code>.",
+        "Type the ghosted user name. The next key is highlighted. For this guide: <code>stech</code>.",
       target: "#user-name-wrap",
       advanceOn: "install-guide:username-ok",
       pointer: "right",
@@ -304,7 +304,7 @@
       id: "enter-password",
       title: "Enter password",
       body:
-        "Type the ghosted password — next key is highlighted. For this guide: <code>techS</code> (capital S).",
+        "Type the ghosted password. The next key is highlighted. For this guide: <code>techS</code> (capital S).",
       target: "#password-wrap",
       advanceOn: "install-guide:password-ok",
       pointer: "right",
@@ -379,7 +379,7 @@
     {
       id: "devices-connection-type",
       title: "Connection Type",
-      body: "Connection Type is how the <strong>sensors connect to this PC</strong> — typically USB (RS-485 / HART on a COM port) or <strong>TCP/IP</strong> over the network.",
+      body: "Connection Type is how the <strong>sensors connect to this PC</strong>: <strong>RS-485</strong> (USB adapter on a COM port) or <strong>TCP/IP</strong> over the network.",
       target: "#mvDevicesConnTypes",
       blocking: true,
       primary: "Continue",
@@ -443,7 +443,7 @@
     );
     steps[0].title = "Install the Client viewer";
     steps[0].body =
-      "This guide installs the Client (remote viewer) on a second PC. You will uncheck Server files, then point Advanced Connection at the Host IP. A blank browser will open — type the downloads address yourself.";
+      "This guide installs the Client (remote viewer) on a second PC. You will uncheck Server files, then point Advanced Connection at the Host IP. A blank browser will open. Type the downloads address yourself.";
     var installBtn = steps.filter(function (s) {
       return s.id === "install-btn";
     })[0];
@@ -455,7 +455,7 @@
     })[0];
     if (connectBtn) {
       connectBtn.body =
-        "Click <strong>Connect</strong>. You join the Host project as a viewer — the silo is already connected on the Host. Clients cannot connect scanners.";
+        "Click <strong>Connect</strong>. You join the Host project as a viewer. The silo is already connected on the Host. Clients cannot connect scanners.";
     }
     return steps;
   }
@@ -499,7 +499,7 @@
       "Install Client only on a second PC, then enter the Host IP in Advanced Connection → Edit." +
       "</div></div>" +
       "</div>" +
-      '<button type="button" class="ig-mode-free" data-mode="free">Free mode (installed — Demo silos)</button>' +
+      '<button type="button" class="ig-mode-free" data-mode="free">Free mode (installed, Demo silos)</button>' +
       "</div></div>" +
       '<div class="ig-dim" aria-hidden="true"></div>' +
       '<div class="ig-spotlight ig-pulse" id="igSpotlight" hidden></div>' +
@@ -521,7 +521,7 @@
     pointer = document.getElementById("igPointer");
     card = document.getElementById("igCard");
     document.getElementById("igPrimary").addEventListener("click", onPrimary);
-    // Event delegation — reliable even when clicking the inner label span
+    // Event delegation: reliable even when clicking the inner label span
     modeMenu.addEventListener("click", function (e) {
       var infoBtn = e.target.closest ? e.target.closest("[data-info]") : null;
       if (infoBtn && modeMenu.contains(infoBtn)) {
@@ -893,7 +893,7 @@
     if (typeof window.setPasswordTypingCoach === "function") {
       window.setPasswordTypingCoach(false);
     }
-    // Stay in guide chrome — hide coach card only; do not return to install-type picker.
+    // Stay in guide chrome: hide coach card only; do not return to install-type picker.
     if (card) card.hidden = true;
     clearHighlight();
     window.dispatchEvent(new CustomEvent("install-guide:finished"));
@@ -919,7 +919,7 @@
     var pad = 16;
     var cw = card.offsetWidth || 320;
     var ch = card.offsetHeight || 160;
-    // Dock left — leave the center/right clear for browser and Setup
+    // Dock left so the center/right stay clear for browser and Setup
     var left = pad;
     var top = pad;
 

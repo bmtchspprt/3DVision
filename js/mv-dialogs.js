@@ -600,14 +600,9 @@
         '<input type="text" id="mvProjNumDevices" value="1" autocomplete="off">' +
         "</div></fieldset>" +
         '<fieldset class="mv-proj-wiz-box"><legend>Connection Type</legend>' +
-        // WizardStepSite: 2-col radios — HART/RS-485/TCP | GPRS/GPRS+SMS/Smart GPRS
         '<div class="mv-proj-wiz-radios" id="mvProjConTypes">' +
-        '<label class="mv-proj-wiz-radio"><input type="radio" name="mvProjConType" value="hart"> HART</label>' +
-        '<label class="mv-proj-wiz-radio" data-gprs="1"><input type="radio" name="mvProjConType" value="gprs"> GPRS</label>' +
         '<label class="mv-proj-wiz-radio"><input type="radio" name="mvProjConType" value="rs485" checked> RS-485</label>' +
-        '<label class="mv-proj-wiz-radio" data-gprs="1"><input type="radio" name="mvProjConType" value="gprs_sms"> GPRS + SMS</label>' +
         '<label class="mv-proj-wiz-radio"><input type="radio" name="mvProjConType" value="tcp"> TCP/IP</label>' +
-        '<label class="mv-proj-wiz-radio" data-gprs="1"><input type="radio" name="mvProjConType" value="smart_gprs"> Smart GPRS</label>' +
         "</div></fieldset>" +
         '<fieldset class="mv-proj-wiz-box" id="mvProjConfigBox"><legend>Configuration</legend>' +
         '<div class="mv-proj-wiz-row">' +

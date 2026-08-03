@@ -1779,7 +1779,7 @@
       // Client remote viewer cannot initiate scanner connections.
       btn.disabled = isClientViewerSession();
       if (isClientViewerSession()) {
-        btn.title = "Clients cannot connect scanners — connect from the Host.";
+        btn.title = "Clients cannot connect scanners. Connect from the Host.";
       } else {
         btn.removeAttribute("title");
       }
@@ -2674,7 +2674,7 @@
     if (tbConnect) {
       tbConnect.disabled = isClientViewerSession();
       tbConnect.title = isClientViewerSession()
-        ? "Clients cannot connect scanners — connect from the Host."
+        ? "Clients cannot connect scanners. Connect from the Host."
         : "";
     }
   }

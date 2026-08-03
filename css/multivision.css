@@ -1272,10 +1272,9 @@
 }
 
 .mv-devices-conn-types {
-  display: grid;
-  grid-template-columns: 100px 120px;
-  column-gap: 36px;
-  row-gap: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   width: max-content;
   margin-left: 4px;
 }
@@ -3706,12 +3705,11 @@
   display: none !important;
 }
 .mv-proj-wiz-radios {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap: 36px;
-  row-gap: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
   padding: 12px 8px 6px;
-  max-width: 340px;
+  max-width: 200px;
 }
 .mv-proj-wiz-radios.is-locked {
   opacity: 0.85;
