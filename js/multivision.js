@@ -1516,6 +1516,8 @@
       return;
     }
     ensureVesselParams(vessel);
+    // Devices Connect/Disconnect mirrors scanner.Connection.IsConnected — same as vessel LED.
+    deviceConnected = !isVesselOffline(vessel);
     if (vessel.connType) {
       deviceConnType =
         vessel.connType === "tcp" ? "tcpip" : vessel.connType;
@@ -2593,8 +2595,14 @@
     var devicesConnectBtn = document.getElementById("mvDevicesConnectBtn");
     if (devicesConnectBtn) {
       devicesConnectBtn.addEventListener("click", function () {
-        deviceConnected = !deviceConnected;
-        fillDevicesPage(findVessel(selectedVesselId));
+        var vessel = findVessel(selectedVesselId);
+        if (!vessel) return;
+        var next = isVesselOffline(vessel)
+          ? VESSEL_CONNECTION.ONLINE
+          : VESSEL_CONNECTION.OFFLINE;
+        setVesselConnectionStatus(vessel.id, next);
+        fillDevicesPage(vessel);
+        updateMvStatus();
       });
     }
 
