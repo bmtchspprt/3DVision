@@ -1087,9 +1087,11 @@
     if (step.blocking) {
       primary.hidden = false;
       primary.textContent = step.primary || "Continue";
+      primary.classList.add("ig-btn--flash");
       root.classList.add("ig-blocking");
     } else {
       primary.hidden = true;
+      primary.classList.remove("ig-btn--flash");
       root.classList.remove("ig-blocking");
     }
 
