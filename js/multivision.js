@@ -117,6 +117,205 @@
     return true;
   }
 
+  /**
+   * Connection.ShortDisplayString — network identity (not poll).
+   * ValidateProject uniqueness key = ShortDisplayString + "," + PollAddr.
+   */
+  function connectionNetworkKey(conn) {
+    conn = conn || {};
+    var type = String(conn.connType || "rs485").toLowerCase();
+    if (type === "tcpip") type = "tcp";
+    if (type === "gprs_sms" || type === "gprs-sms") type = "gprs_sms";
+    if (type === "smart_gprs" || type === "smart-gprs") type = "smart_gprs";
+    if (type === "hart" || type === "rs485") {
+      return String(conn.serialPort || "COM3") + ", " + type;
+    }
+    if (type === "tcp") {
+      return (
+        "tcp, " +
+        String(conn.tcpHost || conn.externalHostName || "") +
+        ", " +
+        String(conn.tcpPort || conn.tcpIpPort || "10001")
+      );
+    }
+    if (type === "gprs") {
+      return "gprs, " + String(conn.localIpPort || "");
+    }
+    if (type === "gprs_sms") {
+      return (
+        "gprs_sms, " +
+        String(conn.phoneNumber || "") +
+        ", " +
+        String(conn.localIpPort || "")
+      );
+    }
+    if (type === "smart_gprs") {
+      return (
+        "sms-ser, " +
+        String(conn.phoneNumber || "") +
+        ", " +
+        String(conn.localIpPort || "")
+      );
+    }
+    return String(conn.serialPort || "") + ", " + type;
+  }
+
+  function vesselNetworkKey(vessel) {
+    return connectionNetworkKey(vessel || {});
+  }
+
+  function pollUniquenessKey(networkKey, pollAddr) {
+    return String(networkKey) + "," + String(pollAddr);
+  }
+
+  /** Normalize scanner poll list on a vessel (one address per device). */
+  function ensureScannerPolls(vessel) {
+    if (!vessel) return [];
+    var n = Math.max(1, parseInt(vessel.numDevices, 10) || 1);
+    if (!Array.isArray(vessel.scannerPolls)) {
+      vessel.scannerPolls = [];
+    }
+    if (!vessel.scannerPolls.length) {
+      var base = Number(vessel.poll);
+      vessel.scannerPolls = [isFinite(base) ? base : 0];
+    }
+    while (vessel.scannerPolls.length < n) {
+      var max = getLastPollingAddressInProject();
+      vessel.scannerPolls.forEach(function (p) {
+        var x = Number(p);
+        if (isFinite(x) && x > max) max = x;
+      });
+      max += 1;
+      if (max > 63) max = 63;
+      vessel.scannerPolls.push(max);
+    }
+    if (vessel.scannerPolls.length > n) {
+      vessel.scannerPolls = vessel.scannerPolls.slice(0, n);
+    }
+    vessel.poll = vessel.scannerPolls[0];
+    return vessel.scannerPolls;
+  }
+
+  /**
+   * ApplMngr.GetLastPollingAddressInProject — max PollAddr in project
+   * (connectionType arg is unused in real code).
+   */
+  function getLastPollingAddressInProject() {
+    var max = -1;
+    VESSELS.forEach(function (v) {
+      var polls =
+        Array.isArray(v.scannerPolls) && v.scannerPolls.length
+          ? v.scannerPolls
+          : null;
+      if (polls) {
+        var n = Math.max(1, parseInt(v.numDevices, 10) || 1);
+        for (var i = 0; i < Math.min(n, polls.length); i++) {
+          var p = Number(polls[i]);
+          if (isFinite(p) && p > max) max = p;
+        }
+      } else if (isFinite(Number(v.poll))) {
+        if (Number(v.poll) > max) max = Number(v.poll);
+      }
+    });
+    return max;
+  }
+
+  function allocateNextPollAddress() {
+    var next = getLastPollingAddressInProject() + 1;
+    if (next < 0) next = 0;
+    if (next > 63) next = 63;
+    return next;
+  }
+
+  /** Allocate N unique polls for a new vessel/site batch (project max+1 each). */
+  function allocatePollsForDeviceCount(numDevices, pendingPolls) {
+    var n = Math.max(1, parseInt(numDevices, 10) || 1);
+    var max = getLastPollingAddressInProject();
+    (pendingPolls || []).forEach(function (p) {
+      var x = Number(p);
+      if (isFinite(x) && x > max) max = x;
+    });
+    var polls = [];
+    for (var j = 0; j < n; j++) {
+      max += 1;
+      if (max > 63) max = 63;
+      polls.push(max);
+    }
+    return polls;
+  }
+
+  /**
+   * ApplMngr.ValidateProject(byPollAddress=true) — duplicate network+poll is illegal
+   * for HART / RS-485 / TCP.
+   * @returns {{ ok: true }|{ ok: false, message: string, otherVessel: object }}
+   */
+  function validateProjectPollAddresses(opts) {
+    opts = opts || {};
+    var dict = {};
+    var conflict = null;
+    VESSELS.forEach(function (v) {
+      if (conflict) return;
+      if (opts.skipVesselId && v.id === opts.skipVesselId) return;
+      var type = String(v.connType || "rs485").toLowerCase();
+      if (type === "tcpip") type = "tcp";
+      if (type !== "rs485" && type !== "hart" && type !== "tcp") return;
+      var net = vesselNetworkKey(v);
+      var polls = ensureScannerPolls(v);
+      for (var i = 0; i < polls.length; i++) {
+        var key = pollUniquenessKey(net, polls[i]);
+        if (dict[key]) {
+          conflict = { vessel: v, other: dict[key].vessel, poll: polls[i], key: key };
+          return;
+        }
+        dict[key] = { vessel: v, poll: polls[i] };
+      }
+    });
+    if (opts.candidate) {
+      var c = opts.candidate;
+      var ctype = String(c.connType || "rs485").toLowerCase();
+      if (ctype === "tcpip") ctype = "tcp";
+      if (ctype === "rs485" || ctype === "hart" || ctype === "tcp") {
+        var cNet = connectionNetworkKey(c);
+        var cPolls = Array.isArray(c.scannerPolls) && c.scannerPolls.length
+          ? c.scannerPolls
+          : [Number(c.poll) || 0];
+        for (var k = 0; k < cPolls.length; k++) {
+          var cKey = pollUniquenessKey(cNet, cPolls[k]);
+          if (dict[cKey]) {
+            conflict = {
+              vessel: c,
+              other: dict[cKey].vessel,
+              poll: cPolls[k],
+              key: cKey,
+            };
+            break;
+          }
+        }
+      }
+    }
+    if (!conflict) return { ok: true };
+    var a = conflict.vessel.short || conflict.vessel.name || "device";
+    var b = conflict.other.short || conflict.other.name || "device";
+    return {
+      ok: false,
+      message:
+        "Duplicate devices connection definition: " +
+        conflict.key +
+        "\r\nSelected device: " +
+        a +
+        "\r\nAlready defined in device: " +
+        b,
+      otherVessel: conflict.other,
+    };
+  }
+
+  function showPollConflict(result) {
+    if (!result || result.ok) return;
+    if (window.MvDialogs && typeof window.MvDialogs.showMessage === "function") {
+      window.MvDialogs.showMessage(result.message, "Polling Address");
+    }
+  }
+
   var VESSELS_ADMIN = [
     {
       id: "lime-stone",
@@ -488,6 +687,15 @@
     }
     if (vessel.scadaId == null) {
       vessel.scadaId = (vessel.poll != null ? Number(vessel.poll) : 0) + 1;
+    }
+    if (vessel.numDevices == null) {
+      vessel.numDevices = 1;
+    }
+    if (vessel.poll == null) {
+      vessel.poll = 0;
+    }
+    if (!Array.isArray(vessel.scannerPolls) || !vessel.scannerPolls.length) {
+      vessel.scannerPolls = [Number(vessel.poll) || 0];
     }
     // Geometry / calibration (meters). Level + Distance = height.
     if (vessel.height == null) {
@@ -2590,16 +2798,6 @@
       });
     }
 
-    document.querySelectorAll('input[name="mvConnType"]').forEach(function (input) {
-      input.addEventListener("change", function () {
-        if (!input.checked) {
-          return;
-        }
-        deviceConnType = input.value;
-        syncDevicesConnTypeUi();
-      });
-    });
-
     var devicesConnectBtn = document.getElementById("mvDevicesConnectBtn");
     if (devicesConnectBtn) {
       devicesConnectBtn.addEventListener("click", function () {
@@ -2613,6 +2811,78 @@
         updateMvStatus();
       });
     }
+
+    var devicesPollAddr = document.getElementById("mvDevicesPollAddr");
+    if (devicesPollAddr) {
+      devicesPollAddr.addEventListener("change", function () {
+        var vessel = findVessel(selectedVesselId);
+        if (!vessel) return;
+        var prevPoll = Number(vessel.poll);
+        var prevPolls = Array.isArray(vessel.scannerPolls)
+          ? vessel.scannerPolls.slice()
+          : [prevPoll];
+        var nextPoll = parseInt(devicesPollAddr.value, 10);
+        if (isNaN(nextPoll) || nextPoll < 0 || nextPoll > 63) {
+          devicesPollAddr.value = String(prevPoll);
+          return;
+        }
+        ensureScannerPolls(vessel);
+        vessel.scannerPolls[0] = nextPoll;
+        vessel.poll = nextPoll;
+        var check = validateProjectPollAddresses();
+        if (!check.ok) {
+          vessel.scannerPolls = prevPolls;
+          vessel.poll = prevPolls[0];
+          devicesPollAddr.value = String(prevPoll);
+          showPollConflict(check);
+          return;
+        }
+        vessel.scadaId = nextPoll + 1;
+        renderVessels();
+        fillDevicesPage(vessel);
+      });
+    }
+
+    var devicesSerialPort = document.getElementById("mvDevicesSerialPort");
+    if (devicesSerialPort) {
+      devicesSerialPort.addEventListener("change", function () {
+        var vessel = findVessel(selectedVesselId);
+        if (!vessel) return;
+        var prevPort = vessel.serialPort;
+        vessel.serialPort = devicesSerialPort.value;
+        var check = validateProjectPollAddresses();
+        if (!check.ok) {
+          vessel.serialPort = prevPort;
+          devicesSerialPort.value = prevPort || "COM3";
+          showPollConflict(check);
+          return;
+        }
+        renderVessels();
+        fillDevicesPage(vessel);
+      });
+    }
+
+    document.querySelectorAll('input[name="mvConnType"]').forEach(function (input) {
+      input.addEventListener("change", function () {
+        if (!input.checked) return;
+        var vessel = findVessel(selectedVesselId);
+        var prevType = vessel && vessel.connType;
+        deviceConnType = input.value;
+        if (vessel) {
+          vessel.connType = input.value === "tcpip" ? "tcp" : input.value;
+          var check = validateProjectPollAddresses();
+          if (!check.ok) {
+            vessel.connType = prevType;
+            deviceConnType =
+              prevType === "tcp" ? "tcpip" : prevType || "rs485";
+            showPollConflict(check);
+            syncDevicesConnTypeUi();
+            return;
+          }
+        }
+        syncDevicesConnTypeUi();
+      });
+    });
 
     window.addEventListener("resize", function () {
       if (currentMvView === "overview") {
@@ -2914,6 +3184,7 @@
     var serialPort = opts.serialPort || "COM3";
 
     VESSELS = [];
+    var pendingPolls = [];
     for (var i = 0; i < numVessels; i++) {
       // Default calib matches wizard Full/Empty + Overview 3D center H=16:
       // emptyLevel=0, fullLevel=15.5, height=16. Level + Distance = height.
@@ -2924,11 +3195,15 @@
       var maxL = 13.1;
       var minL = 10.9;
       var levelPct = ((avgL - emptyL) / (fullL - emptyL)) * 100;
+      // FillScannerData / AddPolAddress — unique poll per scanner on the shared network.
+      var scannerPolls = allocatePollsForDeviceCount(numDevices, pendingPolls);
+      pendingPolls = pendingPolls.concat(scannerPolls);
       var vessel = {
         id: "vessel-" + (i + 1),
         name: "Vessel" + (i + 1) + " (MV)",
         short: "Vessel" + (i + 1),
-        poll: i,
+        poll: scannerPolls[0],
+        scannerPolls: scannerPolls.slice(),
         height: heightM,
         emptyLevel: emptyL,
         fullLevel: fullL,
@@ -2946,7 +3221,7 @@
         hardware: "16",
         firmware: "2.9.986",
         deviceType: "MV",
-        scadaId: i + 1,
+        scadaId: scannerPolls[0] + 1,
         temp: 24.5,
         snr: 36.4,
         output: 4 + (levelPct / 100) * 16,
@@ -2954,9 +3229,15 @@
         serialPort: serialPort,
         numDevices: numDevices,
         connectionStatus: VESSEL_CONNECTION.OFFLINE,
+        siteName: siteName,
       };
       ensureVesselParams(vessel);
       VESSELS.push(vessel);
+    }
+
+    var pollCheck = validateProjectPollAddresses();
+    if (!pollCheck.ok) {
+      showPollConflict(pollCheck);
     }
 
     deviceConnType = connType === "tcp" ? "tcpip" : connType;
@@ -3181,10 +3462,12 @@
       id = idBase + "-" + suffix;
       suffix += 1;
     }
-    var poll = 0;
-    VESSELS.forEach(function (v) {
-      if (typeof v.poll === "number" && v.poll >= poll) poll = v.poll + 1;
-    });
+    var numDevices = Math.max(1, parseInt(opts.numDevices, 10) || 1);
+    var scannerPolls =
+      opts.scannerPolls && opts.scannerPolls.length
+        ? opts.scannerPolls.slice()
+        : allocatePollsForDeviceCount(numDevices);
+    var poll = scannerPolls[0];
     var palette = VESSEL_COLOR_PALETTE[VESSELS.length % VESSEL_COLOR_PALETTE.length];
     var heightM = DEFAULT_VESSEL_HEIGHT;
     var emptyL = 0;
@@ -3200,6 +3483,7 @@
       name: shortName + " (MV)",
       short: shortName,
       poll: poll,
+      scannerPolls: scannerPolls,
       height: heightM,
       emptyLevel: emptyL,
       fullLevel: fullL,
@@ -3221,7 +3505,7 @@
       output: 4 + (levelPct / 100) * 16,
       connType: opts.connType || ref.connType || "rs485",
       serialPort: opts.serialPort || ref.serialPort || "COM3",
-      numDevices: Math.max(1, parseInt(opts.numDevices, 10) || 1),
+      numDevices: numDevices,
       connectionStatus:
         opts.connectionStatus ||
         (opts.provisional ? VESSEL_CONNECTION.OFFLINE : VESSEL_CONNECTION.ONLINE),
@@ -3320,9 +3604,14 @@
       provisional.numDevices = numDevices;
       provisional.siteName = opts.siteName || provisional.siteName || window.mvGetCurrentSiteName();
       provisional.connectionStatus = VESSEL_CONNECTION.OFFLINE;
+      ensureScannerPolls(provisional);
       delete provisional.__provisional;
       ensureVesselParams(provisional);
       selectedVesselId = provisional.id;
+      var check = validateProjectPollAddresses();
+      if (!check.ok) {
+        showPollConflict(check);
+      }
     }
     // Real loop: already have 1 provisional; add remaining NumberVessels-1
     for (var i = 1; i < numVessels; i++) {
@@ -3418,6 +3707,19 @@
     if (first) {
       vessel.connType = first.connType;
       vessel.serialPort = first.serialPort;
+    }
+    // AddScannerToVessel: PollAddr = GetLastPollingAddressInProject + 1
+    ensureScannerPolls(vessel);
+    var newPoll = allocateNextPollAddress();
+    vessel.scannerPolls.push(newPoll);
+    vessel.poll = vessel.scannerPolls[0];
+    var dup = validateProjectPollAddresses();
+    if (!dup.ok) {
+      vessel.scannerPolls.pop();
+      vessel.numDevices = count;
+      vessel.poll = vessel.scannerPolls[0];
+      showPollConflict(dup);
+      return false;
     }
     ensureVesselParams(vessel);
     renderVessels();
