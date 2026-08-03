@@ -32,6 +32,9 @@
   var selectedVesselId = "lime-stone";
   var currentMvView = "vessels";
   var vesselDetailMode = false;
+  var lastPanelClickAt = 0;
+  var lastPanelClickId = "";
+  var openOverviewLockUntil = 0;
   var overview3dApi = null;
   var deviceConnected = true;
   var deviceConnType = "rs485";
@@ -1017,7 +1020,14 @@
       buildStatsHtml(vessel) +
       "</div>";
     panel.addEventListener("click", function () {
+      var now = Date.now();
+      var isDouble = now - lastPanelClickAt < 450 && lastPanelClickId === vessel.id;
+      lastPanelClickAt = now;
+      lastPanelClickId = vessel.id;
       selectVessel(vessel.id);
+      if (isDouble) {
+        openVesselOverview(vessel.id);
+      }
     });
     panel.addEventListener("dblclick", function (event) {
       event.preventDefault();
@@ -2160,6 +2170,11 @@
   }
 
   function openVesselOverview(vesselId, done) {
+    var now = Date.now();
+    if (now < openOverviewLockUntil && typeof done !== "function") {
+      return;
+    }
+    openOverviewLockUntil = now + 500;
     var vessel = findVessel(vesselId || selectedVesselId);
     if (!vessel) {
       if (typeof done === "function") done();
@@ -2256,12 +2271,28 @@
     });
   }
 
+  function updateVesselSelectionUi() {
+    if (mvVesselsGrid) {
+      mvVesselsGrid.querySelectorAll(".mv-vessel-panel").forEach(function (panel) {
+        panel.classList.toggle("is-selected", panel.dataset.vesselId === selectedVesselId);
+      });
+    }
+    if (mvVesselStrip) {
+      mvVesselStrip.querySelectorAll(".mv-vessel-chip").forEach(function (chip) {
+        chip.classList.toggle("is-selected", chip.dataset.vesselId === selectedVesselId);
+      });
+    }
+  }
+
   function selectVessel(vesselId) {
     selectedVesselId = vesselId;
-    renderVessels();
+    // Home grid: update selection in place — full re-render destroys the node and
+    // breaks dblclick (especially Firefox).
     if (!vesselDetailMode) {
+      updateVesselSelectionUi();
       return;
     }
+    renderVessels();
     var vessel = findVessel(vesselId);
     if (!vessel) {
       return;
