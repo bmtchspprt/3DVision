@@ -57,7 +57,16 @@
   const btnConnectErrorOk = document.getElementById("btn-connect-error-ok");
   const btnConnectErrorClose = document.getElementById("btn-connect-error-close");
   const userNameInput = document.getElementById("user-name");
+  const userNameWrap = document.getElementById("user-name-wrap");
+  const userNameGhost = document.getElementById("user-name-ghost");
   const passwordInput = document.getElementById("password");
+  const passwordWrap = document.getElementById("password-wrap");
+  const passwordGhost = document.getElementById("password-ghost");
+  var userTypingCoach = false;
+  var userTypeTarget = "";
+  var passTypingCoach = false;
+  var passTypeTarget = "";
+  var passwordNativeType = "password";
 
   const VALID_LOGINS = [
     { user: "admin", password: "admin", displayUser: "admin" },
@@ -217,10 +226,7 @@
       .replace(/"/g, "&quot;");
   }
 
-  function updateAddressGhost() {
-    if (!cfgServerAddressGhost || !cfgServerAddress || !addressTypingCoach) return;
-    var typed = cfgServerAddress.value;
-    var target = addressTypeTarget;
+  function buildTypingGhostHtml(typed, target) {
     var html = "";
     var i = 0;
     var matched = true;
@@ -244,14 +250,33 @@
           '<span class="g-rest">' + escapeHtml(target.slice(typed.length + 1)) + "</span>";
       }
     }
-    cfgServerAddressGhost.innerHTML =
+    return (
       html ||
       '<span class="g-next">' +
         escapeHtml(target.charAt(0)) +
         "</span>" +
         '<span class="g-rest">' +
         escapeHtml(target.slice(1)) +
-        "</span>";
+        "</span>"
+    );
+  }
+
+  function updateAddressGhost() {
+    if (!cfgServerAddressGhost || !cfgServerAddress || !addressTypingCoach) return;
+    cfgServerAddressGhost.innerHTML = buildTypingGhostHtml(
+      cfgServerAddress.value,
+      addressTypeTarget
+    );
+  }
+
+  function updateUserGhost() {
+    if (!userNameGhost || !userNameInput || !userTypingCoach) return;
+    userNameGhost.innerHTML = buildTypingGhostHtml(userNameInput.value, userTypeTarget);
+  }
+
+  function updatePassGhost() {
+    if (!passwordGhost || !passwordInput || !passTypingCoach) return;
+    passwordGhost.innerHTML = buildTypingGhostHtml(passwordInput.value, passTypeTarget);
   }
 
   function setServerAddressTypingCoach(on, target) {
@@ -270,6 +295,48 @@
     } else {
       cfgServerAddressWrap.classList.remove("is-typing");
       if (cfgServerAddressGhost) cfgServerAddressGhost.innerHTML = "";
+    }
+  }
+
+  function setUserNameTypingCoach(on, target) {
+    userTypingCoach = !!on;
+    userTypeTarget = userTypingCoach ? String(target || "") : "";
+    if (!userNameWrap || !userNameInput) return;
+    if (userTypingCoach) {
+      userNameWrap.classList.add("is-typing");
+      userNameInput.value = "";
+      updateUserGhost();
+      try {
+        userNameInput.focus();
+      } catch (err) {
+        /* ignore */
+      }
+    } else {
+      userNameWrap.classList.remove("is-typing");
+      if (userNameGhost) userNameGhost.innerHTML = "";
+    }
+  }
+
+  function setPasswordTypingCoach(on, target) {
+    passTypingCoach = !!on;
+    passTypeTarget = passTypingCoach ? String(target || "") : "";
+    if (!passwordWrap || !passwordInput) return;
+    if (passTypingCoach) {
+      passwordNativeType = passwordInput.getAttribute("type") || "password";
+      // Show typed characters in the ghost overlay (not password dots).
+      passwordInput.setAttribute("type", "text");
+      passwordWrap.classList.add("is-typing");
+      passwordInput.value = "";
+      updatePassGhost();
+      try {
+        passwordInput.focus();
+      } catch (err) {
+        /* ignore */
+      }
+    } else {
+      passwordWrap.classList.remove("is-typing");
+      if (passwordGhost) passwordGhost.innerHTML = "";
+      passwordInput.setAttribute("type", passwordNativeType || "password");
     }
   }
 
@@ -442,7 +509,39 @@
     });
   }
 
+  if (userNameInput) {
+    userNameInput.addEventListener("input", function () {
+      if (userTypingCoach) {
+        updateUserGhost();
+        if (userNameInput.value === userTypeTarget) {
+          window.dispatchEvent(
+            new CustomEvent("install-guide:username-ok", {
+              detail: { userName: userNameInput.value },
+            })
+          );
+        }
+      }
+    });
+  }
+
+  if (passwordInput) {
+    passwordInput.addEventListener("input", function () {
+      if (passTypingCoach) {
+        updatePassGhost();
+        if (passwordInput.value === passTypeTarget) {
+          window.dispatchEvent(
+            new CustomEvent("install-guide:password-ok", {
+              detail: { password: passwordInput.value },
+            })
+          );
+        }
+      }
+    });
+  }
+
   window.setServerAddressTypingCoach = setServerAddressTypingCoach;
+  window.setUserNameTypingCoach = setUserNameTypingCoach;
+  window.setPasswordTypingCoach = setPasswordTypingCoach;
   btnConfigCancel.addEventListener("click", closeServerConfig);
   btnConfigClose.addEventListener("click", closeServerConfig);
 

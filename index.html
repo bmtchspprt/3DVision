@@ -201,11 +201,17 @@
             </div>
             <div class="form-row-adv">
               <span class="form-label-adv">User Name:</span>
-              <input type="text" class="text-input adv-input" id="user-name" aria-label="User Name">
+              <div class="adv-field-wrap" id="user-name-wrap">
+                <div class="adv-field-ghost" id="user-name-ghost" aria-hidden="true"></div>
+                <input type="text" class="text-input adv-input" id="user-name" aria-label="User Name" autocomplete="off" spellcheck="false">
+              </div>
             </div>
             <div class="form-row-adv">
               <span class="form-label-adv">Password:</span>
-              <input type="password" class="text-input adv-input" id="password" aria-label="Password">
+              <div class="adv-field-wrap" id="password-wrap">
+                <div class="adv-field-ghost" id="password-ghost" aria-hidden="true"></div>
+                <input type="password" class="text-input adv-input" id="password" aria-label="Password" autocomplete="off" spellcheck="false">
+              </div>
             </div>
             <div class="form-row-adv form-row-adv-expander">
               <div class="expander-block">

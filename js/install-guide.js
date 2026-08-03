@@ -294,16 +294,18 @@
     {
       id: "enter-username",
       title: "Enter user name",
-      body: "Type user name <code>stech</code> in the highlighted field.",
-      target: "#user-name",
+      body:
+        "Type the ghosted user name — next key is highlighted. For this guide: <code>stech</code>.",
+      target: "#user-name-wrap",
       advanceOn: "install-guide:username-ok",
       pointer: "right",
     },
     {
       id: "enter-password",
       title: "Enter password",
-      body: "Type password <code>techS</code> in the highlighted field.",
-      target: "#password",
+      body:
+        "Type the ghosted password — next key is highlighted. For this guide: <code>techS</code> (capital S).",
+      target: "#password-wrap",
       advanceOn: "install-guide:password-ok",
       pointer: "right",
     },
@@ -594,6 +596,20 @@
       return true;
     }
     if (
+      step.id === "enter-username" &&
+      e.target.closest &&
+      e.target.closest("#user-name-wrap, #user-name")
+    ) {
+      return true;
+    }
+    if (
+      step.id === "enter-password" &&
+      e.target.closest &&
+      e.target.closest("#password-wrap, #password")
+    ) {
+      return true;
+    }
+    if (
       (step.id === "enter-host-ip" || step.id === "server-config-ok") &&
       e.target.closest &&
       e.target.closest("#server-config-overlay")
@@ -773,6 +789,12 @@
     if (typeof window.setServerAddressTypingCoach === "function") {
       window.setServerAddressTypingCoach(false);
     }
+    if (typeof window.setUserNameTypingCoach === "function") {
+      window.setUserNameTypingCoach(false);
+    }
+    if (typeof window.setPasswordTypingCoach === "function") {
+      window.setPasswordTypingCoach(false);
+    }
     // Stay in guide chrome — hide coach card only; do not return to install-type picker.
     if (card) card.hidden = true;
     clearHighlight();
@@ -877,6 +899,8 @@
       target === "#btn-edit-server" ||
       target === "#btn-config-ok" ||
       target === "#cfg-server-address-wrap" ||
+      target === "#user-name-wrap" ||
+      target === "#password-wrap" ||
       target === "#browserUrl" ||
       target === "#browserUrlWrap"
     ) {
@@ -990,37 +1014,34 @@
       window.setServerAddressTypingCoach(false);
     }
 
+    if (step.id === "enter-username") {
+      if (typeof window.setUserNameTypingCoach === "function") {
+        window.setUserNameTypingCoach(true, "stech");
+      }
+      if (typeof window.setPasswordTypingCoach === "function") {
+        window.setPasswordTypingCoach(false);
+      }
+      var passClear = document.getElementById("password");
+      if (passClear) passClear.value = "";
+    } else if (typeof window.setUserNameTypingCoach === "function") {
+      window.setUserNameTypingCoach(false);
+    }
+
+    if (step.id === "enter-password") {
+      if (typeof window.setPasswordTypingCoach === "function") {
+        window.setPasswordTypingCoach(true, "techS");
+      }
+    } else if (step.id !== "enter-username" && typeof window.setPasswordTypingCoach === "function") {
+      // Keep password coach off except on its step (username step clears above).
+      window.setPasswordTypingCoach(false);
+    }
+
     if (step.id === "advanced-connection" || step.id === "enter-username") {
       if (typeof window.closeBrowser === "function") {
         window.closeBrowser();
       }
       if (typeof window.closeFileExplorer === "function") {
         window.closeFileExplorer();
-      }
-    }
-    if (step.id === "enter-username") {
-      var userEl = document.getElementById("user-name");
-      var passEl = document.getElementById("password");
-      if (userEl) {
-        userEl.value = "";
-        try {
-          userEl.focus();
-        } catch (err) {
-          /* ignore */
-        }
-      }
-      if (passEl) {
-        passEl.value = "";
-      }
-    }
-    if (step.id === "enter-password") {
-      var passFocus = document.getElementById("password");
-      if (passFocus) {
-        try {
-          passFocus.focus();
-        } catch (err2) {
-          /* ignore */
-        }
       }
     }
 

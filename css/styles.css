@@ -547,8 +547,72 @@ body {
 }
 
 .form-row-adv .adv-input {
+  margin-left: 0;
+}
+
+.form-row-adv .adv-field-wrap {
   grid-column: 2;
   margin-left: var(--adv-field-inset);
+}
+
+.adv-field-wrap {
+  position: relative;
+  width: var(--adv-field-w);
+  height: 20px;
+}
+
+.adv-field-wrap .adv-input {
+  width: 100%;
+}
+
+.adv-field-ghost {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  padding: 0 3px;
+  font-size: 12px;
+  font-family: Consolas, "Courier New", monospace;
+  line-height: 18px;
+  white-space: pre;
+  overflow: hidden;
+  pointer-events: none;
+  background: #fff;
+  border: 1px solid #7a7a7a;
+  box-sizing: border-box;
+}
+
+.adv-field-wrap.is-typing .adv-field-ghost {
+  display: block;
+}
+
+.adv-field-wrap.is-typing .adv-input {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  color: transparent;
+  caret-color: #202124;
+  font-family: Consolas, "Courier New", monospace;
+}
+
+.adv-field-ghost .g-ok {
+  color: #188038;
+}
+
+.adv-field-ghost .g-bad {
+  color: #d93025;
+  background: #fce8e6;
+}
+
+.adv-field-ghost .g-next {
+  color: #202124;
+  background: #e8f0fe;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px #aecbfa;
+}
+
+.adv-field-ghost .g-rest {
+  color: #9aa0a6;
 }
 
 .select-wrapper.adv-select {
