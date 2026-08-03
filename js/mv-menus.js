@@ -421,15 +421,43 @@
         break;
 
       case "edit-add-site":
+        dlg.open("mv-dlg-add-entity");
+        setTimeout(function () {
+          var t = document.getElementById("mvAddType");
+          var n = document.getElementById("mvAddName");
+          if (t) t.value = "Site";
+          if (n) n.value = "Site1";
+        }, 0);
+        break;
       case "edit-add-vessel":
+        dlg.open("mv-dlg-add-entity");
+        setTimeout(function () {
+          var t = document.getElementById("mvAddType");
+          var n = document.getElementById("mvAddName");
+          var d = document.getElementById("mvAddDesc");
+          if (t) t.value = "Vessel";
+          if (n) {
+            n.value =
+              typeof window.mvSuggestNextVesselName === "function"
+                ? window.mvSuggestNextVesselName()
+                : "Vessel1";
+            try {
+              n.focus();
+              n.select();
+            } catch (err) {
+              /* ignore */
+            }
+          }
+          if (d) d.value = "";
+        }, 0);
+        break;
       case "edit-add-scanner":
         dlg.open("mv-dlg-add-entity");
         setTimeout(function () {
           var t = document.getElementById("mvAddType");
-          if (t) {
-            t.value =
-              action === "edit-add-site" ? "Site" : action === "edit-add-vessel" ? "Vessel" : "Scanner";
-          }
+          var n = document.getElementById("mvAddName");
+          if (t) t.value = "Scanner";
+          if (n) n.value = "Scanner 0";
         }, 0);
         break;
       case "edit-del-site":

@@ -694,7 +694,7 @@
         389,
         '<div class="mv-dialog-row"><label style="min-width:90px">Type:</label><select id="mvAddType"><option>Site</option><option>Vessel</option><option>Scanner</option></select></div>' +
           '<div class="mv-dialog-row"><label style="min-width:90px">Name:</label><input type="text" id="mvAddName" value="New Item" style="flex:1"></div>' +
-          '<div class="mv-dialog-row"><label style="min-width:90px">Description:</label><input type="text" value="" style="flex:1"></div>'
+          '<div class="mv-dialog-row"><label style="min-width:90px">Description:</label><input type="text" id="mvAddDesc" value="" style="flex:1"></div>'
       );
     },
 
@@ -2913,6 +2913,36 @@
   function onDialogOk(id) {
     if (id === "mv-dlg-device-wizard" || id === "mv-dlg-project-wizard") {
       // Next/Finish handled by wizard Next buttons — never close via generic OK path.
+      return;
+    }
+    if (id === "mv-dlg-add-entity") {
+      var typeEl = $("mvAddType");
+      var nameEl = $("mvAddName");
+      var descEl = $("mvAddDesc");
+      var type = typeEl ? typeEl.value : "Vessel";
+      var name = nameEl ? nameEl.value.trim() : "";
+      var desc = descEl ? descEl.value.trim() : "";
+      if (type === "Vessel") {
+        if (typeof global.mvAddVessel === "function") {
+          var added = global.mvAddVessel({ name: name, description: desc });
+          closeDialog(id);
+          if (added) {
+            status("Added vessel " + added.name + ".");
+          }
+          return;
+        }
+      }
+      if (type === "Site") {
+        closeDialog(id);
+        status("Add Site is not available in this tutorial build.");
+        return;
+      }
+      if (type === "Scanner") {
+        closeDialog(id);
+        status("Add Scanner is not available in this tutorial build.");
+        return;
+      }
+      closeDialog(id);
       return;
     }
     if (id === "mv-dlg-client-options") {

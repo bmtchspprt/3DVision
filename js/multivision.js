@@ -2993,6 +2993,129 @@
     renderVessels();
     window.dispatchEvent(new CustomEvent("install-guide:project-created"));
   };
+
+  var VESSEL_COLOR_PALETTE = [
+    { color: "#8a5a28", colorLight: "#c4a06a" },
+    { color: "#6e6e6e", colorLight: "#b8b8b8" },
+    { color: "#b89200", colorLight: "#e6c84a" },
+    { color: "#4e8a32", colorLight: "#9fd07a" },
+    { color: "#2f5f8f", colorLight: "#7eb0d8" },
+    { color: "#8a3a5a", colorLight: "#d090a8" },
+  ];
+
+  /** Next default vessel short name (Vessel1, Vessel2, …) like ProjManagerServer.AddVesselServer. */
+  window.mvSuggestNextVesselName = function () {
+    var n = 1;
+    var used = {};
+    VESSELS.forEach(function (v) {
+      used[(v.short || "").toLowerCase()] = true;
+      used[(v.name || "").toLowerCase()] = true;
+    });
+    while (used["vessel" + n] || used["vessel" + n + " (mv)"]) {
+      n += 1;
+    }
+    return "Vessel" + n;
+  };
+
+  /**
+   * Edit → Add → Vessel (MainScreen.OnEditAddVessel / MainScreenMngr.AddVesselToSite).
+   * Emulator: append a silo to the site and refresh the home grid.
+   */
+  window.mvAddVessel = function (opts) {
+    opts = opts || {};
+    if (VESSELS.length >= 64) {
+      if (window.MvDialogs && typeof window.MvDialogs.showMessage === "function") {
+        window.MvDialogs.showMessage(
+          "Maximum number of vessels for this site has been reached.",
+          "Add Vessel"
+        );
+      }
+      return null;
+    }
+    var shortName = (opts.name || "").trim() || window.mvSuggestNextVesselName();
+    shortName = shortName.replace(/\s*\(MV\)\s*$/i, "").trim() || window.mvSuggestNextVesselName();
+    var idBase = shortName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    if (!idBase) idBase = "vessel";
+    var id = idBase;
+    var suffix = 2;
+    while (findVessel(id)) {
+      id = idBase + "-" + suffix;
+      suffix += 1;
+    }
+    var poll = 0;
+    VESSELS.forEach(function (v) {
+      if (typeof v.poll === "number" && v.poll >= poll) poll = v.poll + 1;
+    });
+    var palette = VESSEL_COLOR_PALETTE[VESSELS.length % VESSEL_COLOR_PALETTE.length];
+    var heightM = DEFAULT_VESSEL_HEIGHT;
+    var emptyL = 0;
+    var fullL = heightM - 0.5;
+    var avgL = 8.0;
+    var maxL = 9.2;
+    var minL = 6.8;
+    var levelPct = ((avgL - emptyL) / (fullL - emptyL)) * 100;
+    var ref = VESSELS[0] || {};
+    var vessel = {
+      id: id,
+      name: shortName + " (MV)",
+      short: shortName,
+      poll: poll,
+      height: heightM,
+      emptyLevel: emptyL,
+      fullLevel: fullL,
+      avg: avgL,
+      max: maxL,
+      min: minL,
+      fill: Math.round(levelPct * 100) / 100,
+      avgLevelPct: Math.round(levelPct * 100) / 100,
+      color: palette.color,
+      colorLight: palette.colorLight,
+      scannerName: shortName + " Scanner",
+      serial: "",
+      hardware: "16",
+      firmware: "2.9.986",
+      deviceType: "MV",
+      scadaId: poll + 1,
+      temp: 24.5,
+      snr: 36.4,
+      output: 4 + (levelPct / 100) * 16,
+      connType: ref.connType || "rs485",
+      serialPort: ref.serialPort || "COM3",
+      numDevices: 1,
+      connectionStatus: VESSEL_CONNECTION.ONLINE,
+      description: opts.description || "",
+    };
+    ensureVesselParams(vessel);
+    VESSELS.push(vessel);
+
+    if (activeConnection) {
+      activeConnection.blankProject = false;
+      if (!activeConnection.viewTitle || activeConnection.viewTitle === "(No Project)") {
+        activeConnection.viewTitle = "Aggregates";
+      }
+      if (mvTitleBar) {
+        mvTitleBar.textContent = buildSessionTitle(activeConnection, true);
+      }
+    }
+    vesselDetailMode = false;
+    selectedVesselId = vessel.id;
+    setMvView("vessels");
+    if (mvVesselStrip && mvVesselStrip.parentElement) {
+      mvVesselStrip.parentElement.hidden = false;
+    }
+    if (mvStatusText) {
+      mvStatusText.textContent = "Vessel added: " + vessel.name;
+    }
+    renderVessels();
+    window.dispatchEvent(
+      new CustomEvent("install-guide:vessel-added", { detail: { vesselId: vessel.id } })
+    );
+    return vessel;
+  };
+
   window.mvSetStatusText = function (msg) {
     if (mvStatusText) {
       mvStatusText.textContent = msg || formatStatusStamp();
