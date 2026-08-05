@@ -383,16 +383,16 @@
       target: "#mvDevicesConnTypes",
       blocking: true,
       primary: "Continue",
-      pointer: "right",
+      pointer: "none",
     },
     {
       id: "devices-polling-address",
       title: "Polling Address",
-      body: "The <strong>Polling Address</strong> is set on the 3D sensor’s own display screen. Each scanner on the same network needs a unique address.",
+      body: "The default polling address for a scanner is <strong>0</strong>. It is configured on the scanner display screen. Each scanner on the same network needs a unique address.",
       target: "#mvDevicesPollCombo",
       blocking: true,
       primary: "Continue",
-      pointer: "left",
+      pointer: "none",
     },
     {
       id: "devices-connect",
@@ -400,7 +400,7 @@
       body: "Click the blue <strong>Connect</strong> button next to the polling address to start communication with the sensor.",
       target: "#mvDevicesConnectBtn",
       advanceOn: "install-guide:vessel-connected",
-      pointer: "left",
+      pointer: "bottom",
     },
   ];
 
@@ -952,6 +952,7 @@
     var left;
     var top;
     var midY = rect.top + rect.height / 2 - 4;
+    var midX = rect.left + rect.width / 2 - size / 2;
     if (mode === "right") {
       left = Math.min(rect.right + 6, window.innerWidth - size - 8);
       top = midY;
@@ -959,11 +960,9 @@
       left = Math.max(8, rect.left - size - 4);
       top = midY;
     } else {
-      // Sit fully under the target so typed text stays readable
-      left =
-        rect.left +
-        Math.min(Math.max(rect.width * 0.35, 24), Math.max(rect.width - 24, 24));
-      top = rect.bottom + 6;
+      // Tip of cursor SVG is at the top; sit under the control and aim up at it.
+      left = midX;
+      top = rect.bottom + 4;
     }
     left = Math.max(4, Math.min(left, window.innerWidth - size - 4));
     top = Math.max(4, Math.min(top, window.innerHeight - size - 4));
@@ -992,6 +991,7 @@
     if (
       target === WIZ_NEXT ||
       target === "#btn-connect" ||
+      target === "#mvDevicesConnectBtn" ||
       target === "#browseFolderOk" ||
       target === "#browseFolderNew" ||
       target === "#btnBrowseServer" ||

@@ -508,7 +508,11 @@
         dlg.open("mv-dlg-output-settings");
         break;
       case "dev-echo":
-        dlg.open("mv-dlg-echo-curve");
+        if (typeof dlg.openEchoCurveAnalysis === "function") {
+          dlg.openEchoCurveAnalysis();
+        } else {
+          dlg.open("mv-dlg-echo-curve");
+        }
         break;
       case "dev-echo-viewer":
         dlg.open("mv-dlg-echo-viewer");
@@ -758,6 +762,17 @@
       } else if (e.key === "F9") {
         e.preventDefault();
         runAction("rep-wizard");
+      } else if (e.ctrlKey && (e.key === "z" || e.key === "Z")) {
+        e.preventDefault();
+        runAction("dev-echo");
+      } else if (e.ctrlKey && (e.key === "v" || e.key === "V")) {
+        // Real app: Echo Curve Analyze Viewer (Ctrl+V). Avoid clobbering OS paste in inputs.
+        var tag = (e.target && e.target.tagName) || "";
+        if (tag === "INPUT" || tag === "TEXTAREA" || (e.target && e.target.isContentEditable)) {
+          return;
+        }
+        e.preventDefault();
+        runAction("dev-echo-viewer");
       } else if (e.ctrlKey && (e.key === "s" || e.key === "S")) {
         e.preventDefault();
         runAction("file-save");

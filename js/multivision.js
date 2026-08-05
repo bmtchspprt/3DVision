@@ -107,6 +107,7 @@
         : VESSEL_CONNECTION.ONLINE;
     vessel.connectionStatus = next;
     renderVessels();
+    refreshOverviewForVessel(vessel);
     if (next === VESSEL_CONNECTION.ONLINE) {
       window.dispatchEvent(
         new CustomEvent("install-guide:vessel-connected", {
@@ -115,6 +116,41 @@
       );
     }
     return true;
+  }
+
+  /** VesselDetails3D.UpdateByConnectionStatus / VesselDetailsOverL LED — grey + ClearDisplay when offline. */
+  function refreshOverviewForVessel(vessel) {
+    if (!vessel || !vesselDetailMode) {
+      return;
+    }
+    if (vessel.id !== selectedVesselId) {
+      return;
+    }
+    if (currentMvView === "overview" || currentMvView === "devices" || currentMvView === "parameters") {
+      fillOverviewLeft(vessel);
+    }
+    if (currentMvView !== "overview") {
+      return;
+    }
+    window.requestAnimationFrame(function () {
+      fitOverviewScale();
+      if (typeof window.mountOverview3D === "function" && mvOverview3d) {
+        overview3dApi = window.mountOverview3D(mvOverview3d, mvOverviewMini, {
+          vesselId: vessel.id,
+          fill: vessel.fill,
+          avg: vessel.avg,
+          max: vessel.max,
+          min: vessel.min,
+          connected: !isVesselOffline(vessel),
+        });
+        window.requestAnimationFrame(function () {
+          fitOverviewScale();
+          if (overview3dApi && overview3dApi.resize) {
+            overview3dApi.resize();
+          }
+        });
+      }
+    });
   }
 
   /**
@@ -1226,15 +1262,22 @@
 
   function renderVesselPanel(vessel) {
     ensureVesselParams(vessel);
+    var offline = isVesselOffline(vessel);
     var panel = document.createElement("article");
     panel.className = "mv-vessel-panel" + (vessel.id === selectedVesselId ? " is-selected" : "");
     panel.dataset.vesselId = vessel.id;
+    panel.dataset.connectionStatus = offline
+      ? VESSEL_CONNECTION.OFFLINE
+      : VESSEL_CONNECTION.ONLINE;
     panel.innerHTML =
       '<div class="mv-vessel-panel-head">' +
       '<span class="mv-vessel-panel-title">' +
       '<img class="mv-vessel-panel-dot" src="' +
       ASSET +
-      'led_small_green.png" alt="" width="10" height="10">' +
+      (offline ? "led_small_gray.png" : "led_small_green.png") +
+      '" alt="" width="10" height="10" title="' +
+      (offline ? "Offline" : "Online") +
+      '">' +
       "<span>" +
       vessel.name +
       "</span>" +
@@ -2367,6 +2410,9 @@
   function fillOverviewLeft(vessel) {
     ensureVesselParams(vessel);
     var metrics = vesselMetrics(vessel);
+    var offline = isVesselOffline(vessel);
+    // ModelWPFBase.NOT_DEFINED — shown when scanner.Connection.IsConnected is false
+    var nd = "-";
     function setVal(id, text) {
       var el = document.getElementById(id);
       if (el) {
@@ -2376,29 +2422,51 @@
     var materialEl = document.getElementById("mvOverviewMaterial");
     var nameEl = document.getElementById("mvOverviewVesselName");
     var problemsEl = document.getElementById("mvOverviewProblems");
+    var ledEl = document.getElementById("mvOverviewStatusLed");
     if (materialEl) {
       materialEl.textContent = vessel.short;
     }
     if (nameEl) {
       nameEl.textContent = vessel.name;
     }
+    // SiloComponent / VesselDetailsOverL imageStatus: green connected, gray notConnected
+    if (ledEl) {
+      ledEl.src = ASSET + (offline ? "led_large_gray.png" : "led_large_green.png");
+      ledEl.title = offline ? "Not connected" : "Connected";
+      ledEl.alt = offline ? "Not connected" : "Connected";
+    }
     // Demo Mode clears alert/problem text (VesselDetailsOverL)
     if (problemsEl) {
       problemsEl.textContent = "";
       problemsEl.hidden = true;
     }
-    setVal("mvOvAvg", metrics.avg.toFixed(2));
-    setVal("mvOvMax", metrics.max.toFixed(2));
-    setVal("mvOvMin", metrics.min.toFixed(2));
-    setVal("mvOvAvgPct", (metrics.avgLevelPct != null ? metrics.avgLevelPct : 0).toFixed(2));
-    setVal("mvOvVol", metrics.volM3.toFixed(2));
-    setVal("mvOvVolPct", metrics.fill.toFixed(2));
-    setVal("mvOvMass", metrics.massT == null ? "-" : metrics.massT.toFixed(2));
-    setVal("mvOvVolCap", metrics.volCap.toFixed(2));
-    setVal("mvOvMassCap", metrics.massCap == null ? "-" : metrics.massCap.toFixed(2));
-    setVal("mvOvTemp", metrics.temp.toFixed(2));
-    setVal("mvOvSnr", metrics.snr.toFixed(2));
-    setVal("mvOvOut", metrics.output.toFixed(2));
+    if (offline) {
+      setVal("mvOvAvg", nd);
+      setVal("mvOvMax", nd);
+      setVal("mvOvMin", nd);
+      setVal("mvOvAvgPct", nd);
+      setVal("mvOvVol", nd);
+      setVal("mvOvVolPct", nd);
+      setVal("mvOvMass", nd);
+      setVal("mvOvVolCap", metrics.volCap.toFixed(2));
+      setVal("mvOvMassCap", metrics.massCap == null ? nd : metrics.massCap.toFixed(2));
+      setVal("mvOvTemp", nd);
+      setVal("mvOvSnr", nd);
+      setVal("mvOvOut", nd);
+    } else {
+      setVal("mvOvAvg", metrics.avg.toFixed(2));
+      setVal("mvOvMax", metrics.max.toFixed(2));
+      setVal("mvOvMin", metrics.min.toFixed(2));
+      setVal("mvOvAvgPct", (metrics.avgLevelPct != null ? metrics.avgLevelPct : 0).toFixed(2));
+      setVal("mvOvVol", metrics.volM3.toFixed(2));
+      setVal("mvOvVolPct", metrics.fill.toFixed(2));
+      setVal("mvOvMass", metrics.massT == null ? nd : metrics.massT.toFixed(2));
+      setVal("mvOvVolCap", metrics.volCap.toFixed(2));
+      setVal("mvOvMassCap", metrics.massCap == null ? nd : metrics.massCap.toFixed(2));
+      setVal("mvOvTemp", metrics.temp.toFixed(2));
+      setVal("mvOvSnr", metrics.snr.toFixed(2));
+      setVal("mvOvOut", metrics.output.toFixed(2));
+    }
 
     var scanSel = document.getElementById("mvScannersSelect");
     if (scanSel) {
@@ -2440,6 +2508,7 @@
           avg: vessel.avg,
           max: vessel.max,
           min: vessel.min,
+          connected: !isVesselOffline(vessel),
         });
         window.requestAnimationFrame(function () {
           fitOverviewScale();
@@ -2558,6 +2627,7 @@
             avg: vessel.avg,
             max: vessel.max,
             min: vessel.min,
+            connected: !isVesselOffline(vessel),
           });
           window.requestAnimationFrame(function () {
             fitOverviewScale();
@@ -3424,6 +3494,12 @@
     return findVessel(selectedVesselId) || null;
   };
 
+  /** True when the selected vessel's scanner.Connection.IsConnected. */
+  window.mvIsSelectedVesselConnected = function () {
+    var vessel = findVessel(selectedVesselId);
+    return !!(vessel && !isVesselOffline(vessel));
+  };
+
   window.mvGetEditingMenuState = function () {
     var state = {
       addSite: false,
@@ -3817,6 +3893,7 @@
       v.connectionStatus = VESSEL_CONNECTION.ONLINE;
     });
     renderVessels();
+    refreshOverviewForVessel(findVessel(selectedVesselId));
     updateMvStatus();
     if (window.MvDialogs) window.MvDialogs.status("Connect All completed.");
     window.dispatchEvent(new CustomEvent("install-guide:vessel-connected"));
@@ -3826,6 +3903,7 @@
       v.connectionStatus = VESSEL_CONNECTION.OFFLINE;
     });
     renderVessels();
+    refreshOverviewForVessel(findVessel(selectedVesselId));
     updateMvStatus();
     if (window.MvDialogs) window.MvDialogs.status("Disconnect All completed.");
   };

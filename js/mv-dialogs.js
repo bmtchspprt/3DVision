@@ -600,9 +600,14 @@
         '<input type="text" id="mvProjNumDevices" value="1" autocomplete="off">' +
         "</div></fieldset>" +
         '<fieldset class="mv-proj-wiz-box"><legend>Connection Type</legend>' +
+        // WizardStepSite: 2-col radios — HART/RS-485/TCP | GPRS/GPRS+SMS/Smart GPRS
         '<div class="mv-proj-wiz-radios" id="mvProjConTypes">' +
+        '<label class="mv-proj-wiz-radio"><input type="radio" name="mvProjConType" value="hart"> HART</label>' +
+        '<label class="mv-proj-wiz-radio" data-gprs="1"><input type="radio" name="mvProjConType" value="gprs"> GPRS</label>' +
         '<label class="mv-proj-wiz-radio"><input type="radio" name="mvProjConType" value="rs485" checked> RS-485</label>' +
+        '<label class="mv-proj-wiz-radio" data-gprs="1"><input type="radio" name="mvProjConType" value="gprs_sms"> GPRS + SMS</label>' +
         '<label class="mv-proj-wiz-radio"><input type="radio" name="mvProjConType" value="tcp"> TCP/IP</label>' +
+        '<label class="mv-proj-wiz-radio" data-gprs="1"><input type="radio" name="mvProjConType" value="smart_gprs"> Smart GPRS</label>' +
         "</div></fieldset>" +
         '<fieldset class="mv-proj-wiz-box" id="mvProjConfigBox"><legend>Configuration</legend>' +
         '<div class="mv-proj-wiz-row">' +
@@ -1309,52 +1314,185 @@
       );
     },
 
-    "mv-dlg-echo-curve": function () {
+    "mv-dlg-echo-activate": function () {
+      // BeamActivate.xaml — Height=527 Width=506, columns * | 255
+      var vessel =
+        typeof global.mvGetSelectedVessel === "function"
+          ? global.mvGetSelectedVessel()
+          : null;
+      var site =
+        (vessel && vessel.siteName) ||
+        (typeof global.mvGetCurrentSiteName === "function"
+          ? global.mvGetCurrentSiteName()
+          : "Site1");
+      var name = vessel ? vessel.name || vessel.short : "Vessel1";
+      var scanner =
+        vessel && vessel.scannerName
+          ? vessel.scannerName
+          : (vessel && vessel.short ? vessel.short + "_0" : "Scanner");
       var body =
-        '<div class="mv-beams-toolbar">' +
-        '<label class="mv-check" style="margin:0"><input type="checkbox" id="mvEchoFuzzy"> Show Fuzzy</label>' +
-        '<button class="btn mv-params-btn" type="button" title="Zoom Undo" style="width:24px;min-width:24px;padding:0">↶</button>' +
-        '<select style="width:76px"><option>m</option><option>ft</option></select>' +
-        '<label class="mv-check" style="margin:0"><input type="checkbox"> Map out False Echoes</label>' +
-        '<label class="mv-check" style="margin:0"><input type="checkbox" checked> After Transmission Ratio Only</label></div>' +
-        '<div class="mv-params-tabs" role="tablist">' +
-        '<button type="button" class="mv-params-tab is-active" data-tab="all">All Beams</button></div>' +
-        '<div class="mv-beams-chart"><canvas id="mvEchoCanvas" width="760" height="250"></canvas></div>' +
-        '<div class="mv-beams-lower">' +
-        '<div class="mv-params-tabs" role="tablist">' +
-        '<button type="button" class="mv-params-tab is-active" data-tab="online">On Line</button>' +
-        '<button type="button" class="mv-params-tab" data-tab="files">Downloaded Files</button>' +
-        '<button type="button" class="mv-params-tab" data-tab="noise">Noise</button></div>' +
-        '<div class="mv-params-panels" style="min-height:140px;border:1px solid #b0b0b0;background:#fff;padding:8px">' +
-        '<div data-panel="online"><div class="mv-dialog-row"><label>Vessel / Scanner:</label><select style="width:220px">' +
-        vesselsOptionsHtml() +
-        '</select><button class="btn mv-params-btn" type="button" id="mvEchoStart">Start</button></div>' +
-        "<div>SNR: 36.4 dB &nbsp; Distance: 2.53 m &nbsp; Level: 13.47 m</div></div>" +
-        '<div data-panel="files" hidden><p style="color:#697477">No downloaded beam files.</p></div>' +
-        '<div data-panel="noise" hidden><table class="mv-dialog-table"><thead><tr><th>#</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th></tr></thead>' +
-        "<tbody><tr><td>1</td><td>0.12</td><td>0.18</td><td>0.09</td><td>0.21</td><td>0.15</td><td>0.11</td><td>0.17</td><td>0.14</td><td>0.10</td></tr></tbody></table></div>" +
-        "</div></div>";
+        '<div class="mv-ba" id="mvBaRoot">' +
+        '<div class="mv-ba-tree" id="mvEchoActTree">' +
+        '<div class="node site">' +
+        site +
+        "</div>" +
+        '<div class="node vessel">' +
+        name +
+        "</div>" +
+        '<div class="node scanner is-selected">' +
+        scanner +
+        "</div></div>" +
+        '<div class="mv-ba-right">' +
+        '<div class="mv-ba-status" id="mvEchoActStatus">Server Echo Curve analysis status: Not active.</div>' +
+        '<div class="mv-ba-progress" id="mvEchoActProgressBar"><div class="mv-ba-progress-fill" id="mvEchoActProgress"></div></div>' +
+        '<div class="mv-ba-progress-label" id="mvEchoActProgressLabel"></div>' +
+        '<div class="mv-ba-params">' +
+        '<label class="mv-ba-type-lbl" for="mvEchoActType">Type:</label>' +
+        '<select class="mv-ba-type" id="mvEchoActType" disabled>' +
+        '<option value="all" selected>All Echoes Info</option>' +
+        '<option value="channels">Channels</option>' +
+        '<option value="noise">Noise</option>' +
+        '<option value="sram">SRAM</option>' +
+        "</select>" +
+        // Max Range Hidden for All Echoes Info (ModelBeam.VisibilityChannelMaxRange)
+        '<label class="mv-ba-range-lbl" for="mvEchoActMaxRange" hidden>Max Range:</label>' +
+        '<input type="text" class="mv-ba-range" id="mvEchoActMaxRange" value="20.00" hidden />' +
+        '<span class="mv-ba-range-units" id="mvEchoActMaxRangeUnits" hidden>m</span>' +
+        "</div>" +
+        '<fieldset class="mv-ba-cont"><legend>Continuous Grades</legend>' +
+        '<label class="mv-ba-cont-every"><input type="checkbox" id="mvEchoActEvery"> Every (mins)</label>' +
+        '<input type="text" class="mv-ba-cont-every-val" id="mvEchoActEveryVal" value="5.0" disabled>' +
+        '<label class="mv-ba-cont-dur"><input type="checkbox" id="mvEchoActDuration"> Duration (hours)</label>' +
+        '<input type="text" class="mv-ba-cont-dur-val" id="mvEchoActDurationVal" value="1.0" disabled>' +
+        "</fieldset>" +
+        '<div class="mv-ba-btns">' +
+        '<button type="button" class="btn mv-params-btn" id="mvEchoActStop" disabled>Stop</button>' +
+        '<button type="button" class="btn mv-params-btn" id="mvEchoActStart">Start</button>' +
+        "</div></div></div>";
       return wrapDialog(
-        "mv-dlg-echo-curve",
-        "Echo Curve",
-        800,
+        "mv-dlg-echo-activate",
+        "Activate Echo Curve Analysis",
+        506,
         body,
-        '<div class="mv-dialog-footer"><button class="btn mv-params-btn" type="button" data-mv-dlg-close="mv-dlg-echo-curve">Close</button></div>'
+        ""
       );
+    },
+
+    "mv-dlg-echo-curve": function () {
+      // WindowBeams.xaml 800×680 → ViewBeamsMain.xaml rows 30 / 60* / 5 / 40*
+      // Grades toolbar: Show Fuzzy, Zoom Undo, units, Map out False Echoes
+      // (After Transmission Ratio Only only for Channels/Noise — removed for Grades)
+      var body =
+        '<div class="mv-wb" id="mvWbRoot">' +
+        '<div class="mv-wb-toolbar">' +
+        '<label class="mv-wb-check"><input type="checkbox" id="mvEchoFuzzy"> Show Fuzzy</label>' +
+        '<button type="button" class="mv-wb-zoom" id="mvEchoZoomUndo" title="Zoom Undo">' +
+        '<img src="assets/images/multivision/zoomundo.png" width="16" height="16" alt="">' +
+        "</button>" +
+        '<select class="mv-wb-unit" id="mvEchoDistUnit">' +
+        '<option value="m" selected>m</option><option value="ft">ft</option></select>' +
+        '<label class="mv-wb-check"><input type="checkbox" id="mvEchoFalseMap"> Map out False Echoes</label>' +
+        "</div>" +
+        '<div class="mv-wb-charts">' +
+        '<div class="mv-wb-tabs" id="mvEchoBeamTabs" role="tablist">' +
+        '<button type="button" class="mv-wb-tab is-active" data-echo-beam="0">High</button>' +
+        '<button type="button" class="mv-wb-tab" data-echo-beam="1">Medium</button>' +
+        '<button type="button" class="mv-wb-tab" data-echo-beam="2">Low</button>' +
+        '<button type="button" class="mv-wb-tab" data-echo-beam="3">Dir 30</button>' +
+        '<button type="button" class="mv-wb-tab" data-echo-beam="4">Dir 90</button>' +
+        '<button type="button" class="mv-wb-tab" data-echo-beam="5">Dir 150</button>' +
+        '<button type="button" class="mv-wb-tab" data-echo-beam="6">Dir 210</button>' +
+        '<button type="button" class="mv-wb-tab" data-echo-beam="7">Dir 270</button>' +
+        '<button type="button" class="mv-wb-tab" data-echo-beam="8">Dir 330</button>' +
+        '<button type="button" class="mv-wb-tab" data-echo-beam="all">All Beams</button>' +
+        "</div>" +
+        // ViewBeamSingle.xaml columns * | 150
+        '<div class="mv-wb-chart-pane">' +
+        '<div class="mv-wb-chart"><canvas id="mvEchoCanvas"></canvas></div>' +
+        '<div class="mv-wb-legend" id="mvEchoLegend"></div>' +
+        "</div></div>" +
+        '<div class="mv-wb-split" aria-hidden="true"></div>' +
+        '<div class="mv-wb-lower">' +
+        // Grades: Noise tab removed unless IsDebugRun (ViewBeamsMain.CreateLayout)
+        '<div class="mv-wb-lower-tabs" role="tablist">' +
+        '<button type="button" class="mv-wb-tab is-active" data-tab="online">On Line</button>' +
+        '<button type="button" class="mv-wb-tab" data-tab="files">Downloaded Files</button>' +
+        "</div>" +
+        '<div class="mv-wb-lower-panels">' +
+        // ViewBeamSelection.xaml — On Line
+        '<div data-panel="online" class="mv-vbs">' +
+        '<div class="mv-vbs-left">' +
+        '<div class="mv-vbs-tree" id="mvEchoOnlineTree"></div>' +
+        '<div class="mv-vbs-pager">' +
+        '<span class="mv-vbs-page-lbl">Page #</span>' +
+        '<button type="button" class="mv-vbs-nav" disabled>|&lt;</button>' +
+        '<button type="button" class="mv-vbs-nav" disabled>&lt;</button>' +
+        '<input type="text" class="mv-vbs-page" value="1" readonly>' +
+        '<button type="button" class="mv-vbs-nav" disabled>&gt;</button>' +
+        '<button type="button" class="mv-vbs-nav" disabled>&gt;|</button>' +
+        '<span class="mv-vbs-loc-lbl">Location:</span>' +
+        '<span class="mv-vbs-loc" id="mvEchoPageStatus">1-1 / 1</span>' +
+        '<span class="mv-vbs-size-lbl">Page Size:</span>' +
+        '<input type="text" class="mv-vbs-size" value="50">' +
+        '<button type="button" class="btn mv-params-btn mv-vbs-reload" id="mvEchoReload">Reload</button>' +
+        '<button type="button" class="btn mv-params-btn mv-vbs-download" id="mvEchoDownload">Download</button>' +
+        "</div></div>" +
+        '<div class="mv-vbs-split" aria-hidden="true"></div>' +
+        '<div class="mv-vbs-table-wrap">' +
+        '<table class="mv-vbs-table"><thead><tr><th>File Name</th><th>File Date / Time</th></tr></thead>' +
+        '<tbody id="mvEchoFileBody"><tr class="is-selected"><td id="mvEchoFileName">—</td><td id="mvEchoFileTime">—</td></tr></tbody>' +
+        "</table></div></div>" +
+        // Downloaded Files + local folder row (ViewBeamSelection gridBrowseCompiterFolder)
+        '<div data-panel="files" hidden class="mv-vbs">' +
+        '<div class="mv-vbs-left">' +
+        '<div class="mv-vbs-tree" id="mvEchoFilesTree"></div>' +
+        '<div class="mv-vbs-pager">' +
+        '<span class="mv-vbs-page-lbl">Page #</span>' +
+        '<button type="button" class="mv-vbs-nav" disabled>|&lt;</button>' +
+        '<button type="button" class="mv-vbs-nav" disabled>&lt;</button>' +
+        '<input type="text" class="mv-vbs-page" value="1" readonly>' +
+        '<button type="button" class="mv-vbs-nav" disabled>&gt;</button>' +
+        '<button type="button" class="mv-vbs-nav" disabled>&gt;|</button>' +
+        '<span class="mv-vbs-loc-lbl">Location:</span>' +
+        '<span class="mv-vbs-loc">—</span>' +
+        '<span class="mv-vbs-size-lbl">Page Size:</span>' +
+        '<input type="text" class="mv-vbs-size" value="50">' +
+        '<button type="button" class="btn mv-params-btn mv-vbs-reload" disabled>Reload</button>' +
+        '<button type="button" class="btn mv-params-btn mv-vbs-download" disabled>Download</button>' +
+        "</div>" +
+        '<div class="mv-vbs-folder">' +
+        '<input type="checkbox" id="mvEchoLocalFolder">' +
+        '<span>Select Local Folder:</span>' +
+        '<button type="button" class="btn mv-params-btn" style="width:26px;min-width:26px;padding:0">...</button>' +
+        "</div></div>" +
+        '<div class="mv-vbs-split" aria-hidden="true"></div>' +
+        '<div class="mv-vbs-table-wrap">' +
+        '<table class="mv-vbs-table"><thead><tr><th>File Name</th><th>File Date / Time</th></tr></thead>' +
+        "<tbody><tr><td colspan=\"2\" class=\"mv-vbs-empty\">No downloaded beam files.</td></tr></tbody>" +
+        "</table></div></div>" +
+        "</div></div></div>";
+      return wrapDialog("mv-dlg-echo-curve", "Echo Curve", 800, body, "");
     },
 
     "mv-dlg-echo-viewer": function () {
       return wrapDialog(
         "mv-dlg-echo-viewer",
-        "Echo Curve",
+        "Echo Curve Analyze Viewer",
         800,
-        '<div class="mv-beams-toolbar">' +
-          '<label class="mv-check" style="margin:0"><input type="checkbox"> Show Fuzzy</label>' +
-          '<select style="width:76px"><option>m</option><option>ft</option></select></div>' +
-          '<div class="mv-dialog-row"><label>File:</label><input type="text" value="" style="flex:1"><button class="btn mv-params-btn" type="button">Browse...</button></div>' +
-          '<div class="mv-beams-chart" style="height:280px"></div>' +
-          '<p style="margin-top:8px;color:#697477">Load a saved echo curve (.grd / beam file) for offline analysis.</p>',
-        '<div class="mv-dialog-footer"><button class="btn mv-params-btn" type="button" data-mv-dlg-close="mv-dlg-echo-viewer">Close</button></div>'
+        '<div class="mv-wb mv-wb--viewer">' +
+          '<div class="mv-wb-toolbar">' +
+          '<label class="mv-wb-check"><input type="checkbox" id="mvEchoViewerFuzzy"> Show Fuzzy</label>' +
+          '<select class="mv-wb-unit" id="mvEchoViewerUnit"><option value="m" selected>m</option><option value="ft">ft</option></select>' +
+          "</div>" +
+          '<div class="mv-dialog-row" style="padding:6px 8px;margin:0">' +
+          "<label>File:</label>" +
+          '<input type="text" id="mvEchoViewerFile" value="" style="flex:1">' +
+          '<button class="btn mv-params-btn" type="button" id="mvEchoViewerBrowse">Browse...</button></div>' +
+          '<div class="mv-wb-charts mv-wb-charts--viewer">' +
+          '<div class="mv-wb-chart-pane">' +
+          '<div class="mv-wb-chart"><canvas id="mvEchoViewerCanvas"></canvas></div>' +
+          '<div class="mv-wb-legend" id="mvEchoViewerLegend"></div></div></div></div>',
+        ""
       );
     },
 
@@ -1532,10 +1670,17 @@
 
   function ensureDialog(id) {
     var existing = $(id);
-    if (existing) {
-      // Rebuild so refreshed XAML ports replace earlier stubs in the same session.
+    var rebuildEcho =
+      id === "mv-dlg-echo-curve" ||
+      id === "mv-dlg-echo-activate" ||
+      id === "mv-dlg-echo-viewer";
+    if (existing && rebuildEcho) {
       existing.remove();
+      var oi = openIds.indexOf(id);
+      if (oi >= 0) openIds.splice(oi, 1);
+      existing = null;
     }
+    if ($(id)) return;
     var h = ensureHost();
     if (!h || !builders[id]) return;
     h.insertAdjacentHTML("beforeend", builders[id]());
@@ -2714,44 +2859,386 @@
     }
   }
 
+  /* Echo Curve — UI wiring; BeamData/chart in js/mv-echo-beams.js (decompiled port) */
+  var echoCurveState = {
+    data: null,
+    beamIndex: 0,
+    unit: "m",
+    showFuzzy: false,
+    zoom: null,
+    seriesVisible: null,
+  };
+
+  function echoBeamsApi() {
+    return global.MvEchoBeams || window.MvEchoBeams;
+  }
+
+  function ensureEchoSeriesVisible() {
+    var api = echoBeamsApi();
+    if (!echoCurveState.seriesVisible && api) {
+      echoCurveState.seriesVisible = api.seriesVisibilityMap();
+    }
+    return echoCurveState.seriesVisible;
+  }
+
+  function drawEchoCurve(canvas, data, state) {
+    var api = echoBeamsApi();
+    if (!api) return;
+    api.drawBeamChart(canvas, data, state);
+  }
+
+  function fillEchoLegend(el, state) {
+    var api = echoBeamsApi();
+    if (!el || !api) return;
+    ensureEchoSeriesVisible();
+    el.innerHTML = api.buildLegendHtml(state.beamIndex, state.seriesVisible);
+  }
+
+  function fillEchoNoiseTable(data) {
+    var body = $("mvEchoNoiseBody");
+    var api = echoBeamsApi();
+    if (!body || !api || !data) return;
+    body.innerHTML = api.noiseRowsHtml(data);
+  }
+
+  function refreshEchoCurveUi(root) {
+    root = root || $("mv-dlg-echo-curve");
+    if (!root || !echoCurveState.data) return;
+    var api = echoBeamsApi();
+    if (!api) return;
+    ensureEchoSeriesVisible();
+    var canvas = root.querySelector("#mvEchoCanvas") || $("mvEchoCanvas");
+    drawEchoCurve(canvas, echoCurveState.data, echoCurveState);
+    fillEchoLegend(root.querySelector("#mvEchoLegend") || $("mvEchoLegend"), echoCurveState);
+    fillEchoNoiseTable(echoCurveState.data);
+
+    // Site.GetScannerFullName → Echo Curve site\vessel\scanner
+    var title = root.querySelector(".title-bar-text");
+    if (title) {
+      title.textContent =
+        "Echo Curve " + (echoCurveState.data.pathLabel || echoCurveState.data.fileName || "");
+    }
+    var unitSel = root.querySelector("#mvEchoDistUnit");
+    if (unitSel) unitSel.value = echoCurveState.unit === "ft" ? "ft" : "m";
+
+    root.querySelectorAll("[data-echo-beam]").forEach(function (tab) {
+      var v = tab.getAttribute("data-echo-beam");
+      if (v === "all") {
+        tab.disabled = false;
+        tab.classList.remove("is-disabled");
+      } else {
+        var bi = parseInt(v, 10);
+        var has =
+          !echoCurveState.data.beamsHasDataList ||
+          echoCurveState.data.beamsHasDataList[bi] !== false;
+        tab.disabled = !has;
+        tab.classList.toggle("is-disabled", !has);
+        if (!has && echoCurveState.beamIndex === bi) {
+          echoCurveState.beamIndex = api.firstEnabledBeamIndex(echoCurveState.data);
+        }
+      }
+      var active =
+        (v === "all" && echoCurveState.beamIndex < 0) ||
+        (v !== "all" && parseInt(v, 10) === echoCurveState.beamIndex);
+      tab.classList.toggle("is-active", !!active);
+    });
+
+    var fn = root.querySelector("#mvEchoFileName") || $("mvEchoFileName");
+    var ft = root.querySelector("#mvEchoFileTime") || $("mvEchoFileTime");
+    if (fn) fn.textContent = echoCurveState.data.fileName;
+    if (ft) {
+      var d = new Date();
+      ft.textContent =
+        d.toLocaleDateString("en-US") +
+        " " +
+        d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", second: "2-digit" });
+    }
+    var tree = root.querySelector("#mvEchoOnlineTree") || $("mvEchoOnlineTree");
+    var filesTree = root.querySelector("#mvEchoFilesTree");
+    var vessel =
+      typeof global.mvGetSelectedVessel === "function" ? global.mvGetSelectedVessel() : null;
+    var site =
+      (vessel && vessel.siteName) ||
+      (typeof global.mvGetCurrentSiteName === "function" ? global.mvGetCurrentSiteName() : "Site1");
+    var vName = vessel ? vessel.name || vessel.short : "Vessel1";
+    var sName =
+      vessel && vessel.scannerName
+        ? vessel.scannerName
+        : vessel && vessel.short
+          ? vessel.short + "_0"
+          : "Vessel1_0";
+    var treeHtml =
+      '<div class="node site">' +
+      site +
+      "</div>" +
+      '<div class="node vessel">' +
+      vName +
+      "</div>" +
+      '<div class="node scanner is-selected">' +
+      sName +
+      "</div>";
+    if (tree) tree.innerHTML = treeHtml;
+    if (filesTree) filesTree.innerHTML = treeHtml;
+  }
+
+  function buildEchoDataFromSession() {
+    var api = echoBeamsApi();
+    var vessel =
+      typeof global.mvGetSelectedVessel === "function" ? global.mvGetSelectedVessel() : null;
+    var height = vessel && vessel.height != null ? Number(vessel.height) : 16;
+    var distance = 2.53;
+    if (vessel && vessel.avg != null && height) {
+      var level = Number(vessel.avg);
+      if (isFinite(level) && level > 0 && level < height) {
+        distance = Math.round((height - level) * 100) / 100;
+      }
+    }
+    var site =
+      (vessel && vessel.siteName) ||
+      (typeof global.mvGetCurrentSiteName === "function" ? global.mvGetCurrentSiteName() : "Site1");
+    var vName = vessel ? vessel.name || vessel.short || "Vessel1" : "Vessel1";
+    var sName =
+      vessel && vessel.scannerName
+        ? vessel.scannerName
+        : vessel && vessel.short
+          ? vessel.short + "_0"
+          : "Vessel1_0";
+    var fileBase = String(sName).replace(/\s+/g, "");
+    return api.buildBeamData({
+      distanceM: distance,
+      heightM: height,
+      maxRange: Math.max(20, height + 4),
+      seed: vessel && vessel.serial ? parseInt(String(vessel.serial).replace(/\D/g, ""), 10) : 709001467,
+      fileName: fileBase + ".bm4",
+      pathLabel: site + "\\" + vName + "\\" + fileBase,
+    });
+  }
+
+  function openEchoCurveWindow() {
+    var api = echoBeamsApi();
+    echoCurveState.data = buildEchoDataFromSession();
+    echoCurveState.beamIndex = api ? api.firstEnabledBeamIndex(echoCurveState.data) : 0;
+    echoCurveState.unit = "m";
+    echoCurveState.seriesVisible = api ? api.seriesVisibilityMap() : null;
+    openDialog("mv-dlg-echo-curve");
+    setTimeout(function () {
+      refreshEchoCurveUi($("mv-dlg-echo-curve"));
+    }, 40);
+  }
+
+  function openEchoCurveAnalysis() {
+    if (typeof global.mvIsSelectedVesselConnected === "function" && !global.mvIsSelectedVesselConnected()) {
+      showMessage(
+        "All scanners are disconnected. Reconnect vessel and try again.",
+        "Echo Curve Analysis"
+      );
+      return;
+    }
+    var vessels = typeof global.mvGetVessels === "function" ? global.mvGetVessels() : [];
+    if (!vessels.length) {
+      showMessage("No vessel is selected for Echo Curve Analysis.", "Echo Curve Analysis");
+      return;
+    }
+    openDialog("mv-dlg-echo-activate");
+  }
+
+  function wireEchoActivate(root) {
+    if (!root || root.id !== "mv-dlg-echo-activate" || root.__mvEchoActWired) return;
+    root.__mvEchoActWired = true;
+    var startBtn = root.querySelector("#mvEchoActStart");
+    var stopBtn = root.querySelector("#mvEchoActStop");
+    var statusEl = root.querySelector("#mvEchoActStatus");
+    var progBar = root.querySelector("#mvEchoActProgressBar");
+    var prog = root.querySelector("#mvEchoActProgress");
+    var progLabel = root.querySelector("#mvEchoActProgressLabel");
+    var every = root.querySelector("#mvEchoActEvery");
+    var everyVal = root.querySelector("#mvEchoActEveryVal");
+    var dur = root.querySelector("#mvEchoActDuration");
+    var durVal = root.querySelector("#mvEchoActDurationVal");
+    var runTimer = null;
+    if (every && everyVal) {
+      every.addEventListener("change", function () {
+        everyVal.disabled = !every.checked;
+        if (dur) dur.disabled = !every.checked;
+        if (!every.checked && dur) {
+          dur.checked = false;
+          if (durVal) durVal.disabled = true;
+        }
+      });
+    }
+    if (dur && durVal) {
+      dur.addEventListener("change", function () {
+        durVal.disabled = !dur.checked;
+      });
+    }
+    if (startBtn) {
+      startBtn.addEventListener("click", function () {
+        if (typeof global.mvIsSelectedVesselConnected === "function" && !global.mvIsSelectedVesselConnected()) {
+          showMessage(
+            "All scanners are disconnected. Reconnect vessel and try again.",
+            "Echo Curve Analysis"
+          );
+          return;
+        }
+        startBtn.disabled = true;
+        if (stopBtn) stopBtn.disabled = false;
+        // StringsApplic.Grades_ServerActive
+        if (statusEl) {
+          statusEl.textContent = "Server is performing Echo Curve analysis.";
+          statusEl.style.fontWeight = "700";
+          statusEl.style.color = "#008000";
+        }
+        if (progBar) progBar.classList.add("is-visible");
+        var pct = 0;
+        if (runTimer) clearInterval(runTimer);
+        runTimer = setInterval(function () {
+          pct += 14;
+          if (pct > 100) pct = 100;
+          if (prog) prog.style.width = pct + "%";
+          if (progLabel) progLabel.textContent = "";
+          if (pct >= 100) {
+            clearInterval(runTimer);
+            runTimer = null;
+            // StringsApplic.Grades_ServerNotActive + GardesShowViewer
+            if (statusEl) {
+              statusEl.textContent = "Server Echo Curve analysis status: Not active.";
+              statusEl.style.fontWeight = "400";
+              statusEl.style.color = "#000";
+            }
+            if (progBar) progBar.classList.remove("is-visible");
+            if (prog) prog.style.width = "0%";
+            startBtn.disabled = false;
+            if (stopBtn) stopBtn.disabled = true;
+            status("Echo Curve Analysis started.");
+            openEchoCurveWindow();
+          }
+        }, 70);
+      });
+    }
+    if (stopBtn) {
+      stopBtn.addEventListener("click", function () {
+        if (runTimer) {
+          clearInterval(runTimer);
+          runTimer = null;
+        }
+        if (statusEl) {
+          statusEl.textContent = "Server Echo Curve analysis status: Not active.";
+          statusEl.style.fontWeight = "400";
+          statusEl.style.color = "#000";
+        }
+        if (progBar) progBar.classList.remove("is-visible");
+        if (prog) prog.style.width = "0%";
+        if (progLabel) progLabel.textContent = "";
+        stopBtn.disabled = true;
+        if (startBtn) startBtn.disabled = false;
+      });
+    }
+  }
+
+  function wireEchoCurve(root) {
+    if (!root || root.id !== "mv-dlg-echo-curve" || root.__mvEchoWired) return;
+    root.__mvEchoWired = true;
+    var api = echoBeamsApi();
+
+    root.querySelectorAll("[data-echo-beam]").forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        if (tab.disabled) return;
+        var v = tab.getAttribute("data-echo-beam");
+        echoCurveState.beamIndex = v === "all" ? -1 : parseInt(v, 10);
+        refreshEchoCurveUi(root);
+      });
+    });
+
+    var lowerTabs = root.querySelectorAll(".mv-wb-lower-tabs .mv-wb-tab[data-tab]");
+    var panelsHost = root.querySelector(".mv-wb-lower-panels");
+    lowerTabs.forEach(function (tab) {
+      tab.addEventListener("click", function () {
+        var name = tab.getAttribute("data-tab");
+        lowerTabs.forEach(function (t) {
+          t.classList.toggle("is-active", t === tab);
+        });
+        if (panelsHost) {
+          panelsHost.querySelectorAll("[data-panel]").forEach(function (p) {
+            p.hidden = p.getAttribute("data-panel") !== name;
+          });
+        }
+      });
+    });
+
+    var unitSel = root.querySelector("#mvEchoDistUnit");
+    if (unitSel) {
+      unitSel.addEventListener("change", function () {
+        echoCurveState.unit = unitSel.value === "ft" ? "ft" : "m";
+        refreshEchoCurveUi(root);
+      });
+    }
+    var fuzzy = root.querySelector("#mvEchoFuzzy");
+    if (fuzzy) {
+      fuzzy.addEventListener("change", function () {
+        echoCurveState.showFuzzy = !!fuzzy.checked;
+        refreshEchoCurveUi(root);
+      });
+    }
+    var zoomUndo = root.querySelector("#mvEchoZoomUndo");
+    if (zoomUndo) {
+      zoomUndo.addEventListener("click", function () {
+        echoCurveState.zoom = null;
+        refreshEchoCurveUi(root);
+        status("Echo Curve zoom undone.");
+      });
+    }
+    var reload = root.querySelector("#mvEchoReload");
+    if (reload) {
+      reload.addEventListener("click", function () {
+        echoCurveState.data = buildEchoDataFromSession();
+        refreshEchoCurveUi(root);
+        status("Echo Curve reloaded.");
+      });
+    }
+    var download = root.querySelector("#mvEchoDownload");
+    if (download) {
+      download.addEventListener("click", function () {
+        status("Echo Curve downloaded to AnalysisDownload.");
+      });
+    }
+
+    var legendEl = root.querySelector("#mvEchoLegend");
+    if (legendEl && !legendEl.__mvLegendWired) {
+      legendEl.__mvLegendWired = true;
+      legendEl.addEventListener("change", function (e) {
+        var t = e.target;
+        if (!t || !t.getAttribute || !t.getAttribute("data-echo-series")) return;
+        ensureEchoSeriesVisible();
+        echoCurveState.seriesVisible[t.getAttribute("data-echo-series")] = !!t.checked;
+        drawEchoCurve(
+          root.querySelector("#mvEchoCanvas") || $("mvEchoCanvas"),
+          echoCurveState.data,
+          echoCurveState
+        );
+      });
+      legendEl.addEventListener("click", function (e) {
+        var btn = e.target && e.target.closest ? e.target.closest("[data-echo-legend]") : null;
+        if (!btn || !api) return;
+        var on = btn.getAttribute("data-echo-legend") === "all";
+        echoCurveState.seriesVisible = api.seriesVisibilityMap();
+        Object.keys(echoCurveState.seriesVisible).forEach(function (k) {
+          echoCurveState.seriesVisible[k] = on;
+        });
+        fillEchoLegend(legendEl, echoCurveState);
+        drawEchoCurve(
+          root.querySelector("#mvEchoCanvas") || $("mvEchoCanvas"),
+          echoCurveState.data,
+          echoCurveState
+        );
+      });
+    }
+  }
+
   function drawEchoDemo(canvas) {
-    if (!canvas || !canvas.getContext) return;
-    var ctx = canvas.getContext("2d");
-    var w = canvas.width;
-    var h = canvas.height;
-    ctx.fillStyle = "#f4f7fa";
-    ctx.fillRect(0, 0, w, h);
-    ctx.strokeStyle = "#c0c8d0";
-    ctx.beginPath();
-    for (var gx = 0; gx < w; gx += 40) {
-      ctx.moveTo(gx, 0);
-      ctx.lineTo(gx, h);
+    if (!echoCurveState.data) {
+      echoCurveState.data = buildEchoDataFromSession();
     }
-    for (var gy = 0; gy < h; gy += 40) {
-      ctx.moveTo(0, gy);
-      ctx.lineTo(w, gy);
-    }
-    ctx.stroke();
-    ctx.strokeStyle = "#1a6bb5";
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    for (var x = 0; x < w; x++) {
-      var t = x / w;
-      var y =
-        h * 0.55 -
-        Math.sin(t * Math.PI * 6) * 40 * Math.exp(-Math.pow((t - 0.35) * 4, 2)) -
-        Math.sin(t * Math.PI * 14) * 12;
-      if (x === 0) ctx.moveTo(x, y);
-      else ctx.lineTo(x, y);
-    }
-    ctx.stroke();
-    ctx.strokeStyle = "#c0392b";
-    ctx.setLineDash([4, 4]);
-    ctx.beginPath();
-    ctx.moveTo(w * 0.42, 0);
-    ctx.lineTo(w * 0.42, h);
-    ctx.stroke();
-    ctx.setLineDash([]);
+    drawEchoCurve(canvas, echoCurveState.data, echoCurveState);
   }
 
   function applyClientSettings() {
@@ -3257,6 +3744,8 @@
     wireMaterials(root);
     wireWizardVessel(root);
     wireProjectWizard(root);
+    wireEchoActivate(root);
+    wireEchoCurve(root);
     root.addEventListener("click", function (e) {
       var closeBtn = e.target.closest("[data-mv-dlg-close]");
       if (closeBtn) {
@@ -3278,24 +3767,31 @@
         open(openBtn.getAttribute("data-mv-dlg-open"));
         return;
       }
-      if (e.target.id === "mvEchoStart") {
-        drawEchoDemo($("mvEchoCanvas"));
-        status("Echo Curve Analysis started.");
-      }
-      var scanner = e.target.closest(".mv-device-act-tree .node.scanner");
+      var scanner = e.target.closest(
+        ".mv-device-act-tree .node.scanner, .mv-ba-tree .node.scanner, .mv-vbs-tree .node.scanner"
+      );
       if (scanner) {
-        root.querySelectorAll(".mv-device-act-tree .node.scanner").forEach(function (n) {
-          n.classList.toggle("is-selected", n === scanner);
-        });
+        var tree = scanner.closest(".mv-device-act-tree, .mv-ba-tree, .mv-vbs-tree");
+        if (tree) {
+          tree.querySelectorAll(".node.scanner").forEach(function (n) {
+            n.classList.toggle("is-selected", n === scanner);
+          });
+        }
       }
     });
   }
 
   function open(id, opts) {
+    if (id === "mv-dlg-echo-curve" || id === "mv-dlg-echo-activate") {
+      openEchoCurveAnalysis();
+      return;
+    }
     openDialog(id, opts);
-    if (id === "mv-dlg-echo-curve") {
+    if (id === "mv-dlg-echo-viewer") {
       setTimeout(function () {
-        drawEchoDemo($("mvEchoCanvas"));
+        var c = $("mvEchoViewerCanvas");
+        if (!echoCurveState.data) echoCurveState.data = buildEchoDataFromSession();
+        drawEchoCurve(c, echoCurveState.data, echoCurveState);
       }, 30);
     }
   }
@@ -3358,6 +3854,7 @@
     showMessage: showMessage,
     showQuestion: showQuestion,
     runBatchSetParamsProgress: runBatchSetParamsProgress,
+    openEchoCurveAnalysis: openEchoCurveAnalysis,
     status: status,
     getDemoRunSpeed: function () {
       return demoRunSpeed;

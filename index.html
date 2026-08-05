@@ -126,6 +126,10 @@
                 <input type="radio" name="connection-type" value="tcpip">
                 TCP/IP
               </label>
+              <label class="radio-label">
+                <input type="radio" name="connection-type" value="hart">
+                HART
+              </label>
             </div>
           </fieldset>
 
@@ -315,7 +319,7 @@
             <button type="button" class="mv-toolbar-btn" id="mvToolbarConnect"><img class="mv-toolbar-btn-icon" src="assets/images/multivision/icon_connect.png" alt="" width="16" height="16"><span>Connect</span></button>
             <button type="button" class="mv-toolbar-btn"><img class="mv-toolbar-btn-icon" src="assets/images/multivision/icon_disconnect.png" alt="" width="16" height="16"><span>Disconnect</span></button>
             <button type="button" class="mv-toolbar-btn"><img class="mv-toolbar-btn-icon" src="assets/images/multivision/icon_load_from_scanner.png" alt="" width="16" height="16"><span>Load from Vessel</span></button>
-            <button type="button" class="mv-toolbar-btn"><img class="mv-toolbar-btn-icon" src="assets/images/multivision/icon_echocurve.png" alt="" width="16" height="16"><span>Echo Curve</span></button>
+            <button type="button" class="mv-toolbar-btn" id="mvToolbarEchoCurve" title="Echo Curve Analysis"><img class="mv-toolbar-btn-icon" src="assets/images/multivision/icon_echocurve.png" alt="" width="16" height="16"><span>Echo Curve</span></button>
             <button type="button" class="mv-toolbar-btn"><img class="mv-toolbar-btn-icon" src="assets/images/multivision/icon_wizard.png" alt="" width="16" height="16"><span>Wizard</span></button>
             <button type="button" class="mv-toolbar-btn"><img class="mv-toolbar-btn-icon" src="assets/images/multivision/icon_vdc.png" alt="" width="16" height="16"><span>VDC</span></button>
             <div class="mv-toolbar-spacer"></div>
@@ -351,7 +355,7 @@
                   <div class="mv-overview-left">
                     <div class="mv-overview-header">
                       <div class="mv-overview-title">
-                        <img class="mv-overview-title-dot" id="mvOverviewStatusLed" src="assets/images/multivision/led_large_green.png" alt="" width="24" height="24">
+                        <img class="mv-overview-title-dot" id="mvOverviewStatusLed" src="assets/images/multivision/led_large_gray.png" alt="Not connected" width="24" height="24" title="Not connected">
                         <span id="mvOverviewVesselName">Lime Stone (MV)</span>
                       </div>
                       <div class="mv-overview-problems" id="mvOverviewProblems" hidden></div>
@@ -522,8 +526,12 @@
                   <div class="mv-devices-section">
                     <div class="mv-devices-subhead">Connection Type</div>
                     <div class="mv-devices-conn-types" id="mvDevicesConnTypes" role="radiogroup" aria-label="Connection Type">
+                      <label class="mv-devices-radio"><input type="radio" name="mvConnType" value="hart"> HART</label>
+                      <label class="mv-devices-radio"><input type="radio" name="mvConnType" value="gprs"> GPRS</label>
                       <label class="mv-devices-radio"><input type="radio" name="mvConnType" value="rs485" checked> RS-485</label>
+                      <label class="mv-devices-radio"><input type="radio" name="mvConnType" value="gprs-sms"> GPRS + SMS</label>
                       <label class="mv-devices-radio"><input type="radio" name="mvConnType" value="tcpip"> TCP/IP</label>
+                      <label class="mv-devices-radio"><input type="radio" name="mvConnType" value="smart-gprs"> Smart GPRS</label>
                     </div>
                   </div>
                   <div class="mv-devices-section" id="mvDevicesConfigSerial">
@@ -1590,6 +1598,7 @@
   <script src="js/installer.js"></script>
   <script src="js/browser.js"></script>
   <script src="js/multivision.js"></script>
+  <script src="js/mv-echo-beams.js"></script>
   <script src="js/mv-dialogs.js"></script>
   <script src="js/mv-menus.js"></script>
   <script src="js/app.js"></script>

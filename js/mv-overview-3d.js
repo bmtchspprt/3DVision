@@ -607,11 +607,18 @@
     scene.add(fill);
 
     var root = new THREE.Group();
-    var materialMesh = createSurfaceMesh(field, siloRadius, siloHeight);
-    var surfaceTopY =
-      (materialMesh.userData && materialMesh.userData.surfaceTopY) || field.maxH * siloHeight;
+    // VesselDetails3D.UpdateByConnectionStatus → ClearDisplay when not connected:
+    // empty shell only (no material surface / inset fill).
+    var connected = options.connected !== false;
+    var materialMesh = null;
+    var surfaceTopY = siloHeight * 0.75;
+    if (connected) {
+      materialMesh = createSurfaceMesh(field, siloRadius, siloHeight);
+      surfaceTopY =
+        (materialMesh.userData && materialMesh.userData.surfaceTopY) || field.maxH * siloHeight;
+      root.add(materialMesh);
+    }
     root.add(createSiloShell(siloRadius, siloHeight, surfaceTopY + 0.01));
-    root.add(materialMesh);
     scene.add(root);
 
     var miniRenderer = null;
@@ -619,40 +626,42 @@
     var miniScene = null;
     if (miniEl) {
       miniEl.innerHTML = "";
-      var levelMax = maxM;
-      var levelMin = minM;
-      if (!isFinite(levelMax) || !isFinite(levelMin) || levelMax <= levelMin) {
-        levelMax = field.maxM;
-        levelMin = field.minM;
+      if (connected) {
+        var levelMax = maxM;
+        var levelMin = minM;
+        if (!isFinite(levelMax) || !isFinite(levelMin) || levelMax <= levelMin) {
+          levelMax = field.maxM;
+          levelMin = field.minM;
+        }
+        var levelSpan = Math.max(0.2, levelMax - levelMin);
+        var half = 0.9;
+
+        miniScene = new THREE.Scene();
+        miniScene.background = new THREE.Color(0xf7f7f7);
+        miniCamera = new THREE.PerspectiveCamera(30, 100 / 90, 0.05, 40);
+        var camDist = Math.max(2.8, levelSpan * 2.2 + 1.6);
+        miniCamera.position.set(camDist * 0.55, levelSpan * 0.85 + 0.35, camDist * 0.95);
+        miniCamera.lookAt(0, levelSpan * 0.38, 0);
+        miniRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
+        miniRenderer.setPixelRatio(1);
+        miniRenderer.setClearColor(0xf7f7f7, 1);
+        miniRenderer.domElement.style.cssText = "display:block;width:100%;height:100%;";
+        miniEl.appendChild(miniRenderer.domElement);
+
+        var miniRoot = new THREE.Group();
+        miniRoot.add(createInsetMaterialMesh(field, half, levelMin, levelMax));
+        miniRoot.add(createInsetBoundsBox(half, levelSpan));
+        miniScene.add(miniRoot);
+
+        var labelCanvas = document.createElement("canvas");
+        labelCanvas.width = 108;
+        labelCanvas.height = 98;
+        paintInsetAxisLabels(labelCanvas, levelMin, levelMax);
+        labelCanvas.style.cssText =
+          "position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:2;";
+        miniEl.style.position = "absolute";
+        miniEl.appendChild(labelCanvas);
       }
-      var levelSpan = Math.max(0.2, levelMax - levelMin);
-      var half = 0.9;
-
-      miniScene = new THREE.Scene();
-      miniScene.background = new THREE.Color(0xf7f7f7);
-      miniCamera = new THREE.PerspectiveCamera(30, 100 / 90, 0.05, 40);
-      var camDist = Math.max(2.8, levelSpan * 2.2 + 1.6);
-      miniCamera.position.set(camDist * 0.55, levelSpan * 0.85 + 0.35, camDist * 0.95);
-      miniCamera.lookAt(0, levelSpan * 0.38, 0);
-      miniRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: false });
-      miniRenderer.setPixelRatio(1);
-      miniRenderer.setClearColor(0xf7f7f7, 1);
-      miniRenderer.domElement.style.cssText = "display:block;width:100%;height:100%;";
-      miniEl.appendChild(miniRenderer.domElement);
-
-      var miniRoot = new THREE.Group();
-      miniRoot.add(createInsetMaterialMesh(field, half, levelMin, levelMax));
-      miniRoot.add(createInsetBoundsBox(half, levelSpan));
-      miniScene.add(miniRoot);
-
-      var labelCanvas = document.createElement("canvas");
-      labelCanvas.width = 108;
-      labelCanvas.height = 98;
-      paintInsetAxisLabels(labelCanvas, levelMin, levelMax);
-      labelCanvas.style.cssText =
-        "position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:2;";
-      miniEl.style.position = "absolute";
-      miniEl.appendChild(labelCanvas);
     }
 
     var dragging = false;
