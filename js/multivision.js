@@ -1223,17 +1223,9 @@
     return true;
   }
 
-  function vesselChipSiloSvg(uid, offline) {
-    // Flat strip icon matched to real MultiVision vessel chip (sampled colors).
-    // Offline: outline only — no material bands (HideVessel / status unknown).
+  function vesselChipSiloSvg(uid) {
+    // Static strip icon — does not change with connection status (LED does).
     var clipId = "chipSiloClip_" + uid;
-    if (offline) {
-      return (
-        '<svg class="mv-vessel-chip-silo" viewBox="0 0 20 34" width="17" height="32" aria-hidden="true">' +
-        '<path d="M2 1.5 H18 V22 L10 32.5 L2 22 Z" fill="none" stroke="#5A5A5C" stroke-width="1.1" stroke-linejoin="miter"/>' +
-        "</svg>"
-      );
-    }
     return (
       '<svg class="mv-vessel-chip-silo" viewBox="0 0 20 34" width="17" height="32" aria-hidden="true">' +
       "<defs>" +
@@ -1268,7 +1260,7 @@
     chip.innerHTML =
       '<span class="mv-vessel-chip-graphic">' +
       '<span class="mv-vessel-chip-icon">' +
-      vesselChipSiloSvg(vessel.id.replace(/[^a-z0-9]/gi, "_"), offline) +
+      vesselChipSiloSvg(vessel.id.replace(/[^a-z0-9]/gi, "_")) +
       '<span class="mv-vessel-chip-dot' +
       (offline ? " is-offline" : "") +
       '" title="' +
@@ -2556,6 +2548,13 @@
       } else {
         mvOverviewSilo.innerHTML =
           '<div class="mv-silo">' + buildSiloSvg(vessel, "_ov") + "</div>";
+      }
+    }
+    // SurfaceUCSecondary inset (mini material) is cleared/hidden when not connected
+    if (mvOverviewMini) {
+      mvOverviewMini.hidden = offline;
+      if (offline) {
+        mvOverviewMini.innerHTML = "";
       }
     }
   }

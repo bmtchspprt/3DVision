@@ -626,6 +626,8 @@
     var miniScene = null;
     if (miniEl) {
       miniEl.innerHTML = "";
+      // ClearDisplay / not connected — inset material view is not shown
+      miniEl.hidden = !connected;
       if (connected) {
         var levelMax = maxM;
         var levelMin = minM;

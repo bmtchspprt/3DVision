@@ -1534,6 +1534,10 @@
   overflow: hidden;
 }
 
+.mv-overview-mini[hidden] {
+  display: none !important;
+}
+
 .mv-overview-controls {
   position: absolute;
   right: 6px;
