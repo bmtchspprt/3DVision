@@ -608,7 +608,7 @@
 
     var root = new THREE.Group();
     // VesselDetails3D.UpdateByConnectionStatus → ClearDisplay when not connected:
-    // empty shell only (no material surface / inset fill).
+    // empty viewport (no material, no silo shell) — InitViewPort + clear children.
     var connected = options.connected !== false;
     var materialMesh = null;
     var surfaceTopY = siloHeight * 0.75;
@@ -617,9 +617,9 @@
       surfaceTopY =
         (materialMesh.userData && materialMesh.userData.surfaceTopY) || field.maxH * siloHeight;
       root.add(materialMesh);
+      root.add(createSiloShell(siloRadius, siloHeight, surfaceTopY + 0.01));
+      scene.add(root);
     }
-    root.add(createSiloShell(siloRadius, siloHeight, surfaceTopY + 0.01));
-    scene.add(root);
 
     var miniRenderer = null;
     var miniCamera = null;

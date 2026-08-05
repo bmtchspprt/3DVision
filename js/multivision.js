@@ -95,6 +95,24 @@
     return vessel && vessel.connectionStatus === VESSEL_CONNECTION.OFFLINE;
   }
 
+  /**
+   * Vessel.FullNameConnected / FullNameNotConnected.
+   * Offline: "{Name} 0/{scannerCount}" — connected: "{Name} (MV)" (single) or with count.
+   */
+  function vesselOverviewTitle(vessel) {
+    if (!vessel) return "";
+    var name = vessel.name || vessel.short || "Vessel";
+    var n = Math.max(1, parseInt(vessel.numDevices, 10) || 1);
+    if (isVesselOffline(vessel)) {
+      return name + " 0/" + n;
+    }
+    var type = vessel.deviceType || "MV";
+    if (n <= 1) {
+      return name + " (" + type + ")";
+    }
+    return name + " (" + type + ") " + n + "/" + n;
+  }
+
   /** Guide helper: set strip LED online (green) or offline (grey). Re-renders vessels. */
   function setVesselConnectionStatus(vesselId, status) {
     var vessel = findVessel(vesselId);
@@ -907,13 +925,15 @@
   function buildStatsHtml(vessel) {
     ensureVesselParams(vessel);
     var metrics = vesselMetrics(vessel);
+    var offline = isVesselOffline(vessel);
     var rows = "";
     vessel.selectedParams.forEach(function (id) {
       var def = PARAM_BY_ID[id];
       if (!def) {
         return;
       }
-      var raw = def.value(metrics);
+      // FillSiloComponent: live values are "-" when not connected
+      var raw = offline ? null : def.value(metrics);
       var display = raw == null || raw === "" ? "-" : raw;
       var cardLabel = levelDistanceCardLabel(id) || def.cardLabel;
       rows +=
@@ -1203,10 +1223,17 @@
     return true;
   }
 
-  function vesselChipSiloSvg(uid) {
+  function vesselChipSiloSvg(uid, offline) {
     // Flat strip icon matched to real MultiVision vessel chip (sampled colors).
-    // Static graphic — do not tint from vessel material or live fill %.
+    // Offline: outline only — no material bands (HideVessel / status unknown).
     var clipId = "chipSiloClip_" + uid;
+    if (offline) {
+      return (
+        '<svg class="mv-vessel-chip-silo" viewBox="0 0 20 34" width="17" height="32" aria-hidden="true">' +
+        '<path d="M2 1.5 H18 V22 L10 32.5 L2 22 Z" fill="none" stroke="#5A5A5C" stroke-width="1.1" stroke-linejoin="miter"/>' +
+        "</svg>"
+      );
+    }
     return (
       '<svg class="mv-vessel-chip-silo" viewBox="0 0 20 34" width="17" height="32" aria-hidden="true">' +
       "<defs>" +
@@ -1241,7 +1268,7 @@
     chip.innerHTML =
       '<span class="mv-vessel-chip-graphic">' +
       '<span class="mv-vessel-chip-icon">' +
-      vesselChipSiloSvg(vessel.id.replace(/[^a-z0-9]/gi, "_")) +
+      vesselChipSiloSvg(vessel.id.replace(/[^a-z0-9]/gi, "_"), offline) +
       '<span class="mv-vessel-chip-dot' +
       (offline ? " is-offline" : "") +
       '" title="' +
@@ -1269,6 +1296,15 @@
     panel.dataset.connectionStatus = offline
       ? VESSEL_CONNECTION.OFFLINE
       : VESSEL_CONNECTION.ONLINE;
+    // HideVessel(true) when notConnected: remove Grid_Silo + Grid_Data — LightGray frame + LED + name only
+    var bodyHtml = offline
+      ? ""
+      : '<div class="mv-vessel-panel-body">' +
+        '<div class="mv-silo">' +
+        buildSiloSvg(vessel) +
+        "</div>" +
+        buildStatsHtml(vessel) +
+        "</div>";
     panel.innerHTML =
       '<div class="mv-vessel-panel-head">' +
       '<span class="mv-vessel-panel-title">' +
@@ -1279,19 +1315,14 @@
       (offline ? "Offline" : "Online") +
       '">' +
       "<span>" +
-      vessel.name +
+      (offline ? vesselOverviewTitle(vessel) : vessel.name) +
       "</span>" +
       "</span>" +
       '<span class="mv-vessel-poll">Poll:' +
       vessel.poll +
       "</span>" +
       "</div>" +
-      '<div class="mv-vessel-panel-body">' +
-      '<div class="mv-silo">' +
-      buildSiloSvg(vessel) +
-      "</div>" +
-      buildStatsHtml(vessel) +
-      "</div>";
+      bodyHtml;
     panel.addEventListener("click", function () {
       var now = Date.now();
       var isDouble = now - lastPanelClickAt < 450 && lastPanelClickId === vessel.id;
@@ -1626,6 +1657,8 @@
     }
     ensureVesselParams(vessel);
     var m = vesselMetrics(vessel);
+    var offline = isVesselOffline(vessel);
+    var nd = "-";
     if (scadaEl) {
       scadaEl.textContent = String(vessel.scadaId != null ? vessel.scadaId : 1);
     }
@@ -1635,25 +1668,28 @@
     var maxLbl = isViewLevel ? "Max Level:" : "Max Distance:";
     var minLbl = isViewLevel ? "Min Level:" : "Min Distance:";
     var pctLbl = isViewLevel ? "Avg Level:" : "Avg Distance:";
+    function live(v) {
+      return offline ? nd : v;
+    }
     var rows = [
       { label: "Device Name:", unit: "", value: vessel.scannerName || vessel.short, header: true },
       { label: "Poll Address:", unit: "", value: String(vessel.poll) },
-      { label: "Serial Number:", unit: "", value: vessel.serial || "-" },
-      { label: "Hardware:", unit: "", value: String(vessel.hardware != null ? vessel.hardware : "-") },
-      { label: "Firmware:", unit: "", value: vessel.firmware || "-" },
+      { label: "Serial Number:", unit: "", value: offline ? nd : vessel.serial || "-" },
+      { label: "Hardware:", unit: "", value: offline ? nd : String(vessel.hardware != null ? vessel.hardware : "-") },
+      { label: "Firmware:", unit: "", value: offline ? nd : vessel.firmware || "-" },
       { label: "Device Type:", unit: "", value: vessel.deviceType || "MV" },
-      { label: avgLbl, unit: "m", value: m.avg.toFixed(2) },
-      { label: maxLbl, unit: "m", value: m.max.toFixed(2) },
-      { label: minLbl, unit: "m", value: m.min.toFixed(2) },
-      { label: pctLbl, unit: "%", value: (m.avgLevelPct != null ? m.avgLevelPct : 0).toFixed(2) },
-      { label: "Volume:", unit: "[m*3]", value: m.volM3.toFixed(2) },
-      { label: "Volume:", unit: "%", value: m.fill.toFixed(2) },
-      { label: "Mass:", unit: "ton", value: m.massT == null ? "-" : m.massT.toFixed(2) },
-      { label: "Max Volume Capacity:", unit: "[m*3]", value: m.volCap.toFixed(2) },
-      { label: "Max Mass Capacity:", unit: "ton", value: m.massCap == null ? "-" : m.massCap.toFixed(2) },
-      { label: "Temperature:", unit: "C", value: m.temp.toFixed(2) },
-      { label: "SNR:", unit: "dB", value: m.snr.toFixed(2) },
-      { label: "Output Current:", unit: "mA", value: m.output.toFixed(2) },
+      { label: avgLbl, unit: "m", value: live(m.avg.toFixed(2)) },
+      { label: maxLbl, unit: "m", value: live(m.max.toFixed(2)) },
+      { label: minLbl, unit: "m", value: live(m.min.toFixed(2)) },
+      { label: pctLbl, unit: "%", value: live((m.avgLevelPct != null ? m.avgLevelPct : 0).toFixed(2)) },
+      { label: "Volume:", unit: "[m*3]", value: live(m.volM3.toFixed(2)) },
+      { label: "Volume:", unit: "%", value: live(m.fill.toFixed(2)) },
+      { label: "Mass:", unit: "ton", value: live(m.massT == null ? nd : m.massT.toFixed(2)) },
+      { label: "Max Volume Capacity:", unit: "[m*3]", value: live(m.volCap.toFixed(2)) },
+      { label: "Max Mass Capacity:", unit: "ton", value: live(m.massCap == null ? nd : m.massCap.toFixed(2)) },
+      { label: "Temperature:", unit: "C", value: live(m.temp.toFixed(2)) },
+      { label: "SNR:", unit: "dB", value: live(m.snr.toFixed(2)) },
+      { label: "Output Current:", unit: "mA", value: live(m.output.toFixed(2)) },
     ];
     var html = "";
     rows.forEach(function (row) {
@@ -1980,6 +2016,36 @@
 
   function refreshLogsCharts(vessel) {
     if (!vessel || !mvLogs || mvLogs.hidden) {
+      return;
+    }
+    // No live history until connected — blank chart frames only
+    if (isVesselOffline(vessel)) {
+      ["mvLogChartAvg", "mvLogChartVol", "mvLogChartSnr", "mvLogChartTemp"].forEach(function (id) {
+        drawLogChart(document.getElementById(id), {
+          title:
+            id === "mvLogChartAvg"
+              ? "Avg. Level"
+              : id === "mvLogChartVol"
+                ? "Volume/Mass %"
+                : id === "mvLogChartSnr"
+                  ? "SNR"
+                  : "Temperature",
+          yUnit:
+            id === "mvLogChartAvg"
+              ? "[m]"
+              : id === "mvLogChartVol"
+                ? "[%]"
+                : id === "mvLogChartSnr"
+                  ? "[dB]"
+                  : "[C]",
+          yMin: 0,
+          yMax: id === "mvLogChartVol" ? 100 : id === "mvLogChartSnr" ? 40 : 20,
+          color: "#2a6fbb",
+          points: [],
+          xLabels: [],
+        });
+      });
+      logsChartsDrawnFor = vessel.id;
       return;
     }
     var count = 260;
@@ -2423,11 +2489,16 @@
     var nameEl = document.getElementById("mvOverviewVesselName");
     var problemsEl = document.getElementById("mvOverviewProblems");
     var ledEl = document.getElementById("mvOverviewStatusLed");
+    var siloBox = document.querySelector(".mv-overview-silo-box");
     if (materialEl) {
       materialEl.textContent = vessel.short;
     }
     if (nameEl) {
-      nameEl.textContent = vessel.name;
+      nameEl.textContent = vesselOverviewTitle(vessel);
+    }
+    var titleWrap = nameEl && nameEl.closest(".mv-overview-title");
+    if (titleWrap) {
+      titleWrap.classList.toggle("is-offline", offline);
     }
     // SiloComponent / VesselDetailsOverL imageStatus: green connected, gray notConnected
     if (ledEl) {
@@ -2440,6 +2511,11 @@
       problemsEl.textContent = "";
       problemsEl.hidden = true;
     }
+    // Border_Frame: LightSteelBlue connected / LightGray notConnected
+    if (siloBox) {
+      siloBox.classList.toggle("is-offline", offline);
+    }
+    // MaxScaleCVolume/Mass also return NOT_DEFINED when !IsConnected()
     if (offline) {
       setVal("mvOvAvg", nd);
       setVal("mvOvMax", nd);
@@ -2448,8 +2524,8 @@
       setVal("mvOvVol", nd);
       setVal("mvOvVolPct", nd);
       setVal("mvOvMass", nd);
-      setVal("mvOvVolCap", metrics.volCap.toFixed(2));
-      setVal("mvOvMassCap", metrics.massCap == null ? nd : metrics.massCap.toFixed(2));
+      setVal("mvOvVolCap", nd);
+      setVal("mvOvMassCap", nd);
       setVal("mvOvTemp", nd);
       setVal("mvOvSnr", nd);
       setVal("mvOvOut", nd);
@@ -2474,9 +2550,13 @@
     }
 
     if (mvOverviewSilo) {
-      // Unique gradient/clip ids (_ov) so hidden vessel-card SVGs don't steal fill paint.
-      mvOverviewSilo.innerHTML =
-        '<div class="mv-silo">' + buildSiloSvg(vessel, "_ov") + "</div>";
+      // Vessel2DCommonHelper: HideVessel(true) when notConnected — no geometry, no fill
+      if (offline) {
+        mvOverviewSilo.innerHTML = "";
+      } else {
+        mvOverviewSilo.innerHTML =
+          '<div class="mv-silo">' + buildSiloSvg(vessel, "_ov") + "</div>";
+      }
     }
   }
 

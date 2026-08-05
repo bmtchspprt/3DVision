@@ -595,12 +595,18 @@
   font-family: Tahoma, Arial, sans-serif;
   font-size: 15px;
   font-weight: 700;
-  color: #2e8b2e;
+  /* NavigationManager severity=connected → Green */
+  color: #008000;
   line-height: 1.2;
   margin-left: 0;
   padding-left: 24px;
   position: relative;
   min-height: 28px;
+}
+
+.mv-overview-title.is-offline {
+  /* severity=notConnected → Black */
+  color: #000;
 }
 
 .mv-overview-title-dot {
@@ -696,9 +702,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  /* 2D silo host — light blue plate from real Overview */
-  background: #b9d6e8;
-  border: 1px solid #8aaaba;
+  /* SiloComponent Border_Frame — LightSteelBlue when connected */
+  background: #b0c4de;
+  border: 1px solid #b0bcc7;
+}
+
+/* SiloComponent.SetConnectionStatus(notConnected) → Brushes.LightGray + HideVessel */
+.mv-overview-silo-box.is-offline {
+  background: #d3d3d3;
 }
 
 .mv-overview-silo {
@@ -1660,9 +1671,21 @@
   min-height: 268px;
   padding: 3px 6px 4px;
   border: 1px solid #8a9aab;
+  /* SiloComponent Border_Frame connected → LightSteelBlue */
   background: #b0c4de;
   box-sizing: border-box;
   overflow: hidden;
+}
+
+/* notConnected → LightGray; HideVessel removes silo + stats */
+.mv-vessel-panel[data-connection-status="offline"] {
+  background: #d3d3d3;
+  /* SiloComponent default ~226×152 — empty frame after HideVessel */
+  min-height: 152px;
+}
+
+.mv-vessel-panel[data-connection-status="offline"] .mv-vessel-panel-body {
+  display: none;
 }
 
 .mv-vessel-panel.is-selected {
