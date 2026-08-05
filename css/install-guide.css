@@ -269,6 +269,14 @@ body.ig-boot-ready #multiVisionShell.mv-shell--tease {
   animation: ig-point 1s ease-in-out infinite;
 }
 
+/* Spotlight can stay on without the mouse — [hidden] alone loses to .ig-spot-on opacity */
+.ig-pointer[hidden],
+.ig-root.ig-no-pointer .ig-pointer {
+  display: none !important;
+  opacity: 0 !important;
+  animation: none !important;
+}
+
 .ig-pointer svg {
   display: block;
   width: 48px;

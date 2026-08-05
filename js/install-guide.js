@@ -945,8 +945,10 @@
   function placePointer(rect, mode) {
     if (!pointer || !rect || mode === "none" || mode === false) {
       if (pointer) pointer.hidden = true;
+      if (root) root.classList.add("ig-no-pointer");
       return;
     }
+    if (root) root.classList.remove("ig-no-pointer");
     pointer.hidden = false;
     var size = 48;
     var left;
@@ -985,7 +987,12 @@
   function stepPointer(step) {
     var target = stepTarget(step);
     if (!step) return "bottom";
-    if (step.pointer === "none" || step.id === "enter-host-ip") {
+    if (
+      step.pointer === "none" ||
+      step.id === "enter-host-ip" ||
+      step.id === "devices-connection-type" ||
+      step.id === "devices-polling-address"
+    ) {
       return "none";
     }
     if (
@@ -1009,7 +1016,7 @@
   function clearHighlight() {
     if (spot) spot.hidden = true;
     if (pointer) pointer.hidden = true;
-    root.classList.remove("ig-spot-on", "ig-dim-on");
+    root.classList.remove("ig-spot-on", "ig-dim-on", "ig-no-pointer");
   }
 
   function highlight(selector, pointerMode) {
@@ -1028,6 +1035,7 @@
       if (spot) spot.hidden = true;
       if (pointer) pointer.hidden = true;
       root.classList.remove("ig-spot-on", "ig-dim-on");
+      root.classList.add("ig-no-pointer");
       placeCard(null);
       return null;
     }
