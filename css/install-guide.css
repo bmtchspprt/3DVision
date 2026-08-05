@@ -33,6 +33,123 @@
   display: none !important;
 }
 
+.ig-end[hidden] {
+  display: none !important;
+}
+
+/* Conclusive end screen — professional, alerting, unmistakable */
+.ig-end {
+  position: absolute;
+  inset: 0;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  padding: 24px;
+  background:
+    linear-gradient(165deg, rgba(22, 26, 32, 0.72) 0%, rgba(38, 32, 18, 0.68) 50%, rgba(20, 24, 30, 0.78) 100%);
+}
+
+.ig-end-panel {
+  width: min(440px, 100%);
+  background: #f7f5f0;
+  border: 1px solid #c4b89a;
+  border-left: 6px solid #d4a017;
+  border-radius: 4px;
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.5);
+  padding: 0 0 18px;
+  text-align: left;
+}
+
+.ig-end-banner {
+  margin: 0;
+  padding: 8px 22px;
+  background: #1f2430;
+  color: #ffcc33;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.ig-end-kicker {
+  margin: 16px 22px 4px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6a7380;
+  font-weight: 600;
+}
+
+.ig-end-title {
+  margin: 0 22px 10px;
+  font-size: 26px;
+  font-weight: 700;
+  color: #141820;
+  line-height: 1.15;
+}
+
+.ig-end-body {
+  margin: 0 22px 12px;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #2c3340;
+}
+
+.ig-end-alert {
+  margin: 0 22px 14px;
+  padding: 10px 12px;
+  background: #fff6d6;
+  border: 1px solid #e0c35a;
+  border-radius: 3px;
+  color: #5c4a10;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.ig-end-recap {
+  margin: 0 22px 14px;
+  padding: 12px 14px;
+  background: #fff;
+  border: 1px solid #d5d0c6;
+  border-radius: 3px;
+}
+
+.ig-end-recap-heading {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #5a5348;
+}
+
+.ig-end-recap-list {
+  margin: 0;
+  padding: 0 0 0 18px;
+  color: #2c3340;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.ig-end-recap-list li {
+  margin: 0 0 8px;
+}
+
+.ig-end-recap-list li:last-child {
+  margin-bottom: 0;
+}
+
+.ig-end-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 22px;
+  align-items: center;
+}
+
 .ig-mode-panel {
   width: min(560px, 100%);
   background: #f7f8fa;

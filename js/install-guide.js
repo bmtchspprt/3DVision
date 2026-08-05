@@ -513,7 +513,22 @@
       '<div class="ig-card-actions">' +
       '<button type="button" class="ig-btn ig-btn--primary" id="igPrimary" hidden>Continue</button>' +
       '<span class="ig-progress" id="igProgress"></span>' +
-      "</div></div>";
+      "</div></div>" +
+      '<div class="ig-end" id="igEndScreen" hidden>' +
+      '<div class="ig-end-panel" role="dialog" aria-labelledby="igEndTitle" aria-modal="true">' +
+      '<div class="ig-end-banner" aria-hidden="true">COMPLETE</div>' +
+      '<p class="ig-end-kicker" id="igEndKicker">Install guide</p>' +
+      '<h1 class="ig-end-title" id="igEndTitle">You\'re done</h1>' +
+      '<p class="ig-end-body" id="igEndBody"></p>' +
+      '<div class="ig-end-alert" id="igEndAlert" role="status"></div>' +
+      '<div class="ig-end-recap" id="igEndRecap" hidden>' +
+      '<p class="ig-end-recap-heading">Recap</p>' +
+      '<ol class="ig-end-recap-list" id="igEndRecapList"></ol>' +
+      "</div>" +
+      '<div class="ig-end-actions">' +
+      '<button type="button" class="ig-btn ig-btn--primary" id="igEndClose">Close guide</button>' +
+      '<button type="button" class="ig-btn" id="igEndRecapBtn">View recap</button>' +
+      "</div></div></div>";
     document.body.appendChild(root);
     modeMenu = document.getElementById("igModeMenu");
     dim = root.querySelector(".ig-dim");
@@ -521,6 +536,8 @@
     pointer = document.getElementById("igPointer");
     card = document.getElementById("igCard");
     document.getElementById("igPrimary").addEventListener("click", onPrimary);
+    document.getElementById("igEndClose").addEventListener("click", onEndClose);
+    document.getElementById("igEndRecapBtn").addEventListener("click", onEndRecapToggle);
     // Event delegation: reliable even when clicking the inner label span
     modeMenu.addEventListener("click", function (e) {
       var infoBtn = e.target.closest ? e.target.closest("[data-info]") : null;
@@ -628,6 +645,11 @@
   }
 
   function isClickAllowed(e) {
+    // End screen is modal until Close (even after guiding stops)
+    var end = document.getElementById("igEndScreen");
+    if (end && !end.hidden) {
+      return !!(e.target.closest && e.target.closest("#igEndScreen"));
+    }
     if (!document.body.classList.contains("ig-guiding")) return true;
     // Install-type picker handles its own clicks
     if (modeMenu && !modeMenu.hidden && !modeMenu.classList.contains("ig-mode-menu--hidden")) {
@@ -893,10 +915,128 @@
     if (typeof window.setPasswordTypingCoach === "function") {
       window.setPasswordTypingCoach(false);
     }
+    hideEndScreen();
     // Stay in guide chrome: hide coach card only; do not return to install-type picker.
     if (card) card.hidden = true;
     clearHighlight();
     window.dispatchEvent(new CustomEvent("install-guide:finished"));
+  }
+
+  function hostRecapItems() {
+    return [
+      "Downloaded and installed 3D MultiVision as the Host (Server) PC.",
+      "Signed in and opened MultiVision.",
+      "Created a new project and left Vessel1 disconnected until Devices.",
+      "Opened Devices, reviewed Connection Type and Polling Address.",
+      "Clicked Connect so the scanner is online and Overview can show live data.",
+    ];
+  }
+
+  function clientRecapItems() {
+    return [
+      "Installed the Client Remote Viewer (Server component unchecked).",
+      "Set the Host IP under Advanced Connection → Edit.",
+      "Signed in with Host credentials.",
+      "Connected as a remote viewer — scanners stay connected on the Host.",
+    ];
+  }
+
+  function showEndScreen() {
+    ensureDom();
+    clearPoll();
+    clearHighlight();
+    setGuiding(false);
+    if (card) {
+      card.hidden = true;
+      card.classList.add("ig-card--hidden");
+    }
+    if (typeof window.setBrowserUrlTypingCoach === "function") {
+      window.setBrowserUrlTypingCoach(false);
+    }
+    if (typeof window.setServerAddressTypingCoach === "function") {
+      window.setServerAddressTypingCoach(false);
+    }
+    if (typeof window.setUserNameTypingCoach === "function") {
+      window.setUserNameTypingCoach(false);
+    }
+    if (typeof window.setPasswordTypingCoach === "function") {
+      window.setPasswordTypingCoach(false);
+    }
+
+    var end = document.getElementById("igEndScreen");
+    var kicker = document.getElementById("igEndKicker");
+    var title = document.getElementById("igEndTitle");
+    var body = document.getElementById("igEndBody");
+    var alert = document.getElementById("igEndAlert");
+    var recap = document.getElementById("igEndRecap");
+    var recapList = document.getElementById("igEndRecapList");
+    var recapBtn = document.getElementById("igEndRecapBtn");
+    if (!end) {
+      endGuide();
+      return;
+    }
+
+    var isClient = guideTrack === "client";
+    if (kicker) {
+      kicker.textContent = isClient ? "Client Remote Viewer" : "HOST Install guide";
+    }
+    if (title) {
+      title.textContent = "You're done";
+    }
+    if (body) {
+      body.textContent = isClient
+        ? "The Client install guide is finished. You are connected to the Host as a remote viewer."
+        : "The Host install guide is finished. The scanner is connected — live Overview data is available.";
+    }
+    if (alert) {
+      alert.textContent = isClient
+        ? "Stop here unless you need a recap. Do not connect scanners from the Client PC."
+        : "Stop here unless you need a recap. Further setup is outside this guided path.";
+    }
+    if (recap) {
+      recap.hidden = true;
+    }
+    if (recapBtn) {
+      recapBtn.textContent = "View recap";
+      recapBtn.setAttribute("aria-expanded", "false");
+    }
+    if (recapList) {
+      var items = isClient ? clientRecapItems() : hostRecapItems();
+      recapList.innerHTML = items.map(function (t) {
+        return "<li>" + t + "</li>";
+      }).join("");
+    }
+
+    root.hidden = false;
+    end.hidden = false;
+    end.setAttribute("aria-hidden", "false");
+  }
+
+  function hideEndScreen() {
+    var end = document.getElementById("igEndScreen");
+    if (end) {
+      end.hidden = true;
+      end.setAttribute("aria-hidden", "true");
+    }
+    var recap = document.getElementById("igEndRecap");
+    if (recap) recap.hidden = true;
+  }
+
+  function onEndClose() {
+    hideEndScreen();
+    endGuide();
+  }
+
+  function onEndRecapToggle() {
+    var recap = document.getElementById("igEndRecap");
+    var recapBtn = document.getElementById("igEndRecapBtn");
+    if (!recap) return;
+    var open = recap.hidden;
+    recap.hidden = !open;
+    if (recapBtn) {
+      recapBtn.textContent = open ? "Hide recap" : "View recap";
+      recapBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    }
   }
 
   function goNext() {
@@ -1215,11 +1355,11 @@
     var step = currentStep();
     if (step && step.advanceOn === name) {
       if (name === "install-guide:vessel-connected") {
-        endGuide();
+        showEndScreen();
         return;
       }
       if (name === "install-guide:connected" && guideTrack === "client") {
-        endGuide();
+        showEndScreen();
         return;
       }
       goNext();
