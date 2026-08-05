@@ -515,19 +515,28 @@
       '<span class="ig-progress" id="igProgress"></span>' +
       "</div></div>" +
       '<div class="ig-end" id="igEndScreen" hidden>' +
-      '<div class="ig-end-panel" role="dialog" aria-labelledby="igEndTitle" aria-modal="true">' +
-      '<div class="ig-end-banner" aria-hidden="true">COMPLETE</div>' +
+      '<div class="ig-end-inner">' +
+      '<div class="ig-end-mark" id="igEndMark">' +
+      '<div class="ig-end-rings" aria-hidden="true">' +
+      '<span class="ig-end-ring"></span>' +
+      '<span class="ig-end-ring"></span>' +
+      '<span class="ig-end-ring"></span>' +
+      "</div>" +
+      '<div class="ig-end-badge">' +
+      '<svg class="ig-end-check" viewBox="0 0 32 32" aria-hidden="true">' +
+      '<path class="ig-end-check-path" d="M8 17 L14 23 L24 11"/>' +
+      "</svg></div></div>" +
       '<p class="ig-end-kicker" id="igEndKicker">Install guide</p>' +
       '<h1 class="ig-end-title" id="igEndTitle">You\'re done</h1>' +
       '<p class="ig-end-body" id="igEndBody"></p>' +
-      '<div class="ig-end-alert" id="igEndAlert" role="status"></div>' +
+      '<p class="ig-end-note" id="igEndAlert" role="status"></p>' +
       '<div class="ig-end-recap" id="igEndRecap" hidden>' +
       '<p class="ig-end-recap-heading">Recap</p>' +
       '<ol class="ig-end-recap-list" id="igEndRecapList"></ol>' +
       "</div>" +
       '<div class="ig-end-actions">' +
-      '<button type="button" class="ig-btn ig-btn--primary" id="igEndClose">Close guide</button>' +
-      '<button type="button" class="ig-btn" id="igEndRecapBtn">View recap</button>' +
+      '<button type="button" class="ig-end-btn ig-end-btn--ghost" id="igEndRecapBtn">View recap</button>' +
+      '<button type="button" class="ig-end-btn ig-end-btn--primary" id="igEndClose">Close guide</button>' +
       "</div></div></div>";
     document.body.appendChild(root);
     modeMenu = document.getElementById("igModeMenu");
@@ -971,6 +980,7 @@
     var recap = document.getElementById("igEndRecap");
     var recapList = document.getElementById("igEndRecapList");
     var recapBtn = document.getElementById("igEndRecapBtn");
+    var mark = document.getElementById("igEndMark");
     if (!end) {
       endGuide();
       return;
@@ -990,8 +1000,8 @@
     }
     if (alert) {
       alert.textContent = isClient
-        ? "Stop here unless you need a recap. Do not connect scanners from the Client PC."
-        : "Stop here unless you need a recap. Further setup is outside this guided path.";
+        ? "Do not connect scanners from the Client PC — that stays on the Host."
+        : "Further configuration is outside this guided path.";
     }
     if (recap) {
       recap.hidden = true;
@@ -1002,14 +1012,28 @@
     }
     if (recapList) {
       var items = isClient ? clientRecapItems() : hostRecapItems();
-      recapList.innerHTML = items.map(function (t) {
-        return "<li>" + t + "</li>";
-      }).join("");
+      recapList.innerHTML = items
+        .map(function (t) {
+          return "<li>" + t + "</li>";
+        })
+        .join("");
     }
+
+    // Replay enter animation cleanly each time
+    end.classList.remove("ig-end--enter", "ig-end--live");
+    if (mark) mark.classList.remove("ig-end-mark--live");
+    void end.offsetWidth;
 
     root.hidden = false;
     end.hidden = false;
     end.setAttribute("aria-hidden", "false");
+    window.requestAnimationFrame(function () {
+      end.classList.add("ig-end--enter");
+      window.setTimeout(function () {
+        end.classList.add("ig-end--live");
+        if (mark) mark.classList.add("ig-end-mark--live");
+      }, 1100);
+    });
   }
 
   function hideEndScreen() {
@@ -1017,7 +1041,10 @@
     if (end) {
       end.hidden = true;
       end.setAttribute("aria-hidden", "true");
+      end.classList.remove("ig-end--enter", "ig-end--live");
     }
+    var mark = document.getElementById("igEndMark");
+    if (mark) mark.classList.remove("ig-end-mark--live");
     var recap = document.getElementById("igEndRecap");
     if (recap) recap.hidden = true;
   }
