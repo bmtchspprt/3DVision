@@ -4036,6 +4036,53 @@
           : "Display: Distance / headspace (from device)."
       );
     }
+    window.dispatchEvent(
+      new CustomEvent("install-guide:level-distance-toggled", {
+        detail: { isViewLevel: isViewLevel },
+      })
+    );
+  };
+
+  /** Apply Device Configuration Wizard geometry to the open vessel (guide / upload). */
+  window.mvApplyGuideVesselGeometry = function (opts) {
+    opts = opts || {};
+    var vessel = selectedVesselId ? findVessel(selectedVesselId) : null;
+    if (!vessel && VESSELS[0]) vessel = VESSELS[0];
+    if (!vessel) return false;
+    ensureVesselParams(vessel);
+    var heightM = Number(opts.heightM);
+    if (!isFinite(heightM) || heightM <= 0) return false;
+    var emptyM = Number(opts.emptyLevelM);
+    var fullM = Number(opts.fullLevelM);
+    if (!isFinite(emptyM)) emptyM = 0;
+    if (!isFinite(fullM)) fullM = Math.max(0, heightM - 0.5);
+    var oldH = vesselHeightM(vessel);
+    var fillFrac = oldH > 0 ? Math.max(0, Math.min(1, (Number(vessel.avg) || 0) / oldH)) : 0.84;
+    vessel.height = +heightM.toFixed(3);
+    vessel.emptyLevel = +emptyM.toFixed(3);
+    vessel.fullLevel = +Math.min(heightM, Math.max(emptyM, fullM)).toFixed(3);
+    vessel.avg = +(fillFrac * heightM).toFixed(2);
+    vessel.max = +Math.min(heightM, vessel.avg + Math.max(0.4, heightM * 0.05)).toFixed(2);
+    vessel.min = +Math.max(0, vessel.avg - Math.max(0.4, heightM * 0.05)).toFixed(2);
+    if (opts.distanceUnit === "ft" || opts.distanceUnit === "m") {
+      var siteUnit = document.getElementById("mvSiteDistUnit");
+      if (siteUnit) {
+        // Site combo uses display labels; overview field units sync via chrome helpers when present.
+      }
+    }
+    selectedVesselId = vessel.id;
+    vesselDetailMode = true;
+    setMvView("overview");
+    updateVesselSelectionUi();
+    renderVessels();
+    fillOverviewLeft(vessel);
+    fitOverviewScale();
+    window.dispatchEvent(
+      new CustomEvent("install-guide:overview-geometry-updated", {
+        detail: { vesselId: vessel.id, heightM: vessel.height },
+      })
+    );
+    return true;
   };
 
   wireDragFixed(multiVisionLoadingShell);

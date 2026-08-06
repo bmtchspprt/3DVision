@@ -260,10 +260,16 @@
 }
 
 .ig-end-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   width: 100%;
+  justify-content: center;
+}
+
+.ig-end-actions .ig-end-btn {
+  flex: 1 1 110px;
+  min-width: 0;
 }
 
 .ig-end-btn {
@@ -318,6 +324,10 @@
 
 .ig-end.ig-end--enter .ig-end-btn--ghost {
   animation: ig-end-btn-in-left 0.5s ease-out 0.88s forwards;
+}
+
+.ig-end.ig-end--enter #igEndReplay {
+  animation: ig-end-btn-in-left 0.5s ease-out 0.91s forwards;
 }
 
 .ig-end.ig-end--enter .ig-end-btn--primary {
@@ -466,13 +476,17 @@
 }
 
 .ig-mode-panel {
-  width: min(560px, 100%);
+  width: min(640px, 100%);
   background: #f7f8fa;
   border: 1px solid #c5ccd4;
   border-radius: 6px;
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
-  padding: 26px 26px 18px;
+  padding: 28px 28px 20px;
   text-align: left;
+}
+
+.ig-mode-panel--setup {
+  width: min(680px, 100%);
 }
 
 .ig-mode-kicker {
@@ -485,8 +499,8 @@
 }
 
 .ig-mode-panel h1 {
-  margin: 0 0 18px;
-  font-size: 22px;
+  margin: 0 0 20px;
+  font-size: 24px;
   font-weight: 700;
   color: #1a1f2a;
   line-height: 1.2;
@@ -495,9 +509,72 @@
 .ig-mode-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
+.ig-mode-option {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+  margin: 0;
+  padding: 16px 18px;
+  text-align: left;
+  border: 1px solid #2f5d3a;
+  border-radius: 6px;
+  background: #2f5d3a;
+  color: #fff;
+  cursor: pointer;
+  font-family: inherit;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.ig-mode-option:hover,
+.ig-mode-option:focus-visible {
+  background: #254a2e;
+  border-color: #254a2e;
+  outline: none;
+  box-shadow: 0 4px 14px rgba(37, 74, 46, 0.35);
+}
+
+.ig-mode-option-title {
+  display: block;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.ig-mode-option-sub {
+  display: block;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.ig-mode-option--secondary {
+  background: #fff;
+  border: 1.5px solid #2f5d3a;
+  color: #1a1f2a;
+}
+
+.ig-mode-option--secondary .ig-mode-option-sub {
+  color: #6a7380;
+}
+
+.ig-mode-option--secondary:hover,
+.ig-mode-option--secondary:focus-visible {
+  background: #f0f5f1;
+  border-color: #254a2e;
+  color: #1a1f2a;
+  box-shadow: 0 4px 14px rgba(37, 74, 46, 0.18);
+}
+
+/* Legacy row/btn styles kept for any residual markup */
 .ig-mode-row {
   position: relative;
   display: grid;
@@ -605,7 +682,7 @@
 .ig-mode-free {
   display: block;
   width: 100%;
-  margin: 16px 0 0;
+  margin: 18px 0 0;
   padding: 8px 4px;
   border: none;
   background: transparent;
@@ -869,10 +946,35 @@ body.ig-boot-ready #multiVisionShell.mv-shell--tease {
   }
 }
 
+.ig-card-progress {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #e4e0d8;
+}
+
+.ig-progress-track {
+  width: 100%;
+  height: 6px;
+  border-radius: 999px;
+  background: #e8e4dc;
+  overflow: hidden;
+}
+
+.ig-progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #2f5d3a, #4a8f5c);
+  transition: width 0.25s ease;
+}
+
 .ig-progress {
-  margin-left: auto;
   font-size: 11px;
   color: #6b6358;
+  align-self: flex-end;
 }
 
 .ig-pulse {

@@ -2707,6 +2707,28 @@
 
     root.__mvWizApplyRecommendedPlacement = applyRecommendedPlacement;
 
+    function applyWizardGeometryToOverview() {
+      var unit = ((root.querySelector("#mvWizDist") || {}).value || "m").toLowerCase();
+      var toM = unit === "ft" ? function (v) {
+        return v * 0.3048;
+      } : function (v) {
+        return v;
+      };
+      var heightDisp = vesselTotalHeight();
+      var emptyDisp = parseFloat((root.querySelector("#mvWizEmptyLevel") || {}).value);
+      var fullDisp = parseFloat((root.querySelector("#mvWizFullLevel") || {}).value);
+      if (isNaN(emptyDisp)) emptyDisp = 0;
+      if (isNaN(fullDisp)) fullDisp = Math.max(0, heightDisp - 0.5);
+      if (typeof global.mvApplyGuideVesselGeometry === "function") {
+        global.mvApplyGuideVesselGeometry({
+          heightM: toM(heightDisp),
+          emptyLevelM: toM(emptyDisp),
+          fullLevelM: toM(fullDisp),
+          distanceUnit: unit,
+        });
+      }
+    }
+
     if (backBtn) {
       backBtn.addEventListener("click", function () {
         goStep(step - 1);
@@ -2724,6 +2746,13 @@
                 ? "Device configuration uploaded."
                 : "Device configuration upload cancelled."
             );
+            if (ok) {
+              try {
+                applyWizardGeometryToOverview();
+              } catch (err) {
+                /* ignore */
+              }
+            }
             window.dispatchEvent(
               new CustomEvent("install-guide:wiz-uploaded", { detail: { ok: !!ok } })
             );
