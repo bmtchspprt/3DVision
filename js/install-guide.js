@@ -809,7 +809,7 @@
       id: "ov-compare-tape",
       phase: "setup",
       title: "Compare to a tape measure",
-      body: "Compare Average Distance to a tape reading from the scanner. Expect about <strong>3–5 ft</strong> difference. Click Finish when done.",
+      body: "Compare Avg. Dist to a physical tape or laser from the scanner. A <strong>3–5 ft</strong> difference is expected — the scanner calculates volume across many points, not a single spot. Click Finish when done.",
       target: "#mvOvAvg",
       blocking: true,
       primary: "Finish",
@@ -1505,7 +1505,7 @@
       "Configured vessel dimensions, placement, filling points, and Full/Empty calibration.",
       "Set Max Capacity to 100 and emptying/filling rates between 7 and 10.",
       "Disabled Auto False Echoes and unchecked both beam autos, then uploaded.",
-      "Checked Overview Level, switched to Distance, and compared to tape (expect ~3–5 ft).",
+      "Checked Overview Level, switched to Distance, and compared to tape or laser (expect ~3–5 ft — volume vs single-point).",
     ];
   }
 
@@ -1525,7 +1525,7 @@
       "Applied recommended off-center placement, added a filling point, and reviewed Full/Empty.",
       "Set Max Capacity to 100 and emptying/filling rates between 7 and 10.",
       "Disabled Auto False Echoes, unchecked both beam autos, then uploaded.",
-      "Checked Overview Level, switched to Distance, and compared to tape (expect ~3–5 ft).",
+      "Checked Overview Level, switched to Distance, and compared to tape or laser (expect ~3–5 ft — volume vs single-point).",
     ];
   }
 
