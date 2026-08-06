@@ -2490,15 +2490,19 @@
 
     ["mvWizTopShape", "mvWizCenShape", "mvWizBotShape"].forEach(function (id) {
       var sel = root.querySelector("#" + id);
-      if (!sel) return;
+      if (!sel || sel.__mvWizShapeSync) return;
+      sel.__mvWizShapeSync = true;
       sel.addEventListener("change", function () {
         if (id === "mvWizCenShape") syncShapeLists();
+        // Same as real wizard: geometry change recalculates scanner Z immediately.
+        syncDeviceFromXY();
         refresh3d();
       });
     });
-    // Highlight the section being edited (WizardStepVessel GotFocus → HightLightedShape).
+    // Highlight the section being edited when a Top/Center/Bottom fieldset gets focus.
     var form = root.querySelector(".mv-wiz-vessel-form");
-    if (form) {
+    if (form && !form.__mvWizDimSync) {
+      form.__mvWizDimSync = true;
       form.addEventListener("focusin", function (e) {
         var fs = e.target.closest("fieldset");
         if (!fs) return;
@@ -2513,13 +2517,21 @@
       });
       form.addEventListener("input", function (e) {
         if (!e.target || !(e.target.matches("input") || e.target.matches("select"))) return;
-        if (step >= 2) syncDeviceFromXY();
+        // Real Vision recalculates Z on every vessel-dimension edit (not only on page 2).
+        syncDeviceFromXY();
         if (step >= 4) syncCalibFromLevel();
+        else if (step === 1) {
+          var total = vesselTotalHeight();
+          var fullH = root.querySelector("#mvWizFullH");
+          var emptyH = root.querySelector("#mvWizEmptyH");
+          if (fullH) fullH.value = String(+total.toFixed(3));
+          if (emptyH) emptyH.value = String(+total.toFixed(3));
+        }
         refresh3d();
       });
       form.addEventListener("change", function (e) {
         if (!e.target || !(e.target.matches("input") || e.target.matches("select"))) return;
-        if (step >= 2) syncDeviceFromXY();
+        syncDeviceFromXY();
         if (step >= 4) syncCalibFromLevel();
         refresh3d();
       });
