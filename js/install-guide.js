@@ -525,10 +525,11 @@
     {
       id: "wiz-top-shapes",
       title: "Top Shape",
-      body: "<strong>Flat</strong> is a flat roof. <strong>Cone</strong> tapers up. <strong>Dome</strong> is a rounded roof. Pick what matches the real vessel.",
+      body: "<strong>Flat</strong> is a flat roof. <strong>Cone</strong> tapers up. <strong>Dome</strong> is a rounded roof. Choose the Top Shape for your vessel.",
       target: "#mvWizTopShape",
       blocking: true,
       primary: "Continue",
+      allowInside: "#mv-dlg-device-wizard",
       pointer: "right",
     },
     {
@@ -538,12 +539,13 @@
       target: "#mvWizCenShape",
       blocking: true,
       primary: "Continue",
+      allowInside: "#mv-dlg-device-wizard",
       pointer: "right",
     },
     {
       id: "wiz-enter-center",
       title: "Enter center size",
-      body: "Enter Height about <strong>50</strong> and Diameter about <strong>30</strong> (feet). Then click Continue.",
+      body: "Enter your vessel’s <strong>Height</strong> and <strong>Diameter</strong> in feet. Use real site measurements. Then click Continue.",
       target: "#mvWizCenH",
       blocking: true,
       primary: "Continue",
@@ -562,7 +564,7 @@
     {
       id: "wiz-enter-bottom",
       title: "Enter bottom size",
-      body: "Keep Bottom as Cone. Set Height around <strong>10</strong> feet. Leave Diameter at 0 for a point. Then Continue.",
+      body: "Set Bottom Shape and Height to match your vessel. Adjust Diameter if needed. Then Continue.",
       target: "#mvWizBotH",
       blocking: true,
       primary: "Continue",
@@ -718,11 +720,10 @@
     },
     {
       id: "ap-false-echoes",
-      title: "False echoes",
-      body: "Keep <strong>User False Echoes</strong> and <strong>Auto False Echoes</strong> Enabled so wall and structure reflections are filtered.",
-      target: "#mvApUserFalseEchoes",
-      blocking: true,
-      primary: "Continue",
+      title: "Auto False Echoes",
+      body: "Set <strong>Auto False Echoes</strong> to <strong>Disable</strong>.",
+      target: "#mvApAutoFalseEchoes",
+      advanceOn: "install-guide:ap-auto-false-off",
       pointer: "right",
     },
     {
@@ -734,12 +735,19 @@
       pointer: "bottom",
     },
     {
-      id: "ap-beams-explain",
+      id: "ap-uncheck-beam-sel",
       title: "Auto Beam Selection",
-      body: "Leave <strong>Auto Beam Selection</strong> checked so the scanner picks beams. Only clear it when you must lock specific directions.",
+      body: "Uncheck <strong>Auto Beam Selection</strong>.",
       target: "#mvApAutoBeamSel",
-      blocking: true,
-      primary: "Continue",
+      advanceOn: "install-guide:ap-beam-sel-off",
+      pointer: "right",
+    },
+    {
+      id: "ap-uncheck-beam-range",
+      title: "Automatic Beams Range",
+      body: "Uncheck <strong>Automatic Beams Range</strong>.",
+      target: "#mvApAutoBeamRange",
+      advanceOn: "install-guide:ap-beam-range-off",
       pointer: "right",
     },
     {
@@ -1123,6 +1131,22 @@
       if (step.id === "server-config-ok" && e.target.closest("#btn-config-ok")) return true;
     }
 
+    // Vessel AP: allow checkbox label hit targets
+    if (
+      (step.id === "ap-uncheck-beam-sel" || step.id === "ap-uncheck-beam-range") &&
+      e.target.closest &&
+      e.target.closest("#mvApAutoBeamSel, #mvApAutoBeamRange, label.mv-ap-check")
+    ) {
+      return true;
+    }
+    if (
+      step.id === "ap-false-echoes" &&
+      e.target.closest &&
+      e.target.closest("#mvApAutoFalseEchoes")
+    ) {
+      return true;
+    }
+
     // Allow progress dialog during wizard / AP upload
     if (
       (step.id === "wiz-finish" || step.id === "ap-upload") &&
@@ -1408,10 +1432,10 @@
   function vesselRecapItems() {
     return [
       "Opened Device Configuration Wizard with the scanner already connected.",
-      "Set units to feet and Fahrenheit, then entered vessel dimensions.",
+      "Set units to feet and Fahrenheit, then entered your vessel dimensions.",
       "Reviewed default center placement, then applied recommended off-center mount.",
       "Added a filling point and reviewed Full / Empty calibration (sweeper tip).",
-      "Opened Advanced Parameters and uploaded Vessel, Advanced, and Beams settings.",
+      "Disabled Auto False Echoes, unchecked Auto Beam Selection and Automatic Beams Range, then uploaded.",
     ];
   }
 
@@ -1910,6 +1934,24 @@
         window.dispatchEvent(new CustomEvent("install-guide:ap-tab-beams"));
       }
     }
+    if (step.id === "ap-false-echoes") {
+      var autoFalse = document.getElementById("mvApAutoFalseEchoes");
+      if (autoFalse && /disable/i.test(autoFalse.value)) {
+        window.dispatchEvent(new CustomEvent("install-guide:ap-auto-false-off"));
+      }
+    }
+    if (step.id === "ap-uncheck-beam-sel") {
+      var beamSel = document.getElementById("mvApAutoBeamSel");
+      if (beamSel && !beamSel.checked) {
+        window.dispatchEvent(new CustomEvent("install-guide:ap-beam-sel-off"));
+      }
+    }
+    if (step.id === "ap-uncheck-beam-range") {
+      var beamRange = document.getElementById("mvApAutoBeamRange");
+      if (beamRange && !beamRange.checked) {
+        window.dispatchEvent(new CustomEvent("install-guide:ap-beam-range-off"));
+      }
+    }
     if (step.id === "ap-close") {
       var apStill = document.getElementById("mv-dlg-advanced-params");
       if (!apStill || apStill.hidden || apStill.offsetParent === null) {
@@ -1992,6 +2034,9 @@
       "install-guide:advanced-params-opened",
       "install-guide:ap-tab-adv",
       "install-guide:ap-tab-beams",
+      "install-guide:ap-auto-false-off",
+      "install-guide:ap-beam-sel-off",
+      "install-guide:ap-beam-range-off",
       "install-guide:ap-uploaded",
       "install-guide:ap-closed",
     ].forEach(function (name) {
