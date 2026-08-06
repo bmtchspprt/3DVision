@@ -1,6 +1,6 @@
 /**
  * Step-by-step install guide for 3DInstallGuide fork.
- * Modes: HOST Install | Client Remote Viewer | Free (demo silos).
+ * Modes: Install (Host | Client) | Vessel/Scanner Setup | Free (demo silos).
  * Flow: blank browser → type downloads URL → Custom + Service install → …
  */
 (function () {
@@ -15,7 +15,7 @@
   var stepIndex = 0;
   var pollTimer = null;
   var resizeBound = null;
-  var guideTrack = "host"; // host | client
+  var guideTrack = "host"; // host | client | vessel
 
   var POINTER_SVG =
     '<svg viewBox="0 0 48 48" aria-hidden="true">' +
@@ -463,8 +463,307 @@
   var HOST_STEPS = buildHostSteps();
   var CLIENT_STEPS = buildClientSteps();
 
+  var VESSEL_STEPS = [
+    {
+      id: "vessel-welcome",
+      title: "Vessel / Scanner Setup",
+      body: "This guide configures a vessel and scanner. MultiVision opens with the sensor already connected.",
+      blocking: true,
+      primary: "Start",
+      target: null,
+    },
+    {
+      id: "open-device-menu",
+      title: "Open Device",
+      body: "Click <strong>Device</strong> on the menu bar.",
+      target: "#mv-menu-device",
+      advanceOn: "install-guide:device-menu-open",
+      pointer: "bottom",
+    },
+    {
+      id: "open-device-wizard",
+      title: "Device Configuration Wizard",
+      body: "Click <strong>Device Configuration Wizard...</strong> to open the setup wizard.",
+      target: '[data-mv-menu-id="dev-wizard"]',
+      advanceOn: "install-guide:device-wizard-opened",
+      pointer: "right",
+    },
+    {
+      id: "wiz-units-intro",
+      title: "Units",
+      body: "At the top under General, set Distance and Temperature to match your site.",
+      target: "#mvWizDist",
+      blocking: true,
+      primary: "Continue",
+      pointer: "right",
+    },
+    {
+      id: "wiz-set-feet",
+      title: "Distance in feet",
+      body: "Change <strong>Distance</strong> from m to <strong>ft</strong>.",
+      target: "#mvWizDist",
+      advanceOn: "install-guide:wiz-feet",
+      pointer: "right",
+    },
+    {
+      id: "wiz-set-fahrenheit",
+      title: "Temperature in Fahrenheit",
+      body: "Change <strong>Temperature</strong> from Celsius to <strong>Fahrenheit</strong>.",
+      target: "#mvWizTemp",
+      advanceOn: "install-guide:wiz-fahrenheit",
+      pointer: "right",
+    },
+    {
+      id: "wiz-dim-intro",
+      title: "Vessel Dimension",
+      body: "Vessel Dimension describes the silo in three parts: <strong>Top</strong>, <strong>Center</strong>, and <strong>Bottom</strong>.",
+      target: ".mv-wiz-dim-title",
+      blocking: true,
+      primary: "Continue",
+      pointer: "right",
+    },
+    {
+      id: "wiz-top-shapes",
+      title: "Top Shape",
+      body: "<strong>Flat</strong> is a flat roof. <strong>Cone</strong> tapers up. <strong>Dome</strong> is a rounded roof. Pick what matches the real vessel.",
+      target: "#mvWizTopShape",
+      blocking: true,
+      primary: "Continue",
+      pointer: "right",
+    },
+    {
+      id: "wiz-center-explain",
+      title: "Center Shape",
+      body: "Center is the main body — usually a <strong>Cylinder</strong>. <strong>Height</strong> and <strong>Diameter</strong> are the key measurements here.",
+      target: "#mvWizCenShape",
+      blocking: true,
+      primary: "Continue",
+      pointer: "right",
+    },
+    {
+      id: "wiz-enter-center",
+      title: "Enter center size",
+      body: "Enter Height about <strong>50</strong> and Diameter about <strong>30</strong> (feet). Then click Continue.",
+      target: "#mvWizCenH",
+      blocking: true,
+      primary: "Continue",
+      allowInside: "#mv-dlg-device-wizard",
+      pointer: "right",
+    },
+    {
+      id: "wiz-bottom-explain",
+      title: "Bottom Shape",
+      body: "<strong>Flat</strong> is a flat floor. <strong>Cone</strong> is a hopper. <strong>Dome</strong> is rounded underneath. Cone is common on grain silos.",
+      target: "#mvWizBotShape",
+      blocking: true,
+      primary: "Continue",
+      pointer: "right",
+    },
+    {
+      id: "wiz-enter-bottom",
+      title: "Enter bottom size",
+      body: "Keep Bottom as Cone. Set Height around <strong>10</strong> feet. Leave Diameter at 0 for a point. Then Continue.",
+      target: "#mvWizBotH",
+      blocking: true,
+      primary: "Continue",
+      allowInside: "#mv-dlg-device-wizard",
+      pointer: "right",
+    },
+    {
+      id: "wiz-next-page2",
+      title: "Go to Device Position",
+      body: "Click <strong>Next</strong> to open Device Position (page 2).",
+      target: "#mvWizNext",
+      advanceOn: "install-guide:wiz-step-2",
+      pointer: "bottom",
+    },
+    {
+      id: "wiz-page2-default",
+      title: "Default placement",
+      body: "Page 2 starts with the scanner at the center (<strong>0, 0</strong>) and angle <strong>180°</strong>. That is the default — not the recommended mount.",
+      target: "#mvWizDeviceTable",
+      blocking: true,
+      primary: "Continue",
+      pointer: "none",
+    },
+    {
+      id: "wiz-placement-explain",
+      title: "Recommended placement",
+      body: "A single scanner sits off-center so beams cover the vessel — about one-third of the diameter from center (one-sixth from the wall). Continue to place it.",
+      target: "#mvWizDevX",
+      blocking: true,
+      primary: "Continue",
+      pointer: "right",
+    },
+    {
+      id: "wiz-placement-done",
+      title: "Scanner placed",
+      body: "X and Y are set to the recommended offset. <strong>Z</strong> and <strong>Angle</strong> update automatically so the scanner aims toward the center.",
+      target: "#mvWizDeviceTable",
+      blocking: true,
+      primary: "Continue",
+      pointer: "none",
+    },
+    {
+      id: "wiz-next-fill",
+      title: "Filling Points",
+      body: "Click <strong>Next</strong> to open Filling Points.",
+      target: "#mvWizNext",
+      advanceOn: "install-guide:wiz-step-3",
+      pointer: "bottom",
+    },
+    {
+      id: "wiz-fill-explain",
+      title: "What is a filling point?",
+      body: "A filling point is where material enters the vessel. Mark the chute so the model knows the fill stream.",
+      target: "#mvWizFillTable",
+      blocking: true,
+      primary: "Continue",
+      pointer: "none",
+    },
+    {
+      id: "wiz-fill-add",
+      title: "Add a filling point",
+      body: "Click <strong>Add</strong>. Leave X and Y at 0 for a center chute, or enter the real chute location.",
+      target: "#mvWizFillAdd",
+      advanceOn: "install-guide:wiz-fill-added",
+      pointer: "bottom",
+    },
+    {
+      id: "wiz-next-calib",
+      title: "Full / Empty Calibration",
+      body: "Click <strong>Next</strong> to set Full and Empty levels.",
+      target: "#mvWizNext",
+      advanceOn: "install-guide:wiz-step-4",
+      pointer: "bottom",
+    },
+    {
+      id: "wiz-full-empty-explain",
+      title: "Full and Empty points",
+      body: "<strong>Full</strong> is the 100% level from the vessel bottom. <strong>Empty</strong> is the 0% level. Distance from the top updates automatically.",
+      target: ".mv-wiz-calib-table",
+      blocking: true,
+      primary: "Continue",
+      pointer: "none",
+    },
+    {
+      id: "wiz-sweeper-note",
+      title: "Sweepers and Empty",
+      body: "If a sweeper locks onto the scanner, raise the <strong>Empty</strong> point so empty does not read below the sweep path.",
+      target: "#mvWizEmptyLevel",
+      blocking: true,
+      primary: "Continue",
+      allowInside: "#mv-dlg-device-wizard",
+      pointer: "right",
+    },
+    {
+      id: "wiz-finish",
+      title: "Upload the configuration",
+      body: "Click <strong>Finish</strong> to upload the vessel and scanner settings.",
+      target: "#mvWizNext",
+      advanceOn: "install-guide:wiz-uploaded",
+      pointer: "bottom",
+    },
+    {
+      id: "ap-intro",
+      title: "Advanced Parameters",
+      body: "Next we open Advanced Parameters to fine-tune after the upload.",
+      blocking: true,
+      primary: "Continue",
+      target: null,
+    },
+    {
+      id: "ap-device-menu",
+      title: "Open Device again",
+      body: "Click <strong>Device</strong> on the menu bar.",
+      target: "#mv-menu-device",
+      advanceOn: "install-guide:device-menu-open",
+      pointer: "bottom",
+    },
+    {
+      id: "ap-open",
+      title: "Advanced Parameters",
+      body: "Click <strong>Advanced Parameters...</strong>.",
+      target: '[data-mv-menu-id="dev-advanced"]',
+      advanceOn: "install-guide:advanced-params-opened",
+      pointer: "right",
+    },
+    {
+      id: "ap-vessel-slope",
+      title: "Vessel tab — slope",
+      body: "<strong>Steepest Material Slope</strong> is the steepest angle the product can form. Leave near 35° unless you know the real angle of repose.",
+      target: "#mvApSlope",
+      blocking: true,
+      primary: "Continue",
+      allowInside: "#mv-dlg-advanced-params",
+      pointer: "right",
+    },
+    {
+      id: "ap-click-advanced-tab",
+      title: "Open Advanced tab",
+      body: "Click the <strong>Advanced</strong> tab.",
+      target: '.mv-ap-tab[data-tab="adv"]',
+      advanceOn: "install-guide:ap-tab-adv",
+      pointer: "bottom",
+    },
+    {
+      id: "ap-angle-adaptor",
+      title: "Angle Adaptor",
+      body: "<strong>Angle Adaptor</strong> is the swivel / holder tilt in degrees. Use 0 unless the mount is angled.",
+      target: "#mvApAngleAdaptor",
+      blocking: true,
+      primary: "Continue",
+      allowInside: "#mv-dlg-advanced-params",
+      pointer: "right",
+    },
+    {
+      id: "ap-false-echoes",
+      title: "False echoes",
+      body: "Keep <strong>User False Echoes</strong> and <strong>Auto False Echoes</strong> Enabled so wall and structure reflections are filtered.",
+      target: "#mvApUserFalseEchoes",
+      blocking: true,
+      primary: "Continue",
+      pointer: "right",
+    },
+    {
+      id: "ap-click-beams-tab",
+      title: "Beams Activation",
+      body: "Click the <strong>Beams Activation</strong> tab.",
+      target: '.mv-ap-tab[data-tab="beams"]',
+      advanceOn: "install-guide:ap-tab-beams",
+      pointer: "bottom",
+    },
+    {
+      id: "ap-beams-explain",
+      title: "Auto Beam Selection",
+      body: "Leave <strong>Auto Beam Selection</strong> checked so the scanner picks beams. Only clear it when you must lock specific directions.",
+      target: "#mvApAutoBeamSel",
+      blocking: true,
+      primary: "Continue",
+      pointer: "right",
+    },
+    {
+      id: "ap-upload",
+      title: "Upload All",
+      body: "Click <strong>Upload All</strong> to send Advanced Parameters to the scanner.",
+      target: "#mvApUploadAll",
+      advanceOn: "install-guide:ap-uploaded",
+      pointer: "bottom",
+    },
+    {
+      id: "ap-close",
+      title: "Close Advanced Parameters",
+      body: "Click <strong>Close</strong> when the upload finishes.",
+      target: '[data-mv-dlg-close="mv-dlg-advanced-params"]',
+      advanceOn: "install-guide:ap-closed",
+      pointer: "bottom",
+    },
+  ];
+
   function getSteps() {
-    return guideTrack === "client" ? CLIENT_STEPS : HOST_STEPS;
+    if (guideTrack === "client") return CLIENT_STEPS;
+    if (guideTrack === "vessel") return VESSEL_STEPS;
+    return HOST_STEPS;
   }
 
   function ensureDom() {
@@ -474,8 +773,36 @@
     root.id = "installGuideRoot";
     root.innerHTML =
       '<div class="ig-mode-menu" id="igModeMenu">' +
-      '<div class="ig-mode-panel">' +
+      '<div class="ig-mode-panel" id="igModeMain">' +
       '<p class="ig-mode-kicker">3D MultiVision</p>' +
+      "<h1>Choose a guide</h1>" +
+      '<div class="ig-mode-list" role="list">' +
+      '<div class="ig-mode-row" role="listitem">' +
+      '<button type="button" class="ig-mode-btn" data-mode="install">' +
+      '<span class="ig-mode-btn-label">Install</span>' +
+      "</button>" +
+      '<button type="button" class="ig-mode-info" data-info="install" aria-label="About Install" title="About Install">' +
+      '<span class="ig-mode-info-ico" aria-hidden="true">i</span>' +
+      "</button>" +
+      '<div class="ig-mode-tip" id="igTipInstall" hidden>' +
+      "Host or Client software install on a PC." +
+      "</div></div>" +
+      '<div class="ig-mode-row" role="listitem">' +
+      '<button type="button" class="ig-mode-btn" data-mode="vessel">' +
+      '<span class="ig-mode-btn-label">Vessel/Scanner Setup</span>' +
+      "</button>" +
+      '<button type="button" class="ig-mode-info" data-info="vessel" aria-label="About Vessel/Scanner Setup" title="About Vessel/Scanner Setup">' +
+      '<span class="ig-mode-info-ico" aria-hidden="true">i</span>' +
+      "</button>" +
+      '<div class="ig-mode-tip" id="igTipVessel" hidden>' +
+      "Configure vessel dimensions, scanner placement, filling points, and advanced parameters. Sensor is already connected." +
+      "</div></div>" +
+      "</div>" +
+      '<button type="button" class="ig-mode-free" data-mode="free">Free mode (installed, Demo silos)</button>' +
+      "</div>" +
+      '<div class="ig-mode-panel ig-mode-panel--sub" id="igModeInstall" hidden>' +
+      '<button type="button" class="ig-mode-back" id="igModeBack" aria-label="Back">← Back</button>' +
+      '<p class="ig-mode-kicker">Install</p>' +
       "<h1>Choose Install Type</h1>" +
       '<div class="ig-mode-list" role="list">' +
       '<div class="ig-mode-row" role="listitem">' +
@@ -498,9 +825,7 @@
       '<div class="ig-mode-tip" id="igTipClient" hidden>' +
       "Install Client only on a second PC, then enter the Host IP in Advanced Connection → Edit." +
       "</div></div>" +
-      "</div>" +
-      '<button type="button" class="ig-mode-free" data-mode="free">Free mode (installed, Demo silos)</button>' +
-      "</div></div>" +
+      "</div></div></div>" +
       '<div class="ig-dim" aria-hidden="true"></div>' +
       '<div class="ig-spotlight ig-pulse" id="igSpotlight" hidden></div>' +
       '<div class="ig-pointer" id="igPointer" hidden>' +
@@ -547,6 +872,14 @@
     document.getElementById("igPrimary").addEventListener("click", onPrimary);
     document.getElementById("igEndClose").addEventListener("click", onEndClose);
     document.getElementById("igEndRecapBtn").addEventListener("click", onEndRecapToggle);
+    var backBtn = document.getElementById("igModeBack");
+    if (backBtn) {
+      backBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        showModeMain();
+      });
+    }
     // Event delegation: reliable even when clicking the inner label span
     modeMenu.addEventListener("click", function (e) {
       var infoBtn = e.target.closest ? e.target.closest("[data-info]") : null;
@@ -572,8 +905,24 @@
     });
   }
 
+  function showModeMain() {
+    hideInstallTips();
+    var main = document.getElementById("igModeMain");
+    var install = document.getElementById("igModeInstall");
+    if (main) main.hidden = false;
+    if (install) install.hidden = true;
+  }
+
+  function showModeInstall() {
+    hideInstallTips();
+    var main = document.getElementById("igModeMain");
+    var install = document.getElementById("igModeInstall");
+    if (main) main.hidden = true;
+    if (install) install.hidden = false;
+  }
+
   function hideInstallTips() {
-    ["igTipHost", "igTipClient"].forEach(function (id) {
+    ["igTipHost", "igTipClient", "igTipInstall", "igTipVessel"].forEach(function (id) {
       var tip = document.getElementById(id);
       if (tip) tip.hidden = true;
     });
@@ -586,7 +935,13 @@
   }
 
   function toggleInstallInfo(which) {
-    var tipId = which === "client" ? "igTipClient" : "igTipHost";
+    var tipMap = {
+      host: "igTipHost",
+      client: "igTipClient",
+      install: "igTipInstall",
+      vessel: "igTipVessel",
+    };
+    var tipId = tipMap[which] || "igTipHost";
     var tip = document.getElementById(tipId);
     var btn = modeMenu
       ? modeMenu.querySelector('.ig-mode-info[data-info="' + which + '"]')
@@ -645,9 +1000,11 @@
   }
 
   function setTrackClass() {
-    document.body.classList.remove("ig-track-host", "ig-track-client");
+    document.body.classList.remove("ig-track-host", "ig-track-client", "ig-track-vessel");
     if (guideTrack === "client") {
       document.body.classList.add("ig-track-client");
+    } else if (guideTrack === "vessel") {
+      document.body.classList.add("ig-track-vessel");
     } else {
       document.body.classList.add("ig-track-host");
     }
@@ -669,7 +1026,16 @@
 
     var step = currentStep();
     if (!step) return false;
-    if (step.blocking) return false;
+    if (step.blocking) {
+      if (
+        step.allowInside &&
+        e.target.closest &&
+        e.target.closest(step.allowInside)
+      ) {
+        return true;
+      }
+      return false;
+    }
 
     var sel = stepTarget(step);
     if (!sel) return false;
@@ -685,6 +1051,15 @@
     if (target.id) {
       var forLab = document.querySelector('label[for="' + target.id + '"]');
       if (forLab && forLab.contains(e.target)) return true;
+    }
+
+    // Vessel: keep Device menu popup clickable while choosing Wizard / Advanced
+    if (
+      (step.id === "open-device-wizard" || step.id === "ap-open") &&
+      e.target.closest &&
+      e.target.closest("#mv-popup-device, #mv-menu-device")
+    ) {
+      return true;
     }
 
     // Host: allow Vessel1 strip icon / home silo for open-vessel1
@@ -748,6 +1123,15 @@
       if (step.id === "server-config-ok" && e.target.closest("#btn-config-ok")) return true;
     }
 
+    // Allow progress dialog during wizard / AP upload
+    if (
+      (step.id === "wiz-finish" || step.id === "ap-upload") &&
+      e.target.closest &&
+      e.target.closest("#mv-dlg-progress")
+    ) {
+      return true;
+    }
+
     return false;
   }
 
@@ -772,12 +1156,28 @@
       goNext();
       return;
     }
+    if (step.id === "vessel-welcome") {
+      goNext();
+      return;
+    }
+    if (step.id === "wiz-placement-explain") {
+      applyVesselRecommendedPlacement();
+      goNext();
+      return;
+    }
     if (step.id === "done") {
       endGuide();
       return;
     }
     if (step.blocking) {
       goNext();
+    }
+  }
+
+  function applyVesselRecommendedPlacement() {
+    var wiz = document.getElementById("mv-dlg-device-wizard");
+    if (wiz && typeof wiz.__mvWizApplyRecommendedPlacement === "function") {
+      wiz.__mvWizApplyRecommendedPlacement();
     }
   }
 
@@ -886,10 +1286,64 @@
     modeMenu.setAttribute("aria-hidden", "false");
   }
 
+  function enterVesselMode() {
+    clearPoll();
+    if (resizeBound) {
+      window.removeEventListener("resize", resizeBound);
+      resizeBound = null;
+    }
+    guideTrack = "vessel";
+    setTrackClass();
+    hideModeMenu();
+    document.body.classList.remove("ig-mode", "ig-tease");
+    markInstalledUi();
+    setGuiding(true);
+    if (card) {
+      card.hidden = false;
+      card.classList.remove("ig-card--hidden");
+    }
+    stepIndex = 0;
+    function startSteps() {
+      wireResize();
+      renderStep();
+    }
+    if (typeof window.openMultiVisionFromConnect === "function") {
+      window.openMultiVisionFromConnect({
+        userName: "demoUser",
+        serverHost: "127.0.0.1:22222",
+        viewTitle: "Aggregates",
+        isDemo: true,
+        blankProject: false,
+        openOverviewId: "lime-stone",
+        instant: true,
+        onReady: startSteps,
+      });
+    } else {
+      startSteps();
+    }
+  }
+
+  function wireResize() {
+    if (resizeBound) return;
+    resizeBound = function () {
+      var step = currentStep();
+      if (step && card && !card.hidden) highlight(stepTarget(step), stepPointer(step));
+    };
+    window.addEventListener("resize", resizeBound);
+  }
+
   function onModeChosen(mode) {
     if (!mode) return;
     if (mode === "free") {
       enterFreeMode();
+      return;
+    }
+    if (mode === "install") {
+      showModeInstall();
+      return;
+    }
+    if (mode === "vessel") {
+      enterVesselMode();
       return;
     }
     guideTrack = mode === "client" ? "client" : "host";
@@ -902,6 +1356,7 @@
       card.classList.remove("ig-card--hidden");
     }
     stepIndex = 0;
+    wireResize();
     renderStep();
   }
 
@@ -950,6 +1405,16 @@
     ];
   }
 
+  function vesselRecapItems() {
+    return [
+      "Opened Device Configuration Wizard with the scanner already connected.",
+      "Set units to feet and Fahrenheit, then entered vessel dimensions.",
+      "Reviewed default center placement, then applied recommended off-center mount.",
+      "Added a filling point and reviewed Full / Empty calibration (sweeper tip).",
+      "Opened Advanced Parameters and uploaded Vessel, Advanced, and Beams settings.",
+    ];
+  }
+
   function showEndScreen() {
     ensureDom();
     clearPoll();
@@ -987,21 +1452,30 @@
     }
 
     var isClient = guideTrack === "client";
+    var isVessel = guideTrack === "vessel";
     if (kicker) {
-      kicker.textContent = isClient ? "Client Remote Viewer" : "HOST Install guide";
+      kicker.textContent = isVessel
+        ? "Vessel / Scanner Setup"
+        : isClient
+          ? "Client Remote Viewer"
+          : "HOST Install guide";
     }
     if (title) {
       title.textContent = "You're done";
     }
     if (body) {
-      body.textContent = isClient
-        ? "The Client install guide is finished. You are connected to the Host as a remote viewer."
-        : "The Host install guide is finished. The scanner is connected — live Overview data is available.";
+      body.textContent = isVessel
+        ? "Vessel and scanner setup is finished. Dimensions, placement, and advanced parameters were uploaded."
+        : isClient
+          ? "The Client install guide is finished. You are connected to the Host as a remote viewer."
+          : "The Host install guide is finished. The scanner is connected — live Overview data is available.";
     }
     if (alert) {
-      alert.textContent = isClient
-        ? "Do not connect scanners from the Client PC — that stays on the Host."
-        : "Further configuration is outside this guided path.";
+      alert.textContent = isVessel
+        ? "Re-run this guide anytime from the start menu picker."
+        : isClient
+          ? "Do not connect scanners from the Client PC — that stays on the Host."
+          : "Further configuration is outside this guided path.";
     }
     if (recap) {
       recap.hidden = true;
@@ -1011,7 +1485,11 @@
       recapBtn.setAttribute("aria-expanded", "false");
     }
     if (recapList) {
-      var items = isClient ? clientRecapItems() : hostRecapItems();
+      var items = isVessel
+        ? vesselRecapItems()
+        : isClient
+          ? clientRecapItems()
+          : hostRecapItems();
       recapList.innerHTML = items
         .map(function (t) {
           return "<li>" + t + "</li>";
@@ -1172,7 +1650,11 @@
       target === "#btn-edit-server" ||
       target === "#btn-config-ok" ||
       target === "#browserUrl" ||
-      target === "#browserUrlWrap"
+      target === "#browserUrlWrap" ||
+      target === "#mvWizNext" ||
+      target === "#mvWizFillAdd" ||
+      target === "#mvApUploadAll" ||
+      target === "#mv-menu-device"
     ) {
       return "bottom";
     }
@@ -1251,7 +1733,11 @@
     var kicker = document.getElementById("igKicker");
     if (kicker) {
       kicker.textContent =
-        guideTrack === "client" ? "Client Remote Viewer" : "HOST Install guide";
+        guideTrack === "vessel"
+          ? "Vessel / Scanner Setup"
+          : guideTrack === "client"
+            ? "Client Remote Viewer"
+            : "HOST Install guide";
     }
     document.getElementById("igTitle").textContent = step.title;
     document.getElementById("igBody").innerHTML = step.body;
@@ -1376,6 +1862,60 @@
         window.dispatchEvent(new CustomEvent("install-guide:vessel-opened"));
       }
     }
+    if (step.id === "open-device-menu" || step.id === "ap-device-menu") {
+      var devicePopup = document.getElementById("mv-popup-device");
+      if (devicePopup && !devicePopup.hidden) {
+        window.dispatchEvent(new CustomEvent("install-guide:device-menu-open"));
+      }
+    }
+    if (step.id === "open-device-wizard") {
+      var wizDlg = document.getElementById("mv-dlg-device-wizard");
+      if (wizDlg && !wizDlg.hidden && wizDlg.offsetParent !== null) {
+        window.dispatchEvent(new CustomEvent("install-guide:device-wizard-opened"));
+      }
+    }
+    if (step.id === "wiz-set-feet") {
+      var dist = document.getElementById("mvWizDist");
+      if (dist && dist.value === "ft") {
+        window.dispatchEvent(new CustomEvent("install-guide:wiz-feet"));
+      }
+    }
+    if (step.id === "wiz-set-fahrenheit") {
+      var temp = document.getElementById("mvWizTemp");
+      if (temp && /fahrenheit/i.test(temp.value)) {
+        window.dispatchEvent(new CustomEvent("install-guide:wiz-fahrenheit"));
+      }
+    }
+    if (step.id === "wiz-fill-add") {
+      var fillRows = document.querySelectorAll("#mvWizFillTable tbody tr");
+      if (fillRows && fillRows.length > 0) {
+        window.dispatchEvent(new CustomEvent("install-guide:wiz-fill-added"));
+      }
+    }
+    if (step.id === "ap-open") {
+      var apDlg = document.getElementById("mv-dlg-advanced-params");
+      if (apDlg && !apDlg.hidden && apDlg.offsetParent !== null) {
+        window.dispatchEvent(new CustomEvent("install-guide:advanced-params-opened"));
+      }
+    }
+    if (step.id === "ap-click-advanced-tab") {
+      var advTab = document.querySelector('.mv-ap-tab[data-tab="adv"].is-active');
+      if (advTab) {
+        window.dispatchEvent(new CustomEvent("install-guide:ap-tab-adv"));
+      }
+    }
+    if (step.id === "ap-click-beams-tab") {
+      var beamsTab = document.querySelector('.mv-ap-tab[data-tab="beams"].is-active');
+      if (beamsTab) {
+        window.dispatchEvent(new CustomEvent("install-guide:ap-tab-beams"));
+      }
+    }
+    if (step.id === "ap-close") {
+      var apStill = document.getElementById("mv-dlg-advanced-params");
+      if (!apStill || apStill.hidden || apStill.offsetParent === null) {
+        window.dispatchEvent(new CustomEvent("install-guide:ap-closed"));
+      }
+    }
   }
 
   function onGuideEvent(name) {
@@ -1386,6 +1926,10 @@
         return;
       }
       if (name === "install-guide:connected" && guideTrack === "client") {
+        showEndScreen();
+        return;
+      }
+      if (name === "install-guide:ap-closed" && guideTrack === "vessel") {
         showEndScreen();
         return;
       }
@@ -1436,22 +1980,33 @@
       "install-guide:vessel-opened",
       "install-guide:devices-tab",
       "install-guide:vessel-connected",
+      "install-guide:device-menu-open",
+      "install-guide:device-wizard-opened",
+      "install-guide:wiz-feet",
+      "install-guide:wiz-fahrenheit",
+      "install-guide:wiz-step-2",
+      "install-guide:wiz-step-3",
+      "install-guide:wiz-step-4",
+      "install-guide:wiz-fill-added",
+      "install-guide:wiz-uploaded",
+      "install-guide:advanced-params-opened",
+      "install-guide:ap-tab-adv",
+      "install-guide:ap-tab-beams",
+      "install-guide:ap-uploaded",
+      "install-guide:ap-closed",
     ].forEach(function (name) {
       window.addEventListener(name, function () {
         onGuideEvent(name);
       });
     });
 
-    resizeBound = function () {
-      var step = currentStep();
-      if (step && card && !card.hidden) highlight(stepTarget(step), stepPointer(step));
-    };
-    window.addEventListener("resize", resizeBound);
+    wireResize();
   }
 
   function showModeMenu() {
     ensureDom();
     root.hidden = false;
+    showModeMain();
     revealModeMenu();
     if (card) {
       card.hidden = true;

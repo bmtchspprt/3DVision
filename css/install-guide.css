@@ -621,6 +621,35 @@
   color: #2c3340;
 }
 
+.ig-mode-panel--sub {
+  position: relative;
+}
+
+.ig-mode-back {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 0 10px;
+  padding: 4px 2px;
+  border: none;
+  background: transparent;
+  color: #2f5d3a;
+  font-size: 13px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.ig-mode-back:hover,
+.ig-mode-back:focus-visible {
+  color: #1e3d26;
+  outline: none;
+  text-decoration: underline;
+}
+
+.ig-mode-panel[hidden] {
+  display: none !important;
+}
+
 /* Tease: live MultiVision (Connected + 3D silo) under the install-type overlay */
 body.ig-tease #multiVisionShell,
 body.ig-tease #multiVisionLoadingShell {

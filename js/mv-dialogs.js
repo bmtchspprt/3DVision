@@ -891,12 +891,20 @@
           "</div>"
         );
       }
-      var tb = function (val) {
-        return '<input class="mv-ap-input" type="text" value="' + val + '">';
-      };
-      var cb = function (opts, sel) {
+      var tb = function (val, id) {
         return (
-          '<select class="mv-ap-combo">' +
+          '<input class="mv-ap-input" type="text"' +
+          (id ? ' id="' + id + '"' : "") +
+          ' value="' +
+          val +
+          '">'
+        );
+      };
+      var cb = function (opts, sel, id) {
+        return (
+          '<select class="mv-ap-combo"' +
+          (id ? ' id="' + id + '"' : "") +
+          ">" +
           opts
             .map(function (o) {
               return (
@@ -922,12 +930,12 @@
         '<div data-panel="vessel" class="mv-ap-tab-pane">' +
         // Single scanner: groupBoxVessel.Header = "" (SetSingleScannerConfiguration).
         '<div class="mv-ap-groupbox mv-ap-groupbox-vessel">' +
-        apRow("Output Damping Time:", tb("300"), "sec") +
-        apRow("Steepest Material Slope:", tb("35"), "°") +
-        apRow("Max. Capacity:", tb("100"), "mass") +
-        apRow("Max. Emptying Rate:", tb("10"), "mass/h") +
-        apRow("Max. Filling Rate:", tb("10"), "mass/h") +
-        apRow("Minimal SNR", tb("13"), "dB", false) +
+        apRow("Output Damping Time:", tb("300", "mvApDamping"), "sec") +
+        apRow("Steepest Material Slope:", tb("35", "mvApSlope"), "°") +
+        apRow("Max. Capacity:", tb("100", "mvApMaxCap"), "mass") +
+        apRow("Max. Emptying Rate:", tb("10", "mvApEmptyRate"), "mass/h") +
+        apRow("Max. Filling Rate:", tb("10", "mvApFillRate"), "mass/h") +
+        apRow("Minimal SNR", tb("13", "mvApMinSnr"), "dB", false) +
         "</div></div>";
       // AdvParams1Scanner rows 0–10 (IsReducedDisplay drops 11+; SeniorTech-only hidden).
       // IsVisibleTechMode Visible for Senior Tech → Side/Bottom/Restrain shown.
@@ -935,17 +943,17 @@
         '<div data-panel="adv" class="mv-ap-tab-pane" hidden>' +
         '<fieldset class="mv-ap-gb mv-ap-gb-scanner">' +
         "<legend>Device Specific</legend>" +
-        apRow("Angle Adaptor", tb("0"), "°") +
-        apRow("Side Margin", tb("1"), "m") +
-        apRow("Bottom Margin", tb("1"), "m") +
-        apRow("Restrain Coefficient", tb("10"), "%") +
-        apRow("Threshold Sensitivity", tb("9"), "dB", false) +
-        apRow("Threshold Width", tb("0"), "", false) +
-        apRow("After transmission mask %", tb("0"), "%", false) +
-        apRow("User False Echoes", cb(["Enable", "Disable"], "Enable")) +
-        apRow("User False Echoes Sensitivity", tb("1.2"), "", false) +
-        apRow("Auto False Echoes", cb(["Enable", "Disable"], "Enable")) +
-        apRow("Auto False Echoes Sensitivity", tb("1.2"), "", false) +
+        apRow("Angle Adaptor", tb("0", "mvApAngleAdaptor"), "°") +
+        apRow("Side Margin", tb("1", "mvApSideMargin"), "m") +
+        apRow("Bottom Margin", tb("1", "mvApBottomMargin"), "m") +
+        apRow("Restrain Coefficient", tb("10", "mvApRestrain"), "%") +
+        apRow("Threshold Sensitivity", tb("9", "mvApThreshSens"), "dB", false) +
+        apRow("Threshold Width", tb("0", "mvApThreshWidth"), "", false) +
+        apRow("After transmission mask %", tb("0", "mvApAfterTx"), "%", false) +
+        apRow("User False Echoes", cb(["Enable", "Disable"], "Enable", "mvApUserFalseEchoes")) +
+        apRow("User False Echoes Sensitivity", tb("1.2", "mvApUserFalseSens"), "", false) +
+        apRow("Auto False Echoes", cb(["Enable", "Disable"], "Enable", "mvApAutoFalseEchoes")) +
+        apRow("Auto False Echoes Sensitivity", tb("1.2", "mvApAutoFalseSens"), "", false) +
         "</fieldset></div>";
       // AdvBeamActivation.xaml — Manual Height=180; cols 5|120|120|120; rows 30.
       var beamsPanel =
@@ -1762,7 +1770,11 @@
     var summaryBtn = root.querySelector("#mvApSummary");
     if (uploadBtn) {
       uploadBtn.addEventListener("click", function () {
-        runBatchSetParamsProgress("upload");
+        runBatchSetParamsProgress("upload", function (ok) {
+          window.dispatchEvent(
+            new CustomEvent("install-guide:ap-uploaded", { detail: { ok: !!ok } })
+          );
+        });
       });
     }
     if (downloadBtn) {
@@ -2671,7 +2683,29 @@
         paintOnce(null);
       }
       root.__mvWizPrevStep = step;
+      window.dispatchEvent(
+        new CustomEvent("install-guide:wiz-step", { detail: { step: step } })
+      );
+      window.dispatchEvent(new CustomEvent("install-guide:wiz-step-" + step));
     }
+
+    /** Single-scanner mount: ~1/6 diameter from wall (D/3 from center), angle toward origin. */
+    function applyRecommendedPlacement() {
+      var diam = centerDiameterM();
+      if (!isFinite(diam) || diam <= 0) diam = 30;
+      // Offset from center ≈ diameter/3 → wall clearance ≈ diameter/6 (Locator-style single mount).
+      var x = +(diam / 3).toFixed(3);
+      var y = 0;
+      var xEl = root.querySelector("#mvWizDevX");
+      var yEl = root.querySelector("#mvWizDevY");
+      if (xEl) xEl.value = String(x);
+      if (yEl) yEl.value = String(y);
+      syncDeviceFromXY();
+      refresh3dKeepView();
+      return { x: x, y: y };
+    }
+
+    root.__mvWizApplyRecommendedPlacement = applyRecommendedPlacement;
 
     if (backBtn) {
       backBtn.addEventListener("click", function () {
@@ -2689,6 +2723,9 @@
               ok
                 ? "Device configuration uploaded."
                 : "Device configuration upload cancelled."
+            );
+            window.dispatchEvent(
+              new CustomEvent("install-guide:wiz-uploaded", { detail: { ok: !!ok } })
             );
           });
           return;

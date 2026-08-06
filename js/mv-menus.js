@@ -494,9 +494,11 @@
 
       case "dev-wizard":
         dlg.open("mv-dlg-device-wizard");
+        window.dispatchEvent(new CustomEvent("install-guide:device-wizard-opened"));
         break;
       case "dev-advanced":
         dlg.open("mv-dlg-advanced-params");
+        window.dispatchEvent(new CustomEvent("install-guide:advanced-params-opened"));
         break;
       case "dev-curr-sim":
         dlg.open("mv-dlg-current-sim");
