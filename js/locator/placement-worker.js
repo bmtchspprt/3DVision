@@ -61,9 +61,11 @@
             id: id,
             type: "progress",
             stage: p.stage,
+            maxStages: p.maxStages,
             current: p.current,
             total: p.total,
             maxError: p.maxError,
+            overall: p.overall,
           });
         },
       });

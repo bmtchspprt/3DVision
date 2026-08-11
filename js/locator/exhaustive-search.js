@@ -284,6 +284,10 @@
             state.maxErrorIndex = NS.ErrorEstimationCal.MaxErrorIndex(this.errorEstimationCal.SearchRadiusList);
           }
         }
+        // Keep the UI moving during multi-scanner nested loops (outer reports are sparse).
+        if (multiScanners && state.numCalc > 0 && state.numCumulativeCalc % 20 === 0) {
+          this._reportProgress(state.numCumulativeCalc, Math.max(state.numCalc, state.numCumulativeCalc), state.maxErrorTotal);
+        }
       }
       if (!multiScanners) {
         this._reportProgress(state.numCumulativeCalc, state.numCalc, state.maxErrorTotal);

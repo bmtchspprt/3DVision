@@ -29,11 +29,25 @@
         if (Object.prototype.hasOwnProperty.call(opts, k)) runOpts[k] = opts[k];
       }
       runOpts.numScanners = n;
-      if (opts.onProgress) {
-        runOpts.onProgress = function (p) {
-          opts.onProgress({ stage: n, current: p.current, total: p.total, maxError: p.maxError });
-        };
-      }
+      (function (stageN) {
+        if (opts.onProgress) {
+          runOpts.onProgress = function (p) {
+            var stageFrac = p.total > 0 ? p.current / p.total : 0;
+            if (stageFrac > 1) stageFrac = 1;
+            if (stageFrac < 0) stageFrac = 0;
+            var overall = (stageN - startN + stageFrac) / (maxN - startN + 1);
+            if (overall > 0.99) overall = 0.99;
+            opts.onProgress({
+              stage: stageN,
+              maxStages: maxN,
+              current: p.current,
+              total: p.total,
+              maxError: p.maxError,
+              overall: overall,
+            });
+          };
+        }
+      })(n);
       var result = NS.runExhaustiveSearch(runOpts);
       stages.push({ numScanners: n, maxError: result.maxError, scanners: result.scanners });
       best = {
