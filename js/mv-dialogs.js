@@ -811,10 +811,7 @@
         '<td><input class="mv-wiz-dev-off" id="mvWizDevOff" value="0"></td>' +
         '<td><input class="mv-wiz-dev-ang" id="mvWizDevAng" value="180" readonly></td>' +
         '<td class="mv-wiz-addr">1</td></tr>' +
-        "</tbody></table>" +
-        '<div class="mv-wiz-table-btns" style="margin-top:6px">' +
-        '<button type="button" class="mv-wiz-btn" id="mvWizCalcPlace">Calculate Placement</button>' +
-        "</div></div></div></fieldset></div>";
+        "</tbody></table></div></div></fieldset></div>";
       // WizardStepDevice.xaml groupBoxFillPoints Height=180: table row * + button row 32.
       var step3 =
         '<div class="mv-wiz-step-pane" data-wiz-step="3" hidden>' +
@@ -2891,39 +2888,6 @@
     root.__mvWizCancelPlacement = function () {
       if (root.__mvWizPlaceAbort) root.__mvWizPlaceAbort.abort();
     };
-
-    var calcBtn = root.querySelector("#mvWizCalcPlace");
-    if (calcBtn && !calcBtn.__mvWizCalcWired) {
-      calcBtn.__mvWizCalcWired = true;
-      calcBtn.addEventListener("click", function () {
-        calcBtn.disabled = true;
-        var prev = calcBtn.textContent;
-        calcBtn.textContent = "Calculating…";
-        applyRecommendedPlacement({
-          onProgress: function (p) {
-            var pct = p.total ? Math.min(99, Math.round((100 * p.current) / p.total)) : 0;
-            calcBtn.textContent = "Calc " + (p.stage || 1) + " sc… " + pct + "%";
-          },
-        })
-          .then(function (r) {
-            status(
-              "Recommended placement: " +
-                (r.numScanners || 1) +
-                " scanner(s), max error ~" +
-                (+r.maxError).toFixed(2) +
-                "%."
-            );
-          })
-          .catch(function (err) {
-            if (err && err.cancelled) status("Placement cancelled.");
-            else status((err && err.message) || "Placement failed.");
-          })
-          .then(function () {
-            calcBtn.disabled = false;
-            calcBtn.textContent = prev;
-          });
-      });
-    }
 
     wireDeviceRowInputs();
 

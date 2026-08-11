@@ -550,8 +550,8 @@
       id: "wiz-placement-explain",
       phase: "setup",
       title: "Recommended placement",
-      body: "Click Continue to run placement Calculate. It searches mount positions for <strong>1–3 scanners</strong> (may take several seconds) and picks the best coverage.",
-      target: "#mvWizCalcPlace",
+      body: "Click <strong>Calculate</strong> to run recommended placement. It searches mount positions for <strong>1–3 scanners</strong> and may take a short while — a progress bar will show how far along it is.",
+      target: "#igPrimary",
       blocking: true,
       primary: "Calculate",
       pointer: "right",
@@ -945,6 +945,16 @@
       '<div class="ig-progress-fill" id="igProgressFill"></div></div>' +
       '<span class="ig-progress" id="igProgress"></span>' +
       "</div></div>" +
+      '<div class="ig-place-overlay" id="igPlaceOverlay" hidden>' +
+      '<div class="ig-place-panel" role="status" aria-live="polite">' +
+      '<div class="ig-place-title">Calculating placement</div>' +
+      '<div class="ig-place-stage" id="igPlaceStage">Starting…</div>' +
+      '<div class="ig-place-track" aria-hidden="true">' +
+      '<div class="ig-place-fill" id="igPlaceFill"></div></div>' +
+      '<div class="ig-place-meta">' +
+      '<span class="ig-place-pct" id="igPlacePct">0%</span>' +
+      '<span class="ig-place-eta" id="igPlaceEta">Estimating time…</span>' +
+      "</div></div></div>" +
       '<div class="ig-end" id="igEndScreen" hidden>' +
       '<div class="ig-end-inner">' +
       '<div class="ig-end-mark" id="igEndMark">' +
@@ -1278,8 +1288,10 @@
         btn.disabled = true;
         btn.textContent = "Calculating…";
       }
+      showPlacementProgress(true);
       applyVesselRecommendedPlacement()
         .then(function () {
+          showPlacementProgress(false);
           if (btn) {
             btn.disabled = false;
             btn.textContent = step.primary || "Continue";
@@ -1287,13 +1299,13 @@
           goNext();
         })
         .catch(function (err) {
+          showPlacementProgress(false);
           if (btn) {
             btn.disabled = false;
             btn.textContent = step.primary || "Calculate";
           }
           if (err && err.cancelled) return;
           console.warn("Placement calculate failed", err);
-          // Still advance so the guide is not stuck; user can retry via Calculate Placement.
           goNext();
         });
       return;
@@ -1311,23 +1323,101 @@
     }
   }
 
+  var placeProgressState = null;
+
+  function formatEta(ms) {
+    if (!isFinite(ms) || ms < 0) return "Estimating time…";
+    var sec = Math.round(ms / 1000);
+    if (sec < 5) return "Less than 5 seconds left";
+    if (sec < 60) return "About " + sec + " seconds left";
+    var min = Math.floor(sec / 60);
+    var rem = sec % 60;
+    if (min < 3 && rem > 0) return "About " + min + " min " + rem + " sec left";
+    if (min === 1) return "About 1 minute left";
+    return "About " + min + " minutes left";
+  }
+
+  function showPlacementProgress(on) {
+    var el = document.getElementById("igPlaceOverlay");
+    if (!el) return;
+    if (!on) {
+      el.hidden = true;
+      placeProgressState = null;
+      return;
+    }
+    placeProgressState = {
+      start: Date.now(),
+      lastOverall: 0,
+      lastPaint: 0,
+    };
+    el.hidden = false;
+    var stage = document.getElementById("igPlaceStage");
+    var fill = document.getElementById("igPlaceFill");
+    var pct = document.getElementById("igPlacePct");
+    var eta = document.getElementById("igPlaceEta");
+    if (stage) stage.textContent = "Starting search…";
+    if (fill) fill.style.width = "0%";
+    if (pct) pct.textContent = "0%";
+    if (eta) eta.textContent = "Estimating time…";
+  }
+
+  function updatePlacementProgress(p) {
+    if (!placeProgressState) return;
+    var now = Date.now();
+    // Throttle UI paints (~8/sec) so the bar stays readable.
+    if (now - placeProgressState.lastPaint < 120 && p.overall < 0.99) return;
+    placeProgressState.lastPaint = now;
+
+    var overall = typeof p.overall === "number" ? p.overall : 0;
+    if (!(overall > 0) && p.total > 0) {
+      overall = (p.current || 0) / p.total;
+    }
+    if (overall < placeProgressState.lastOverall) {
+      // Stage reset — keep bar from jumping backward hard; blend upward only.
+      overall = Math.max(placeProgressState.lastOverall, overall);
+    }
+    placeProgressState.lastOverall = overall;
+    var pctVal = Math.max(0, Math.min(99, Math.round(overall * 100)));
+
+    var stageEl = document.getElementById("igPlaceStage");
+    var fill = document.getElementById("igPlaceFill");
+    var pctEl = document.getElementById("igPlacePct");
+    var etaEl = document.getElementById("igPlaceEta");
+    var stageN = p.stage || 1;
+    var maxStages = p.maxStages || 3;
+    var stagePct = p.total > 0 ? Math.min(100, Math.round((100 * (p.current || 0)) / p.total)) : 0;
+    if (stageEl) {
+      stageEl.textContent =
+        "Stage " +
+        stageN +
+        " of " +
+        maxStages +
+        " — searching " +
+        stageN +
+        " scanner" +
+        (stageN > 1 ? "s" : "") +
+        " (" +
+        stagePct +
+        "% of this stage)";
+    }
+    if (fill) fill.style.width = pctVal + "%";
+    if (pctEl) pctEl.textContent = pctVal + "%";
+    if (etaEl) {
+      var elapsed = now - placeProgressState.start;
+      if (overall < 0.03 || elapsed < 1500) {
+        etaEl.textContent = "Estimating time…";
+      } else {
+        var etaMs = elapsed / overall - elapsed;
+        etaEl.textContent = formatEta(etaMs);
+      }
+    }
+  }
+
   function applyVesselRecommendedPlacement() {
     var wiz = document.getElementById("mv-dlg-device-wizard");
     if (wiz && typeof wiz.__mvWizApplyRecommendedPlacement === "function") {
-      var coach = document.getElementById("igBody");
       return wiz.__mvWizApplyRecommendedPlacement({
-        onProgress: function (p) {
-          if (!coach) return;
-          var pct = p.total ? Math.min(99, Math.round((100 * p.current) / p.total)) : 0;
-          coach.textContent =
-            "Calculating recommended placement (stage " +
-            (p.stage || 1) +
-            " scanner" +
-            ((p.stage || 1) > 1 ? "s" : "") +
-            ")… " +
-            pct +
-            "%";
-        },
+        onProgress: updatePlacementProgress,
       });
     }
     return Promise.resolve(null);

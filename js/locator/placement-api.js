@@ -28,7 +28,11 @@
     } catch (e) {
       /* ignore */
     }
-    return "js/locator/placement-worker.js";
+    try {
+      return new URL("js/locator/placement-worker.js", document.baseURI || location.href).href;
+    } catch (e2) {
+      return "js/locator/placement-worker.js";
+    }
   }
 
   function getWorker() {
@@ -119,9 +123,11 @@
           if (opts.onProgress) {
             opts.onProgress({
               stage: msg.stage,
+              maxStages: msg.maxStages,
               current: msg.current,
               total: msg.total,
               maxError: msg.maxError,
+              overall: msg.overall,
             });
           }
           return;
