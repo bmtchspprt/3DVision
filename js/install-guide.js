@@ -710,7 +710,9 @@
         '<button type="button" class="ig-btn" data-scanners="3">3 scanners</button>' +
         '<button type="button" class="ig-btn ig-btn--primary" data-scanners="auto">Auto (1–3)</button>' +
         "</div>",
-      target: "#igScannerCount",
+      // No external target — choices live in the coach card. Spotlighting them
+      // made placeCard fight itself and jump every poll.
+      target: null,
       advanceOn: "install-guide:scanner-count",
       allowInside: "#igCard, #igScannerCount",
       pointer: "none",
@@ -720,10 +722,11 @@
       phase: "setup",
       title: "Recommended placement",
       body: "Click <strong>Calculate</strong> to run recommended placement. A progress bar shows how far along it is.",
-      target: "#igPrimary",
+      // Primary lives on the coach card — do not spotlight/place relative to it.
+      target: null,
       blocking: true,
       primary: "Calculate",
-      pointer: "right",
+      pointer: "none",
     },
     {
       id: "wiz-placement-done",
@@ -1779,15 +1782,24 @@
     if (resizeBound) return;
     resizeBound = function () {
       var step = currentStep();
-      if (step && card && !card.hidden) {
-        // Window size changed — allow one relocate; do not scroll the page.
-        cardPlacedStepId = null;
-        highlight(stepTarget(step), stepPointer(step), {
-          allowScroll: false,
-          relocateCard: true,
-        });
+      if (!step || !card || card.hidden) return;
+      var w = window.innerWidth;
+      var h = window.innerHeight;
+      // Ignore tiny/spurious resize thrash (scrollbar, mobile chrome).
+      if (
+        Math.abs(w - lastWindowSize.w) < 24 &&
+        Math.abs(h - lastWindowSize.h) < 24
+      ) {
+        return;
       }
+      lastWindowSize = { w: w, h: h };
+      cardPlacedStepId = null;
+      highlight(stepTarget(step), stepPointer(step), {
+        allowScroll: false,
+        relocateCard: true,
+      });
     };
+    lastWindowSize = { w: window.innerWidth, h: window.innerHeight };
     window.addEventListener("resize", resizeBound);
   }
 
@@ -2037,6 +2049,16 @@
 
   /** Stable coach-card dock for the current step (avoid poll flip-flop). */
   var cardPlacedStepId = null;
+  var lastWindowSize = { w: 0, h: 0 };
+
+  function isInsideCoachCard(el) {
+    if (!el || !card) return false;
+    try {
+      return card === el || card.contains(el);
+    } catch (err) {
+      return false;
+    }
+  }
 
   function placeCard(nearRect, force) {
     if (!card) return;
@@ -2048,7 +2070,8 @@
     var pad = 16;
     var cw = card.offsetWidth || 320;
     var ch = card.offsetHeight || 160;
-    // Dock left so the center/right stay clear for browser and Setup
+    // Always dock top-left. Never dodge a target that lives inside this card —
+    // that caused a jump loop (card moves → target moves → overlap again).
     var left = pad;
     var top = pad;
 
@@ -2060,7 +2083,6 @@
         nearRect.top < cardBox.bottom &&
         nearRect.bottom > cardBox.top;
       if (overlaps) {
-        // Prefer below the target; if that clips, park above it.
         var below = nearRect.bottom + pad;
         var above = nearRect.top - ch - pad;
         if (below + ch <= window.innerHeight - pad) {
@@ -2130,7 +2152,9 @@
       step.pointer === "none" ||
       step.id === "enter-host-ip" ||
       step.id === "devices-connection-type" ||
-      step.id === "devices-polling-address"
+      step.id === "devices-polling-address" ||
+      step.id === "wiz-scanner-count" ||
+      step.id === "wiz-placement-explain"
     ) {
       return "none";
     }
@@ -2182,6 +2206,12 @@
     if (el && el.matches && el.matches('input[type="radio"], input[type="checkbox"]')) {
       var label = el.closest("label");
       if (label) el = label;
+    }
+    // Targets inside the coach card must never drive spotlight / overlap dodge.
+    if (isInsideCoachCard(el)) {
+      clearHighlight();
+      if (relocateCard) placeCard(null, true);
+      return null;
     }
     if (!el || el.hidden || el.offsetParent === null) {
       if (spot) spot.hidden = true;
