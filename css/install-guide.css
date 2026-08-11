@@ -781,13 +781,19 @@ body.ig-boot-ready #multiVisionShell.mv-shell--tease {
     0 0 18px rgba(255, 204, 51, 0.55);
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.15s ease, top 0.15s ease, left 0.15s ease, width 0.15s ease, height 0.15s ease;
+  /* Opacity only — animating left/top made the ring slide then vanish between steps. */
+  transition: opacity 0.12s ease;
   z-index: 1;
   background: transparent;
 }
 
 .ig-root.ig-spot-on .ig-spotlight {
   opacity: 1;
+}
+
+.ig-spotlight[hidden] {
+  display: none !important;
+  opacity: 0 !important;
 }
 
 .ig-pointer {
@@ -799,7 +805,7 @@ body.ig-boot-ready #multiVisionShell.mv-shell--tease {
   opacity: 0;
   transform-origin: 8px 4px;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.55));
-  transition: opacity 0.15s ease, top 0.15s ease, left 0.15s ease;
+  transition: opacity 0.12s ease;
 }
 
 .ig-root.ig-spot-on .ig-pointer {

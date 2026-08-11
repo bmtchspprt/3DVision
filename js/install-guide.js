@@ -710,8 +710,7 @@
         '<button type="button" class="ig-btn" data-scanners="3">3 scanners</button>' +
         '<button type="button" class="ig-btn ig-btn--primary" data-scanners="auto">Auto (1–3)</button>' +
         "</div>",
-      // No external target — choices live in the coach card. Spotlighting them
-      // made placeCard fight itself and jump every poll.
+      // No external target — choices live in the coach card.
       target: null,
       advanceOn: "install-guide:scanner-count",
       allowInside: "#igCard, #igScannerCount",
@@ -1785,7 +1784,6 @@
       if (!step || !card || card.hidden) return;
       var w = window.innerWidth;
       var h = window.innerHeight;
-      // Ignore tiny/spurious resize thrash (scrollbar, mobile chrome).
       if (
         Math.abs(w - lastWindowSize.w) < 24 &&
         Math.abs(h - lastWindowSize.h) < 24
@@ -1793,11 +1791,11 @@
         return;
       }
       lastWindowSize = { w: w, h: h };
-      cardPlacedStepId = null;
-      highlight(stepTarget(step), stepPointer(step), {
-        allowScroll: false,
-        relocateCard: true,
-      });
+      // Never move the coach card on resize — only refresh an external spotlight.
+      var sel = stepTarget(step);
+      if (sel) {
+        highlight(sel, stepPointer(step), { allowScroll: false });
+      }
     };
     lastWindowSize = { w: window.innerWidth, h: window.innerHeight };
     window.addEventListener("resize", resizeBound);
@@ -2047,8 +2045,12 @@
     }
   }
 
-  /** Stable coach-card dock for the current step (avoid poll flip-flop). */
-  var cardPlacedStepId = null;
+  /**
+   * Coach card docks once at top-left and stays there for the whole guide.
+   * Never chase spotlight targets — that made the box jump (especially when
+   * choices lived inside the card itself).
+   */
+  var cardDocked = false;
   var lastWindowSize = { w: 0, h: 0 };
 
   function isInsideCoachCard(el) {
@@ -2060,47 +2062,19 @@
     }
   }
 
-  function placeCard(nearRect, force) {
-    if (!card) return;
-    var step = currentStep();
-    var sid = step ? step.id : null;
-    if (!force && sid && cardPlacedStepId === sid) {
-      return;
+  function resetCardDock() {
+    cardDocked = false;
+    if (card) {
+      card.style.left = "";
+      card.style.top = "";
     }
-    var pad = 16;
-    var cw = card.offsetWidth || 320;
-    var ch = card.offsetHeight || 160;
-    // Always dock top-left. Never dodge a target that lives inside this card —
-    // that caused a jump loop (card moves → target moves → overlap again).
-    var left = pad;
-    var top = pad;
+  }
 
-    if (nearRect) {
-      var cardBox = { left: left, top: top, right: left + cw, bottom: top + ch };
-      var overlaps =
-        nearRect.left < cardBox.right &&
-        nearRect.right > cardBox.left &&
-        nearRect.top < cardBox.bottom &&
-        nearRect.bottom > cardBox.top;
-      if (overlaps) {
-        var below = nearRect.bottom + pad;
-        var above = nearRect.top - ch - pad;
-        if (below + ch <= window.innerHeight - pad) {
-          top = below;
-        } else if (above >= pad) {
-          top = above;
-        } else {
-          top = Math.min(
-            Math.max(pad, below),
-            Math.max(pad, window.innerHeight - ch - pad)
-          );
-        }
-      }
-    }
-
-    card.style.left = left + "px";
-    card.style.top = top + "px";
-    if (sid) cardPlacedStepId = sid;
+  function dockCardOnce() {
+    if (!card || cardDocked) return;
+    card.style.left = "16px";
+    card.style.top = "16px";
+    cardDocked = true;
   }
 
   function placePointer(rect, mode) {
@@ -2181,7 +2155,14 @@
   }
 
   function clearHighlight() {
-    if (spot) spot.hidden = true;
+    if (spot) {
+      spot.hidden = true;
+      // Drop position so the next step does not inherit a sliding ring.
+      spot.style.left = "";
+      spot.style.top = "";
+      spot.style.width = "";
+      spot.style.height = "";
+    }
     if (pointer) pointer.hidden = true;
     root.classList.remove("ig-spot-on", "ig-dim-on", "ig-no-pointer");
   }
@@ -2189,17 +2170,15 @@
   /**
    * @param {string|null} selector
    * @param {string} pointerMode
-   * @param {{ allowScroll?: boolean, relocateCard?: boolean }} [opts]
-   *   allowScroll / relocateCard: only on step enter — polling must not scroll or move the coach card.
+   * @param {{ allowScroll?: boolean }} [opts]
+   *   allowScroll: only on step enter — polling must not scroll the page.
    */
   function highlight(selector, pointerMode, opts) {
     opts = opts || {};
     var allowScroll = !!opts.allowScroll;
-    var relocateCard = !!opts.relocateCard;
     if (!spot) return null;
     if (!selector) {
       clearHighlight();
-      if (relocateCard) placeCard(null, true);
       return null;
     }
     var el = document.querySelector(selector);
@@ -2207,10 +2186,9 @@
       var label = el.closest("label");
       if (label) el = label;
     }
-    // Targets inside the coach card must never drive spotlight / overlap dodge.
+    // Never spotlight controls inside the coach card.
     if (isInsideCoachCard(el)) {
       clearHighlight();
-      if (relocateCard) placeCard(null, true);
       return null;
     }
     if (!el || el.hidden || el.offsetParent === null) {
@@ -2218,7 +2196,6 @@
       if (pointer) pointer.hidden = true;
       root.classList.remove("ig-spot-on", "ig-dim-on");
       root.classList.add("ig-no-pointer");
-      // Do not yank the coach card while the target is briefly missing during a poll.
       return null;
     }
 
@@ -2247,7 +2224,6 @@
     root.classList.add("ig-spot-on");
     root.classList.remove("ig-dim-on");
     placePointer(r, pointerMode || "bottom");
-    if (relocateCard) placeCard(r, true);
     return el;
   }
 
@@ -2403,18 +2379,21 @@
       }
     }
 
-    // Place coach once for this step; polls only track the spotlight/pointer.
-    cardPlacedStepId = null;
-    highlight(stepTarget(step), stepPointer(step), {
-      allowScroll: true,
-      relocateCard: true,
-    });
+    // Card stays put for the whole guide. Spotlight only tracks external UI.
+    dockCardOnce();
+    var sel = stepTarget(step);
+    if (sel) {
+      highlight(sel, stepPointer(step), { allowScroll: true });
+    } else {
+      clearHighlight();
+    }
 
     pollTimer = setInterval(function () {
-      highlight(stepTarget(step), stepPointer(step), {
-        allowScroll: false,
-        relocateCard: false,
-      });
+      var pollSel = stepTarget(step);
+      // Skip clearHighlight spam on no-target steps (that looked like a flash).
+      if (pollSel) {
+        highlight(pollSel, stepPointer(step), { allowScroll: false });
+      }
       maybeAutoAdvance(step);
     }, 200);
   }
@@ -2682,6 +2661,7 @@
       card.hidden = true;
       card.classList.add("ig-card--hidden");
     }
+    resetCardDock();
     clearHighlight();
     clearPoll();
     startTeaseBackground(finishBootReveal);
