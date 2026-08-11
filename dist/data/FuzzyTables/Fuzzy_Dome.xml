@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<Fuzzy>
+  <General Type="Dome" DisplayName="Dome configuration" ShortName="Dome configuration" />
+  <FuzzyLogicParams>
+    <FuzzyLogicParam Val="0.9" />
+    <FuzzyLogicParam Val="0.8" />
+    <FuzzyLogicParam Val="0.6" />
+    <FuzzyLogicParam Val="0.35" />
+    <FuzzyLogicParam Val="0.3" />
+    <FuzzyLogicParam Val="0.2" />
+    <FuzzyLogicParam Val="0.2" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+  </FuzzyLogicParams>
+  <FuzzyLogicParamsAlmostFull>
+    <FuzzyLogicParam Val="0.9" />
+    <FuzzyLogicParam Val="0.7" />
+    <FuzzyLogicParam Val="0.6" />
+    <FuzzyLogicParam Val="0.5" />
+    <FuzzyLogicParam Val="0.3" />
+    <FuzzyLogicParam Val="0.2" />
+    <FuzzyLogicParam Val="0.2" />
+    <FuzzyLogicParam Val="0.2" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+  </FuzzyLogicParamsAlmostFull>
+</Fuzzy>

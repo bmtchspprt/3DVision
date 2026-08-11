@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<Fuzzy>
+  <General Type="SFNoCenterSECenter" ShortName="Single point: Fill Not Center Empty Center" DisplayName="Single fill in point not at the center and single emptying points at the center"/>
+  <FuzzyLogicParams>
+    <FuzzyLogicParam Val="0.94" />
+    <FuzzyLogicParam Val="0.84" />
+    <FuzzyLogicParam Val="0.64" />
+    <FuzzyLogicParam Val="0.24" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+  </FuzzyLogicParams>
+  <FuzzyLogicParamsAlmostFull>
+    <FuzzyLogicParam Val="0.94" />
+    <FuzzyLogicParam Val="0.74" />
+    <FuzzyLogicParam Val="0.24" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+  </FuzzyLogicParamsAlmostFull>
+</Fuzzy>
