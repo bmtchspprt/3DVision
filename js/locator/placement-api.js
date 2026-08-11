@@ -1,6 +1,6 @@
 /**
  * Main-thread facade for Locator recommended placement Calculate.
- * Prefers a Web Worker; falls back to sync full-flow on the main thread.
+ * Prefers a Web Worker so the progress bar can paint; falls back to deferred sync.
  *
  * global.LocatorPlacement.calculateRecommendedPlacement(opts) → Promise
  * opts: { vessel, fillPoints, emptyPoints, numScanners, maxScanners, onProgress, signal }
@@ -12,27 +12,92 @@
   var worker = null;
   var workerFailed = false;
 
-  function workerUrl() {
+  var WORKER_SCRIPTS = [
+    "constants.js",
+    "defs.js",
+    "balls.js",
+    "matrix.js",
+    "algo-error-estimation.js",
+    "geometry.js",
+    "fuzzy.js",
+    "fuzzy-tables.js",
+    "search-radius.js",
+    "error-estimation-calc.js",
+    "error-estimation.js",
+    "vessel-adapter.js",
+    "exhaustive-search.js",
+    "placement-full-flow.js",
+  ];
+
+  function scriptBaseUrl() {
     try {
       var scripts = document.getElementsByTagName("script");
       var i;
       for (i = scripts.length - 1; i >= 0; i--) {
         var src = scripts[i].src || "";
         if (/placement-api\.js/i.test(src)) {
-          return src.replace(/placement-api\.js.*/i, "placement-worker.js");
+          return src.replace(/placement-api\.js.*/i, "");
         }
         if (/locator\//i.test(src)) {
-          return src.replace(/[^/]+$/, "placement-worker.js");
+          return src.replace(/[^/]+$/, "");
         }
       }
     } catch (e) {
       /* ignore */
     }
     try {
-      return new URL("js/locator/placement-worker.js", document.baseURI || location.href).href;
+      return new URL("js/locator/", document.baseURI || location.href).href;
     } catch (e2) {
-      return "js/locator/placement-worker.js";
+      return "js/locator/";
     }
+  }
+
+  function workerUrl() {
+    return scriptBaseUrl() + "placement-worker.js";
+  }
+
+  /** Blob worker with absolute importScripts — avoids blob-relative path breakage. */
+  function buildWorkerSource(base) {
+    var lines = [];
+    var i;
+    for (i = 0; i < WORKER_SCRIPTS.length; i++) {
+      lines.push("importScripts(" + JSON.stringify(base + WORKER_SCRIPTS[i]) + ");");
+    }
+    lines.push(
+      [
+        "var cancelFlag=false;",
+        "self.onmessage=function(ev){",
+        "var msg=ev.data||{};",
+        "if(msg.type==='cancel'){cancelFlag=true;return;}",
+        "if(msg.type!=='calculate')return;",
+        "cancelFlag=false;",
+        "var id=msg.id;",
+        "try{",
+        "var NS=self.LocatorPlacement;",
+        "if(!NS||!NS.runPlacementFullFlow)throw new Error('Locator placement modules not loaded');",
+        "var result=NS.runPlacementFullFlow({",
+        "vessel:msg.vessel,",
+        "fillPoints:msg.fillPoints||[],",
+        "emptyPoints:msg.emptyPoints||[],",
+        "numScanners:msg.numScanners||1,",
+        "maxScanners:msg.maxScanners!=null?msg.maxScanners:3,",
+        "allSteps:msg.allSteps!==false,",
+        "shouldCancel:function(){return cancelFlag;},",
+        "onProgress:function(p){",
+        "self.postMessage({id:id,type:'progress',stage:p.stage,maxStages:p.maxStages,",
+        "current:p.current,total:p.total,maxError:p.maxError,overall:p.overall});",
+        "}",
+        "});",
+        "if(cancelFlag){self.postMessage({id:id,type:'cancelled'});return;}",
+        "self.postMessage({id:id,type:'done',scanners:result.scanners,maxError:result.maxError,",
+        "numScanners:result.numScanners,stages:result.stages});",
+        "}catch(err){",
+        "self.postMessage({id:id,type:'error',message:(err&&err.message)||String(err)});",
+        "}",
+        "};",
+      ].join("")
+    );
+    return lines.join("\n");
   }
 
   function getWorker() {
@@ -42,8 +107,12 @@
       workerFailed = true;
       return null;
     }
+    var base = scriptBaseUrl();
     try {
-      worker = new Worker(workerUrl());
+      var blob = new Blob([buildWorkerSource(base)], { type: "application/javascript" });
+      var blobUrl = URL.createObjectURL(blob);
+      worker = new Worker(blobUrl);
+      worker.__igBlobUrl = blobUrl;
       worker.onerror = function () {
         workerFailed = true;
         try {
@@ -51,12 +120,34 @@
         } catch (e) {
           /* ignore */
         }
+        if (worker && worker.__igBlobUrl) {
+          try {
+            URL.revokeObjectURL(worker.__igBlobUrl);
+          } catch (e2) {
+            /* ignore */
+          }
+        }
         worker = null;
       };
       return worker;
     } catch (e) {
-      workerFailed = true;
-      return null;
+      // Fall back to classic worker file (same-origin http/https).
+      try {
+        worker = new Worker(workerUrl());
+        worker.onerror = function () {
+          workerFailed = true;
+          try {
+            worker.terminate();
+          } catch (e2) {
+            /* ignore */
+          }
+          worker = null;
+        };
+        return worker;
+      } catch (e3) {
+        workerFailed = true;
+        return null;
+      }
     }
   }
 
@@ -73,28 +164,38 @@
         });
       }
     }
+    // Defer so the overlay can paint once before a blocking search.
     return new Promise(function (resolve, reject) {
-      try {
-        var result = NS.runPlacementFullFlow({
-          vessel: opts.vessel,
-          fillPoints: opts.fillPoints,
-          emptyPoints: opts.emptyPoints,
-          numScanners: opts.numScanners || 1,
-          maxScanners: opts.maxScanners != null ? opts.maxScanners : 3,
-          allSteps: opts.allSteps !== false,
-          shouldCancel: function () {
-            return cancelled;
-          },
-          onProgress: opts.onProgress,
-        });
-        if (cancelled) {
-          reject(Object.assign(new Error("cancelled"), { cancelled: true }));
-          return;
+      setTimeout(function () {
+        try {
+          var lastUi = 0;
+          var result = NS.runPlacementFullFlow({
+            vessel: opts.vessel,
+            fillPoints: opts.fillPoints,
+            emptyPoints: opts.emptyPoints,
+            numScanners: opts.numScanners || 1,
+            maxScanners: opts.maxScanners != null ? opts.maxScanners : 3,
+            allSteps: opts.allSteps !== false,
+            shouldCancel: function () {
+              return cancelled;
+            },
+            onProgress: function (p) {
+              if (!opts.onProgress) return;
+              var now = Date.now();
+              if (now - lastUi < 80 && !(p && p.overall >= 0.99)) return;
+              lastUi = now;
+              opts.onProgress(p);
+            },
+          });
+          if (cancelled) {
+            reject(Object.assign(new Error("cancelled"), { cancelled: true }));
+            return;
+          }
+          resolve(result);
+        } catch (err) {
+          reject(err);
         }
-        resolve(result);
-      } catch (err) {
-        reject(err);
-      }
+      }, 40);
     });
   }
 
@@ -103,9 +204,16 @@
     if (!w) return runSync(opts);
     var id = nextId++;
     return new Promise(function (resolve, reject) {
+      var settled = false;
       function cleanup() {
         w.removeEventListener("message", onMsg);
         if (opts.signal) opts.signal.removeEventListener("abort", onAbort);
+      }
+      function finish(fn, arg) {
+        if (settled) return;
+        settled = true;
+        cleanup();
+        fn(arg);
       }
       function onAbort() {
         try {
@@ -113,8 +221,7 @@
         } catch (e) {
           /* ignore */
         }
-        cleanup();
-        reject(Object.assign(new Error("cancelled"), { cancelled: true }));
+        finish(reject, Object.assign(new Error("cancelled"), { cancelled: true }));
       }
       function onMsg(ev) {
         var msg = ev.data || {};
@@ -132,9 +239,8 @@
           }
           return;
         }
-        cleanup();
         if (msg.type === "done") {
-          resolve({
+          finish(resolve, {
             scanners: msg.scanners,
             maxError: msg.maxError,
             numScanners: msg.numScanners,
@@ -143,10 +249,10 @@
           return;
         }
         if (msg.type === "cancelled") {
-          reject(Object.assign(new Error("cancelled"), { cancelled: true }));
+          finish(reject, Object.assign(new Error("cancelled"), { cancelled: true }));
           return;
         }
-        reject(new Error(msg.message || "Placement failed"));
+        finish(reject, new Error(msg.message || "Placement failed"));
       }
       w.addEventListener("message", onMsg);
       if (opts.signal) {
@@ -156,16 +262,22 @@
         }
         opts.signal.addEventListener("abort", onAbort);
       }
-      w.postMessage({
-        id: id,
-        type: "calculate",
-        vessel: opts.vessel,
-        fillPoints: opts.fillPoints || [],
-        emptyPoints: opts.emptyPoints || [],
-        numScanners: opts.numScanners || 1,
-        maxScanners: opts.maxScanners != null ? opts.maxScanners : 3,
-        allSteps: opts.allSteps !== false,
-      });
+      try {
+        w.postMessage({
+          id: id,
+          type: "calculate",
+          vessel: opts.vessel,
+          fillPoints: opts.fillPoints || [],
+          emptyPoints: opts.emptyPoints || [],
+          numScanners: opts.numScanners || 1,
+          maxScanners: opts.maxScanners != null ? opts.maxScanners : 3,
+          allSteps: opts.allSteps !== false,
+        });
+      } catch (err) {
+        workerFailed = true;
+        cleanup();
+        runSync(opts).then(resolve, reject);
+      }
     });
   }
 
@@ -176,15 +288,18 @@
     opts = opts || {};
     return runWorker(opts).catch(function (err) {
       if (err && err.cancelled) throw err;
-      // Worker failed to start or crashed — try sync once.
-      if (!workerFailed) {
-        workerFailed = true;
-        return runSync(opts);
+      workerFailed = true;
+      try {
+        if (worker) worker.terminate();
+      } catch (e) {
+        /* ignore */
       }
-      throw err;
+      worker = null;
+      return runSync(opts);
     });
   }
 
   NS.calculateRecommendedPlacement = calculateRecommendedPlacement;
   NS._placementWorkerUrl = workerUrl;
+  NS._placementScriptBase = scriptBaseUrl;
 })(typeof self !== "undefined" ? self : window);

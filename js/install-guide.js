@@ -28,8 +28,8 @@
   var WIZ_NEXT = "#installerWizardFooter .installer-wiz-btn--default";
 
   var EXAMPLE_HOST_IP = "192.168.1.28";
-  /** Guide placement: fixed N or auto escalate 1→3. */
-  var guideScannerPlan = { numScanners: 1, maxScanners: 3, label: "Auto (1–3)" };
+  /** Guide placement: how many scanners to search for (1–3). */
+  var guideScannerPlan = { numScanners: 1, maxScanners: 1, label: "1 scanner" };
   var apTypingActive = null;
   var apTypingTarget = "";
   var AP_RATE_TARGET = "8";
@@ -702,13 +702,11 @@
       phase: "setup",
       title: "How many scanners?",
       body:
-        "Real MultiVision does not auto-place multiple scanners. This guide uses the placement Calculate search for <strong>1–3</strong> units.<br><br>" +
-        "Choose how many you will mount (or <strong>Auto</strong> to try 1, then add more only if coverage needs it):" +
+        "Choose how many scanners you will mount on this vessel. The guide will run placement Calculate for that count:" +
         '<div class="ig-scanner-count" id="igScannerCount">' +
         '<button type="button" class="ig-btn" data-scanners="1">1 scanner</button>' +
         '<button type="button" class="ig-btn" data-scanners="2">2 scanners</button>' +
         '<button type="button" class="ig-btn" data-scanners="3">3 scanners</button>' +
-        '<button type="button" class="ig-btn ig-btn--primary" data-scanners="auto">Auto (1–3)</button>' +
         "</div>",
       // No external target — choices live in the coach card.
       target: null,
@@ -1168,18 +1166,14 @@
       e.preventDefault();
       e.stopPropagation();
       var choice = scBtn.getAttribute("data-scanners");
-      if (choice === "auto") {
-        guideScannerPlan = { numScanners: 1, maxScanners: 3, label: "Auto (1–3)" };
-      } else {
-        var n = parseInt(choice, 10) || 1;
-        if (n < 1) n = 1;
-        if (n > 3) n = 3;
-        guideScannerPlan = {
-          numScanners: n,
-          maxScanners: n,
-          label: n + " scanner" + (n > 1 ? "s" : ""),
-        };
-      }
+      var n = parseInt(choice, 10) || 1;
+      if (n < 1) n = 1;
+      if (n > 3) n = 3;
+      guideScannerPlan = {
+        numScanners: n,
+        maxScanners: n,
+        label: n + " scanner" + (n > 1 ? "s" : ""),
+      };
       window.dispatchEvent(new CustomEvent("install-guide:scanner-count"));
     });
     var replayBtn = document.getElementById("igEndReplay");
@@ -1499,25 +1493,33 @@
         btn.textContent = "Calculating…";
       }
       showPlacementProgress(true);
-      applyVesselRecommendedPlacement()
-        .then(function () {
-          showPlacementProgress(false);
-          if (btn) {
-            btn.disabled = false;
-            btn.textContent = step.primary || "Continue";
-          }
-          goNext();
-        })
-        .catch(function (err) {
-          showPlacementProgress(false);
-          if (btn) {
-            btn.disabled = false;
-            btn.textContent = step.primary || "Calculate";
-          }
-          if (err && err.cancelled) return;
-          console.warn("Placement calculate failed", err);
-          goNext();
+      // Let the overlay paint before starting heavy work.
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(function () {
+          applyVesselRecommendedPlacement()
+            .then(function () {
+              finishPlacementProgress(100);
+              window.setTimeout(function () {
+                showPlacementProgress(false);
+                if (btn) {
+                  btn.disabled = false;
+                  btn.textContent = step.primary || "Continue";
+                }
+                goNext();
+              }, 280);
+            })
+            .catch(function (err) {
+              showPlacementProgress(false);
+              if (btn) {
+                btn.disabled = false;
+                btn.textContent = step.primary || "Calculate";
+              }
+              if (err && err.cancelled) return;
+              console.warn("Placement calculate failed", err);
+              goNext();
+            });
         });
+      });
       return;
     }
     if (step.id === "ov-compare-tape") {
@@ -1550,6 +1552,9 @@
   function showPlacementProgress(on) {
     var el = document.getElementById("igPlaceOverlay");
     if (!el) return;
+    if (placeProgressState && placeProgressState.tickTimer) {
+      clearInterval(placeProgressState.tickTimer);
+    }
     if (!on) {
       el.hidden = true;
       placeProgressState = null;
@@ -1559,6 +1564,8 @@
       start: Date.now(),
       lastOverall: 0,
       lastPaint: 0,
+      displayed: 0,
+      tickTimer: null,
     };
     el.hidden = false;
     var stage = document.getElementById("igPlaceStage");
@@ -1569,58 +1576,109 @@
     if (fill) fill.style.width = "0%";
     if (pct) pct.textContent = "0%";
     if (eta) eta.textContent = "Estimating time…";
+    // Soft clock so the bar never sits frozen at 0% while the worker starts.
+    placeProgressState.tickTimer = setInterval(function () {
+      if (!placeProgressState) return;
+      var elapsed = Date.now() - placeProgressState.start;
+      // Creep toward ~55% over ~25s if real progress is silent.
+      var soft = Math.min(0.55, elapsed / 25000);
+      if (soft > placeProgressState.displayed) {
+        paintPlacementProgress(soft, {
+          stage: 1,
+          maxStages: 1,
+          current: 0,
+          total: 0,
+          soft: true,
+        });
+      }
+    }, 200);
   }
 
-  function updatePlacementProgress(p) {
+  function finishPlacementProgress(pctVal) {
     if (!placeProgressState) return;
-    var now = Date.now();
-    // Throttle UI paints (~8/sec) so the bar stays readable.
-    if (now - placeProgressState.lastPaint < 120 && p.overall < 0.99) return;
-    placeProgressState.lastPaint = now;
+    if (placeProgressState.tickTimer) {
+      clearInterval(placeProgressState.tickTimer);
+      placeProgressState.tickTimer = null;
+    }
+    paintPlacementProgress(1, {
+      stage: 1,
+      maxStages: 1,
+      current: 1,
+      total: 1,
+      done: true,
+    });
+    var fill = document.getElementById("igPlaceFill");
+    var pctEl = document.getElementById("igPlacePct");
+    var stageEl = document.getElementById("igPlaceStage");
+    var etaEl = document.getElementById("igPlaceEta");
+    if (fill) fill.style.width = (pctVal != null ? pctVal : 100) + "%";
+    if (pctEl) pctEl.textContent = (pctVal != null ? pctVal : 100) + "%";
+    if (stageEl) stageEl.textContent = "Placement found";
+    if (etaEl) etaEl.textContent = "Done";
+  }
 
-    var overall = typeof p.overall === "number" ? p.overall : 0;
-    if (!(overall > 0) && p.total > 0) {
-      overall = (p.current || 0) / p.total;
+  function paintPlacementProgress(overall, p) {
+    if (!placeProgressState) return;
+    p = p || {};
+    var now = Date.now();
+    if (!p.done && !p.soft && now - placeProgressState.lastPaint < 80 && overall < 0.99) {
+      return;
     }
-    if (overall < placeProgressState.lastOverall) {
-      // Stage reset — keep bar from jumping backward hard; blend upward only.
-      overall = Math.max(placeProgressState.lastOverall, overall);
+    placeProgressState.lastPaint = now;
+    if (overall < placeProgressState.lastOverall && !p.soft) {
+      overall = placeProgressState.lastOverall;
     }
-    placeProgressState.lastOverall = overall;
-    var pctVal = Math.max(0, Math.min(99, Math.round(overall * 100)));
+    if (overall < placeProgressState.displayed && p.soft) {
+      return;
+    }
+    placeProgressState.lastOverall = Math.max(placeProgressState.lastOverall, overall);
+    placeProgressState.displayed = Math.max(placeProgressState.displayed, overall);
+    var pctVal = Math.max(0, Math.min(p.done ? 100 : 99, Math.round(placeProgressState.displayed * 100)));
 
     var stageEl = document.getElementById("igPlaceStage");
     var fill = document.getElementById("igPlaceFill");
     var pctEl = document.getElementById("igPlacePct");
     var etaEl = document.getElementById("igPlaceEta");
     var stageN = p.stage || 1;
-    var maxStages = p.maxStages || 3;
-    var stagePct = p.total > 0 ? Math.min(100, Math.round((100 * (p.current || 0)) / p.total)) : 0;
-    if (stageEl) {
+    var maxStages = p.maxStages || 1;
+    var stagePct = p.total > 0 ? Math.min(100, Math.round((100 * (p.current || 0)) / p.total)) : pctVal;
+    if (stageEl && !p.soft) {
       stageEl.textContent =
-        "Stage " +
-        stageN +
-        " of " +
-        maxStages +
-        " — searching " +
+        "Searching " +
         stageN +
         " scanner" +
         (stageN > 1 ? "s" : "") +
-        " (" +
+        (maxStages > 1 ? " (pass " + stageN + " of " + maxStages + ")" : "") +
+        " — " +
         stagePct +
-        "% of this stage)";
+        "%";
+    } else if (stageEl && p.soft && placeProgressState.displayed < 0.02) {
+      stageEl.textContent = "Starting search…";
     }
     if (fill) fill.style.width = pctVal + "%";
     if (pctEl) pctEl.textContent = pctVal + "%";
-    if (etaEl) {
+    if (etaEl && !p.done) {
       var elapsed = now - placeProgressState.start;
-      if (overall < 0.03 || elapsed < 1500) {
+      if (placeProgressState.displayed < 0.04 || elapsed < 1200) {
         etaEl.textContent = "Estimating time…";
       } else {
-        var etaMs = elapsed / overall - elapsed;
+        var etaMs = elapsed / placeProgressState.displayed - elapsed;
         etaEl.textContent = formatEta(etaMs);
       }
     }
+  }
+
+  function updatePlacementProgress(p) {
+    if (!placeProgressState) return;
+    var overall = typeof p.overall === "number" ? p.overall : 0;
+    if (!(overall > 0) && p.total > 0) {
+      overall = (p.current || 0) / p.total;
+    }
+    if (!(overall > 0) && typeof p.current === "number" && p.current > 0) {
+      // Worker may report current before total settles — show motion.
+      overall = Math.min(0.9, placeProgressState.displayed + 0.01);
+    }
+    paintPlacementProgress(overall, p);
   }
 
   function applyVesselRecommendedPlacement() {
@@ -2064,16 +2122,11 @@
 
   function resetCardDock() {
     cardDocked = false;
-    if (card) {
-      card.style.left = "";
-      card.style.top = "";
-    }
   }
 
   function dockCardOnce() {
+    // Position comes from CSS (fixed top/left). Flag only tracks guide session.
     if (!card || cardDocked) return;
-    card.style.left = "16px";
-    card.style.top = "16px";
     cardDocked = true;
   }
 
@@ -2199,20 +2252,27 @@
       return null;
     }
 
+    // Never scroll the page for the coach — fixed card + window scroll looked like the box jumped.
+    var r = el.getBoundingClientRect();
+    // If the target is clipped inside a scrollable dialog, nudge only that scroller.
     if (allowScroll) {
       try {
-        el.scrollIntoView({ block: "nearest", inline: "nearest" });
+        var scroller = el.closest
+          ? el.closest(".mv-dialog-body, .mv-dlg-body, .mv-scroll, [data-ig-scroll]")
+          : null;
+        if (scroller && typeof scroller.scrollTop === "number") {
+          var er = el.getBoundingClientRect();
+          var sr = scroller.getBoundingClientRect();
+          if (er.top < sr.top + 8) {
+            scroller.scrollTop -= sr.top + 8 - er.top;
+          } else if (er.bottom > sr.bottom - 8) {
+            scroller.scrollTop += er.bottom - (sr.bottom - 8);
+          }
+          r = el.getBoundingClientRect();
+        }
       } catch (err) {
         /* ignore */
       }
-    }
-
-    var r = el.getBoundingClientRect();
-    if (allowScroll && (r.bottom > window.innerHeight - 8 || r.top < 8)) {
-      var absTop = r.top + window.scrollY;
-      var desired = absTop - Math.max(80, window.innerHeight * 0.45);
-      window.scrollTo({ top: Math.max(0, desired), behavior: "auto" });
-      r = el.getBoundingClientRect();
     }
 
     var pad = 8;
@@ -2268,13 +2328,9 @@
     }
     if (step.id === "wiz-placement-explain") {
       bodyHtml =
-        "Click <strong>Calculate</strong> for <strong>" +
+        "Click <strong>Calculate</strong> to find recommended mount positions for <strong>" +
         escapeHtml(guideScannerPlan.label) +
-        "</strong>. " +
-        (guideScannerPlan.maxScanners > guideScannerPlan.numScanners
-          ? "Auto mode starts with 1 scanner and adds more only if coverage needs it. "
-          : "It will search joint mount positions for that count. ") +
-        "A progress bar shows how far along it is.";
+        "</strong>. Watch the progress bar while the search runs.";
     }
     document.getElementById("igBody").innerHTML = bodyHtml;
     document.getElementById("igProgress").textContent =
