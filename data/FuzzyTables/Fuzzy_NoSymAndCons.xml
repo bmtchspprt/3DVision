@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<Fuzzy>
+  <General Type="NoSymAndCons" DisplayName="No symmetry and cons" ShortName="No symmetry and cons" />
+  <FuzzyLogicParams>
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+  </FuzzyLogicParams>
+  <FuzzyLogicParamsAlmostFull>
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+  </FuzzyLogicParamsAlmostFull>
+</Fuzzy>

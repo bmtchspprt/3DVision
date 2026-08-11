@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<Fuzzy>
+  <General Type="MFSECenter" ShortName="Multiple Fill in points Single Empty point Center" DisplayName="Multiple fill in points and single emptying points at the center"/>
+  <FuzzyLogicParams>
+    <FuzzyLogicParam Val="0.54" />
+    <FuzzyLogicParam Val="0.48" />
+    <FuzzyLogicParam Val="0.36" />
+    <FuzzyLogicParam Val="0.183" />
+    <FuzzyLogicParam Val="0.1" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+  </FuzzyLogicParams>
+  <FuzzyLogicParamsAlmostFull>
+    <FuzzyLogicParam Val="0.54" />
+    <FuzzyLogicParam Val="0.42" />
+    <FuzzyLogicParam Val="0.12" />
+    <FuzzyLogicParam Val="0.06" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+    <FuzzyLogicParam Val="0" />
+  </FuzzyLogicParamsAlmostFull>
+</Fuzzy>
