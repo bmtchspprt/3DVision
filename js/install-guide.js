@@ -1779,7 +1779,14 @@
     if (resizeBound) return;
     resizeBound = function () {
       var step = currentStep();
-      if (step && card && !card.hidden) highlight(stepTarget(step), stepPointer(step));
+      if (step && card && !card.hidden) {
+        // Window size changed — allow one relocate; do not scroll the page.
+        cardPlacedStepId = null;
+        highlight(stepTarget(step), stepPointer(step), {
+          allowScroll: false,
+          relocateCard: true,
+        });
+      }
     };
     window.addEventListener("resize", resizeBound);
   }
@@ -2028,8 +2035,16 @@
     }
   }
 
-  function placeCard(nearRect) {
+  /** Stable coach-card dock for the current step (avoid poll flip-flop). */
+  var cardPlacedStepId = null;
+
+  function placeCard(nearRect, force) {
     if (!card) return;
+    var step = currentStep();
+    var sid = step ? step.id : null;
+    if (!force && sid && cardPlacedStepId === sid) {
+      return;
+    }
     var pad = 16;
     var cw = card.offsetWidth || 320;
     var ch = card.offsetHeight || 160;
@@ -2045,15 +2060,25 @@
         nearRect.top < cardBox.bottom &&
         nearRect.bottom > cardBox.top;
       if (overlaps) {
-        top = Math.min(
-          Math.max(pad, nearRect.bottom + pad),
-          Math.max(pad, window.innerHeight - ch - pad)
-        );
+        // Prefer below the target; if that clips, park above it.
+        var below = nearRect.bottom + pad;
+        var above = nearRect.top - ch - pad;
+        if (below + ch <= window.innerHeight - pad) {
+          top = below;
+        } else if (above >= pad) {
+          top = above;
+        } else {
+          top = Math.min(
+            Math.max(pad, below),
+            Math.max(pad, window.innerHeight - ch - pad)
+          );
+        }
       }
     }
 
     card.style.left = left + "px";
     card.style.top = top + "px";
+    if (sid) cardPlacedStepId = sid;
   }
 
   function placePointer(rect, mode) {
@@ -2137,11 +2162,20 @@
     root.classList.remove("ig-spot-on", "ig-dim-on", "ig-no-pointer");
   }
 
-  function highlight(selector, pointerMode) {
+  /**
+   * @param {string|null} selector
+   * @param {string} pointerMode
+   * @param {{ allowScroll?: boolean, relocateCard?: boolean }} [opts]
+   *   allowScroll / relocateCard: only on step enter — polling must not scroll or move the coach card.
+   */
+  function highlight(selector, pointerMode, opts) {
+    opts = opts || {};
+    var allowScroll = !!opts.allowScroll;
+    var relocateCard = !!opts.relocateCard;
     if (!spot) return null;
     if (!selector) {
       clearHighlight();
-      placeCard(null);
+      if (relocateCard) placeCard(null, true);
       return null;
     }
     var el = document.querySelector(selector);
@@ -2154,18 +2188,20 @@
       if (pointer) pointer.hidden = true;
       root.classList.remove("ig-spot-on", "ig-dim-on");
       root.classList.add("ig-no-pointer");
-      placeCard(null);
+      // Do not yank the coach card while the target is briefly missing during a poll.
       return null;
     }
 
-    try {
-      el.scrollIntoView({ block: "nearest", inline: "nearest" });
-    } catch (err) {
-      /* ignore */
+    if (allowScroll) {
+      try {
+        el.scrollIntoView({ block: "nearest", inline: "nearest" });
+      } catch (err) {
+        /* ignore */
+      }
     }
 
     var r = el.getBoundingClientRect();
-    if (r.bottom > window.innerHeight - 8 || r.top < 8) {
+    if (allowScroll && (r.bottom > window.innerHeight - 8 || r.top < 8)) {
       var absTop = r.top + window.scrollY;
       var desired = absTop - Math.max(80, window.innerHeight * 0.45);
       window.scrollTo({ top: Math.max(0, desired), behavior: "auto" });
@@ -2181,7 +2217,7 @@
     root.classList.add("ig-spot-on");
     root.classList.remove("ig-dim-on");
     placePointer(r, pointerMode || "bottom");
-    placeCard(r);
+    if (relocateCard) placeCard(r, true);
     return el;
   }
 
@@ -2337,10 +2373,18 @@
       }
     }
 
-    highlight(stepTarget(step), stepPointer(step));
+    // Place coach once for this step; polls only track the spotlight/pointer.
+    cardPlacedStepId = null;
+    highlight(stepTarget(step), stepPointer(step), {
+      allowScroll: true,
+      relocateCard: true,
+    });
 
     pollTimer = setInterval(function () {
-      highlight(stepTarget(step), stepPointer(step));
+      highlight(stepTarget(step), stepPointer(step), {
+        allowScroll: false,
+        relocateCard: false,
+      });
       maybeAutoAdvance(step);
     }, 200);
   }
