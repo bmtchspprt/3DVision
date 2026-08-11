@@ -1054,6 +1054,19 @@ body.ig-boot-ready #multiVisionShell.mv-shell--tease {
   text-align: right;
 }
 
+.ig-scanner-count {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.ig-scanner-count .ig-btn {
+  flex: 1 1 calc(50% - 8px);
+  min-width: 110px;
+  text-align: center;
+}
+
 .ig-pulse {
   animation: ig-pulse 1.2s ease-in-out infinite;
 }

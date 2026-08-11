@@ -3571,6 +3571,56 @@
   text-overflow: clip;
   overflow: visible;
 }
+.mv-ap-field-wrap {
+  position: relative;
+  display: inline-block;
+  width: 130px;
+  height: 23px;
+}
+.mv-ap-field-wrap .mv-ap-input {
+  width: 100%;
+}
+.mv-ap-field-ghost {
+  display: none;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  padding: 0 2px;
+  font-size: 12px;
+  font-family: Consolas, "Courier New", monospace;
+  line-height: 21px;
+  white-space: pre;
+  overflow: hidden;
+  pointer-events: none;
+  background: #fff;
+  border: 1px solid #828790;
+  box-sizing: border-box;
+}
+.mv-ap-field-wrap.is-typing .mv-ap-field-ghost {
+  display: block;
+}
+.mv-ap-field-wrap.is-typing .mv-ap-input {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  color: transparent;
+  caret-color: #202124;
+  font-family: Consolas, "Courier New", monospace;
+}
+.mv-ap-field-ghost .g-ok {
+  color: #188038;
+}
+.mv-ap-field-ghost .g-bad {
+  color: #d93025;
+  background: #fce8e6;
+}
+.mv-ap-field-ghost .g-next {
+  color: #202124;
+  background: #e8f0fe;
+}
+.mv-ap-field-ghost .g-rest {
+  color: #9aa0a6;
+}
 .mv-ap-combo {
   padding: 0 18px 0 3px;
 }

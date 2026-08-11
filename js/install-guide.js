@@ -28,6 +28,157 @@
   var WIZ_NEXT = "#installerWizardFooter .installer-wiz-btn--default";
 
   var EXAMPLE_HOST_IP = "192.168.1.28";
+  /** Guide placement: fixed N or auto escalate 1→3. */
+  var guideScannerPlan = { numScanners: 1, maxScanners: 3, label: "Auto (1–3)" };
+  var apTypingActive = null;
+  var apTypingTarget = "";
+  var AP_RATE_TARGET = "8";
+  var AP_CAPACITY_TARGET = "100";
+
+  function escapeHtml(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function buildTypingGhostHtml(typed, target) {
+    var html = "";
+    var i = 0;
+    var matched = true;
+    typed = String(typed || "");
+    target = String(target || "");
+    for (; i < typed.length && i < target.length; i++) {
+      var want = target.charAt(i);
+      var got = typed.charAt(i);
+      if (matched && got === want) {
+        html += '<span class="g-ok">' + escapeHtml(got) + "</span>";
+      } else {
+        matched = false;
+        html += '<span class="g-bad">' + escapeHtml(got) + "</span>";
+      }
+    }
+    for (; i < typed.length; i++) {
+      html += '<span class="g-bad">' + escapeHtml(typed.charAt(i)) + "</span>";
+    }
+    if (typed.length < target.length) {
+      html += '<span class="g-next">' + escapeHtml(target.charAt(typed.length)) + "</span>";
+      if (typed.length + 1 < target.length) {
+        html +=
+          '<span class="g-rest">' + escapeHtml(target.slice(typed.length + 1)) + "</span>";
+      }
+    }
+    if (!html && target.length) {
+      html =
+        '<span class="g-next">' +
+        escapeHtml(target.charAt(0)) +
+        "</span>" +
+        '<span class="g-rest">' +
+        escapeHtml(target.slice(1)) +
+        "</span>";
+    }
+    return html;
+  }
+
+  function updateApTypingGhost() {
+    if (!apTypingActive) return;
+    var input = document.getElementById(apTypingActive);
+    var ghost = document.getElementById(apTypingActive + "Ghost");
+    if (!input || !ghost) return;
+    ghost.innerHTML = buildTypingGhostHtml(input.value, apTypingTarget);
+  }
+
+  function setApFieldTypingCoach(fieldId, on, target) {
+    var wrap = document.getElementById(fieldId + "Wrap");
+    var input = document.getElementById(fieldId);
+    var ghost = document.getElementById(fieldId + "Ghost");
+    if (!on) {
+      if (apTypingActive === fieldId) {
+        apTypingActive = null;
+        apTypingTarget = "";
+      }
+      if (wrap) wrap.classList.remove("is-typing");
+      if (ghost) ghost.innerHTML = "";
+      return;
+    }
+    apTypingActive = fieldId;
+    apTypingTarget = String(target || "");
+    if (wrap) wrap.classList.add("is-typing");
+    if (input) {
+      input.value = "";
+      if (!input.__igApTyped) {
+        input.__igApTyped = true;
+        input.addEventListener("input", updateApTypingGhost);
+      }
+      try {
+        input.focus();
+        input.select();
+      } catch (err) {
+        /* ignore */
+      }
+    }
+    updateApTypingGhost();
+  }
+
+  function clearAllApTypingCoaches() {
+    ["mvApMaxCap", "mvApEmptyRate", "mvApFillRate", "mvApSlope"].forEach(function (id) {
+      setApFieldTypingCoach(id, false);
+    });
+  }
+
+  /**
+   * Steepest vessel wall slope from cone/pyramid geometry (degrees from horizontal).
+   * atan(height / radial_run) — used as recommended Steepest Material Slope.
+   */
+  function coneWallSlopeDeg(height, diamLarge, diamSmall) {
+    var h = Math.abs(Number(height) || 0);
+    var dL = Math.abs(Number(diamLarge) || 0);
+    var dS = Math.abs(Number(diamSmall) || 0);
+    var run = Math.abs(dL - dS) / 2;
+    if (h < 1e-6 || run < 1e-6) return null;
+    return (Math.atan(h / run) * 180) / Math.PI;
+  }
+
+  function recommendedSteepestMaterialSlope() {
+    var wiz = document.getElementById("mv-dlg-device-wizard");
+    function val(id) {
+      var el = document.getElementById(id);
+      return el ? parseFloat(el.value) : NaN;
+    }
+    var topShape = ((wiz && wiz.querySelector("#mvWizTopShape")) || {}).value || "cone";
+    var botShape = ((wiz && wiz.querySelector("#mvWizBotShape")) || {}).value || "cone";
+    var cenShape = ((wiz && wiz.querySelector("#mvWizCenShape")) || {}).value || "cylinder";
+    var cenD =
+      cenShape === "cube"
+        ? Math.max(val("mvWizCenX") || 0, val("mvWizCenY") || 0)
+        : val("mvWizCenD");
+    if (isNaN(cenD) || cenD <= 0) cenD = 9;
+    var candidates = [];
+    if (topShape === "cone" || topShape === "pyramid") {
+      var topH = val("mvWizTopH");
+      var topD = topShape === "pyramid" ? val("mvWizTopX") : val("mvWizTopD");
+      if (isNaN(topD)) topD = 0;
+      var topSlope = coneWallSlopeDeg(topH, cenD, topD);
+      if (topSlope != null) candidates.push(topSlope);
+    }
+    if (botShape === "cone" || botShape === "cone2" || botShape === "pyramid" || botShape === "pyramid2") {
+      var botH = val("mvWizBotH");
+      var botD =
+        botShape === "pyramid" || botShape === "pyramid2" ? val("mvWizBotX") : val("mvWizBotD");
+      if (isNaN(botD)) botD = 0;
+      var botSlope = coneWallSlopeDeg(botH, cenD, botD);
+      if (botSlope != null) candidates.push(botSlope);
+    }
+    var deg = 35;
+    if (candidates.length) {
+      deg = Math.max.apply(null, candidates);
+    }
+    deg = Math.round(deg);
+    if (deg < 15) deg = 15;
+    if (deg > 70) deg = 70;
+    return deg;
+  }
 
   var STEPS_THROUGH_USERS = [
     {
@@ -547,10 +698,28 @@
       pointer: "none",
     },
     {
+      id: "wiz-scanner-count",
+      phase: "setup",
+      title: "How many scanners?",
+      body:
+        "Real MultiVision does not auto-place multiple scanners. This guide uses the placement Calculate search for <strong>1–3</strong> units.<br><br>" +
+        "Choose how many you will mount (or <strong>Auto</strong> to try 1, then add more only if coverage needs it):" +
+        '<div class="ig-scanner-count" id="igScannerCount">' +
+        '<button type="button" class="ig-btn" data-scanners="1">1 scanner</button>' +
+        '<button type="button" class="ig-btn" data-scanners="2">2 scanners</button>' +
+        '<button type="button" class="ig-btn" data-scanners="3">3 scanners</button>' +
+        '<button type="button" class="ig-btn ig-btn--primary" data-scanners="auto">Auto (1–3)</button>' +
+        "</div>",
+      target: "#igScannerCount",
+      advanceOn: "install-guide:scanner-count",
+      allowInside: "#igCard, #igScannerCount",
+      pointer: "none",
+    },
+    {
       id: "wiz-placement-explain",
       phase: "setup",
       title: "Recommended placement",
-      body: "Click <strong>Calculate</strong> to run recommended placement. It searches mount positions for <strong>1–3 scanners</strong> and may take a short while — a progress bar will show how far along it is.",
+      body: "Click <strong>Calculate</strong> to run recommended placement. A progress bar shows how far along it is.",
       target: "#igPrimary",
       blocking: true,
       primary: "Calculate",
@@ -674,7 +843,7 @@
       id: "ap-max-capacity",
       phase: "setup",
       title: "Max Capacity",
-      body: "Set <strong>Max. Capacity</strong> to <strong>100</strong>. Always use 100 for this guide.",
+      body: "Type the ghosted value for <strong>Max. Capacity</strong>: <code>100</code>. Always use 100 for this guide.",
       target: "#mvApMaxCap",
       advanceOn: "install-guide:ap-capacity-100",
       allowInside: "#mv-dlg-advanced-params",
@@ -684,7 +853,7 @@
       id: "ap-empty-rate",
       phase: "setup",
       title: "Max Emptying Rate",
-      body: "Set <strong>Max. Emptying Rate</strong> between <strong>7</strong> and <strong>10</strong>.",
+      body: "Type the ghosted <strong>Max. Emptying Rate</strong>: <code>8</code> (typical install value between 7 and 10).",
       target: "#mvApEmptyRate",
       advanceOn: "install-guide:ap-empty-rate-ok",
       allowInside: "#mv-dlg-advanced-params",
@@ -694,7 +863,7 @@
       id: "ap-fill-rate",
       phase: "setup",
       title: "Max Filling Rate",
-      body: "Set <strong>Max. Filling Rate</strong> between <strong>7</strong> and <strong>10</strong>.",
+      body: "Type the ghosted <strong>Max. Filling Rate</strong>: <code>8</code> (typical install value between 7 and 10).",
       target: "#mvApFillRate",
       advanceOn: "install-guide:ap-fill-rate-ok",
       allowInside: "#mv-dlg-advanced-params",
@@ -703,11 +872,10 @@
     {
       id: "ap-vessel-slope",
       phase: "setup",
-      title: "Vessel tab — slope",
-      body: "<strong>Steepest Material Slope</strong> is the steepest angle the product can form. Leave near 35° unless you know the real angle.",
-      target: "#mvApSlope",
-      blocking: true,
-      primary: "Continue",
+      title: "Steepest Material Slope",
+      body: "PLACEHOLDER_SLOPE",
+      target: "#mvApSlopeWrap, #mvApSlope",
+      advanceOn: "install-guide:ap-slope-ok",
       allowInside: "#mv-dlg-advanced-params",
       pointer: "right",
     },
@@ -780,9 +948,10 @@
       id: "ap-close",
       phase: "setup",
       title: "Close Advanced Parameters",
-      body: "Click <strong>Close</strong> when the upload finishes.",
-      target: '[data-mv-dlg-close="mv-dlg-advanced-params"]',
+      body: "Click <strong>Close</strong> at the bottom of Advanced Parameters to return to Overview. Do not leave this window open — the guide cannot continue until it is closed.",
+      target: '#mv-dlg-advanced-params [data-mv-dlg-close="mv-dlg-advanced-params"].mv-ap-simple-btn, #mv-dlg-advanced-params .mv-ap-footer-stech [data-mv-dlg-close]',
       advanceOn: "install-guide:ap-closed",
+      allowInside: "#mv-dlg-advanced-params",
       pointer: "bottom",
     },
     {
@@ -989,6 +1158,28 @@
     document.getElementById("igPrimary").addEventListener("click", onPrimary);
     document.getElementById("igEndClose").addEventListener("click", onEndClose);
     document.getElementById("igEndRecapBtn").addEventListener("click", onEndRecapToggle);
+    card.addEventListener("click", function (e) {
+      var scBtn = e.target.closest ? e.target.closest("[data-scanners]") : null;
+      if (!scBtn || !card.contains(scBtn)) return;
+      var step = currentStep();
+      if (!step || step.id !== "wiz-scanner-count") return;
+      e.preventDefault();
+      e.stopPropagation();
+      var choice = scBtn.getAttribute("data-scanners");
+      if (choice === "auto") {
+        guideScannerPlan = { numScanners: 1, maxScanners: 3, label: "Auto (1–3)" };
+      } else {
+        var n = parseInt(choice, 10) || 1;
+        if (n < 1) n = 1;
+        if (n > 3) n = 3;
+        guideScannerPlan = {
+          numScanners: n,
+          maxScanners: n,
+          label: n + " scanner" + (n > 1 ? "s" : ""),
+        };
+      }
+      window.dispatchEvent(new CustomEvent("install-guide:scanner-count"));
+    });
     var replayBtn = document.getElementById("igEndReplay");
     if (replayBtn) {
       replayBtn.addEventListener("click", function (e) {
@@ -1200,13 +1391,30 @@
       if (step.id === "server-config-ok" && e.target.closest("#btn-config-ok")) return true;
     }
 
-    // Vessel AP: capacity / rate fields
+    // Vessel AP: capacity / rate / slope fields + close
     if (
       (step.id === "ap-max-capacity" ||
         step.id === "ap-empty-rate" ||
-        step.id === "ap-fill-rate") &&
+        step.id === "ap-fill-rate" ||
+        step.id === "ap-vessel-slope") &&
       e.target.closest &&
-      e.target.closest("#mvApMaxCap, #mvApEmptyRate, #mvApFillRate, #mv-dlg-advanced-params")
+      e.target.closest(
+        "#mvApMaxCap, #mvApEmptyRate, #mvApFillRate, #mvApSlope, #mvApMaxCapWrap, #mvApEmptyRateWrap, #mvApFillRateWrap, #mvApSlopeWrap, #mv-dlg-advanced-params"
+      )
+    ) {
+      return true;
+    }
+    if (
+      step.id === "ap-close" &&
+      e.target.closest &&
+      e.target.closest('[data-mv-dlg-close="mv-dlg-advanced-params"]')
+    ) {
+      return true;
+    }
+    if (
+      step.id === "wiz-scanner-count" &&
+      e.target.closest &&
+      e.target.closest("#igScannerCount, #igCard")
     ) {
       return true;
     }
@@ -1417,6 +1625,8 @@
     var wiz = document.getElementById("mv-dlg-device-wizard");
     if (wiz && typeof wiz.__mvWizApplyRecommendedPlacement === "function") {
       return wiz.__mvWizApplyRecommendedPlacement({
+        numScanners: guideScannerPlan.numScanners,
+        maxScanners: guideScannerPlan.maxScanners,
         onProgress: updatePlacementProgress,
       });
     }
@@ -1617,6 +1827,8 @@
     if (typeof window.setPasswordTypingCoach === "function") {
       window.setPasswordTypingCoach(false);
     }
+    clearAllApTypingCoaches();
+    showPlacementProgress(false);
     hideEndScreen();
     // Stay in guide chrome: hide coach card only; do not return to install-type picker.
     if (card) card.hidden = true;
@@ -1676,6 +1888,7 @@
     if (typeof window.setPasswordTypingCoach === "function") {
       window.setPasswordTypingCoach(false);
     }
+    clearAllApTypingCoaches();
 
     var end = document.getElementById("igEndScreen");
     var kicker = document.getElementById("igEndKicker");
@@ -2000,7 +2213,28 @@
       }
     }
     document.getElementById("igTitle").textContent = step.title;
-    document.getElementById("igBody").innerHTML = step.body;
+    var bodyHtml = step.body;
+    if (step.id === "ap-vessel-slope") {
+      var slopeDeg = recommendedSteepestMaterialSlope();
+      bodyHtml =
+        "<strong>Steepest Material Slope matters</strong> — it tells the scanner how steep the product surface can get and affects volume accuracy.<br><br>" +
+        "From your vessel cone/hopper dimensions, the steepest wall slope is about <strong>" +
+        slopeDeg +
+        "°</strong> (atan of height ÷ radial run). Type the ghosted value: <code>" +
+        slopeDeg +
+        "</code>.";
+    }
+    if (step.id === "wiz-placement-explain") {
+      bodyHtml =
+        "Click <strong>Calculate</strong> for <strong>" +
+        escapeHtml(guideScannerPlan.label) +
+        "</strong>. " +
+        (guideScannerPlan.maxScanners > guideScannerPlan.numScanners
+          ? "Auto mode starts with 1 scanner and adds more only if coverage needs it. "
+          : "It will search joint mount positions for that count. ") +
+        "A progress bar shows how far along it is.";
+    }
+    document.getElementById("igBody").innerHTML = bodyHtml;
     document.getElementById("igProgress").textContent =
       "Step " + (stepIndex + 1) + " of " + steps.length;
     var fill = document.getElementById("igProgressFill");
@@ -2012,14 +2246,22 @@
     if (step.id === "ap-max-capacity") {
       var capField = document.getElementById("mvApMaxCap");
       if (capField) capField.value = "";
-    }
-    if (step.id === "ap-empty-rate") {
+      setApFieldTypingCoach("mvApMaxCap", true, AP_CAPACITY_TARGET);
+    } else if (step.id === "ap-empty-rate") {
       var emptyRate = document.getElementById("mvApEmptyRate");
       if (emptyRate) emptyRate.value = "";
-    }
-    if (step.id === "ap-fill-rate") {
+      setApFieldTypingCoach("mvApEmptyRate", true, AP_RATE_TARGET);
+    } else if (step.id === "ap-fill-rate") {
       var fillRate = document.getElementById("mvApFillRate");
       if (fillRate) fillRate.value = "";
+      setApFieldTypingCoach("mvApFillRate", true, AP_RATE_TARGET);
+    } else if (step.id === "ap-vessel-slope") {
+      var slopeField = document.getElementById("mvApSlope");
+      var slopeTarget = String(recommendedSteepestMaterialSlope());
+      if (slopeField) slopeField.value = "";
+      setApFieldTypingCoach("mvApSlope", true, slopeTarget);
+    } else {
+      clearAllApTypingCoaches();
     }
     if (step.id === "ov-after-upload") {
       ensureOverviewVisible();
@@ -2032,6 +2274,11 @@
       primary.classList.add("ig-btn--flash");
       root.classList.add("ig-blocking");
     } else {
+      primary.hidden = true;
+      primary.classList.remove("ig-btn--flash");
+      root.classList.remove("ig-blocking");
+    }
+    if (step.id === "wiz-scanner-count") {
       primary.hidden = true;
       primary.classList.remove("ig-btn--flash");
       root.classList.remove("ig-blocking");
@@ -2217,22 +2464,27 @@
     }
     if (step.id === "ap-max-capacity") {
       var cap = document.getElementById("mvApMaxCap");
-      if (cap && Number(cap.value) === 100) {
+      if (cap && String(cap.value).trim() === AP_CAPACITY_TARGET) {
         window.dispatchEvent(new CustomEvent("install-guide:ap-capacity-100"));
       }
     }
     if (step.id === "ap-empty-rate") {
       var emptyEl = document.getElementById("mvApEmptyRate");
-      var emptyN = emptyEl ? Number(emptyEl.value) : NaN;
-      if (emptyN >= 7 && emptyN <= 10) {
+      if (emptyEl && String(emptyEl.value).trim() === AP_RATE_TARGET) {
         window.dispatchEvent(new CustomEvent("install-guide:ap-empty-rate-ok"));
       }
     }
     if (step.id === "ap-fill-rate") {
       var fillEl = document.getElementById("mvApFillRate");
-      var fillN = fillEl ? Number(fillEl.value) : NaN;
-      if (fillN >= 7 && fillN <= 10) {
+      if (fillEl && String(fillEl.value).trim() === AP_RATE_TARGET) {
         window.dispatchEvent(new CustomEvent("install-guide:ap-fill-rate-ok"));
+      }
+    }
+    if (step.id === "ap-vessel-slope") {
+      var slopeEl = document.getElementById("mvApSlope");
+      var wantSlope = String(recommendedSteepestMaterialSlope());
+      if (slopeEl && String(slopeEl.value).trim() === wantSlope) {
+        window.dispatchEvent(new CustomEvent("install-guide:ap-slope-ok"));
       }
     }
     if (step.id === "ov-switch-distance") {
@@ -2320,6 +2572,8 @@
       "install-guide:ap-capacity-100",
       "install-guide:ap-empty-rate-ok",
       "install-guide:ap-fill-rate-ok",
+      "install-guide:ap-slope-ok",
+      "install-guide:scanner-count",
       "install-guide:ap-tab-adv",
       "install-guide:ap-tab-beams",
       "install-guide:ap-auto-false-off",

@@ -143,6 +143,13 @@
     if (id === "mv-dlg-device-wizard" && global.MvWizard3D) {
       global.MvWizard3D.destroy();
     }
+    if (id === "mv-dlg-advanced-params") {
+      try {
+        window.dispatchEvent(new CustomEvent("install-guide:ap-closed"));
+      } catch (err) {
+        /* ignore */
+      }
+    }
   }
 
   function closeAllDialogs() {
@@ -892,13 +899,30 @@
         );
       }
       var tb = function (val, id) {
-        return (
+        var input =
           '<input class="mv-ap-input" type="text"' +
           (id ? ' id="' + id + '"' : "") +
           ' value="' +
           val +
-          '">'
-        );
+          '">';
+        if (
+          id === "mvApMaxCap" ||
+          id === "mvApEmptyRate" ||
+          id === "mvApFillRate" ||
+          id === "mvApSlope"
+        ) {
+          return (
+            '<span class="mv-ap-field-wrap" id="' +
+            id +
+            'Wrap">' +
+            '<span class="mv-ap-field-ghost" id="' +
+            id +
+            'Ghost" aria-hidden="true"></span>' +
+            input +
+            "</span>"
+          );
+        }
+        return input;
       };
       var cb = function (opts, sel, id) {
         return (
