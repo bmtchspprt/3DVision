@@ -298,7 +298,10 @@
     var bottom = params.bottom || { shape: "cone", height: 1, diameter: 0, xPos: 0, yPos: 0 };
     var hi = params.highlight || null;
     var showAxis = !!params.showDeviceAxis;
-    var device = params.device || { x: 0, y: 0, z: 18, angle: 180 };
+    var devices = params.devices;
+    if (!devices || !devices.length) {
+      devices = [params.device || { x: 0, y: 0, z: 18, angle: 180 }];
+    }
     var fillPoints = params.fillPoints || [];
     var calib = params.calibration || null;
 
@@ -407,17 +410,20 @@
     if ((tShape === "cone" || tShape === "dome" || tShape === "pyramid") && tH > 0.001) {
       joinTopY = tipTopY - tH;
     }
-    var devX = (Number(device.x) || 0) * SCALE;
-    var devZ = (Number(device.y) || 0) * SCALE;
-    // Place scanner at DevicePosition.Zpos (auto from X/Y + Offset), not always the vessel tip.
-    var devYm = Number(device.z);
-    if (isNaN(devYm)) devYm = tipTopY / SCALE;
-    var apexY = Math.max(0, Math.min(tipTopY, devYm * SCALE));
     // Shaft length ≈ Center.X/5 (ShowServerDeviceArrow).
     var shaftLen = (cDm / 5) * SCALE;
-    group.add(
-      buildScanner(apexY, devX, devZ, Math.max(1, totalHm), showAxis, device.angle, shaftLen)
-    );
+    var di;
+    for (di = 0; di < devices.length; di++) {
+      var device = devices[di] || {};
+      var devX = (Number(device.x) || 0) * SCALE;
+      var devZ = (Number(device.y) || 0) * SCALE;
+      var devYm = Number(device.z);
+      if (isNaN(devYm)) devYm = tipTopY / SCALE;
+      var apexY = Math.max(0, Math.min(tipTopY, devYm * SCALE));
+      group.add(
+        buildScanner(apexY, devX, devZ, Math.max(1, totalHm), showAxis, device.angle, shaftLen)
+      );
+    }
 
     // Fill stream points (always drawn when present — wizard ShowFillEmptyPoints(true)).
     var fi;

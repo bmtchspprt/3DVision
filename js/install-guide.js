@@ -550,17 +550,17 @@
       id: "wiz-placement-explain",
       phase: "setup",
       title: "Recommended placement",
-      body: "Place a single scanner off-center — about one-third of the diameter from center. Continue to apply that placement.",
-      target: "#mvWizDevX",
+      body: "Click Continue to run placement Calculate. It searches mount positions for <strong>1–3 scanners</strong> (may take several seconds) and picks the best coverage.",
+      target: "#mvWizCalcPlace",
       blocking: true,
-      primary: "Continue",
+      primary: "Calculate",
       pointer: "right",
     },
     {
       id: "wiz-placement-done",
       phase: "setup",
-      title: "Scanner placed",
-      body: "X and Y are set to the recommended offset. <strong>Z</strong> and <strong>Angle</strong> update so the scanner aims toward center.",
+      title: "Scanners placed",
+      body: "Recommended <strong>X</strong> and <strong>Y</strong> are applied for each scanner. <strong>Z</strong> and <strong>Angle</strong> update so each unit sits on the roof and aims toward center.",
       target: "#mvWizDeviceTable",
       blocking: true,
       primary: "Continue",
@@ -1273,8 +1273,29 @@
       return;
     }
     if (step.id === "wiz-placement-explain") {
-      applyVesselRecommendedPlacement();
-      goNext();
+      var btn = document.getElementById("igPrimary");
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = "Calculating…";
+      }
+      applyVesselRecommendedPlacement()
+        .then(function () {
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = step.primary || "Continue";
+          }
+          goNext();
+        })
+        .catch(function (err) {
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = step.primary || "Calculate";
+          }
+          if (err && err.cancelled) return;
+          console.warn("Placement calculate failed", err);
+          // Still advance so the guide is not stuck; user can retry via Calculate Placement.
+          goNext();
+        });
       return;
     }
     if (step.id === "ov-compare-tape") {
@@ -1293,8 +1314,23 @@
   function applyVesselRecommendedPlacement() {
     var wiz = document.getElementById("mv-dlg-device-wizard");
     if (wiz && typeof wiz.__mvWizApplyRecommendedPlacement === "function") {
-      wiz.__mvWizApplyRecommendedPlacement();
+      var coach = document.getElementById("igBody");
+      return wiz.__mvWizApplyRecommendedPlacement({
+        onProgress: function (p) {
+          if (!coach) return;
+          var pct = p.total ? Math.min(99, Math.round((100 * p.current) / p.total)) : 0;
+          coach.textContent =
+            "Calculating recommended placement (stage " +
+            (p.stage || 1) +
+            " scanner" +
+            ((p.stage || 1) > 1 ? "s" : "") +
+            ")… " +
+            pct +
+            "%";
+        },
+      });
     }
+    return Promise.resolve(null);
   }
 
   function markInstalledUi() {
@@ -1522,7 +1558,7 @@
     return [
       "Opened Device Configuration Wizard with the scanner already connected.",
       "Set units to feet and Fahrenheit, then entered your vessel dimensions.",
-      "Applied recommended off-center placement, added a filling point, and reviewed Full/Empty.",
+      "Applied recommended placement from Calculate, added a filling point, and reviewed Full/Empty.",
       "Set Max Capacity to 100 and emptying/filling rates between 7 and 10.",
       "Disabled Auto False Echoes, unchecked both beam autos, then uploaded.",
       "Checked Overview Level, switched to Distance, and compared to tape or laser (expect ~3–5 ft — volume vs single-point).",

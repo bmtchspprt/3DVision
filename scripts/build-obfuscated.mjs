@@ -29,9 +29,28 @@ const CSS_FILES = [
   "css/install-guide.css",
 ];
 
+const JS_LOCATOR = [
+  "js/locator/constants.js",
+  "js/locator/defs.js",
+  "js/locator/balls.js",
+  "js/locator/matrix.js",
+  "js/locator/algo-error-estimation.js",
+  "js/locator/geometry.js",
+  "js/locator/fuzzy.js",
+  "js/locator/fuzzy-tables.js",
+  "js/locator/search-radius.js",
+  "js/locator/error-estimation-calc.js",
+  "js/locator/error-estimation.js",
+  "js/locator/vessel-adapter.js",
+  "js/locator/exhaustive-search.js",
+  "js/locator/placement-full-flow.js",
+  "js/locator/placement-api.js",
+];
+
 const JS_APP = [
   "js/mv-overview-3d.js",
   "js/mv-wizard-3d.js",
+  ...JS_LOCATOR,
   "js/desktop.js",
   "js/startmenu.js",
   "js/filechooser.js",
@@ -343,14 +362,35 @@ async function main() {
   fs.writeFileSync(outFile, html, "utf8");
   const outSize = fs.statSync(outFile).size;
 
-  // Keep dist/ to index.html only — no README or BUILD sidecar files.
+  // Copy locator worker + modules so Calculate can run off the main thread when Pages
+  // serves the folder (single-file HTML falls back to sync via placement-api).
+  const locDist = path.join(DIST, "js", "locator");
+  fs.mkdirSync(locDist, { recursive: true });
+  for (const rel of [
+    ...JS_LOCATOR.filter((r) => !r.endsWith("placement-api.js")),
+    "js/locator/placement-worker.js",
+  ]) {
+    const name = path.basename(rel);
+    fs.copyFileSync(path.join(ROOT, rel), path.join(locDist, name));
+  }
+  const fuzzyDist = path.join(DIST, "data", "FuzzyTables");
+  fs.mkdirSync(fuzzyDist, { recursive: true });
+  const fuzzySrc = path.join(ROOT, "data", "FuzzyTables");
+  if (fs.existsSync(fuzzySrc)) {
+    for (const f of fs.readdirSync(fuzzySrc)) {
+      fs.copyFileSync(path.join(fuzzySrc, f), path.join(fuzzyDist, f));
+    }
+  }
+
+  // Keep dist/ free of README/BUILD sidecars.
   for (const extra of ["README.md", "BUILD.txt"]) {
     const p = path.join(DIST, extra);
     if (fs.existsSync(p)) fs.unlinkSync(p);
   }
 
   console.log(`Wrote ${outFile} (${(outSize / 1024 / 1024).toFixed(2)} MB)`);
-  console.log("Upload dist/index.html to GitHub / GitHub Pages.");
+  console.log("Also copied js/locator/ + data/FuzzyTables/ for worker Calculate.");
+  console.log("Upload dist/ to GitHub / GitHub Pages.");
 }
 
 main().catch((err) => {

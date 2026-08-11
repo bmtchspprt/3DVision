@@ -803,15 +803,18 @@
         '<div class="mv-wiz-grid-wrap">' +
         '<table class="mv-wiz-table mv-wiz-device-table" id="mvWizDeviceTable"><thead><tr>' +
         "<th>Name</th><th>X</th><th>Y</th><th>Z</th><th>Offset</th><th>Angle</th><th>Addr.</th>" +
-        "</tr></thead><tbody>" +
-        '<tr class="is-selected"><td class="mv-wiz-name">Coke_1</td>' +
-        '<td><input id="mvWizDevX" value="0"></td><td><input id="mvWizDevY" value="0"></td>' +
-        // DevicePositionUC.xaml: Z/Angle/Name/Addr IsReadOnly; Offset editable in XAML.
-        // DevicePositionUC.SetEditableCells: Offset locked only when NOT APM Technician+;
-        // remake has no auth gate → keep Offset editable (tech path). Offset changes Z.
-        '<td><input id="mvWizDevZ" value="18" readonly></td><td><input id="mvWizDevOff" value="0"></td>' +
-        '<td><input id="mvWizDevAng" value="180" readonly></td><td class="mv-wiz-addr">1</td></tr>' +
-        "</tbody></table></div></div></fieldset></div>";
+        "</tr></thead><tbody id=\"mvWizDeviceBody\">" +
+        '<tr class="is-selected" data-scanner="0"><td class="mv-wiz-name">Coke_1</td>' +
+        '<td><input class="mv-wiz-dev-x" id="mvWizDevX" value="0"></td>' +
+        '<td><input class="mv-wiz-dev-y" id="mvWizDevY" value="0"></td>' +
+        '<td><input class="mv-wiz-dev-z" id="mvWizDevZ" value="18" readonly></td>' +
+        '<td><input class="mv-wiz-dev-off" id="mvWizDevOff" value="0"></td>' +
+        '<td><input class="mv-wiz-dev-ang" id="mvWizDevAng" value="180" readonly></td>' +
+        '<td class="mv-wiz-addr">1</td></tr>' +
+        "</tbody></table>" +
+        '<div class="mv-wiz-table-btns" style="margin-top:6px">' +
+        '<button type="button" class="mv-wiz-btn" id="mvWizCalcPlace">Calculate Placement</button>' +
+        "</div></div></div></fieldset></div>";
       // WizardStepDevice.xaml groupBoxFillPoints Height=180: table row * + button row 32.
       var step3 =
         '<div class="mv-wiz-step-pane" data-wiz-step="3" hidden>' +
@@ -2324,26 +2327,168 @@
       return !!(cb && cb.checked);
     }
 
-    /** After X/Y (or Offset) change: recompute Z; recompute Angle unless manual. */
+    /** After X/Y (or Offset) change: recompute Z; recompute Angle unless manual. All scanner rows. */
     function syncDeviceFromXY() {
-      var xEl = root.querySelector("#mvWizDevX");
-      var yEl = root.querySelector("#mvWizDevY");
-      var zEl = root.querySelector("#mvWizDevZ");
-      var offEl = root.querySelector("#mvWizDevOff");
-      var angEl = root.querySelector("#mvWizDevAng");
-      var x = xEl ? parseFloat(xEl.value) : 0;
-      var y = yEl ? parseFloat(yEl.value) : 0;
-      var off = offEl ? parseFloat(offEl.value) : 0;
-      if (isNaN(x)) x = 0;
-      if (isNaN(y)) y = 0;
-      if (isNaN(off)) off = 0;
-      var surfaceZ = autoCalculateZFromVesselBottom(x, y);
-      // AutoCalculateZFromVesselBottomUseZOffsetAndUpdate (Offset ≈ 0 path).
-      var z = surfaceZ + off;
-      if (zEl) zEl.value = String(+z.toFixed(3));
-      if (angEl && !isAngleManual()) {
-        angEl.value = String(+autoCalculateAngle(x, y).toFixed(3));
+      var rows = root.querySelectorAll("#mvWizDeviceBody tr");
+      if (!rows.length) {
+        rows = root.querySelectorAll("#mvWizDeviceTable tbody tr");
       }
+      rows.forEach(function (tr) {
+        var xEl = tr.querySelector(".mv-wiz-dev-x") || (tr === rows[0] ? root.querySelector("#mvWizDevX") : null);
+        var yEl = tr.querySelector(".mv-wiz-dev-y") || (tr === rows[0] ? root.querySelector("#mvWizDevY") : null);
+        var zEl = tr.querySelector(".mv-wiz-dev-z") || (tr === rows[0] ? root.querySelector("#mvWizDevZ") : null);
+        var offEl = tr.querySelector(".mv-wiz-dev-off") || (tr === rows[0] ? root.querySelector("#mvWizDevOff") : null);
+        var angEl = tr.querySelector(".mv-wiz-dev-ang") || (tr === rows[0] ? root.querySelector("#mvWizDevAng") : null);
+        var x = xEl ? parseFloat(xEl.value) : 0;
+        var y = yEl ? parseFloat(yEl.value) : 0;
+        var off = offEl ? parseFloat(offEl.value) : 0;
+        if (isNaN(x)) x = 0;
+        if (isNaN(y)) y = 0;
+        if (isNaN(off)) off = 0;
+        var surfaceZ = autoCalculateZFromVesselBottom(x, y);
+        var z = surfaceZ + off;
+        if (zEl) zEl.value = String(+z.toFixed(3));
+        if (angEl && !isAngleManual()) {
+          angEl.value = String(+autoCalculateAngle(x, y).toFixed(3));
+        }
+      });
+    }
+
+    function readDeviceRows() {
+      var rows = [];
+      var trs = root.querySelectorAll("#mvWizDeviceBody tr");
+      if (!trs.length) trs = root.querySelectorAll("#mvWizDeviceTable tbody tr");
+      trs.forEach(function (tr) {
+        function cell(sel, idFallback, def) {
+          var el = tr.querySelector(sel) || (idFallback ? root.querySelector("#" + idFallback) : null);
+          var n = el ? parseFloat(el.value) : def;
+          return isNaN(n) ? def : n;
+        }
+        rows.push({
+          x: cell(".mv-wiz-dev-x", "mvWizDevX", 0),
+          y: cell(".mv-wiz-dev-y", "mvWizDevY", 0),
+          z: cell(".mv-wiz-dev-z", "mvWizDevZ", vesselTotalHeight()),
+          offset: cell(".mv-wiz-dev-off", "mvWizDevOff", 0),
+          angle: cell(".mv-wiz-dev-ang", "mvWizDevAng", 180),
+        });
+      });
+      if (!rows.length) {
+        rows.push({ x: 0, y: 0, z: vesselTotalHeight(), offset: 0, angle: 180 });
+      }
+      return rows;
+    }
+
+    function setDeviceRows(scanners) {
+      var body = root.querySelector("#mvWizDeviceBody") || root.querySelector("#mvWizDeviceTable tbody");
+      if (!body || !scanners || !scanners.length) return;
+      var baseName = "Coke";
+      var html = "";
+      var i;
+      for (i = 0; i < scanners.length; i++) {
+        var s = scanners[i];
+        var x = +(Number(s.x) || 0).toFixed(3);
+        var y = +(Number(s.y) || 0).toFixed(3);
+        var off = +(Number(s.offset) || 0).toFixed(3);
+        var z = s.z != null ? +Number(s.z).toFixed(3) : +autoCalculateZFromVesselBottom(x, y).toFixed(3);
+        var ang = s.angle != null ? +Number(s.angle).toFixed(3) : +autoCalculateAngle(x, y).toFixed(3);
+        var idX = i === 0 ? ' id="mvWizDevX"' : "";
+        var idY = i === 0 ? ' id="mvWizDevY"' : "";
+        var idZ = i === 0 ? ' id="mvWizDevZ"' : "";
+        var idOff = i === 0 ? ' id="mvWizDevOff"' : "";
+        var idAng = i === 0 ? ' id="mvWizDevAng"' : "";
+        html +=
+          '<tr class="' +
+          (i === 0 ? "is-selected" : "") +
+          '" data-scanner="' +
+          i +
+          '"><td class="mv-wiz-name">' +
+          baseName +
+          "_" +
+          (i + 1) +
+          "</td>" +
+          '<td><input class="mv-wiz-dev-x"' +
+          idX +
+          ' value="' +
+          x +
+          '"></td>' +
+          '<td><input class="mv-wiz-dev-y"' +
+          idY +
+          ' value="' +
+          y +
+          '"></td>' +
+          '<td><input class="mv-wiz-dev-z"' +
+          idZ +
+          ' value="' +
+          z +
+          '" readonly></td>' +
+          '<td><input class="mv-wiz-dev-off"' +
+          idOff +
+          ' value="' +
+          off +
+          '"></td>' +
+          '<td><input class="mv-wiz-dev-ang"' +
+          idAng +
+          ' value="' +
+          ang +
+          '" readonly></td>' +
+          '<td class="mv-wiz-addr">' +
+          (i + 1) +
+          "</td></tr>";
+      }
+      body.innerHTML = html;
+      wireDeviceRowInputs();
+      syncDeviceFromXY();
+    }
+
+    function wireDeviceRowInputs() {
+      root.querySelectorAll(".mv-wiz-dev-x, .mv-wiz-dev-y, .mv-wiz-dev-off").forEach(function (el) {
+        if (el.__mvWizDevWired) return;
+        el.__mvWizDevWired = true;
+        el.addEventListener("input", function () {
+          syncDeviceFromXY();
+          refresh3dKeepView();
+        });
+      });
+      root.querySelectorAll(".mv-wiz-dev-ang").forEach(function (el) {
+        if (el.__mvWizAngWired) return;
+        el.__mvWizAngWired = true;
+        el.addEventListener("input", function () {
+          if (!isAngleManual()) return;
+          refresh3dKeepView();
+        });
+      });
+    }
+
+    function wizardVesselMeters() {
+      var unit = ((root.querySelector("#mvWizDist") || {}).value || "m").toLowerCase();
+      var toM = unit === "ft" ? function (v) { return v * 0.3048; } : function (v) { return v; };
+      var topShape = (root.querySelector("#mvWizTopShape") || {}).value || "cone";
+      var cenShape = (root.querySelector("#mvWizCenShape") || {}).value || "cylinder";
+      var botShape = (root.querySelector("#mvWizBotShape") || {}).value || "cone";
+      function n(id, fb) {
+        var v = parseFloat(val(id));
+        return toM(isNaN(v) ? fb : v);
+      }
+      return {
+        topShape: topShape,
+        topH: n("mvWizTopH", 0),
+        topD: n("mvWizTopD", 0),
+        topX: n("mvWizTopX", 0),
+        topY: n("mvWizTopY", 0),
+        centerShape: cenShape,
+        centerH: n("mvWizCenH", 16),
+        centerD: n("mvWizCenD", 9),
+        centerX: n("mvWizCenX", 9),
+        centerY: n("mvWizCenY", 9),
+        bottomShape: botShape,
+        bottomH: n("mvWizBotH", 0),
+        bottomD: n("mvWizBotD", 0),
+        bottomX: n("mvWizBotX", 0),
+        bottomY: n("mvWizBotY", 0),
+        fillPoints: readFillPoints().map(function (p) {
+          return { x: toM(p.x), y: toM(p.y) };
+        }),
+      };
     }
 
     function syncCalibFromLevel() {
@@ -2451,12 +2596,8 @@
         highlight: root.__mvWizHighlight || null,
         // ShowServerDeviceArrow stays on for ScannerPosition / FillPoints / ProcessDetails.
         showDeviceAxis: step >= 2,
-        device: {
-          x: num("mvWizDevX", 0),
-          y: num("mvWizDevY", 0),
-          z: num("mvWizDevZ", total),
-          angle: num("mvWizDevAng", 180),
-        },
+        devices: readDeviceRows(),
+        device: readDeviceRows()[0],
         fillPoints: step >= 3 ? readFillPoints() : [],
         calibration: {
           show: step >= 4,
@@ -2701,23 +2842,90 @@
       window.dispatchEvent(new CustomEvent("install-guide:wiz-step-" + step));
     }
 
-    /** Single-scanner mount: ~1/6 diameter from wall (D/3 from center), angle toward origin. */
-    function applyRecommendedPlacement() {
-      var diam = centerDiameterM();
-      if (!isFinite(diam) || diam <= 0) diam = 30;
-      // Offset from center ≈ diameter/3 → wall clearance ≈ diameter/6 (Locator-style single mount).
-      var x = +(diam / 3).toFixed(3);
-      var y = 0;
-      var xEl = root.querySelector("#mvWizDevX");
-      var yEl = root.querySelector("#mvWizDevY");
-      if (xEl) xEl.value = String(x);
-      if (yEl) yEl.value = String(y);
-      syncDeviceFromXY();
-      refresh3dKeepView();
-      return { x: x, y: y };
+    /**
+     * Locator Calculate: joint exhaustive search + error estimation for 1–3 scanners.
+     * Returns a Promise resolving to { scanners, maxError, numScanners }.
+     */
+    function applyRecommendedPlacement(opts) {
+      opts = opts || {};
+      var LP = global.LocatorPlacement;
+      if (!LP || typeof LP.calculateRecommendedPlacement !== "function") {
+        return Promise.reject(new Error("Placement calculator not loaded"));
+      }
+      var vessel = wizardVesselMeters();
+      var unit = ((root.querySelector("#mvWizDist") || {}).value || "m").toLowerCase();
+      var fromM = unit === "ft" ? function (v) { return v / 0.3048; } : function (v) { return v; };
+      var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
+      root.__mvWizPlaceAbort = ctrl;
+      return LP.calculateRecommendedPlacement({
+        vessel: vessel,
+        fillPoints: vessel.fillPoints,
+        maxScanners: opts.maxScanners != null ? opts.maxScanners : 3,
+        numScanners: opts.numScanners || 1,
+        signal: ctrl ? ctrl.signal : null,
+        onProgress: opts.onProgress,
+      }).then(function (result) {
+        var rows = (result.scanners || []).map(function (s) {
+          var x = fromM(s.x);
+          var y = fromM(s.y);
+          return {
+            x: x,
+            y: y,
+            z: fromM(s.z),
+            offset: 0,
+            angle: autoCalculateAngle(x, y),
+          };
+        });
+        if (!rows.length) throw new Error("No scanner positions returned");
+        setDeviceRows(rows);
+        refresh3dKeepView();
+        return {
+          scanners: rows,
+          maxError: result.maxError,
+          numScanners: result.numScanners || rows.length,
+        };
+      });
     }
 
     root.__mvWizApplyRecommendedPlacement = applyRecommendedPlacement;
+    root.__mvWizCancelPlacement = function () {
+      if (root.__mvWizPlaceAbort) root.__mvWizPlaceAbort.abort();
+    };
+
+    var calcBtn = root.querySelector("#mvWizCalcPlace");
+    if (calcBtn && !calcBtn.__mvWizCalcWired) {
+      calcBtn.__mvWizCalcWired = true;
+      calcBtn.addEventListener("click", function () {
+        calcBtn.disabled = true;
+        var prev = calcBtn.textContent;
+        calcBtn.textContent = "Calculating…";
+        applyRecommendedPlacement({
+          onProgress: function (p) {
+            var pct = p.total ? Math.min(99, Math.round((100 * p.current) / p.total)) : 0;
+            calcBtn.textContent = "Calc " + (p.stage || 1) + " sc… " + pct + "%";
+          },
+        })
+          .then(function (r) {
+            status(
+              "Recommended placement: " +
+                (r.numScanners || 1) +
+                " scanner(s), max error ~" +
+                (+r.maxError).toFixed(2) +
+                "%."
+            );
+          })
+          .catch(function (err) {
+            if (err && err.cancelled) status("Placement cancelled.");
+            else status((err && err.message) || "Placement failed.");
+          })
+          .then(function () {
+            calcBtn.disabled = false;
+            calcBtn.textContent = prev;
+          });
+      });
+    }
+
+    wireDeviceRowInputs();
 
     function applyWizardGeometryToOverview() {
       var unit = ((root.querySelector("#mvWizDist") || {}).value || "m").toLowerCase();
