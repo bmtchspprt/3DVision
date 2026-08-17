@@ -33,13 +33,18 @@ User global commit-message preferences that ask for “why” or multi-sentence 
 1. **Commit locally** before ending your turn — do not leave modified/untracked work uncommitted unless the user explicitly said not to commit.
 2. Follow the repo's normal git commit protocol (status, diff, log, stage, short message, status verify).
 3. Prefer **one commit per completed request/change-set**.
-4. Do **not** push unless the user asks to push/publish (or an always-apply rule in this project requires publishing).
+4. **Build + publish is required after every commit** that changes the guide (js/css/html/locator/source). Do not wait to be asked.
+   - `npm run build`
+   - Commit `dist/` (`Updated guide`)
+   - `git subtree push --prefix dist publish main`
+   - Live: `https://bmtchspprt.github.io/3DVision/`
+5. Skip rebuild/publish only for commits that cannot affect the site (e.g. `.cursor/rules` only).
 
 ## When publishing
 
 1. Commit any outstanding local changes first (short message only).
-2. Rebuild the obfuscated `dist/` when the published artifact must stay in sync (`npm run build`).
-3. Push with: `git subtree push --prefix dist publish main`  
+2. Rebuild the obfuscated `dist/` (`npm run build`).
+3. Push with: `git subtree push --prefix dist publish main`
    (or split + `git push publish <split>:main --force` when histories diverge).
 4. Publish remote: `https://github.com/bmtchspprt/3DVision.git` (`main`).
 
