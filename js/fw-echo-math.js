@@ -1,12 +1,6 @@
 /**
- * Echo / false-echo / pick math used by Echo Curve.
- *
- * Proven (firmware image or PC packer/parser — see emulator docs/firmware):
- *   series lengths, ~80 m Grade axis, cmd 151 window, Grade vs Threshold pick loop,
- *   distance-power piecewise, damping field is a length in meters.
- * Reconstructed (wired because the user asked for working logic; not CERTAINTY-closed):
- *   AFE = block-max of Grade, apply = reject G<=map for pick, damping = track gate + slew.
- * recommendFalseEchoFix is a support heuristic (cmd 151 opcode 6), not the firmware apply path.
+ * Echo Curve math from docs/firmware/RESEARCH-CLOSED.md.
+ * Pick is Grade vs Threshold only. Do not mix, do not slew metres, do not skip bins from maps.
  */
 (function (global) {
   "use strict";
@@ -114,82 +108,46 @@
   }
 
   /**
-   * Scan / AFE build (cmd 151 opcode 4) — reconstructed:
-   * each AFE bin = max Grade in that ÷8 block, scaled by AutoFalseEchoesSensitivity.
+   * AFE[i>>3] = max(AFE, Grade[i]). Do not replay mix (addend a is unused stack).
    */
-  function buildAfeFromGrade(gradeAmp, sensitivity) {
+  function buildAfeFromGrade(gradeAmp) {
     var afe = resetAfeMap();
-    var s = sensitivity == null ? 1 : sensitivity;
-    var j;
     var i;
-    for (j = 0; j < AFE_N; j++) {
-      var i0 = Math.floor((j * GRADE_N) / AFE_N);
-      var i1 = Math.floor(((j + 1) * GRADE_N) / AFE_N);
-      var m = 0;
-      for (i = i0; i < i1; i++) {
-        if (gradeAmp[i] > m) m = gradeAmp[i];
-      }
-      afe[j] = m * s;
+    var n = gradeAmp ? gradeAmp.length : 0;
+    for (i = 0; i < n; i++) {
+      var j = i >> 3;
+      if (j >= AFE_N) break;
+      var g = gradeAmp[i] || 0;
+      if (g > afe[j]) afe[j] = g;
     }
     return afe;
   }
 
-  function mapFloor(gradeI, afeAmp, falseAmp, useAfe, useUser) {
-    var floor = 0;
-    if (useAfe) floor = Math.max(floor, sampleCoarse(afeAmp, gradeI));
-    if (useUser) floor = Math.max(floor, sampleCoarse(falseAmp, gradeI));
-    return floor;
-  }
-
   /**
-   * FFA038E2 walk (proven): Threshold at i>>2; G = amp×1.01; if G>T keep last_i and acc+=G².
-   * Map skip, SNR, max-scan, and damping extras are reconstructed — not in that helper.
+   * last G>T. G = amp×1.01; T = Threshold[i>>2]. acc += G².
+   * Does not read AFE, user map, SNR, or damping.
    */
   function pickReported(gradeAmp, threshAmp, opts) {
     opts = opts || {};
     var offsetM = opts.offsetM || 0;
-    var maxScanM = opts.maxScannedDistanceM;
-    var maxCapM = opts.maxCapacityM;
-    var minSnr = opts.minimalSnr;
-    var useAfe = !!opts.useAfe;
-    var useUser = !!opts.useUser;
     var i;
     var lastI = -1;
     var sumSq = 0;
     var n = 0;
-    var maxI = GRADE_N;
-    if (maxScanM != null) maxI = Math.min(maxI, metersToGradeIndex(maxScanM, offsetM) + 1);
-    if (maxCapM != null) maxI = Math.min(maxI, metersToGradeIndex(maxCapM, offsetM) + 1);
-    var gateLo = 0;
-    var gateHi = maxI;
-    if (opts.prevDistanceM != null && opts.dampingM > 0) {
-      gateLo = metersToGradeIndex(opts.prevDistanceM - opts.dampingM, offsetM);
-      gateHi = Math.min(maxI, metersToGradeIndex(opts.prevDistanceM + opts.dampingM, offsetM) + 1);
-    }
-    for (i = Math.max(0, gateLo); i < gateHi; i++) {
+    var len = gradeAmp ? gradeAmp.length : 0;
+    for (i = 0; i < len; i++) {
       var g = (gradeAmp[i] || 0) * PEAK_GRADE_SCALE;
       var t = sampleCoarse(threshAmp, i);
-      var floor = mapFloor(i, opts.afeAmp, opts.falseAmp, useAfe, useUser);
       if (g <= t) continue;
-      if (g <= floor) continue;
-      if (minSnr != null && minSnr !== 0x7fffffff && g - t < minSnr / 1000) continue;
       sumSq += g * g;
       n += 1;
       lastI = i;
     }
-    var meters = lastI < 0 ? null : gradeIndexToMeters(lastI, offsetM);
-    if (meters != null && opts.prevDistanceM != null && opts.dampingM > 0) {
-      var delta = meters - opts.prevDistanceM;
-      if (Math.abs(delta) > opts.dampingM) {
-        meters = opts.prevDistanceM + (delta < 0 ? -opts.dampingM : opts.dampingM);
-      }
-    }
-    var rmsInv = n > 0 ? 1 / Math.sqrt(sumSq / n) : 0;
     return {
       index: lastI,
-      meters: meters,
+      meters: lastI < 0 ? null : gradeIndexToMeters(lastI, offsetM),
       orangeWord: lastI >= 0 ? orangeWordFromGradeIndex(lastI) : null,
-      qualityRsqrt: rmsInv,
+      qualityRsqrt: n > 0 ? 1 / Math.sqrt(sumSq / n) : 0,
     };
   }
 
@@ -254,7 +212,7 @@
         early[0].fromM,
         early[early.length - 1].toM,
         early.reduce(function (m, x) { return Math.max(m, x.maxG); }, 0),
-        "Grade is above Threshold closer than Orange — map that span so the last G>T bin can move out."
+        "Grade is above Threshold closer than Orange. Opcode 6 stores a map series; this pick does not skip those bins."
       );
     }
     if (opts.falseAmp && lockRun) {
@@ -266,23 +224,21 @@
           Math.max(offsetM, (pickM || 0) - 0.5),
           (pickM || 0) + 0.25,
           Math.max(mapAt, afeAt, lockRun.maxG),
-          "Map samples are high at Orange. Confirm whether firmware skips those bins (not proven); a ManualScan window still matches the PC command."
+          "Map samples are high at Orange. Pick still uses Grade vs Threshold only; opcode 6 is a stored series."
         );
       }
     }
     var notes = [];
-    notes.push("Orange/PC axis: metres = grade_index × (1000/65536). Firmware packs last_i as index<<15 into the same fract32 shape.");
-    notes.push("Peak helper compares Grade×1.01 to Threshold[i>>2] and keeps the last passing bin. It does not read AFE or user maps.");
-    notes.push("0x2020421e / 0x20204634 copy or clear the map twin (flash persist), they do not apply during pick.");
-    notes.push("Threshold floats at 0x20215060+0x51E8 are filled from existing Threshold int16 (convert-twin), not from 0x2021F97A (magnitude). How T is first made from Grade is still open.");
-    notes.push("Opcode 4/5 From–To use the same fract32 metres as Orange (80 m clamp). AFE envelope inside that window is still truncated in the image.");
+    notes.push("Metres = grade_index × (1000/65536). Orange word is last_i<<15 when written.");
+    notes.push("Pick: last Grade×1.01 > Threshold[i>>2]. Maps and damping do not change this shot.");
+    notes.push("Use Threshold already in the file. Do not rebuild T from Grade. Do not mix AFE.");
     if (tapeM != null && pickM != null) {
       var dlt = tapeM - pickM;
       if (Math.abs(dlt) > 0.3) {
         notes.push(
           dlt > 0
             ? "Tape is farther than Orange: something closer is still beating Threshold (map it, or Threshold is low)."
-            : "Tape is closer than Orange: last G>T is past the material — check max range / empty echo / damping lag."
+            : "Tape is closer than Orange: last G>T is past the material."
         );
       }
     }
@@ -296,7 +252,7 @@
         " m @ Threshold " +
         actions[0].threshold;
     } else {
-      summary = "No closer G>T run than Orange. If tape still disagrees, the gap is SNR/maps/damping (not this helper).";
+      summary = "No closer G>T run than Orange. Compare tape to last_i × (1000/65536).";
     }
     return {
       lastIndex: lastI,
@@ -355,7 +311,6 @@
     resetUserMap: resetUserMap,
     resetAfeMap: resetAfeMap,
     buildAfeFromGrade: buildAfeFromGrade,
-    mapFloor: mapFloor,
     pickReported: pickReported,
     recommendFalseEchoFix: recommendFalseEchoFix,
     downsampleAmp: downsampleAmp,

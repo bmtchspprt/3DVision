@@ -159,7 +159,6 @@
 
       if (hasData) {
         var gradeAmp = [];
-        var clutterAmp = [];
         var threshAmp = [];
         for (i = 0; i < n; i++) {
           var h = offset + i * resolution;
@@ -181,7 +180,6 @@
           f = Math.max(0, Math.min(1, f));
           clutter = Math.max(0, Math.min(1, clutter));
           gradeAmp.push(f);
-          clutterAmp.push(clutter);
           var th = h < 0.6 ? 0.22 : 0.07;
           if (h > distB - 0.4 && h < distB + 0.6) {
             th = 0.22 + 0.45 * Math.exp(-Math.pow((h - distB) / 0.25, 2));
@@ -191,7 +189,7 @@
 
         var afeAmp =
           useAfe && math
-            ? math.buildAfeFromGrade(clutterAmp, opts.autoFalseEchoesSensitivity)
+            ? math.buildAfeFromGrade(gradeAmp)
             : math
               ? math.resetAfeMap()
               : [];
@@ -208,18 +206,7 @@
 
         var thCoarse = math ? math.downsampleAmp(threshAmp, math.THRESH_N) : threshAmp;
         var pick = math
-          ? math.pickReported(gradeAmp, thCoarse, {
-              offsetM: offset,
-              maxScannedDistanceM: opts.maximalScannedDistanceM != null ? opts.maximalScannedDistanceM : maxH,
-              maxCapacityM: opts.maxCapacityM != null ? opts.maxCapacityM : heightM,
-              minimalSnr: opts.minimalSnr,
-              useAfe: useAfe,
-              useUser: useUser,
-              afeAmp: afeAmp,
-              falseAmp: falseAmp,
-              dampingM: opts.dampingM || 0,
-              prevDistanceM: opts.prevDistanceM,
-            })
+          ? math.pickReported(gradeAmp, thCoarse, { offsetM: offset })
           : { meters: distB };
         var reported = pick.meters != null ? pick.meters : distB;
         var fixAdvice =

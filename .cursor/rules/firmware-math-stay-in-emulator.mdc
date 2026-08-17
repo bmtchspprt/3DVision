@@ -1,29 +1,14 @@
 ---
-description: Firmware math notes live in this repo docs/firmware — not the emulator, not guide JS
+description: Firmware math notes live in this repo docs/firmware
 alwaysApply: true
 ---
 
-# Firmware math: local notes only
+# Firmware math
 
-Scanner math notes (Grade, Threshold, AFE, false echo, Orange, pick, mix, damping) live in:
+Notes: `docs/firmware/` — start `RESEARCH-CLOSED.md`.
 
-`docs/firmware/` in **this** repository (`3DInstallGuide`).
+Do not edit `Documents\3D Emulator`. Do not invent math.
 
-Start: `docs/firmware/RESEARCH-CLOSED.md`
+Echo Curve pick/AFE/axis in `js/fw-echo-math.js` must match `RESEARCH-CLOSED.md`.
 
-Layout: `README.md` (index) · `notes/` (logs) · `evidence/dumps/` · `evidence/traces/`
-
-## Do not
-
-- Edit `Documents\3D Emulator` for this work.
-- Put formulas into `js/`, `css/`, `html`, `dist/` unless the user **this turn** names a guide file to change.
-- `npm run build`, subtree push, or GitHub Pages for math-note work.
-
-## Do
-
-- Continue research by editing `docs/firmware/` here.
-- Keep dumps cited as evidence; do not invent math.
-
-## Guide UI (unrelated to math)
-
-MultiVision chrome (menus, dialogs, layout) may still edit `js/`/`css` when the request is clearly UI and not Grade/echo/Orange math.
+Note-only edits: do not `npm run build` or push Pages. Guide JS edits: follow the usual build/publish rule.

@@ -2,7 +2,7 @@
 
 Firmware `3DLevelScannerM_4_5_452`. This file is the finished answer. Detail lives in `notes/` (`HANDOFF.md`, `CERTAINTY.md`, `DSP-GRADE.md`). Instruction listings: `evidence/dumps/`. Traces: `evidence/traces/`.
 
-These are notes. Do **not** put them into Install Guide `js/` unless asked.
+Echo Curve pick/AFE/axis in `js/fw-echo-math.js` follows this file. Demo Grade samples are still a chart envelope, not ADC paint.
 
 ---
 
@@ -118,7 +118,7 @@ There is no `T[i] = c·Grade[i]`. Sites: `evidence/dumps/grade/g_20213a00.asm`, 
 
 ---
 
-## 7. Synthesis spec (not Install Guide)
+## 7. Synthesis spec
 
 | Piece | Use |
 |---|---|
