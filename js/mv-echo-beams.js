@@ -96,17 +96,18 @@
    */
   function buildBeamData(opts) {
     opts = opts || {};
+    var math = global.FwEchoMath;
     var distanceM = opts.distanceM != null ? opts.distanceM : 2.53;
     var heightM = opts.heightM != null ? opts.heightM : 16;
     var seed = opts.seed != null ? opts.seed : 709001467;
     var rand = seededRand(seed);
-    // representation_offset + i * representation_resulotion (meters)
     var offset = 0;
-    var resolution = 0.04;
-    // Grades sample extent — SciChart autoranges to data (not TeeChart MaxH-only)
-    var maxH = opts.maxRange != null ? opts.maxRange : Math.max(20, heightM + 4);
-    var n = Math.floor((maxH - offset) / resolution) + 1;
+    var resolution = math ? math.GRADE_DH_M : 0.04;
+    var n = math ? math.GRADE_N : Math.floor((Math.max(20, heightM + 4) - offset) / resolution) + 1;
+    var maxH = n * resolution;
     var numBeams = 9;
+    var useAfe = opts.autoFalseEchoes !== false;
+    var useUser = opts.useFalseEchoes !== false;
     var headers = [
       {
         representation_tag: "Grade",
@@ -116,17 +117,17 @@
       {
         representation_tag: "Threshold",
         representation_offset: offset,
-        representation_resulotion: resolution,
+        representation_resulotion: resolution * 4,
       },
       {
         representation_tag: "AFE",
         representation_offset: offset,
-        representation_resulotion: resolution,
+        representation_resulotion: resolution * 8,
       },
       {
         representation_tag: "False E.",
         representation_offset: offset,
-        representation_resulotion: resolution,
+        representation_resulotion: resolution * 16,
       },
     ];
 
@@ -151,20 +152,83 @@
       var threshold = [];
       var afe = [];
       var falseE = [];
-      var hasData = b < 7; // beamsHasDataList: no data → tab IsEnabled=false (ViewBeamBase.ReloadDataCompleted)
+      var hasData = b < 7;
       var lines = [];
 
       if (hasData) {
-        // Orange BeamLine — parser: first series header measured distance
+        var gradeAmp = [];
+        var clutterAmp = [];
+        var threshAmp = [];
+        for (i = 0; i < n; i++) {
+          var h = offset + i * resolution;
+          var clutter = 0;
+          if (h < 0.55) {
+            clutter +=
+              0.55 *
+              Math.exp(-h / 0.08) *
+              (0.7 + 0.3 * Math.abs(Math.sin(h * 90)));
+          }
+          clutter += gauss(h, 0.42, 0.06, 0.12);
+          clutter += gauss(h, 1.05, 0.09, 0.07);
+          clutter += gauss(h, Math.max(1.2, heightM - 0.4), 0.22, 0.1);
+          clutter += 0.02 + br() * 0.025;
+          clutter += 0.012 * Math.sin(h * 7.3 + b) + 0.006 * Math.sin(h * 19.1);
+          var f = clutter;
+          f += gauss(h, distB, 0.1, 0.85);
+          f += gauss(h, distB + 0.4, 0.14, 0.18);
+          f = Math.max(0, Math.min(1, f));
+          clutter = Math.max(0, Math.min(1, clutter));
+          gradeAmp.push(f);
+          clutterAmp.push(clutter);
+          var th = h < 0.6 ? 0.22 : 0.07;
+          if (h > distB - 0.4 && h < distB + 0.6) {
+            th = 0.22 + 0.45 * Math.exp(-Math.pow((h - distB) / 0.25, 2));
+          }
+          threshAmp.push(Math.min(1, th));
+        }
+
+        var afeAmp =
+          useAfe && math
+            ? math.buildAfeFromGrade(clutterAmp, opts.autoFalseEchoesSensitivity)
+            : math
+              ? math.resetAfeMap()
+              : [];
+        var falseAmp = math ? math.resetUserMap() : [];
+        if (useUser && math && opts.falseEchoFrom != null && opts.falseEchoTo != null) {
+          falseAmp = math.applyManualScan(
+            falseAmp,
+            opts.falseEchoFrom,
+            opts.falseEchoTo,
+            opts.falseEchoThreshold || 0.2,
+            offset
+          );
+        }
+
+        var thCoarse = math ? math.downsampleAmp(threshAmp, math.THRESH_N) : threshAmp;
+        var pick = math
+          ? math.pickReported(gradeAmp, thCoarse, {
+              offsetM: offset,
+              maxScannedDistanceM: opts.maximalScannedDistanceM != null ? opts.maximalScannedDistanceM : maxH,
+              maxCapacityM: opts.maxCapacityM != null ? opts.maxCapacityM : heightM,
+              minimalSnr: opts.minimalSnr,
+              useAfe: useAfe,
+              useUser: useUser,
+              afeAmp: afeAmp,
+              falseAmp: falseAmp,
+              dampingM: opts.dampingM || 0,
+              prevDistanceM: opts.prevDistanceM,
+            })
+          : { meters: distB };
+        var reported = pick.meters != null ? pick.meters : distB;
+
         lines.push({
           color: "Orange",
-          val: distB,
+          val: reported,
           BeamFuzzyFactor: 0,
           beamIndex: b,
         });
-        // Black candidate lines + fuzzy factors (bm4)
-        var c1 = distB + 0.35 + br() * 0.2;
-        var c2 = distB + 0.7 + br() * 0.25;
+        var c1 = reported + 0.35 + br() * 0.2;
+        var c2 = reported + 0.7 + br() * 0.25;
         var c3 = Math.min(maxH * 0.55, heightM * 0.65 + br());
         lines.push({
           color: "Black",
@@ -191,45 +255,10 @@
           beamIndex: b,
         });
 
-        var gain = 1.0;
-        for (i = 0; i < n; i++) {
-          var h = offset + i * resolution;
-          // Grade (Echo): near-field ring-down + structure + product + floor leak + noise
-          var f = 0;
-          if (h < 0.55) {
-            f +=
-              0.55 *
-              Math.exp(-h / 0.08) *
-              (0.7 + 0.3 * Math.abs(Math.sin(h * 90)));
-          }
-          f += gauss(h, 0.42, 0.06, 0.12);
-          f += gauss(h, 1.05, 0.09, 0.07);
-          f += gauss(h, distB, 0.1, 0.85);
-          f += gauss(h, distB + 0.4, 0.14, 0.18);
-          f += gauss(h, Math.max(distB + 1.2, heightM - 0.4), 0.22, 0.1);
-          f += 0.02 + br() * 0.025;
-          f += 0.012 * Math.sin(h * 7.3 + b) + 0.006 * Math.sin(h * 19.1);
-          f = Math.max(0, Math.min(1, f * gain));
-          grade.push({ f: f, h: h });
-
-          // Threshold: elevated near product surface (above noise, under main peak)
-          var th = h < 0.6 ? 0.22 : 0.07;
-          if (h > distB - 0.4 && h < distB + 0.6) {
-            th = 0.22 + 0.45 * Math.exp(-Math.pow((h - distB) / 0.25, 2));
-          }
-          threshold.push({ f: Math.min(1, th), h: h });
-
-          // AFE — mapped false-echo regions near mount / near-field
-          var af = 0;
-          if (h < 1.4) {
-            af =
-              gauss(h, 0.42, 0.22, 0.2) + gauss(h, 1.05, 0.28, 0.1);
-          }
-          afe.push({ f: Math.min(1, af), h: h });
-
-          // User False Echo — empty unless user-mapped
-          falseE.push({ f: 0, h: h });
-        }
+        grade = math ? math.pointsFromAmp(gradeAmp, 1, offset) : [];
+        threshold = math ? math.pointsFromAmp(thCoarse, 4, offset) : [];
+        afe = math ? math.pointsFromAmp(afeAmp, 8, offset) : [];
+        falseE = math ? math.pointsFromAmp(falseAmp, 16, offset) : [];
       }
 
       beamsHasDataList.push(hasData);
