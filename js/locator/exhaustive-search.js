@@ -499,6 +499,9 @@
       list4.push(0.0);
     }
     var num3 = this.MatrixExhaustiveValidateScannersLocation(list5[0], centerAnd4Vertices, fillPoints, 0.0, 0.0, p);
+    if (!(num3 > 0)) {
+      throw new Error("No legal mount locations for this vessel size");
+    }
 
     var list6 = [];
     for (i = 0; i < device.Scanners.length; i++) {
@@ -713,6 +716,9 @@
         y: device.Scanners[si].ScannerPositionY,
         z: device.Scanners[si].ScannerPositionZ
       });
+    }
+    if (numScanners >= 2 && NS.scannersAreStacked && NS.scannersAreStacked(scanners)) {
+      throw new Error("No legal mount locations for this vessel size");
     }
     return { scanners: scanners, maxError: result.maxError, numCalc: result.numCalc };
   }
