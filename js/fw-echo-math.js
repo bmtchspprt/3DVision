@@ -6,6 +6,7 @@
  *   distance-power piecewise, damping field is a length in meters.
  * Reconstructed (wired because the user asked for working logic; not CERTAINTY-closed):
  *   AFE = block-max of Grade, apply = reject G<=map for pick, damping = track gate + slew.
+ * recommendFalseEchoFix is a support heuristic (cmd 151 opcode 6), not the firmware apply path.
  */
 (function (global) {
   "use strict";
@@ -33,7 +34,19 @@
   }
 
   function coarseIndex(gradeI, coarseN) {
+    if (coarseN === THRESH_N) return Math.min(THRESH_N - 1, gradeI >> 2);
+    if (coarseN === AFE_N) return Math.min(AFE_N - 1, gradeI >> 3);
+    if (coarseN === FALSE_N) return Math.min(FALSE_N - 1, gradeI >> 4);
     return Math.min(coarseN - 1, Math.floor((gradeI * coarseN) / GRADE_N));
+  }
+
+  /** BM4 Orange word candidate: last Grade index packed as i<<15. PC: (x/2^31)*1000 m. */
+  function orangeWordFromGradeIndex(i) {
+    return (i << 15) >>> 0;
+  }
+
+  function metersFromOrangeWord(word) {
+    return (word / 0x80000000) * 1000;
   }
 
   function sampleCoarse(arr, gradeI) {
@@ -129,9 +142,8 @@
   }
 
   /**
-   * FFA038E2: walk Grade vs Threshold (Threshold indexed ÷4).
-   * Keep last index with G*1.01 > T (and G > map floor).
-   * Return rsqrt(mean((G-T)^2)) as the helper's quality (0xffa0248c = rsqrt).
+   * FFA038E2 walk (proven): Threshold at i>>2; G = amp×1.01; if G>T keep last_i and acc+=G².
+   * Map skip, SNR, max-scan, and damping extras are reconstructed — not in that helper.
    */
   function pickReported(gradeAmp, threshAmp, opts) {
     opts = opts || {};
@@ -161,8 +173,7 @@
       if (g <= t) continue;
       if (g <= floor) continue;
       if (minSnr != null && minSnr !== 0x7fffffff && g - t < minSnr / 1000) continue;
-      var d = g - t;
-      sumSq += d * d;
+      sumSq += g * g;
       n += 1;
       lastI = i;
     }
@@ -177,7 +188,124 @@
     return {
       index: lastI,
       meters: meters,
+      orangeWord: lastI >= 0 ? orangeWordFromGradeIndex(lastI) : null,
       qualityRsqrt: rmsInv,
+    };
+  }
+
+  /**
+   * Support fix from a curve + Orange (and optional tape). Not firmware-faithful apply.
+   * Peak helper never reads AFE/user maps; maps are stored/copied separately.
+   * Action is cmd 151 opcode 6 (same window the chart zoom sends).
+   */
+  function recommendFalseEchoFix(gradeAmp, threshAmp, opts) {
+    opts = opts || {};
+    var offsetM = opts.offsetM || 0;
+    var orangeM = opts.orangeM;
+    var tapeM = opts.tapeM;
+    var i;
+    var lastI = -1;
+    var runs = [];
+    var run = null;
+    var g;
+    var t;
+    var h;
+    for (i = 0; i < GRADE_N; i++) {
+      g = (gradeAmp[i] || 0) * PEAK_GRADE_SCALE;
+      t = sampleCoarse(threshAmp, i);
+      h = gradeIndexToMeters(i, offsetM);
+      if (g > t) {
+        lastI = i;
+        if (!run) run = { i0: i, i1: i, maxG: g, maxT: t };
+        else {
+          run.i1 = i;
+          if (g > run.maxG) run.maxG = g;
+          if (t > run.maxT) run.maxT = t;
+        }
+      } else if (run) {
+        runs.push(run);
+        run = null;
+      }
+    }
+    if (run) runs.push(run);
+    var pickM = lastI < 0 ? orangeM : gradeIndexToMeters(lastI, offsetM);
+    var early = [];
+    var lockRun = null;
+    for (i = 0; i < runs.length; i++) {
+      var r = runs[i];
+      r.fromM = gradeIndexToMeters(r.i0, offsetM);
+      r.toM = gradeIndexToMeters(r.i1, offsetM);
+      if (pickM != null && r.toM < pickM - GRADE_DH_M * 8) early.push(r);
+      if (pickM != null && r.fromM <= pickM && pickM <= r.toM + GRADE_DH_M) lockRun = r;
+    }
+    var actions = [];
+    function addWindow(fromM, toM, thr, why) {
+      if (!(toM > fromM)) return;
+      actions.push({
+        opcode: 6,
+        fromM: +fromM.toFixed(3),
+        toM: +toM.toFixed(3),
+        threshold: +Math.max(thr, 0.02).toFixed(4),
+        why: why,
+      });
+    }
+    if (early.length) {
+      addWindow(
+        early[0].fromM,
+        early[early.length - 1].toM,
+        early.reduce(function (m, x) { return Math.max(m, x.maxG); }, 0),
+        "Grade is above Threshold closer than Orange — map that span so the last G>T bin can move out."
+      );
+    }
+    if (opts.falseAmp && lockRun) {
+      var fi = lastI >= 0 ? lastI : metersToGradeIndex(pickM || 0, offsetM);
+      var mapAt = sampleCoarse(opts.falseAmp, fi);
+      var afeAt = opts.afeAmp ? sampleCoarse(opts.afeAmp, fi) : 0;
+      if (mapAt > 0 || afeAt > 0) {
+        addWindow(
+          Math.max(offsetM, (pickM || 0) - 0.5),
+          (pickM || 0) + 0.25,
+          Math.max(mapAt, afeAt, lockRun.maxG),
+          "Map samples are high at Orange. Confirm whether firmware skips those bins (not proven); a ManualScan window still matches the PC command."
+        );
+      }
+    }
+    var notes = [];
+    notes.push("Orange/PC axis: metres = grade_index × (1000/65536). Firmware packs last_i as index<<15 into the same fract32 shape.");
+    notes.push("Peak helper compares Grade×1.01 to Threshold[i>>2] and keeps the last passing bin. It does not read AFE or user maps.");
+    notes.push("0x2020421e / 0x20204634 copy or clear the map twin (flash persist), they do not apply during pick.");
+    notes.push("Threshold floats at 0x20215060+0x51E8 are filled from existing Threshold int16 (convert-twin), not from 0x2021F97A (magnitude). How T is first made from Grade is still open.");
+    notes.push("SNR, CRAF, max scan, UseFalseEchoes, and damping consumers are not traced — do not treat this as the unit's full decision tree.");
+    if (tapeM != null && pickM != null) {
+      var dlt = tapeM - pickM;
+      if (Math.abs(dlt) > 0.3) {
+        notes.push(
+          dlt > 0
+            ? "Tape is farther than Orange: something closer is still beating Threshold (map it, or Threshold is low)."
+            : "Tape is closer than Orange: last G>T is past the material — check max range / empty echo / damping lag."
+        );
+      }
+    }
+    var summary;
+    if (actions.length) {
+      summary =
+        "ManualScan (opcode 6) " +
+        actions[0].fromM +
+        "–" +
+        actions[0].toM +
+        " m @ Threshold " +
+        actions[0].threshold;
+    } else {
+      summary = "No closer G>T run than Orange. If tape still disagrees, the gap is SNR/maps/damping (not this helper).";
+    }
+    return {
+      lastIndex: lastI,
+      pickMeters: pickM,
+      orangeWord: lastI >= 0 ? orangeWordFromGradeIndex(lastI) : null,
+      summary: summary,
+      actions: actions,
+      notes: notes,
+      faithful: false,
     };
   }
 
@@ -220,6 +348,8 @@
     CMP_900: CMP_900,
     gradeIndexToMeters: gradeIndexToMeters,
     metersToGradeIndex: metersToGradeIndex,
+    orangeWordFromGradeIndex: orangeWordFromGradeIndex,
+    metersFromOrangeWord: metersFromOrangeWord,
     distancePowerGain: distancePowerGain,
     applyManualScan: applyManualScan,
     resetUserMap: resetUserMap,
@@ -227,6 +357,7 @@
     buildAfeFromGrade: buildAfeFromGrade,
     mapFloor: mapFloor,
     pickReported: pickReported,
+    recommendFalseEchoFix: recommendFalseEchoFix,
     downsampleAmp: downsampleAmp,
     pointsFromAmp: pointsFromAmp,
   };

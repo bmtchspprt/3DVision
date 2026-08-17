@@ -3156,6 +3156,10 @@
     showFuzzy: false,
     zoom: null,
     seriesVisible: null,
+    mapOut: false,
+    mapFrom: null,
+    mapTo: null,
+    mapThreshold: null,
   };
 
   function echoBeamsApi() {
@@ -3300,6 +3304,10 @@
       seed: vessel && vessel.serial ? parseInt(String(vessel.serial).replace(/\D/g, ""), 10) : 709001467,
       fileName: fileBase + ".bm4",
       pathLabel: site + "\\" + vName + "\\" + fileBase,
+      falseEchoFrom: echoCurveState.mapFrom,
+      falseEchoTo: echoCurveState.mapTo,
+      falseEchoThreshold: echoCurveState.mapThreshold,
+      useFalseEchoes: echoCurveState.mapOut !== false,
     });
   }
 
@@ -3474,6 +3482,30 @@
         echoCurveState.zoom = null;
         refreshEchoCurveUi(root);
         status("Echo Curve zoom undone.");
+      });
+    }
+    var mapOut = root.querySelector("#mvEchoFalseMap");
+    if (mapOut) {
+      mapOut.addEventListener("change", function () {
+        echoCurveState.mapOut = !!mapOut.checked;
+        var data = echoCurveState.data;
+        var bi = echoCurveState.beamIndex < 0 ? 0 : echoCurveState.beamIndex;
+        var advice = data && data.beamFixAdvice && data.beamFixAdvice[bi];
+        if (echoCurveState.mapOut && advice && advice.actions && advice.actions[0]) {
+          echoCurveState.mapFrom = advice.actions[0].fromM;
+          echoCurveState.mapTo = advice.actions[0].toM;
+          echoCurveState.mapThreshold = advice.actions[0].threshold;
+          echoCurveState.data = buildEchoDataFromSession();
+          refreshEchoCurveUi(root);
+          status(advice.summary + " (heuristic — maps are not proven in the pick helper.)");
+        } else {
+          echoCurveState.mapFrom = null;
+          echoCurveState.mapTo = null;
+          echoCurveState.mapThreshold = null;
+          echoCurveState.data = buildEchoDataFromSession();
+          refreshEchoCurveUi(root);
+          status(advice && advice.summary ? advice.summary : "False-echo window cleared.");
+        }
       });
     }
     var reload = root.querySelector("#mvEchoReload");

@@ -136,6 +136,7 @@
     var BeamLines = [];
     var BeamAllLines = [];
     var beamsAllTableList = [];
+    var beamFixAdvice = [];
     var b;
     var i;
 
@@ -154,6 +155,7 @@
       var falseE = [];
       var hasData = b < 7;
       var lines = [];
+      var fixAdvice = null;
 
       if (hasData) {
         var gradeAmp = [];
@@ -220,6 +222,16 @@
             })
           : { meters: distB };
         var reported = pick.meters != null ? pick.meters : distB;
+        var fixAdvice =
+          math && math.recommendFalseEchoFix
+            ? math.recommendFalseEchoFix(gradeAmp, thCoarse, {
+                offsetM: offset,
+                orangeM: reported,
+                tapeM: opts.tapeM,
+                afeAmp: afeAmp,
+                falseAmp: falseAmp,
+              })
+            : null;
 
         lines.push({
           color: "Orange",
@@ -265,6 +277,7 @@
       beamsDataList.push(hasData ? [grade, threshold, afe, falseE] : [[], [], [], []]);
       beamsAllTableList.push(grade.slice());
       BeamLines.push(lines);
+      beamFixAdvice.push(hasData ? fixAdvice : null);
     }
 
     // Noise table — BeamDataParser NoiseTable / ListBeamNoiseData
@@ -299,6 +312,7 @@
       heightM: heightM,
       pathLabel: opts.pathLabel || "",
       fileName: opts.fileName || "grades.bm4",
+      beamFixAdvice: beamFixAdvice,
     };
   }
 
