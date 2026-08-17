@@ -723,7 +723,97 @@
     return { scanners: scanners, maxError: result.maxError, numCalc: result.numCalc };
   }
 
+  /**
+   * Legal XY cells on the 2–3 scanner search grid, plus min-separation² (radius/2).
+   */
+  function legalMountPack(device, numDiv) {
+    var exe = new ExhaustiveSearchExe();
+    exe.deviceInWork = device;
+    exe.algoParameter = new NS.AlgoParameter();
+    var p = {
+      numDivX: numDiv,
+      numDivY: numDiv,
+      centerX: 0,
+      centerY: 0,
+      deviceInWork: device,
+      calculateAllRows: false,
+      calculatePerformance: false
+    };
+    exe.MatrixExhaustiveSearchDimensions(p);
+    var v = device.VesselInWork;
+    p.siloRadius = p.widthVesselCenter / 2.0;
+    p.height = v.TotalHeightMeter != null ? v.TotalHeightMeter : v.TotalHeight;
+    p.isCylinderSilo = v.CenterShapeType === "Cylinder" ||
+      v.CenterShapeType === (NS.ShapeCenterType && NS.ShapeCenterType.Cylinder);
+    var grid = createBoolGrid(numDiv, numDiv, false);
+    exe.MatrixExhaustiveValidateScannersLocation(grid, false, device.FillPoints, 0.0, 0.0, p);
+    var pts = [];
+    var ix, iy;
+    for (ix = 0; ix < numDiv; ix++) {
+      if (!grid[ix]) continue;
+      for (iy = 0; iy < numDiv; iy++) {
+        if (!grid[ix][iy]) continue;
+        pts.push({
+          x: p.measXStart + ix * p.meshSizeXHalf,
+          y: p.measYStart + iy * p.meshSizeYHalf
+        });
+      }
+    }
+    return { pts: pts, minDist2: Math.pow(p.widthVesselCenter / 4.0, 2.0) };
+  }
+
+  function pairFarEnough(a, b, minDist2) {
+    var dx = a.x - b.x;
+    var dy = a.y - b.y;
+    return dx * dx + dy * dy >= minDist2;
+  }
+
+  function canPlaceN(pts, n, minDist2) {
+    var i, j, k;
+    if (n <= 1) return true;
+    if (!pts || pts.length < n) return false;
+    if (n === 2) {
+      for (i = 0; i < pts.length; i++) {
+        for (j = i + 1; j < pts.length; j++) {
+          if (pairFarEnough(pts[i], pts[j], minDist2)) return true;
+        }
+      }
+      return false;
+    }
+    for (i = 0; i < pts.length; i++) {
+      for (j = i + 1; j < pts.length; j++) {
+        if (!pairFarEnough(pts[i], pts[j], minDist2)) continue;
+        for (k = j + 1; k < pts.length; k++) {
+          if (pairFarEnough(pts[i], pts[k], minDist2) && pairFarEnough(pts[j], pts[k], minDist2)) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Highest N (1–3) this vessel can host on Locator's multi-scanner grid.
+   * Does not run error estimation. Always at least 1 (guide still offers a single unit).
+   */
+  function maxSupportedScanners(opts) {
+    opts = opts || {};
+    var vessel = opts.vessel || opts;
+    var device = NS.createDevice(vessel, {
+      fillPoints: opts.fillPoints || (vessel && vessel.fillPoints),
+      emptyPoints: opts.emptyPoints || (vessel && vessel.emptyPoints)
+    });
+    var pack = legalMountPack(device, 15);
+    var max = 1;
+    if (canPlaceN(pack.pts, 2, pack.minDist2)) max = 2;
+    if (canPlaceN(pack.pts, 3, pack.minDist2)) max = 3;
+    return max;
+  }
+
   NS.ExhaustiveSearchExe = ExhaustiveSearchExe;
   NS.ErrorEstimBestResult = ErrorEstimBestResult;
   NS.runExhaustiveSearch = runExhaustiveSearch;
+  NS.maxSupportedScanners = maxSupportedScanners;
+  NS.legalMountPack = legalMountPack;
 })(typeof self !== "undefined" ? self : (typeof globalThis !== "undefined" ? globalThis : this));
