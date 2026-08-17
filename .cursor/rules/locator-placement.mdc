@@ -11,4 +11,4 @@ Before changing Calculate, Device Position, scanner-count buttons, or `js/locato
 1. Read `docs/locator-placement.md` (architecture, units, worker, 0,0 failures).
 2. Read `docs/multi-scanner-requirements.md` (when to show 2 and 3).
 
-Do not convert wizard feet to meters for Locator. Do not invent geometric mounts. Do not run exhaustive search on the main thread. Match the real 3D Vision app; do not mention reverse-engineering in commits or user-facing docs.
+Calculate **is** Locator exhaustive search (core logic in `docs/locator-placement.md`). Do not replace it with `D/3` or another placer. Do not convert wizard feet to meters. Do not run exhaustive search on the main thread. Match the real 3D Vision app; do not mention reverse-engineering in commits or user-facing docs.

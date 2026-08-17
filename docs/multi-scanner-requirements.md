@@ -6,7 +6,7 @@ This is a **geometry / legal-mount** check. It is not the same as the real app�
 
 ## What the guide uses (show the button)
 
-Locator searches a coarse grid (15×15 for 2–3 units). A cell is **legal** only if all of these hold (same rules the search uses):
+Locator Calculate (core placement) searches a coarse grid: **15×15** for 2 scanners, **13×13** for 3, **31×31** for 1. A cell is **legal** only if all of these hold (same rules the search uses):
 
 1. **Inside the silo** — distance from center ≤ radius (`D / 2`).
 2. **Not too close to the wall** — distance to the wall must be greater than  
@@ -49,6 +49,8 @@ That is a **sales / application** hint (wide or very large vessels), not a test 
 Demo Coke in feet (`D = 9`, `H/D = 2`) does **not** trip that warning, but it **does** support 2–3 mounts. The guide follows **support**, not the warning.
 
 ## After Calculate
+
+Calculate **is** Locator’s exhaustive search (12-ball hunt, then 50-ball Error Estimation on the chosen mounts). Details: `docs/locator-placement.md` (Core logic).
 
 - Search runs in a **Web Worker** only (`js/locator/placement-api.js`).
 - If 2–3 units come back stacked on the same XY (usually 0, 0), treat it as failure — do not continue the guide as if placement succeeded.
