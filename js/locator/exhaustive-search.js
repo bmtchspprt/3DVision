@@ -1,5 +1,7 @@
 /* LocatorPlacement.ExhaustiveSearch
- * Port of ExhaustiveSearchExe MatrixExhaustiveSearch flow (1–3 scanners).
+ * Core Locator Calculate: same hunt as 3D Vision Locator (not a guide shortcut).
+ * Rough mesh 31 / 15 / 13 (1 / 2 / 3 scanners), 12-ball score while hunting,
+ * 6×1.5 fine pass, then 50-ball Error Estimation on the chosen mounts.
  * Uses LocatorPlacement.ErrorEstimationCal + geometry ValidateScannersLocation.
  */
 (function (global) {
@@ -104,6 +106,14 @@
     p.measYEnd = p.widthY / 2.0 - p.meshSizeYHalf / 2.0;
   };
 
+  /* Locator mesh is numDiv × numDiv cells. Index the cells; do not accumulate float += . */
+  ExhaustiveSearchExe.prototype._meshX = function (p, i) {
+    return p.measXStart + i * p.meshSizeXHalf;
+  };
+  ExhaustiveSearchExe.prototype._meshY = function (p, i) {
+    return p.measYStart + i * p.meshSizeYHalf;
+  };
+
   ExhaustiveSearchExe.prototype.ValidateScannersLocationColor = function (
     isCylinderSilo, unitsCoeff, width, widthX, widthY, height, siloRadius, algoPrm, x, y, listFill
   ) {
@@ -131,18 +141,13 @@
     var widthVesselCenter = p.widthVesselCenter;
     var widthXVesselCenter = p.widthXVesselCenter;
     var widthYVesselCenter = p.widthYVesselCenter;
-    var meshSizeXHalf = p.meshSizeXHalf;
-    var meshSizeYHalf = p.meshSizeYHalf;
-    var num2 = -1;
-    var num3 = -1;
-    var num4, num5, num6, num7, eColorGradient2, flag;
-    for (num4 = p.measXStart; num4 <= p.measXEnd; num4 += meshSizeXHalf) {
-      num2++;
-      num3 = -1;
-      num5 = num4 + centerPointShiftX;
-      for (num6 = p.measYStart; num6 <= p.measYEnd; num6 += meshSizeYHalf) {
-        num3++;
-        num7 = num6 + centerPointShiftY;
+    var num2;
+    var num3;
+    var num5, num7, eColorGradient2, flag;
+    for (num2 = 0; num2 < p.numDivX; num2++) {
+      num5 = this._meshX(p, num2) + centerPointShiftX;
+      for (num3 = 0; num3 < p.numDivY; num3++) {
+        num7 = this._meshY(p, num3) + centerPointShiftY;
         eColorGradient2 = this.ValidateScannersLocationColor(
           isCylinderSilo, unitsCoeff, widthVesselCenter, widthXVesselCenter, widthYVesselCenter,
           height, siloRadius, algoParameter, num5, num7, listFill
@@ -220,19 +225,14 @@
   ) {
     var result = false;
     var errorEstimMaxHeightMeter = this.errorEstimMaxHeightMeter;
-    var meshSizeXHalf = p.meshSizeXHalf;
-    var meshSizeYHalf = p.meshSizeYHalf;
     var num = -1;
     var num2 = -1;
     var num3 = 0.0;
-    var num4, num5, num6, num7;
-    for (num4 = p.measXStart; num4 <= p.measXEnd; num4 += meshSizeXHalf) {
-      num++;
-      num2 = -1;
-      num5 = num4 + centerPointShiftX;
-      for (num6 = p.measYStart; num6 <= p.measYEnd; num6 += meshSizeYHalf) {
-        num2++;
-        num7 = num6 + centerPointShiftY;
+    var num5, num7;
+    for (num = 0; num < p.numDivX; num++) {
+      num5 = this._meshX(p, num) + centerPointShiftX;
+      for (num2 = 0; num2 < p.numDivY; num2++) {
+        num7 = this._meshY(p, num2) + centerPointShiftY;
         num3 = this._autoZ(num5, num7);
         if (
           num < 0 ||
@@ -366,15 +366,11 @@
       );
     } else if (count === 2) {
       state.maxErrorIndex = -1;
-      num = -1;
-      for (var num12 = p.measXStart; num12 <= p.measXEnd; num12 += meshSizeXHalf) {
-        num++;
-        num2 = -1;
-        xScanner = num12 + num4;
+      for (num = 0; num < p.numDivX; num++) {
+        xScanner = this._meshX(p, num) + num4;
         state.maxErrorIndex = -1;
-        for (var num13 = p.measYStart; num13 <= p.measYEnd; num13 += meshSizeYHalf) {
-          num2++;
-          yScanner = num13 + num5;
+        for (num2 = 0; num2 < p.numDivY; num2++) {
+          yScanner = this._meshY(p, num2) + num5;
           zScanner = this._autoZ(xScanner, yScanner);
           num8++;
           if (
@@ -406,29 +402,21 @@
       }
     } else if (count === 3) {
       num9 *= num9;
-      num3 = -1;
-      for (var num10 = p.measXStart; num10 <= p.measXEnd; num10 += meshSizeXHalf) {
-        num3++;
-        iYScanner = -1;
-        xScanner2 = num10 + num6;
-        for (var num11 = p.measYStart; num11 <= p.measYEnd; num11 += meshSizeYHalf) {
-          iYScanner++;
-          yScanner2 = num11 + num7;
+      for (num3 = 0; num3 < p.numDivX; num3++) {
+        xScanner2 = this._meshX(p, num3) + num6;
+        for (iYScanner = 0; iYScanner < p.numDivY; iYScanner++) {
+          yScanner2 = this._meshY(p, iYScanner) + num7;
           zScanner2 = this._autoZ(xScanner2, yScanner2);
-          num = -1;
           num8++;
           state.maxErrorIndex = -1;
           if (!array2 || !array2[num3] || !array2[num3][iYScanner]) continue;
           var flag = false;
-          for (num12 = p.measXStart; num12 <= p.measXEnd; num12 += meshSizeXHalf) {
+          for (num = 0; num < p.numDivX; num++) {
             if (flag) break;
-            num++;
-            num2 = -1;
-            xScanner = num12 + num4;
-            for (num13 = p.measYStart; num13 <= p.measYEnd; num13 += meshSizeYHalf) {
+            xScanner = this._meshX(p, num) + num4;
+            for (num2 = 0; num2 < p.numDivY; num2++) {
               if (flag) break;
-              num2++;
-              yScanner = num13 + num5;
+              yScanner = this._meshY(p, num2) + num5;
               zScanner = this._autoZ(xScanner, yScanner);
               num8++;
               if (!array || !array[num] || !array[num][num2]) continue;
@@ -518,15 +506,17 @@
       maxErrorIndex: -1
     };
 
+    this.errorEstimationCal.PrepareNewCalculationInsideCalculationLoop();
     this.errorEstimationCal.SearchRadiusList.length = 0;
     this.PrepareNumberOfBadBalls(true);
     this.errorEstimationCal.CalculateErrorEstimation(
       sbGeneralExceptionByAlgorithm, p.calculatePerformance, this.errorEstimMaxHeightMeter,
       null, true, state.maxErrorIndex, state.maxErrorTotal
     );
-    /* Seed timing only — search starts from MaxValue like C# */
     this.errorEstimationCal.SearchRadiusList.length = 0;
+    this.errorEstimationCal.numCalculationRowsExecuted = 0;
     this.PrepareNumberOfBadBalls(false);
+    /* Rough hunt starts from MaxValue (12 balls). Locator does the same after the 50-ball seed. */
     state.maxErrorTotal = Number.MAX_VALUE;
     state.maxErrorIndex = -1;
 
@@ -586,7 +576,11 @@
         sbGeneralExceptionByAlgorithm, p.calculatePerformance, this.errorEstimMaxHeightMeter,
         null, true, state.maxErrorIndex, state.maxErrorTotal
       );
+      /* Locator keeps the 50-ball seed as the fine-pass threshold (does not reset to MaxValue). */
+      state.maxErrorTotal = ErrorEstimationCal.MaxError(this.errorEstimationCal.SearchRadiusList);
+      state.maxErrorIndex = ErrorEstimationCal.MaxErrorIndex(this.errorEstimationCal.SearchRadiusList);
       this.errorEstimationCal.SearchRadiusList.length = 0;
+      this.errorEstimationCal.numCalculationRowsExecuted = 0;
       this.PrepareNumberOfBadBalls(false);
       this.errorEstimationCal.PrepareNewCalculationInsideCalculationLoop();
       this.MatrixExhaustiveSearchAllScanners(

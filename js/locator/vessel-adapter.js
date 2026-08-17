@@ -291,33 +291,12 @@
     return true;
   }
 
-  /**
-   * Off-center mounts ~diameter/3 from origin, spaced evenly around the vessel.
-   * Used when exhaustive search leaves every unit stacked.
-   */
-  function geometricRecommendedScanners(n, diameterM, zAt) {
-    n = Math.max(1, Math.min(3, n || 1));
-    var r = (diameterM || 9) / 3;
-    if (!(r > 0)) r = 3;
-    var out = [];
-    var i;
-    for (i = 0; i < n; i++) {
-      var ang = n === 1 ? 0 : (2 * Math.PI * i) / n;
-      var x = +(r * Math.cos(ang)).toFixed(4);
-      var y = +(r * Math.sin(ang)).toFixed(4);
-      var z = typeof zAt === "function" ? zAt(x, y) : 0;
-      out.push({ x: x, y: y, z: z });
-    }
-    return out;
-  }
-
   NS.createVessel = createVessel;
   NS.autoCalculateZFromVesselBottom = autoCalculateZFromVesselBottom;
   NS.AutoCalculateZFromVesselBottom = autoCalculateZFromVesselBottom;
   NS.createDevice = createDevice;
   NS.setNumScanners = setNumScanners;
   NS.scannersAreStacked = scannersAreStacked;
-  NS.geometricRecommendedScanners = geometricRecommendedScanners;
   NS.calculateTopConeBaseTan = calculateTopConeBaseTan;
   NS.getClosestScannerToLocation = getClosestScannerToLocation;
 
