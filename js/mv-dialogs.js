@@ -2495,15 +2495,14 @@
       });
     }
 
-    function wizardVesselMeters() {
-      var unit = ((root.querySelector("#mvWizDist") || {}).value || "m").toLowerCase();
-      var toM = unit === "ft" ? function (v) { return v * 0.3048; } : function (v) { return v; };
+    /** Vessel sizes in the wizard Distance unit (m or ft). Locator search uses these as-is. */
+    function wizardVesselNative() {
       var topShape = (root.querySelector("#mvWizTopShape") || {}).value || "cone";
       var cenShape = (root.querySelector("#mvWizCenShape") || {}).value || "cylinder";
       var botShape = (root.querySelector("#mvWizBotShape") || {}).value || "cone";
       function n(id, fb) {
         var v = parseFloat(val(id));
-        return toM(isNaN(v) ? fb : v);
+        return isNaN(v) ? fb : v;
       }
       return {
         topShape: topShape,
@@ -2522,7 +2521,7 @@
         bottomX: n("mvWizBotX", 0),
         bottomY: n("mvWizBotY", 0),
         fillPoints: readFillPoints().map(function (p) {
-          return { x: toM(p.x), y: toM(p.y) };
+          return { x: p.x, y: p.y };
         }),
       };
     }
@@ -2888,9 +2887,7 @@
       if (!LP || typeof LP.calculateRecommendedPlacement !== "function") {
         return Promise.reject(new Error("Placement calculator not loaded"));
       }
-      var vessel = wizardVesselMeters();
-      var unit = ((root.querySelector("#mvWizDist") || {}).value || "m").toLowerCase();
-      var fromM = unit === "ft" ? function (v) { return v / 0.3048; } : function (v) { return v; };
+      var vessel = wizardVesselNative();
       var ctrl = typeof AbortController !== "undefined" ? new AbortController() : null;
       root.__mvWizPlaceAbort = ctrl;
       return LP.calculateRecommendedPlacement({
@@ -2902,17 +2899,20 @@
         onProgress: opts.onProgress,
       }).then(function (result) {
         var rows = (result.scanners || []).map(function (s) {
-          var x = fromM(s.x);
-          var y = fromM(s.y);
+          var x = s.x;
+          var y = s.y;
           return {
             x: x,
             y: y,
-            z: fromM(s.z),
+            z: s.z,
             offset: 0,
             angle: autoCalculateAngle(x, y),
           };
         });
         if (!rows.length) throw new Error("No scanner positions returned");
+        if (rows.length >= 2 && LP.scannersAreStacked && LP.scannersAreStacked(rows)) {
+          throw new Error("Locator found no legal mount pair. Try Calculate again.");
+        }
         setDeviceRows(rows);
         refresh3dKeepView();
         return {
