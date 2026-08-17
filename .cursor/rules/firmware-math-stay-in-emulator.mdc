@@ -1,31 +1,27 @@
 ---
-description: Firmware math — do not touch the Install Guide tree at all
+description: Firmware math notes live in this repo docs/firmware — not the emulator, not guide JS
 alwaysApply: true
 ---
 
-# Firmware math: this repo is read-only
+# Firmware math: local notes only
 
-Scanner math (Grade, Threshold, AFE, false echo, Orange, pick, mix, damping, Advanced Params, CERTAINTY) lives **only** in:
+Scanner math notes (Grade, Threshold, AFE, false echo, Orange, pick, mix, damping) live in:
 
-`C:\Users\cody.krehnke\Documents\3D Emulator\docs\firmware\`
+`docs/firmware/` in **this** repository (`3DInstallGuide`).
 
-## Hard ban (no exceptions from math talk)
+Start: `docs/firmware/RESEARCH-CLOSED.md`
 
-If the task is recovering, proving, documenting, or “getting” firmware math:
+## Do not
 
-- Do **not** create, edit, delete, or restore files under `Documents\3DInstallGuide` except this `.cursor/rules` file when tightening this fence.
-- That includes `js/`, `css/`, `html`, `dist/`, `locator/`, `data/`, `README.md`.
-- Do **not** `npm run build`.
-- Do **not** `git subtree`, push `publish`, or GitHub Pages (`bmtchspprt/3DVision`).
+- Edit `Documents\3D Emulator` for this work.
+- Put formulas into `js/`, `css/`, `html`, `dist/` unless the user **this turn** names a guide file to change.
+- `npm run build`, subtree push, or GitHub Pages for math-note work.
 
-Naming `buildBeamData`, Echo Curve, `fw-echo-math.js`, “faithful guide”, or “wire it in” is **not** permission. Write the math in emulator `HANDOFF.md` / `CERTAINTY.md` only.
+## Do
 
-“Get it then” / “finish” / “complete” means finish the **docs and dumps**, not this website.
-
-## This rule beats publish-on-commit
-
-`.cursor/rules/git-commit-every-change.mdc` is not permission to edit or publish the guide during math work.
+- Continue research by editing `docs/firmware/` here.
+- Keep dumps cited as evidence; do not invent math.
 
 ## Guide UI (unrelated to math)
 
-Only a **this-turn** request that is clearly about MultiVision chrome (menus, dialogs, layout) — and is **not** Grade/echo/false-echo/Orange math — may edit this repo. Firmware formulas still stay out of `js/` unless that UI turn names a specific file **and** is not a math recovery session.
+MultiVision chrome (menus, dialogs, layout) may still edit `js/`/`css` when the request is clearly UI and not Grade/echo/Orange math.

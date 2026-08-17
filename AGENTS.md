@@ -1,9 +1,9 @@
 # Agent — read first
 
-**Firmware / echo / Grade / false-echo math is not this repository. Do not touch this tree for math.**
+**Firmware math notes live in this repo:** `docs/firmware/`
 
-Required rule (always on): `.cursor/rules/firmware-math-stay-in-emulator.mdc`
+Start: `docs/firmware/RESEARCH-CLOSED.md`
 
-Allowed math notebook: `C:\Users\cody.krehnke\Documents\3D Emulator\docs\firmware\HANDOFF.md`
+Do not edit the emulator tree for math. Do not put math into `js/` unless asked this turn. Do not build or publish Pages for note-only work.
 
-Naming `buildBeamData` or a `js/` path during math work is not permission to edit here. Do not build or publish Pages.
+Rule: `.cursor/rules/firmware-math-stay-in-emulator.mdc`
