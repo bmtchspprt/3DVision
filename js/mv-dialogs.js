@@ -128,6 +128,7 @@
 
   function closeDialog(id) {
     var el = $(id);
+    var wasOpen = !!(el && !el.hidden);
     if (el) {
       if (
         id === "mv-dlg-project-wizard" &&
@@ -143,7 +144,7 @@
     if (id === "mv-dlg-device-wizard" && global.MvWizard3D) {
       global.MvWizard3D.destroy();
     }
-    if (id === "mv-dlg-advanced-params") {
+    if (id === "mv-dlg-advanced-params" && wasOpen) {
       try {
         window.dispatchEvent(new CustomEvent("install-guide:ap-closed"));
       } catch (err) {
@@ -1040,7 +1041,7 @@
           '<button class="mv-ap-simple-btn" type="button" style="width:94px" id="mvApDownloadAll">Download All</button>' +
           '<button class="mv-ap-simple-btn" type="button" style="width:94px" id="mvApUploadAll">Upload All</button>' +
           '<button class="mv-ap-simple-btn" type="button" style="width:75px" id="mvApSummary">Summary</button>' +
-          '<button class="mv-ap-simple-btn" type="button" style="width:70px" data-mv-dlg-close="mv-dlg-advanced-params">Close</button></div>'
+          '<button class="mv-ap-simple-btn" type="button" style="width:70px" id="mvApClose" data-mv-dlg-close="mv-dlg-advanced-params">Close</button></div>'
       );
     },
 

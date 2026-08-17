@@ -948,10 +948,10 @@
       id: "ap-close",
       phase: "setup",
       title: "Close Advanced Parameters",
-      body: "Click <strong>Close</strong> at the bottom of Advanced Parameters to return to Overview. Do not leave this window open — the guide cannot continue until it is closed.",
-      target: '#mv-dlg-advanced-params [data-mv-dlg-close="mv-dlg-advanced-params"].mv-ap-simple-btn, #mv-dlg-advanced-params .mv-ap-footer-stech [data-mv-dlg-close]',
+      body: "Click <strong>Close</strong> at the bottom of Advanced Parameters. The guide stays here until that window is actually closed.",
+      target: "#mvApClose",
       advanceOn: "install-guide:ap-closed",
-      allowInside: "#mv-dlg-advanced-params",
+      allowInside: "#mvApClose, #mv-dlg-advanced-params .title-btn.close, #mv-dlg-advanced-params",
       pointer: "bottom",
     },
     {
@@ -1290,14 +1290,14 @@
 
     var step = currentStep();
     if (!step) return false;
+    if (
+      step.allowInside &&
+      e.target.closest &&
+      e.target.closest(step.allowInside)
+    ) {
+      return true;
+    }
     if (step.blocking) {
-      if (
-        step.allowInside &&
-        e.target.closest &&
-        e.target.closest(step.allowInside)
-      ) {
-        return true;
-      }
       return false;
     }
 
@@ -1403,7 +1403,9 @@
     if (
       step.id === "ap-close" &&
       e.target.closest &&
-      e.target.closest('[data-mv-dlg-close="mv-dlg-advanced-params"]')
+      e.target.closest(
+        '#mvApClose, #mv-dlg-advanced-params [data-mv-dlg-close="mv-dlg-advanced-params"]'
+      )
     ) {
       return true;
     }
@@ -2199,6 +2201,7 @@
       target === "#mvWizNext" ||
       target === "#mvWizFillAdd" ||
       target === "#mvApUploadAll" ||
+      target === "#mvApClose" ||
       target === "#mv-menu-device"
     ) {
       return "bottom";
@@ -2454,6 +2457,19 @@
     }, 200);
   }
 
+  function isAdvancedParamsOpen() {
+    var el = document.getElementById("mv-dlg-advanced-params");
+    if (!el) return false;
+    if (el.hidden || el.hasAttribute("hidden")) return false;
+    try {
+      var cs = window.getComputedStyle(el);
+      if (!cs || cs.display === "none" || cs.visibility === "hidden") return false;
+    } catch (err) {
+      /* ignore */
+    }
+    return true;
+  }
+
   function maybeAutoAdvance(step) {
     if (!step) return;
     if (step.id === "enter-username") {
@@ -2530,8 +2546,7 @@
       }
     }
     if (step.id === "ap-open") {
-      var apDlg = document.getElementById("mv-dlg-advanced-params");
-      if (apDlg && !apDlg.hidden && apDlg.offsetParent !== null) {
+      if (isAdvancedParamsOpen()) {
         window.dispatchEvent(new CustomEvent("install-guide:advanced-params-opened"));
       }
     }
@@ -2566,8 +2581,9 @@
       }
     }
     if (step.id === "ap-close") {
-      var apStill = document.getElementById("mv-dlg-advanced-params");
-      if (!apStill || apStill.hidden || apStill.offsetParent === null) {
+      // Do not use offsetParent — the AP overlay is position:fixed, so
+      // offsetParent is always null even while the window is still open.
+      if (!isAdvancedParamsOpen()) {
         window.dispatchEvent(new CustomEvent("install-guide:ap-closed"));
       }
     }
@@ -2620,6 +2636,9 @@
       }
       if (name === "install-guide:wiz-uploaded") {
         ensureOverviewVisible();
+      }
+      if (name === "install-guide:ap-closed") {
+        if (isAdvancedParamsOpen()) return;
       }
       goNext();
     }
