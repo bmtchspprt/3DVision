@@ -361,9 +361,11 @@
     }
 
     if (beamIndex < 0) {
+      var allTables = beamData.beamsAllTableList || [];
       for (bi = 0; bi < beamData.NumOfBeams; bi++) {
-        if (!beamData.beamsHasDataList[bi]) continue;
-        var echoPts = beamData.beamsDataList[bi][0] || [];
+        if (beamData.beamsHasDataList && !beamData.beamsHasDataList[bi]) continue;
+        var echoPts = allTables[bi] || (beamData.beamsDataList[bi] && beamData.beamsDataList[bi][0]) || [];
+        if (vis[BEAM_NAMES[bi]] === false) continue;
         seriesList.push({
           name: BEAM_NAMES[bi],
           color: BEAM_ALL_COLORS[bi],

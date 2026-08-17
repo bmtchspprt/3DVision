@@ -59,6 +59,8 @@ const JS_APP = [
   "js/installer.js",
   "js/browser.js",
   "js/multivision.js",
+  "js/fw-echo-math.js",
+  "js/fw-echo-sim.js",
   "js/mv-echo-beams.js",
   "js/mv-dialogs.js",
   "js/mv-menus.js",
