@@ -1114,7 +1114,7 @@
       '<div class="ig-card" id="igCard" role="dialog" aria-live="polite" hidden>' +
       '<div class="ig-card-kicker" id="igKicker">Install guide</div>' +
       '<h2 class="ig-card-title" id="igTitle"></h2>' +
-      '<p class="ig-card-body" id="igBody"></p>' +
+      '<div class="ig-card-body" id="igBody"></div>' +
       '<div class="ig-card-actions">' +
       '<button type="button" class="ig-btn ig-btn--primary" id="igPrimary" hidden>Continue</button>' +
       "</div>" +
@@ -1745,7 +1745,14 @@
   }
 
   function scannerCountStepBody() {
-    var maxN = maxSupportedScannersForGuide();
+    var maxN = 3;
+    try {
+      maxN = maxSupportedScannersForGuide();
+    } catch (err) {
+      maxN = 3;
+    }
+    if (!(maxN >= 1)) maxN = 1;
+    if (maxN > 3) maxN = 3;
     var html =
       "Choose how many scanners you will mount on this vessel. The guide runs placement Calculate for that count.";
     if (maxN <= 1) {

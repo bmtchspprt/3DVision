@@ -1067,6 +1067,7 @@ body.ig-boot-ready #multiVisionShell.mv-shell--tease {
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 12px;
+  pointer-events: auto;
 }
 
 .ig-scanner-count .ig-btn {
