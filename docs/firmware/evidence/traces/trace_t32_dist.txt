@@ -1,0 +1,123 @@
+Connected to the simulator.
+Loading section .text, size 0x4 lma 20200000
+Start address ffa00000
+Transfer rate: 32 bits in <1 sec.
+
+=== FUN_ffa0586c (range->bin) ===
+Dump of assembler code from 0xffa0586c to 0xffa0595c:
+   0xffa0586c:	warning: Can not parse XML memory map; XML support was disabled at compile time
+P1 = R1;
+   0xffa0586e:	LINK 0x0;		/* (0) */
+   0xffa05872:	R1 = [P1 + 0x4ec];
+   0xffa05876:	A1 = R1.L * R0.L (FU);
+   0xffa0587a:	A1 = A1 >> 0x10;
+   0xffa0587e:	UNLINK;
+   0xffa05882:	A1 += R1.H * R0.L (M), A0 = R1.H * R0.H;
+   0xffa05886:	A1 += R0.H * R1.L (M);
+   0xffa0588a:	A1 = A1 >>> 0xf;
+   0xffa0588e:	R0 = (A0 += A1);
+   0xffa05892:	R0 >>>= 0x1;
+   0xffa05894:	RTS;
+   0xffa05896:	P1 = R1;
+   0xffa05898:	LINK 0xc;		/* (12) */
+   0xffa0589c:	R1 = [P1 + 0x4ec];
+   0xffa058a0:	CALL 0x0xffa05ee4;
+   0xffa058a4:	UNLINK;
+   0xffa058a8:	R0 <<= 0x1;
+   0xffa058aa:	RTS;
+   0xffa058ac:	LINK 0x0;		/* (0) */
+   0xffa058b0:	[--SP] = (R7:6, P5:4);
+   0xffa058b2:	SP += -0xc;		/* (-12) */
+   0xffa058b4:	R7 = ROT R2 BY 0x0 || P5 = [SP + 0x34] || NOP;
+   0xffa058bc:	P2 = R7;
+   0xffa058be:	R0 = R0 << 0x1 || P1 = [SP + 0x30] || NOP;
+   0xffa058c6:	R0 = R1 + R0;
+   0xffa058c8:	CC = P5 <= 0x0;
+   0xffa058ca:	P0 = R0;
+   0xffa058cc:	R6 = P5;
+   0xffa058ce:	R0 = 0x0 (X);		/*		R0=0x0(  0) */
+   0xffa058d0:	IF CC JUMP 0x0xffa058ea;
+   0xffa058d2:	P4 = P1 << 0x1;
+   0xffa058d4:	P1 = P2;
+   0xffa058d6:	LSETUP(0x0xffa058da, 0x0xffa058e2) LC0 = P5;
+   0xffa058da:	R1.L = W[P0 ++ P4];
+   0xffa058dc:	R1 <<= 0x4;
+   0xffa058de:	R2 = -R1;
+   0xffa058e0:	R1 = R1.L (X);
+   0xffa058e2:	R0 = R0 - R1 (NS) || W[P1++] = R2 || NOP;
+   0xffa058ea:	R1 = R6;
+   0xffa058ec:	CALL 0x0xffa00fb4;
+   0xffa058f0:	CC = P5 <= 0x0;
+   0xffa058f2:	IF CC JUMP 0x0xffa05932;
+   0xffa058f4:	R7 <<= 0x1e;
+   0xffa058f6:	CC = AZ;
+   0xffa058f8:	IF !CC JUMP 0x0xffa0593c;
+   0xffa058fa:	CC = P5 == 0x1;
+   0xffa058fc:	IF CC JUMP 0x0xffa0592a;
+   0xffa058fe:	R1 = R6 >>> 0x1;
+   0xffa05902:	P1 = R1;
+   0xffa05904:	P0 = P2;
+   0xffa05906:	R0.H = R0.L << 0x0;
+   0xffa0590a:	R1 = [P0++];
+   0xffa0590c:	P1 += -0x1;		/* ( -1) */
+   0xffa0590e:	CC = P1 == 0x0;
+   0xffa05910:	IF CC JUMP 0x0xffa05920;
+   0xffa05912:	LSETUP(0x0xffa05916, 0x0xffa0591e) LC0 = P1;
+   0xffa05916:	R2 = R1 -|- R0 (S) || R1 = [P0++] || NOP;
+   0xffa0591e:	[P2++] = R2;
+   0xffa05920:	R1 = R1 -|- R0 (S);
+   0xffa05924:	CC = BITTST (R6, 0x0);		/* bit  0 */
+   0xffa05926:	[P2++] = R1;
+   0xffa05928:	IF !CC JUMP 0x0xffa05932;
+   0xffa0592a:	R1 = W[P2] (X);
+   0xffa0592c:	R0.L = R1.L - R0.L (S);
+   0xffa05930:	W[P2] = R0.L;
+   0xffa05932:	SP += 0xc;		/* ( 12) */
+   0xffa05934:	(R7:6, P5:4) = [SP++];
+   0xffa05936:	UNLINK;
+   0xffa0593a:	RTS;
+   0xffa0593c:	P5 += -0x1;		/* ( -1) */
+   0xffa0593e:	CC = P5 == 0x0;
+   0xffa05940:	P1 = P2;
+   0xffa05942:	R1 = W[P2++] (X);
+   0xffa05944:	IF CC JUMP 0x0xffa05954;
+   0xffa05946:	LSETUP(0x0xffa0594a, 0x0xffa05952) LC0 = P5;
+   0xffa0594a:	R2.L = R1.L - R0.L (S) || R1 = W[P2++] (X) || NOP;
+   0xffa05952:	W[P1++] = R2;
+   0xffa05954:	R0.L = R1.L - R0.L (S);
+   0xffa05958:	W[P1] = R0.L;
+   0xffa0595a:	JUMP.S 0x0xffa05932;
+End of assembler dump.
+
+=== FUN_ffa05ee4 (normalize, const 41000) ===
+Dump of assembler code from 0xffa05ee4 to 0xffa05f2e:
+   0xffa05ee4:	R2 = -R0;
+   0xffa05ee6:	R3 = -R1;
+   0xffa05ee8:	R2 = MAX (R2, R0);
+   0xffa05eec:	R3 = MAX (R3, R1);
+   0xffa05ef0:	CC = R3 <= R2;
+   0xffa05ef2:	LINK 0x10;		/* (16) */
+   0xffa05ef6:	R2 = R1 >>> 0x1f;
+   0xffa05efa:	R3 = R0 >>> 0x1f || [SP + 0xc] = R2 || NOP;
+   0xffa05f02:	IF !CC JUMP 0x0xffa05f1a;
+   0xffa05f04:	R2 = R1;
+   0xffa05f06:	R1 = R3;
+   0xffa05f08:	CALL 0x0xffa01c38;
+   0xffa05f0c:	CC = R1 < 0x0;
+   0xffa05f0e:	R1 = 0x0 (X);		/*		R1=0x0(  0) */
+   0xffa05f10:	BITSET (R1, 0x1f);		/* bit 31 */
+   0xffa05f12:	R0 = -0x1 (X);		/*		R0=0xffffffff( -1) */
+   0xffa05f14:	R0 >>= 0x1;
+   0xffa05f16:	IF CC R0 = R1;
+   0xffa05f18:	JUMP.S 0x0xffa05f28;
+   0xffa05f1a:	CC = BITTST (R3, 0x0);		/* bit  0 */
+   0xffa05f1c:	R2 = R1;
+   0xffa05f1e:	R1 = ROT R0 BY -0x1;
+   0xffa05f22:	R0 <<= 0x1f;
+   0xffa05f24:	CALL 0x0xffa01150;
+   0xffa05f28:	UNLINK;
+   0xffa05f2c:	RTS;
+End of assembler dump.
+
+=== done ===
+GDB-EXIT:0

@@ -1,0 +1,32 @@
+2021ff90: LSETUP (0x2021ff94,0x2021ff9c) LC0 = P0
+2021ff94: ADD|| R1 = R1 + R3 (ns)
+2021ff98: _LOAD R3 = W [P2++] (X)
+2021ff9a: _NOP
+2021ff9c: ADD|| R2 = R2 + R3 (ns)
+2021ffa0: _LOAD R3 = W [P1++] (X)
+2021ffa2: _NOP
+2021ffa4: ADD R1 = R1 + R3
+2021ffa6: STORE [P4 + 0x10] = R2
+2021ffa8: STORE [P4 + 0xc] = R1
+2021ffaa: STORE W [P4] = R7.H
+2021ffac: LOAD R6 = [P4 + 0x10]
+2021ffae: CC = R6 <= 0x0
+2021ffb0: IF CC JUMP 0x2021ffda
+2021ffb2: LOAD R0 = [P4 + 0xc]
+2021ffb4: LOAD P1.L = 0x1688
+2021ffb8: LOAD P1.H = 0xffa0
+2021ffbc: CALL (P1)
+2021ffbe: MOVE R7 = R0
+2021ffc0: MOVE R0 = R6
+2021ffc2: LOAD P1.L = 0x1688
+2021ffc6: LOAD P1.H = 0xffa0
+2021ffca: CALL (P1)
+2021ffcc: MOVE R1 = R0
+2021ffce: MOVE R0 = R7
+2021ffd0: LOAD P1.L = 0x1814
+2021ffd4: LOAD P1.H = 0xffa0
+2021ffd8: CALL (P1)
+2021ffda: ADD SP += 0xc
+2021ffdc: POP (R7:6,P5:4) = [SP++]
+2021ffde: UNLINK
+2021ffe2: RTS

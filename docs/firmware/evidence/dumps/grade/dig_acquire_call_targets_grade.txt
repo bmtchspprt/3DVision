@@ -1,0 +1,90 @@
+===== CALL targets in acquire 20220636..20221100 =====
+2022068a: CALL 0x202b5024
+20220748: CALL 0x2020f47c
+202207b2: CALL (P1) => ffa00fb4
+2022093e: CALL (P1) => ffa00fb4
+202209bc: CALL 0x202b5024
+20220a12: CALL 0x202b5024
+20220a5c: CALL 0x20210be6
+20220a70: CALL (P1) => ffa05c38
+20220a84: CALL (P1) => ffa05c38
+20220b2e: CALL 0x2020f330
+20220ba4: CALL 0x2021f97a
+20220bfa: CALL (P1) => ffa016d4
+20220c1e: CALL (P1) => ffa01814
+20220c4c: CALL (P1) => ffa01814
+20220cee: CALL (P1) => ffa043c4
+20220d0a: CALL (P1) => ffa01716
+20220d24: CALL (P1) => ffa01688
+20220d36: CALL (P1) => ffa01688
+20220d42: CALL (P1) => ffa01814
+20220d74: CALL (P1) => ffa018f0
+20220d84: CALL (P1) => ffa018f0
+20220d9c: CALL (P1) => ffa01716
+20220db2: CALL (P1) => ffa01814
+20220e10: CALL (P1) => ffa018f0
+20220e20: CALL (P1) => ffa018f0
+20220ede: CALL (P1) => ffa06008
+20220ef0: CALL 0x202b5066
+20220f9a: CALL 0x202122fa
+20220fc2: CALL 0x202b5024
+20220ff8: CALL 0x202b5024
+20221050: CALL 0x2022e118
+202210c2: CALL 0x202b5024
+%n===== Scan each target fn for Grade-related STORE (first 300 insn or RTS) =====
+202b5024: clean has44=false has578=false storeW=false
+2020f47c: clean has44=false has578=false storeW=true
+ffa00fb4: clean has44=false has578=false storeW=false
+20210be6: clean has44=false has578=true storeW=true
+ffa05c38: clean has44=false has578=false storeW=false
+2020f330: clean has44=false has578=true storeW=false
+2021f97a: clean has44=false has578=false storeW=true
+ffa016d4: clean has44=false has578=false storeW=false
+ffa01814: clean has44=false has578=false storeW=false
+ffa043c4: clean has44=false has578=true storeW=false
+ffa01716: clean has44=false has578=false storeW=false
+ffa01688: clean has44=false has578=false storeW=false
+ffa018f0: clean has44=false has578=false storeW=false
+ffa06008: clean has44=false has578=false storeW=false
+
+*** CANDIDATE 202b5066 has44=true has578=false has147a=true storeW=true gradeStore=true
+  202b5202: LOAD R2 = 0x5bc
+  202b5216: LOAD R5 = 0x147a
+  202b5292: STORE [P0 + 0x44] = R2
+202122fa: clean has44=false has578=false storeW=true
+2022e118: clean has44=false has578=false storeW=false
+%n===== Deep FFA043C4 (200 insn) for STORE W / 0x44 =====
+ffa043d8: LOAD P2 = 0x578
+ffa043e6: STORE [SP + 0x34] = P2
+ffa043fc: STORE [SP + 0x34] = P1
+ffa04410: STORE [SP + 0x28] = P1
+ffa04412: STORE [SP + 0x38] = R0
+ffa04414: STORE [FP + -0x20] = R1
+ffa04416: STORE [FP + -0x24] = R2
+ffa0441e: CALL 0xffa02948
+ffa04424: CALL 0xffa018f0
+ffa0442c: STORE [SP + 0x34] = R0
+ffa04432: CALL 0xffa02948
+ffa04438: CALL 0xffa018f0
+ffa04460: CALL 0xffa018f0
+ffa0446a: _STORE [FP + -0x1c] = R0
+ffa04472: CALL 0xffa018f0
+ffa0447a: CALL 0xffa01714
+ffa04482: _STORE [FP + -0x1c] = R0
+ffa04488: CALL 0xffa018f0
+ffa04492: CALL 0xffa018f0
+ffa04498: CALL 0xffa01716
+ffa044a6: CALL 0xffa018f0
+ffa044b2: CALL 0xffa018f0
+ffa044ba: CALL 0xffa01714
+ffa044c2: _STORE [FP + 0x10] = R0
+ffa044c8: CALL 0xffa018f0
+ffa044d2: CALL 0xffa018f0
+ffa044d8: CALL 0xffa01716
+ffa044dc: STORE [FP + 0x14] = R0
+ffa044e2: CALL 0xffa01716
+ffa044f4: CALL 0xffa01716
+ffa04500: _STORE [FP + -0x20] = R5
+ffa04504: STORE [FP + -0x24] = R0
+ffa04506: STORE [SP + 0x38] = R6
+ffa0450e: CALL 0xffa00ae4

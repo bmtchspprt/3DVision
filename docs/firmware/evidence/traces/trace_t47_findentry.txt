@@ -1,0 +1,63 @@
+Connected to the simulator.
+Loading section .text, size 0x4 lma 20200000
+Start address ffa00000
+Transfer rate: 32 bits in <1 sec.
+
+=== 0x2020f980..0x2020fa10 ===
+Dump of assembler code from 0x2020f980 to 0x2020fa10:
+   0x2020f980:	warning: Can not parse XML memory map; XML support was disabled at compile time
+CALL (P1);
+   0x2020f982:	P3.L = 0x4ff4;		/* (20468)	P3=0x4ff4 */
+   0x2020f986:	P3.H = 0x2021;		/* (8225)	P3=0x20214ff4 */
+   0x2020f98a:	R2 = [P3 + 0x8];
+   0x2020f98c:	R3 = [P3 + 0xc];
+   0x2020f98e:	R1 = [P3 + 0x4];
+   0x2020f990:	R7 = R0;
+   0x2020f992:	[FP -0x8] = R2;
+   0x2020f994:	[SP + 0x3c] = R3;
+   0x2020f996:	P1.L = 0x18f0;		/* (6384)	P1=0x18f0 */
+   0x2020f99a:	P1.H = 0xffa0;		/* (-96)	P1=0xffa018f0 */
+   0x2020f99e:	CALL (P1);
+   0x2020f9a0:	R4 = R0;
+   0x2020f9a2:	R1 = R7;
+   0x2020f9a4:	R0 = [P3 + 0x14];
+   0x2020f9a6:	P1.L = 0x1714;		/* (5908)	P1=0xffa01714 */
+   0x2020f9aa:	P1.H = 0xffa0;		/* (-96)	P1=0xffa01714 */
+   0x2020f9ae:	CALL (P1);
+   0x2020f9b0:	R1 = [P3];
+   0x2020f9b2:	P1.L = 0x18f0;		/* (6384)	P1=0xffa018f0 */
+   0x2020f9b6:	P1.H = 0xffa0;		/* (-96)	P1=0xffa018f0 */
+   0x2020f9ba:	CALL (P1);
+   0x2020f9bc:	R1 = R0;
+   0x2020f9be:	R0 = R4;
+   0x2020f9c0:	P1.L = 0x1814;		/* (6164)	P1=0xffa01814 */
+   0x2020f9c4:	P1.H = 0xffa0;		/* (-96)	P1=0xffa01814 */
+   0x2020f9c8:	CALL (P1);
+   0x2020f9ca:	R2 = [FP -0x4];
+   0x2020f9cc:	CC = R2 <= R5;
+   0x2020f9ce:	[P4 + 0x8] = R5;
+   0x2020f9d0:	[FP -0x4] = R0;
+   0x2020f9d2:	R6.H = 0x4974;		/* (18804)	R6=0x49740000(1232338944) */
+   0x2020f9d6:	IF !CC JUMP 0x0x2020fb7c;
+   0x2020f9d8:	R5 = 0x0 (X);		/*		R5=0x0(  0) */
+   0x2020f9da:	R3 = 0x0 (X);		/*		R3=0x0(  0) */
+   0x2020f9dc:	R0 = 0x3f80 (X);		/*		R0=0x3f80(16256) */
+   0x2020f9e0:	R7 = 0x0 (X);		/*		R7=0x0(  0) */
+   0x2020f9e2:	W[SP + 0x36] = R0;
+   0x2020f9e6:	W[SP + 0x34] = R7;
+   0x2020f9ea:	R1 = 0x3e80 (X);		/*		R1=0x3e80(16000) */
+   0x2020f9ee:	R2 = 0x4348 (X);		/*		R2=0x4348(17224) */
+   0x2020f9f2:	R4 = 0x0 (X);		/*		R4=0x0(  0) */
+   0x2020f9f4:	R0 = 0x0 (X);		/*		R0=0x0(  0) */
+   0x2020f9f6:	P1 = -0x1 (X);		/*		P1=0xffffffff( -1) */
+   0x2020f9f8:	W[SP + 0x32] = R1;
+   0x2020f9fc:	W[SP + 0x3a] = R2;
+   0x2020fa00:	[FP + 0x8] = R3;
+   0x2020fa02:	W[SP + 0x30] = R4;
+   0x2020fa06:	W[SP + 0x38] = R0;
+   0x2020fa0a:	LSETUP(0x0x2020fa0e, 0x0x2020fad6) LC0 = P1;
+   0x2020fa0e:	R0 = ROT R5 BY 0x0 || R1 = [FP -0x8] || NOP;
+End of assembler dump.
+
+=== done ===
+GDB-EXIT:0

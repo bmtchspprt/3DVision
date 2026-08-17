@@ -1,0 +1,485 @@
+Connected to the simulator.
+Loading section .text, size 0x4 lma 20200000
+Start address ffa00000
+Transfer rate: 32 bits in <1 sec.
+
+=== ffa01688 ===
+Dump of assembler code from 0xffa01688 to 0xffa016d4:
+   0xffa01688:	warning: Can not parse XML memory map; XML support was disabled at compile time
+R1 = R0 << 0x1;
+   0xffa0168c:	CC = AZ;
+   0xffa0168e:	IF CC JUMP 0x0xffa016ca;
+   0xffa01690:	R2 = ABS R0;
+   0xffa01694:	P1 = R0;
+   0xffa01696:	R1.L = SIGNBITS R2;
+   0xffa0169a:	R1 = R1.L (Z);
+   0xffa0169c:	R2 = ASHIFT R2 BY R1.L;
+   0xffa016a0:	R0 = 0x9c (Z);		/*		R0=0x9c(156) */
+   0xffa016a4:	R1 = R0 - R1;
+   0xffa016a6:	R0 += -0x1d;		/* (-29) */
+   0xffa016a8:	R3 = R0 & R2;
+   0xffa016aa:	R2 += 0x3f;		/* ( 63) */
+   0xffa016ac:	R2 += 0x1;		/* (  1) */
+   0xffa016ae:	R2 >>= 0x7;
+   0xffa016b0:	BITTGL (R3, 0x6);		/* bit  6 */
+   0xffa016b2:	CC = R3 == 0x0;
+   0xffa016b4:	R3 = CC;
+   0xffa016b6:	R3 =~ R3;
+   0xffa016b8:	R2 = R2 & R3;
+   0xffa016ba:	R0 = R1 << 0x17;
+   0xffa016be:	R0 = R2 + R0;
+   0xffa016c0:	CC = P1 < 0x0;
+   0xffa016c2:	IF CC JUMP 0x0xffa016c6;
+   0xffa016c4:	RTS;
+   0xffa016c6:	BITSET (R0, 0x1f);		/* bit 31 */
+   0xffa016c8:	RTS;
+   0xffa016ca:	CC = BITTST (R0, 0x1f);		/* bit 31 */
+   0xffa016cc:	R0.H = 0xcf00;		/* (-12544)	R0=0xcf00009c(-822083428) */
+   0xffa016d0:	IF !CC R0 = R1;
+   0xffa016d2:	RTS;
+End of assembler dump.
+
+=== ffa016d4 ===
+Dump of assembler code from 0xffa016d4 to 0xffa01760:
+   0xffa016d4:	CC = R0 == 0x0;
+   0xffa016d6:	IF CC JUMP 0x0xffa01712;
+   0xffa016d8:	R1.L = SIGNBITS R0;
+   0xffa016dc:	R1 = R1.L (Z);
+   0xffa016de:	CC = BITTST (R0, 0x1f);		/* bit 31 */
+   0xffa016e0:	R2 = -0x1 (X);		/*		R2=0xffffffff( -1) */
+   0xffa016e2:	IF CC R1 = R2;
+   0xffa016e4:	R2 = 0x1 (X);		/*		R2=0x1(  1) */
+   0xffa016e6:	R3 = R2 & R0;
+   0xffa016e8:	R2 = 0x0 (X);		/*		R2=0x0(  0) */
+   0xffa016ea:	IF !CC R3 = R2;
+   0xffa016ec:	R2 = LSHIFT R0 BY R1.L;
+   0xffa016f0:	R0 = 0x9c (X);		/*		R0=0x9c(156) */
+   0xffa016f4:	R1 = R0 - R1;
+   0xffa016f6:	R0 = R2 << 0x19;
+   0xffa016fa:	R3 = R0 | R3;
+   0xffa016fc:	BITTGL (R3, 0x1f);		/* bit 31 */
+   0xffa016fe:	R2 += 0x3f;		/* ( 63) */
+   0xffa01700:	R2 += 0x1;		/* (  1) */
+   0xffa01702:	R2 >>= 0x7;
+   0xffa01704:	CC = R3 == 0x0;
+   0xffa01706:	R3 = CC;
+   0xffa01708:	R3 =~ R3;
+   0xffa0170a:	R2 = R2 & R3;
+   0xffa0170c:	R0 = R1 << 0x17;
+   0xffa01710:	R0 = R2 + R0;
+   0xffa01712:	RTS;
+   0xffa01714:	BITTGL (R1, 0x1f);		/* bit 31 */
+   0xffa01716:	R3 = R1 << 0x1;
+   0xffa0171a:	CC = R3 == 0x0;
+   0xffa0171c:	IF CC JUMP 0x0xffa017be;
+   0xffa0171e:	R2 = R0 << 0x1;
+   0xffa01722:	CC = R2 == 0x0;
+   0xffa01724:	IF CC JUMP 0x0xffa017c4;
+   0xffa01726:	[--SP] = R0;
+   0xffa01728:	CC = R2 < R3 (IU);
+   0xffa0172a:	R2 = R0;
+   0xffa0172c:	IF CC R0 = R1;
+   0xffa0172e:	IF CC R1 = R2;
+   0xffa01730:	R3.L = 0x1708;		/* (5896)	R3=0x1708(5896) */
+   0xffa01734:	R2 = EXTRACT (R0, R3.L) (Z) || [SP--] = R6 || NOP;
+   0xffa0173c:	R3 = EXTRACT (R1, R3.L) (Z) || [SP] = R7 || NOP;
+   0xffa01744:	R7 = 0xff (X);		/*		R7=0xff(255) */
+   0xffa01748:	CC = R3;
+   0xffa0174a:	IF !CC JUMP 0x0xffa017c8;
+   0xffa0174c:	CC = R2 == R7;
+   0xffa0174e:	IF CC JUMP 0x0xffa017e4;
+   0xffa01750:	R7 = R1 << 0x9;
+   0xffa01754:	R7 >>= 0x4;
+   0xffa01756:	BITSET (R7, 0x1c);		/* bit 28 */
+   0xffa01758:	R6 = R0 << 0x9;
+   0xffa0175c:	R6 >>= 0x4;
+   0xffa0175e:	BITSET (R6, 0x1c);		/* bit 28 */
+End of assembler dump.
+
+=== ffa01814 ===
+Dump of assembler code from 0xffa01814 to 0xffa018f0:
+   0xffa01814:	R3 = R0 ^ R1;
+   0xffa01816:	R3 >>= 0x1f;
+   0xffa01818:	R3 <<= 0x1f;
+   0xffa0181a:	[--SP] = (R7:4);
+   0xffa0181c:	BITCLR (R0, 0x1f);		/* bit 31 */
+   0xffa0181e:	BITCLR (R1, 0x1f);		/* bit 31 */
+   0xffa01820:	R6 = R0 >> 0x17;
+   0xffa01824:	R5 = R1 >> 0x17;
+   0xffa01828:	R7 = 0xff (Z);		/*		R7=0xff(255) */
+   0xffa0182c:	CC = R6 == R7;
+   0xffa0182e:	IF CC JUMP 0x0xffa018ba;
+   0xffa01830:	CC = R5 == R7;
+   0xffa01832:	IF CC JUMP 0x0xffa018ca;
+   0xffa01834:	CC = R1 == 0x0;
+   0xffa01836:	IF CC JUMP 0x0xffa018d8;
+   0xffa01838:	CC = R0 == 0x0;
+   0xffa0183a:	IF CC JUMP 0x0xffa018e2;
+   0xffa0183c:	R2 = 0x3f8 (Z);		/*		R2=0x3f8(1016) */
+   0xffa01840:	R2 <<= 0x14;
+   0xffa01842:	CC = R1 == R2;
+   0xffa01844:	IF CC JUMP 0x0xffa018e2;
+   0xffa01846:	CC = R0 == R1;
+   0xffa01848:	IF CC R0 = R2;
+   0xffa0184a:	IF CC JUMP 0x0xffa018e2;
+   0xffa0184c:	R4 = 0x7f (Z);		/*		R4=0x7f(127) */
+   0xffa01850:	R6 = R6 - R5;
+   0xffa01852:	R6 = R6 + R4;
+   0xffa01854:	CC = R6 <= R7;
+   0xffa01856:	IF !CC JUMP 0x0xffa018dc;
+   0xffa01858:	R2.L = 0x17;		/* ( 23)	R2=0x17( 23) */
+   0xffa0185c:	R0 = EXTRACT (R0, R2.L) (Z);
+   0xffa01860:	R1 = EXTRACT (R1, R2.L) (Z);
+   0xffa01864:	R2 = 0x0 (X);		/*		R2=0x0(  0) */
+   0xffa01866:	R7 = R2;
+   0xffa01868:	BITSET (R0, 0x17);		/* bit 23 */
+   0xffa0186a:	BITSET (R1, 0x17);		/* bit 23 */
+   0xffa0186c:	CC = R1 < R0;
+   0xffa0186e:	R5 = CC;
+   0xffa01870:	R4 = R0 - R1;
+   0xffa01872:	IF CC R0 = R4;
+   0xffa01874:	R4 = 0x20 (X);		/*		R4=0x20( 32) */
+   0xffa01876:	R4 = R4 - R5;
+   0xffa01878:	P1 = R4;
+   0xffa0187a:	LSETUP(0x0xffa0187e, 0x0xffa01888) LC0 = P1;
+   0xffa0187e:	CC = R1 < R0;
+   0xffa01880:	R4 = R0 - R1;
+   0xffa01882:	IF CC R0 = R4;
+   0xffa01884:	R2 = ROT R2 BY 0x1;
+   0xffa01888:	R0 <<= 0x1;
+   0xffa0188a:	R4 = R2 << 0x19;
+   0xffa0188e:	R2 >>= 0x7;
+   0xffa01890:	R5 = R2 << 0x8;
+   0xffa01894:	R5 >>>= 0x1f;
+   0xffa01896:	R6 = R6 + R5;
+   0xffa01898:	BITCLR (R2, 0x17);		/* bit 23 */
+   0xffa0189a:	CC = R6 <= 0x0;
+   0xffa0189c:	IF CC JUMP 0x0xffa018e8;
+   0xffa0189e:	R4 >>= 0x1f;
+   0xffa018a0:	R5 = R2 + R4;
+   0xffa018a2:	CC = R5 == 0x0;
+   0xffa018a4:	IF CC R6 = R5;
+   0xffa018a6:	R5 = 0xff (X);		/*		R5=0xff(255) */
+   0xffa018aa:	CC = R6 < R5;
+   0xffa018ac:	IF !CC JUMP 0x0xffa018dc;
+   0xffa018ae:	R6 <<= 0x17;
+   0xffa018b0:	R0 = R2 | R6;
+   0xffa018b2:	R0 = R0 + R4;
+   0xffa018b4:	R0 = R3 | R0;
+   0xffa018b6:	(R7:4) = [SP++];
+   0xffa018b8:	RTS;
+   0xffa018ba:	CC = R5 < R7;
+   0xffa018bc:	R6 = R0 << 0x9;
+   0xffa018c0:	CC &= AZ;
+   0xffa018c2:	IF CC JUMP 0x0xffa018dc (BP);
+   0xffa018c4:	R0 = -0x1 (X);		/*		R0=0xffffffff( -1) */
+   0xffa018c6:	(R7:4) = [SP++];
+   0xffa018c8:	RTS;
+   0xffa018ca:	CC = R0 == 0x0;
+   0xffa018cc:	R7 = R1 << 0x9;
+   0xffa018d0:	CC &= AZ;
+   0xffa018d2:	IF !CC JUMP 0x0xffa018c4;
+   0xffa018d4:	R0 = 0x0 (X);		/*		R0=0x0(  0) */
+   0xffa018d6:	JUMP.S 0x0xffa018e2;
+   0xffa018d8:	CC = R0 == 0x0;
+   0xffa018da:	IF CC JUMP 0x0xffa018c4;
+   0xffa018dc:	R0 = 0x7f8 (Z);		/*		R0=0x7f8(2040) */
+   0xffa018e0:	R0 <<= 0x14;
+   0xffa018e2:	R0 = R0 | R3;
+   0xffa018e4:	(R7:4) = [SP++];
+   0xffa018e6:	RTS;
+   0xffa018e8:	R0 = R3;
+   0xffa018ea:	(R7:4) = [SP++];
+   0xffa018ec:	RTS;
+   0xffa018ee:	NOP;
+End of assembler dump.
+
+=== ffa018f0 ===
+Dump of assembler code from 0xffa018f0 to 0xffa01a00:
+   0xffa018f0:	[--SP] = R7;
+   0xffa018f2:	R3.L = 0x1708;		/* (5896)	R3=0x1708(5896) */
+   0xffa018f6:	R2 = EXTRACT (R0, R3.L) (Z);
+   0xffa018fa:	R3 = EXTRACT (R1, R3.L) (Z);
+   0xffa018fe:	R7 = 0xff (X);		/*		R7=0xff(255) */
+   0xffa01902:	CC = R2 == R7;
+   0xffa01904:	IF CC JUMP 0x0xffa01990;
+   0xffa01906:	CC = R3 == R7;
+   0xffa01908:	IF CC JUMP 0x0xffa0198a;
+   0xffa0190a:	R7 = R0 ^ R1;
+   0xffa0190c:	CC = R2;
+   0xffa0190e:	IF !CC JUMP 0x0xffa019b0;
+   0xffa01910:	R0 = R0 << 0x8;
+   0xffa01914:	BITSET (R0, 0x1f);		/* bit 31 */
+   0xffa01916:	CC = R3;
+   0xffa01918:	IF !CC JUMP 0x0xffa019d8;
+   0xffa0191a:	R1 = R1 << 0x8;
+   0xffa0191e:	BITSET (R1, 0x1f);		/* bit 31 */
+   0xffa01920:	R2 = R2 + R3;
+   0xffa01922:	R2 += -0x40;		/* (-64) */
+   0xffa01924:	R2 += -0x3f;		/* (-63) */
+   0xffa01926:	A1 = R0.H * R1.L, A0 = R0.L * R1.L (FU);
+   0xffa0192a:	A0 = A0 >> 0x10;
+   0xffa0192e:	A0 += A1;
+   0xffa01932:	A1 = R0.H * R1.H, A0 += R0.L * R1.H (FU);
+   0xffa01936:	R0 = A0.W;
+   0xffa01938:	R0 = R0.L (Z);
+   0xffa0193a:	A0 = A0 >> 0x10;
+   0xffa0193e:	A0 += A1;
+   0xffa01942:	R1 = A0.W;
+   0xffa01944:	CC = R0;
+   0xffa01946:	R0 = CC;
+   0xffa01948:	R1 = R1 | R0;
+   0xffa0194a:	R0.L = SIGNBITS A0;
+   0xffa0194e:	R0 = R0.L (X);
+   0xffa01950:	R2 = R2 - R0;
+   0xffa01952:	R0 += 0x1;		/* (  1) */
+   0xffa01954:	R1 = LSHIFT R1 BY R0.L;
+   0xffa01958:	CC = R2 <= 0x0;
+   0xffa0195a:	IF CC JUMP 0x0xffa01a00;
+   0xffa0195c:	R0 = 0xfe (X);		/*		R0=0xfe(254) */
+   0xffa01960:	CC = R0 < R2;
+   0xffa01962:	IF CC JUMP 0x0xffa01a16;
+   0xffa01964:	BITCLR (R1, 0x1f);		/* bit 31 */
+   0xffa01966:	CC = R7 < 0x0;
+   0xffa01968:	R2 <<= 0x18;
+   0xffa0196a:	R2 = ROT R2 BY -0x1;
+   0xffa0196e:	R3 = 0x80 (X);		/*		R3=0x80(128) */
+   0xffa01972:	R0 = R1 + R3;
+   0xffa01974:	R7 = R1 << 0x17;
+   0xffa01978:	R7 >>= 0x17;
+   0xffa0197a:	CC = R7 == R3;
+   0xffa0197c:	IF !CC R1 = R0;
+   0xffa0197e:	R1 >>= 0x8;
+   0xffa01980:	R0 = R1 + R2 (NS) || R7 = [SP++] || NOP;
+   0xffa01988:	RTS;
+   0xffa0198a:	R2 = R1;
+   0xffa0198c:	R1 = R0;
+   0xffa0198e:	R0 = R2;
+   0xffa01990:	R2 = R0;
+   0xffa01992:	BITTGL (R2, 0x1f);		/* bit 31 */
+   0xffa01994:	R1 = ROT R1 BY 0x1;
+   0xffa01998:	IF CC R0 = R2;
+   0xffa0199a:	R2 = -0x1 (X);		/*		R2=0xffffffff( -1) */
+   0xffa0199c:	CC = R1 == 0x1;
+   0xffa0199e:	IF CC R0 = R2;
+   0xffa019a0:	R3.L = 0x1;		/* (  1)	R3=0x1(  1) */
+   0xffa019a4:	R3.H = 0xff00;		/* (-256)	R3=0xff000001(-16777215) */
+   0xffa019a8:	CC = R3 < R1 (IU);
+   0xffa019aa:	IF CC R0 = R2;
+   0xffa019ac:	R7 = [SP++];
+   0xffa019ae:	RTS;
+   0xffa019b0:	R0 = R0 << 0x9;
+   0xffa019b4:	CC = R0;
+   0xffa019b6:	IF CC JUMP 0x0xffa019c4;
+   0xffa019b8:	R0 = R7 >> 0x1f;
+   0xffa019bc:	R0 <<= 0x1f;
+   0xffa019be:	NOP;
+   0xffa019c0:	R7 = [SP++];
+   0xffa019c2:	RTS;
+   0xffa019c4:	R0 >>= 0x1;
+   0xffa019c6:	R2.H = 0x0;		/* (  0)	R2=0xffff(65535) */
+   0xffa019ca:	R2.L = SIGNBITS R0;
+   0xffa019ce:	R0 = LSHIFT R0 BY R2.L;
+   0xffa019d2:	R0 <<= 0x1;
+   0xffa019d4:	R2 = -R2;
+   0xffa019d6:	JUMP.S 0x0xffa01916;
+   0xffa019d8:	R1 = R1 << 0x9;
+   0xffa019dc:	CC = R1;
+   0xffa019de:	IF CC JUMP 0x0xffa019ec;
+   0xffa019e0:	R0 = R7 >> 0x1f;
+   0xffa019e4:	R0 <<= 0x1f;
+   0xffa019e6:	NOP;
+   0xffa019e8:	R7 = [SP++];
+   0xffa019ea:	RTS;
+   0xffa019ec:	R1 >>= 0x1;
+   0xffa019ee:	R3.H = 0x0;		/* (  0)	R3=0x1(  1) */
+   0xffa019f2:	R3.L = SIGNBITS R1;
+   0xffa019f6:	R1 = LSHIFT R1 BY R3.L;
+   0xffa019fa:	R1 <<= 0x1;
+   0xffa019fc:	R3 = -R3;
+   0xffa019fe:	JUMP.S 0x0xffa01920;
+End of assembler dump.
+
+=== ffa014dc ===
+Dump of assembler code from 0xffa014dc to 0xffa015a0:
+   0xffa014dc:	R1.L = 0x1708;		/* (5896)	R1=0x1708(5896) */
+   0xffa014e0:	R3 = 0x9e (X);		/*		R3=0x9e(158) */
+   0xffa014e4:	R2 = EXTRACT (R0, R1.L) (Z);
+   0xffa014e8:	CC = R3 <= R2;
+   0xffa014ea:	IF CC JUMP 0x0xffa01512;
+   0xffa014ec:	CC = R2 == 0x0;
+   0xffa014ee:	IF CC JUMP 0x0xffa0151a;
+   0xffa014f0:	R1 = 0x96 (X);		/*		R1=0x96(150) */
+   0xffa014f4:	R2 = R2 - R1;
+   0xffa014f6:	R3.L = 0x17;		/* ( 23)	R3=0x17( 23) */
+   0xffa014fa:	R1 = -0x18 (X);		/*		R1=0xffffffe8(-24) */
+   0xffa014fc:	R2 = MAX (R2, R1);
+   0xffa01500:	R3 = EXTRACT (R0, R3.L) (Z);
+   0xffa01504:	BITSET (R3, 0x17);		/* bit 23 */
+   0xffa01506:	CC = R0 < 0x0;
+   0xffa01508:	R0 = ASHIFT R3 BY R2.L (S);
+   0xffa0150c:	R1 = -R0;
+   0xffa0150e:	IF CC R0 = R1;
+   0xffa01510:	RTS;
+   0xffa01512:	R0 >>>= 0x1f;
+   0xffa01514:	BITTGL (R0, 0x1f);		/* bit 31 */
+   0xffa01516:	R0 =~ R0;
+   0xffa01518:	RTS;
+   0xffa0151a:	R0 = 0x0 (X);		/*		R0=0x0(  0) */
+   0xffa0151c:	RTS;
+   0xffa0151e:	NOP;
+   0xffa01520:	R2 = R0 << 0x1;
+   0xffa01524:	CC = R2 == 0x0;
+   0xffa01526:	IF CC JUMP 0x0xffa0155e;
+   0xffa01528:	R3 = 0xff (Z);		/*		R3=0xff(255) */
+   0xffa0152c:	R3 <<= 0x18;
+   0xffa0152e:	CC = R3 <= R2 (IU);
+   0xffa01530:	IF CC JUMP 0x0xffa01552;
+   0xffa01532:	R2 = R2 >> 0x18;
+   0xffa01536:	R1 = 0x96 (X);		/*		R1=0x96(150) */
+   0xffa0153a:	R3 = R2 - R1;
+   0xffa0153c:	R2 = R0 << 0x9;
+   0xffa01540:	R2 = R2 >> 0x9;
+   0xffa01544:	BITSET (R2, 0x17);		/* bit 23 */
+   0xffa01546:	R0 = -0x20 (X);		/*		R0=0xffffffe0(-32) */
+   0xffa01548:	R3 = MAX (R3, R0);
+   0xffa0154c:	R0 = ASHIFT R2 BY R3.L;
+   0xffa01550:	RTS;
+   0xffa01552:	CC = R3 < R2 (IU);
+   0xffa01554:	IF CC JUMP 0x0xffa0155e;
+   0xffa01556:	CC = BITTST (R0, 0x1f);		/* bit 31 */
+   0xffa01558:	IF CC JUMP 0x0xffa0155e;
+   0xffa0155a:	R0 = -0x1 (X);		/*		R0=0xffffffff( -1) */
+   0xffa0155c:	RTS;
+   0xffa0155e:	R0 = 0x0 (X);		/*		R0=0x0(  0) */
+   0xffa01560:	RTS;
+   0xffa01562:	NOP;
+   0xffa01564:	R3 = 0x1708 (X);		/*		R3=0x1708(5896) */
+   0xffa01568:	P1 = R0;
+   0xffa0156a:	R2 = EXTRACT (R0, R3.L) (Z);
+   0xffa0156e:	R3 = 0xbe (X);		/*		R3=0xbe(190) */
+   0xffa01572:	R3 = R3 - R1;
+   0xffa01574:	CC = R3 <= R2;
+   0xffa01576:	IF CC JUMP 0x0xffa015aa;
+   0xffa01578:	R3 = R3 - R2;
+   0xffa0157a:	R2 = R0 << 0x8;
+   0xffa0157e:	BITSET (R2, 0x1f);		/* bit 31 */
+   0xffa01580:	R1 = R2;
+   0xffa01582:	R1 >>= R3;
+   0xffa01584:	R0 = 0x20 (X);		/*		R0=0x20( 32) */
+   0xffa01586:	R3 = R0 - R3;
+   0xffa01588:	R0 = -0x1f (X);		/*		R0=0xffffffe1(-31) */
+   0xffa0158a:	CC = R3 < R0;
+   0xffa0158c:	IF CC JUMP 0x0xffa015a4;
+   0xffa0158e:	R0 = LSHIFT R2 BY R3.L;
+   0xffa01592:	CC = P1 < 0x0;
+   0xffa01594:	IF CC JUMP 0x0xffa01598;
+   0xffa01596:	RTS;
+   0xffa01598:	R0 = -R0;
+   0xffa0159a:	CC = AC0;
+   0xffa0159c:	R1 =~ R1;
+   0xffa0159e:	R2 = CC;
+End of assembler dump.
+
+=== ffa01c74 ===
+Dump of assembler code from 0xffa01c74 to 0xffa01d60:
+   0xffa01c74:	LINK 0x20;		/* (32) */
+   0xffa01c78:	R2 = R0;
+   0xffa01c7a:	BITCLR (R0, 0x1f);		/* bit 31 */
+   0xffa01c7c:	[--SP] = (R7:4, P5:4);
+   0xffa01c7e:	CC = R0 == 0x0;
+   0xffa01c80:	R4 = R1;
+   0xffa01c82:	SP += -0xc;		/* (-12) */
+   0xffa01c84:	IF !CC JUMP 0x0xffa01cbc;
+   0xffa01c86:	R0 = R4;
+   0xffa01c88:	BITCLR (R0, 0x1f);		/* bit 31 */
+   0xffa01c8a:	CC = R0 == 0x0;
+   0xffa01c8c:	R0 = 0x0 (X);		/*		R0=0x0(  0) */
+   0xffa01c8e:	R0.H = 0x3f80;		/* (16256)	R0=0x3f800000(1065353216) */
+   0xffa01c92:	IF CC JUMP 0x0xffa01cb2;
+   0xffa01c94:	CC = !BITTST (R4, 0x1f);		/* bit 31 */
+   0xffa01c96:	R2 = 0x0 (X);		/*		R2=0x0(  0) */
+   0xffa01c98:	R2.H = 0x7f80;		/* (32640)	R2=0x7f800000(2139095040) */
+   0xffa01c9c:	R1 = CC;
+   0xffa01c9e:	CC = R4 <= R2;
+   0xffa01ca0:	R0 = 0x0 (X);		/*		R0=0x0(  0) */
+   0xffa01ca2:	IF !CC R1 = R0;
+   0xffa01ca4:	CC = R4 == 0x0;
+   0xffa01ca6:	IF CC R1 = R4;
+   0xffa01ca8:	CC = BITTST (R1, 0x0);		/* bit  0 */
+   0xffa01caa:	R3 = -0x1 (X);		/*		R3=0xffffffff( -1) */
+   0xffa01cac:	R3.H = 0x7f7f;		/* (32639)	R3=0x7f7fffff(2139095039) */
+   0xffa01cb0:	IF !CC R0 = R3;
+   0xffa01cb2:	SP += 0xc;		/* ( 12) */
+   0xffa01cb4:	(R7:4, P5:4) = [SP++];
+   0xffa01cb6:	UNLINK;
+   0xffa01cba:	RTS;
+   0xffa01cbc:	R0 = -0x1 (X);		/*		R0=0xffffffff( -1) */
+   0xffa01cbe:	R0 <<= 0x17;
+   0xffa01cc0:	R7 = R2;
+   0xffa01cc2:	CC = R2 <= R0;
+   0xffa01cc4:	R1 = R2 >> 0x1f;
+   0xffa01cc8:	R3 = 0x0 (X);		/*		R3=0x0(  0) */
+   0xffa01cca:	BITTGL (R7, 0x1f);		/* bit 31 */
+   0xffa01ccc:	IF !CC R1 = R3;
+   0xffa01cce:	CC = R7 == 0x0;
+   0xffa01cd0:	IF CC R1 = R7;
+   0xffa01cd2:	R0 = 0x0 (X);		/*		R0=0x0(  0) */
+   0xffa01cd4:	CC = BITTST (R1, 0x0);		/* bit  0 */
+   0xffa01cd6:	[SP + 0x34] = R0;
+   0xffa01cd8:	IF !CC JUMP 0x0xffa01cf8;
+   0xffa01cda:	R0 = R4;
+   0xffa01cdc:	CALL 0x0xffa014dc;
+   0xffa01ce0:	R6 = R0;
+   0xffa01ce2:	CALL 0x0xffa01688;
+   0xffa01ce6:	R1 = R4;
+   0xffa01ce8:	CALL 0x0xffa01618;
+   0xffa01cec:	R0 = 0x0 (X);		/*		R0=0x0(  0) */
+   0xffa01cee:	IF !CC JUMP 0x0xffa01cb2 (BP);
+   0xffa01cf0:	R0 = 0x1 (X);		/*		R0=0x1(  1) */
+   0xffa01cf2:	R0 = R6 & R0;
+   0xffa01cf4:	[SP + 0x34] = R0;
+   0xffa01cf6:	R2 = R7;
+   0xffa01cf8:	R6 = -0x1 (X);		/*		R6=0xffffffff( -1) */
+   0xffa01cfa:	W[SP + 0x28] = R6;
+   0xffa01cfe:	R0 = -0x7f81 (X);		/*		R0=0xffff807f(-32641) */
+   0xffa01d02:	W[SP + 0x2a] = R0;
+   0xffa01d06:	R1 = FP;
+   0xffa01d08:	R1 += 0xc;		/* ( 12) */
+   0xffa01d0a:	[SP + 0x2c] = R1;
+   0xffa01d0c:	R3 = 0x0 (X);		/*		R3=0x0(  0) */
+   0xffa01d0e:	R3.H = 0x3f00;		/* (16128)	R3=0x3f000000(1056964608) */
+   0xffa01d12:	P4.L = 0x359c;		/* (13724)	P4=0x359c */
+   0xffa01d16:	P4.H = 0xff80;		/* (-128)	P4=0xff80359c */
+   0xffa01d1a:	R7 = [SP + 0x28];
+   0xffa01d1c:	R0 = R2 & R7;
+   0xffa01d1e:	R3 = R0 | R3;
+   0xffa01d20:	[SP + 0x3c] = R3;
+   0xffa01d22:	R7 = R2 >>> 0x17;
+   0xffa01d26:	R0 = [P4 + 0x24];
+   0xffa01d28:	R6 = 0x1 (X);		/*		R6=0x1(  1) */
+   0xffa01d2a:	P0.L = 0x35e4;		/* (13796)	P0=0x35e4 */
+   0xffa01d2e:	P0.H = 0xff80;		/* (-128)	P0=0xff8035e4 */
+   0xffa01d32:	R1 = [SP + 0x3c];
+   0xffa01d34:	CALL 0x0xffa01630;
+   0xffa01d38:	R2 = 0x9 (X);		/*		R2=0x9(  9) */
+   0xffa01d3a:	IF CC R6 = R2;
+   0xffa01d3c:	R0 = R6;
+   0xffa01d3e:	R0 += 0x4;		/* (  4) */
+   0xffa01d40:	[FP -0x4] = R0;
+   0xffa01d42:	P1 = [FP -0x4];
+   0xffa01d44:	R3 = -0x7e (X);		/*		R3=0xffffff82(-126) */
+   0xffa01d48:	R1 = -0x5713 (X);		/*		R1=0xffffa8ed(-22291) */
+   0xffa01d4c:	R2 = R7 + R3;
+   0xffa01d4e:	P1 = P4 + (P1 << 0x2);
+   0xffa01d50:	[SP + 0x38] = R1;
+   0xffa01d52:	R2 <<= 0x4;
+   0xffa01d54:	R1 = [SP + 0x3c];
+   0xffa01d56:	R0 = [P1];
+   0xffa01d58:	[SP + 0x30] = R2;
+   0xffa01d5a:	CALL 0x0xffa01630;
+   0xffa01d5e:	R2 = [FP -0x4];
+End of assembler dump.
+
+=== done ===
+GDB-EXIT:0

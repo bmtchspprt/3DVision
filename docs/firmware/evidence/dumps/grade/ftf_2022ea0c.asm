@@ -1,0 +1,40 @@
+2022e9de: CALL (P1)
+2022e9e0: ASH|| A1 = A1 >>> 0xf
+2022e9e4: STORE [P5 + 0x28] = R0
+2022e9e6: NOP
+2022e9e8: MOVE|| R2 = (A0 += A1)
+2022e9ec: STORE [P5 + 0x20] = R6
+2022e9ee: NOP
+2022e9f0: MAC A1 = R6.L * R6.L (fu)
+2022e9f4: LSH A1 = A1 >> 0x10
+2022e9f8: MAC A1 += R6.H * R6.L (m),A0 = R6.H * R6.H 
+2022e9fc: MAC A1 += R6.H * R6.L (m)
+2022ea00: ASH A1 = A1 >>> 0xf
+2022ea04: MOVE R1 = (A0 += A1)
+2022ea08: ADD R0 = R2 + R1
+2022ea0a: STORE [P5 + 0x24] = R0
+2022ea0c: LOAD P1.L = 0x2894
+2022ea10: LOAD P1.H = 0xffa0
+2022ea14: CALL (P1)
+2022ea16: LOAD P1.L = 0x248c
+2022ea1a: LOAD P1.H = 0xffa0
+2022ea1e: CALL (P1)
+2022ea20: LOAD P1.L = 0x28c8
+2022ea24: LOAD P1.H = 0xffa0
+2022ea28: CALL (P1)
+2022ea2a: LOAD R1 = [P3 + 0x1c]
+2022ea2c: ASH|| R0 = R1 >>> 0x3
+2022ea30: _STORE [P5 + 0x24] = R0
+2022ea32: _NOP
+2022ea34: LOAD P1.L = 0x7194
+2022ea38: LOAD P1.H = 0xffa0
+2022ea3c: CALL (P1)
+2022ea3e: LOAD R2 = [P5 + 0x28]
+2022ea40: MAC A1 = R2.L * R0.L (fu)
+2022ea44: LSH A1 = A1 >> 0x10
+2022ea48: MAC A1 += R2.H * R0.L (m),A0 = R2.H * R0.H 
+2022ea4c: MAC A1 += R0.H * R2.L (m)
+2022ea50: ASH A1 = A1 >>> 0xf
+2022ea54: LOAD R1 = [P5 + 0x48]
+2022ea58: MOVE R0 = (A0 += A1)
+2022ea5c: CC = R2 <= R1

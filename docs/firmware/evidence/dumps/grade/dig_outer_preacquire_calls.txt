@@ -1,0 +1,27 @@
+===== CALLS 0x20224000..0x20224130 =====
+2022402c: CALL (P1) => ffa05c38
+2022406a: CALL (P1) => ffa05ee4
+20224084: CALL (P1) => ffa0586c
+202240ae: CALL (P1) => ffa05ee4
+202240c8: CALL (P1) => ffa0586c
+202240d8: CALL (P1) => ffa05ee4
+202240e4: CALL (P1) => ffa0586c
+202240f8: CALL (P1) => ffa05ee4
+20224104: CALL (P1) => ffa0586c
+20224130: CALL 0x20220636 => 20220636
+%n===== unique targets Grade-scan =====
+tgt 20220636 x1: sw=true storePP=false ls=false 44=true 578=false len=false mem=false
+tgt ffa0586c x4: sw=false storePP=false ls=false 44=false 578=false len=false mem=false
+tgt ffa05c38 x1: sw=false storePP=false ls=false 44=false 578=false len=false mem=false
+tgt ffa05ee4 x4: sw=false storePP=false ls=false 44=false 578=false len=false mem=false
+%n===== 0x20224200..0x202245a8 CALL timeline =====
+2022422c: CALL (P1) => ffa00a78
+20224288: CALL (P1) => ffa018f0
+20224382: CALL 0x2020fd42 => 2020fd42
+202243b4: CALL 0x20210546 => 20210546
+202243e4: CALL (P1) => ffa05ee4
+20224458: CALL 0x202b5024 => 202b5024
+202244a6: CALL (P1) => ffa05f2e
+20224516: CALL 0x202b5024 => 202b5024
+2022456a: CALL (P1) => ffa05f2e
+202245a8: CALL 0x20220636 => 20220636

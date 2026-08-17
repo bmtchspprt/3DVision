@@ -1,0 +1,335 @@
+===== 2020BA80..2020BD00 =====
+  2020ba82: LOAD P1 = [FP + 0x10]
+  2020ba84: LOAD R0 = B [P1 + 0x37] (Z)
+  2020ba88: CC = R0 < 0x1
+  2020ba8a: IF CC JUMP 0x2020ba92
+  2020ba8c: LOAD R1 = 0x5
+  2020ba8e: CC = R1 < R0
+  2020ba90: IF !CC JUMP 0x2020ba96
+  2020ba92: STORE B [P1 + 0x37] = R6
+  2020ba96: LOAD R4 = [P1 + 0x8]
+  2020ba98: MOVE R0 = R4
+  2020ba9a: LOAD R1 = 0x3e8
+  2020ba9e: LOAD P1.L = 0x1038
+  2020baa2: LOAD P1.H = 0xffa0
+* 2020baa6: CALL (P1)  => 0xffa01038
+  2020baa8: LOAD R2 = 0x195
+  2020baac: CC = R0 == R2
+  2020baae: IF CC JUMP 0x2020bab2 (bp)
+  2020bab0: JUMP.S 0x2020bef2
+  2020bab2: LOAD R0 = B [SP + 0xac] (Z)
+  2020bab6: LOAD R1 = 0x7
+  2020bab8: CC = R0 == R1
+  2020baba: IF !CC JUMP 0x2020babe (bp)
+  2020babc: JUMP.S 0x2020bf12
+  2020babe: CC = R0 == 0x2
+  2020bac0: IF CC JUMP 0x2020bac4 (bp)
+  2020bac2: JUMP.S 0x2020bea4
+  2020bac4: MOVE R0 = FP
+* 2020bac6: STORE [FP + 0x8] = R7
+  2020bac8: ADD R0 += 0x8
+  2020baca: LOAD R2 = 0x28
+  2020bacc: LOAD R1 = 0x4
+* 2020bace: CALL 0x2020b0c6
+  2020bad2: LOAD P1 = [FP + 0x10]
+  2020bad4: LOAD R4 = [P1 + 0x8]
+  2020bad6: CC = R4 == -0x1
+  2020bad8: IF CC JUMP 0x2020bae6
+  2020bada: LOAD R0 = B [SP + 0xac] (Z)
+  2020bade: LOAD R1 = 0x5
+  2020bae0: CC = R0 == R1
+* 2020bae2: STORE [SP + 0x28] = R0
+  2020bae4: IF !CC JUMP 0x2020be02
+  2020bae6: LOAD P2 = [FP + 0x10]
+  2020bae8: LOAD P0 = [FP + -0x14]
+  2020baea: LOAD R0 = 0x20
+  2020baec: LOAD R1 = 0x4
+  2020baee: STORE B [P1 + 0xd] = R7
+* 2020baf2: STORE [P2 + 0x3c] = R0
+* 2020baf4: STORE [P2 + 0x40] = R0
+  2020baf8: STORE B [P0 + 0x45] = R1
+  2020bafc: LOAD R0 = B [SP + 0xac] (Z)
+  2020bb00: LOAD R3 = 0x5
+  2020bb02: CC = R0 == R3
+  2020bb04: IF !CC JUMP 0x2020bb10
+  2020bb06: LOAD P0 = [FP + 0x10]
+* 2020bb08: STORE [P3] = R7
+* 2020bb0a: STORE [P0] = R7
+  2020bb0c: STORE B [P0 + 0xc] = R7
+  2020bb10: LOAD P1 = [FP + 0x10]
+  2020bb12: LOAD P0 = 0x2
+  2020bb14: LOAD R0 = -0x7e
+  2020bb18: LOAD R1 = 0x8
+  2020bb1a: ADD P1 += 0x2f
+  2020bb1c: STORE B [P1 + -0x21] = R6
+  2020bb20: STORE B [P1 + -0x20] = R7
+  2020bb24: LOAD R2 = 0x20
+* 2020bb26: LSETUP (0x2020bb2a,0x2020bb2e) LC0 = P0
+  2020bb2a: STORE B [P1++] = R0
+  2020bb2c: STORE B [P1++] = R1
+  2020bb2e: STORE B [P1++] = R2
+  2020bb30: LOAD P2 = [FP + 0x10]
+* 2020bb32: LOAD P1 = 0x44
+  2020bb36: LOAD P0 = 0x4
+  2020bb38: ADD P1 = P2 + P1
+* 2020bb3a: LSETUP (0x2020bb3e,0x2020bb42) LC0 = P0
+  2020bb3e: STORE B [P1++] = R0
+  2020bb40: STORE B [P1++] = R1
+  2020bb42: STORE B [P1++] = R2
+  2020bb44: LOAD P1 = 0x50
+  2020bb48: ADD P1 = P2 + P1
+  2020bb4a: STORE B [P1++] = R7
+  2020bb4c: STORE B [P1++] = R7
+  2020bb4e: LOAD P0 = 0x8
+  2020bb50: STORE B [P1++] = R7
+* 2020bb52: LSETUP (0x2020bb56,0x2020bb5a) LC0 = P0
+  2020bb56: STORE B [P1++] = R0
+  2020bb58: STORE B [P1++] = R1
+  2020bb5a: STORE B [P1++] = R2
+  2020bb5c: LOAD P1 = [FP + -0x4]
+  2020bb5e: LOAD R1 = 0x4
+  2020bb60: LOAD P0 = [FP + -0x1c]
+  2020bb62: STORE B [P2 + 0x37] = R6
+  2020bb66: STORE B [P1 + 0xd] = R1
+  2020bb6a: STORE B [P1 + 0x1] = R6
+* 2020bb6e: STORE [P1 + 0x8] = R7
+  2020bb70: STORE B [P1 + 0xe] = R6
+  2020bb74: LOAD P1 = [FP + -0x2c]
+  2020bb76: STORE B [P2 + 0x38] = R6
+  2020bb7a: LOAD R2 = [P2 + 0x3c]
+  2020bb7c: LOAD P2 = [FP + -0x18]
+* 2020bb7e: STORE [P1] = R7
+* 2020bb80: STORE [P1 + 0x4] = R7
+  2020bb82: LOAD P1 = [FP + -0x4]
+  2020bb84: LOAD R4 = 0x2
+* 2020bb86: STORE [P0 + 0x4] = R7
+* 2020bb88: STORE [P0 + 0x8] = R7
+  2020bb8a: STORE B [P1 + 0x2] = R4
+  2020bb8e: LOAD P1 = [FP + -0x18]
+  2020bb90: LOAD P0 = [FP + -0x20]
+  2020bb92: STORE B [P2 + 0x1] = R6
+* 2020bb96: STORE [P2 + 0x4] = R7
+  2020bb98: LOAD P2 = [FP + -0x1c]
+  2020bb9a: LOAD R0 = 0xfa0
+* 2020bb9e: STORE [P3 + 0xc] = R0
+  2020bba0: LOAD R1 = 0x5a
+  2020bba4: LOAD R0 = 0x624d
+* 2020bba8: STORE [P3 + 0x4] = R1
+  2020bbaa: STORE B [P3 + 0x12] = R1
+  2020bbae: BITSET (R0,0x14)
+  2020bbb0: LOAD R1 = 0x1f
+* 2020bbb2: STORE [P1 + 0xc] = R0
+* 2020bbb4: STORE [P0 + 0xc] = R0
+  2020bbb6: STORE B [P2] = R1
+  2020bbb8: LOAD R0 = 0x64
+  2020bbbc: LOAD P2 = [FP + -0x4]
+* 2020bbbe: STORE [P3 + 0x20] = R0
+  2020bbc0: LOAD R0 = 0x10
+  2020bbc2: CC = R2 == R0
+  2020bbc4: STORE B [P3 + 0x13] = R3
+  2020bbc8: LOAD R3 = 0x2
+  2020bbca: MOVE R0 = CC
+  2020bbcc: STORE B [P3 + 0x10] = R3
+  2020bbd0: LOAD R3 = 0x3
+  2020bbd2: STORE B [P2 + 0xc] = R0
+  2020bbd6: LOAD P2 = [FP + -0x20]
+  2020bbd8: STORE B [P3 + 0x11] = R3
+  2020bbdc: STORE B [P3 + 0x1c] = R3
+  2020bbe0: LOAD R3 = 0x3c
+* 2020bbe2: STORE [P1 + 0x8] = R3
+  2020bbe4: LOAD R3 = 0x5c28
+  2020bbe8: LOAD R3.H = 0x28f
+* 2020bbec: STORE [P2 + 0x8] = R3
+  2020bbee: LOAD P2 = [FP + -0x4]
+  2020bbf0: LOAD P1 = [FP + -0x1c]
+  2020bbf2: LOAD R0 = 0x5e86
+  2020bbf6: LOAD R0.H = 0x17
+* 2020bbfa: STORE [P2 + 0x4] = R0
+  2020bbfc: LOAD R4 = 0x12c
+  2020bc00: LOAD R1 = 0xc35
+  2020bc04: LOAD P2 = 0x1e
+  2020bc06: STORE B [P3 + 0x8] = R6
+  2020bc0a: STORE B [P3 + 0x9] = R7
+  2020bc0e: STORE B [P3 + 0x14] = R6
+  2020bc12: STORE B [P3 + 0x1d] = R6
+* 2020bc16: STORE [P3 + 0x18] = R4
+  2020bc18: MOVE R0 = R1
+  2020bc1a: ADD P1 += 0xc
+  2020bc1c: LOAD P0 = [FP + -0x1c]
+* 2020bc1e: LSETUP (0x2020bc22,0x2020bc26) LC0 = P2
+* 2020bc22: STORE [P1++] = R3
+* 2020bc24: STORE [P1++] = R0
+  2020bc26: ADD R0 = R0 + R1
+  2020bc28: LOAD P1 = [FP + -0x4]
+  2020bc2a: LOAD R1 = 0x0
+  2020bc2c: LOAD R0 = 0x2
+  2020bc2e: LOAD P2 = [FP + -0x2c]
+  2020bc30: LOAD R2.H = 0xc71
+  2020bc34: STORE B [P1] = R0
+  2020bc36: LOAD P1 = [FP + -0xc]
+* 2020bc38: STORE [P2 + 0x8] = R4
+  2020bc3a: LOAD P2 = [FP + -0x8]
+  2020bc3c: LOAD R0 = 0x86a0
+  2020bc40: STORE B [P1] = R6
+* 2020bc42: STORE [P1 + 0x4] = R7
+* 2020bc44: STORE [P1 + 0x8] = R7
+  2020bc46: LOAD P1 = [FP + -0x24]
+* 2020bc48: STORE [P2 + 0x8] = R3
+* 2020bc4a: STORE [P2] = R7
+* 2020bc4c: STORE [P2 + 0x4] = R7
+* 2020bc4e: STORE [P1 + 0xc] = R3
+  2020bc50: LOAD P1 = [FP + -0xc]
+  2020bc52: LOAD P2 = [FP + -0xc]
+  2020bc54: BITSET (R0,0x10)
+* 2020bc56: STORE [P0 + 0x100] = R0
+  2020bc5a: STORE B [P1 + 0x2] = R6
+* 2020bc5e: STORE [P1 + 0x1c] = R7
+* 2020bc60: STORE [P1 + 0x20] = R7
+  2020bc62: LOAD P1 = [FP + -0x10]
+* 2020bc64: STORE [P2 + 0x10] = R3
+* 2020bc66: STORE [P2 + 0xc] = R7
+  2020bc68: STORE B [P2 + 0x1] = R6
+* 2020bc6c: STORE [P2 + 0x24] = R7
+  2020bc6e: STORE B [P1] = R6
+* 2020bc70: STORE [P1 + 0x4] = R7
+* 2020bc72: STORE [P1 + 0x8] = R7
+* 2020bc74: STORE [P1 + 0x18] = R7
+  2020bc76: LOAD P2 = [FP + -0x10]
+  2020bc78: LOAD P1 = [FP + -0x24]
+  2020bc7a: LOAD R4 = 0x0
+  2020bc7c: LOAD R0 = -0x38e4
+* 2020bc80: STORE [P2 + 0xc] = R7
+  2020bc82: LSH R2.L = R0.L << 0x0
+* 2020bc86: STORE [P2 + 0x10] = R7
+* 2020bc88: STORE [P2 + 0x14] = R7
+  2020bc8a: STORE B [P1] = R6
+* 2020bc8c: STORE [P1 + 0x4] = R7
+* 2020bc8e: STORE [P1 + 0x8] = R7
+  2020bc90: LOAD P1 = [FP + -0x8]
+  2020bc92: LOAD P2 = [FP + -0x14]
+  2020bc94: BITSET (R4,0x1e)
+* 2020bc96: STORE [P0 + 0xfc] = R3
+* 2020bc9a: STORE [P1 + 0xc] = R4
+* 2020bc9c: STORE [P1 + 0x10] = R2
+  2020bc9e: STORE B [P2] = R6
+  2020bca0: LOAD P1 = [FP + -0xc]
+  2020bca2: LOAD P2 = [FP + -0x28]
+  2020bca4: LOAD R4 = -0x51ec
+  2020bca8: MOVE R3 = R4
+  2020bcaa: LOAD R3.H = 0x147
+* 2020bcae: STORE [P1 + 0x14] = R3
+* 2020bcb0: STORE [P1 + 0x18] = R3
+  2020bcb2: STORE B [P2 + 0x22] = R7
+  2020bcb6: STORE B [P2 + 0x26] = R7
+  2020bcba: LOAD R1.H = 0x42c8
+  2020bcbe: IF !CC JUMP 0x2020bcca
+  2020bcc0: MOVE R0 = R1
+  2020bcc2: LOAD R1 = 0x0
+  2020bcc4: LOAD R1.H = 0x3f80
+  2020bcc8: JUMP.S 0x2020bcd0
+  2020bcca: LOAD R0 = 0x0
+  2020bccc: LOAD R0.H = 0x4120
+  2020bcd0: LOAD P2 = [FP + -0x14]
+  2020bcd2: LOAD R4 = 0xa
+  2020bcd4: ADD P4 += 0x26
+* 2020bcd6: STORE [P2 + 0x18] = R0
+* 2020bcd8: STORE [P2 + 0x1c] = R0
+* 2020bcda: STORE [P2 + 0x20] = R1
+  2020bcdc: LOAD P2 = [FP + -0x30]
+  2020bcde: LOAD R0 = [P2]
+* 2020bce0: CALL 0x2020b3c2
+  2020bce4: STORE B [P3 + 0x28] = R6
+  2020bce8: LOAD R3 = 0x9
+  2020bcea: LOAD R6 = 0xb
+  2020bcec: STORE B [P3 + 0x29] = R3
+  2020bcf0: STORE B [P3 + 0x2a] = R4
+  2020bcf4: STORE B [P3 + 0x2b] = R6
+  2020bcf8: LOAD R1 = W [P5 + 0x2] (Z)
+  2020bcfa: LOAD R2 = W [P5 + 0x4] (Z)
+  2020bcfc: LOAD R0 = [SP + 0x2c]
+* 2020bcfe: CALL 0x2020b0c6
+
+===== CALLERS into 2020BB00..BB80 =====
+callerHits=0
+
+===== walk back to LINK =====
+2020bb30: LOAD P2 = [FP + 0x10]
+2020bb2e: STORE B [P1++] = R2
+2020bb2c: STORE B [P1++] = R1
+2020bb2a: STORE B [P1++] = R0
+2020bb26: LSETUP (0x2020bb2a,0x2020bb2e) LC0 = P0
+2020bb24: LOAD R2 = 0x20
+2020bb20: STORE B [P1 + -0x20] = R7
+2020bb1c: STORE B [P1 + -0x21] = R6
+2020bb1a: ADD P1 += 0x2f
+2020bb18: LOAD R1 = 0x8
+2020bb14: LOAD R0 = -0x7e
+2020bb12: LOAD P0 = 0x2
+2020bb10: LOAD P1 = [FP + 0x10]
+2020bb0c: STORE B [P0 + 0xc] = R7
+2020bb0a: STORE [P0] = R7
+2020bb08: STORE [P3] = R7
+2020bb06: LOAD P0 = [FP + 0x10]
+2020bb04: IF !CC JUMP 0x2020bb10
+2020bb02: CC = R0 == R3
+2020bb00: LOAD R3 = 0x5
+2020bafc: LOAD R0 = B [SP + 0xac] (Z)
+2020baf8: STORE B [P0 + 0x45] = R1
+2020baf4: STORE [P2 + 0x40] = R0
+2020baf2: STORE [P2 + 0x3c] = R0
+2020baee: STORE B [P1 + 0xd] = R7
+2020baec: LOAD R1 = 0x4
+2020baea: LOAD R0 = 0x20
+2020bae8: LOAD P0 = [FP + -0x14]
+2020bae6: LOAD P2 = [FP + 0x10]
+2020bae4: IF !CC JUMP 0x2020be02
+2020bae2: STORE [SP + 0x28] = R0
+2020bae0: CC = R0 == R1
+2020bade: LOAD R1 = 0x5
+2020bada: LOAD R0 = B [SP + 0xac] (Z)
+2020bad8: IF CC JUMP 0x2020bae6
+2020bad6: CC = R4 == -0x1
+2020bad4: LOAD R4 = [P1 + 0x8]
+2020bad2: LOAD P1 = [FP + 0x10]
+2020bace: CALL 0x2020b0c6
+2020bacc: LOAD R1 = 0x4
+2020baca: LOAD R2 = 0x28
+2020bac8: ADD R0 += 0x8
+2020bac6: STORE [FP + 0x8] = R7
+2020bac4: MOVE R0 = FP
+2020bac2: JUMP.S 0x2020bea4
+2020bac0: IF CC JUMP 0x2020bac4 (bp)
+2020babe: CC = R0 == 0x2
+2020babc: JUMP.S 0x2020bf12
+2020baba: IF !CC JUMP 0x2020babe (bp)
+2020bab8: CC = R0 == R1
+2020bab6: LOAD R1 = 0x7
+2020bab2: LOAD R0 = B [SP + 0xac] (Z)
+2020bab0: JUMP.S 0x2020bef2
+2020baae: IF CC JUMP 0x2020bab2 (bp)
+2020baac: CC = R0 == R2
+2020baa8: LOAD R2 = 0x195
+2020baa6: CALL (P1)
+2020baa2: LOAD P1.H = 0xffa0
+2020ba9e: LOAD P1.L = 0x1038
+2020ba9a: LOAD R1 = 0x3e8
+2020ba98: MOVE R0 = R4
+2020ba96: LOAD R4 = [P1 + 0x8]
+2020ba92: STORE B [P1 + 0x37] = R6
+2020ba90: IF !CC JUMP 0x2020ba96
+2020ba8e: CC = R1 < R0
+2020ba8c: LOAD R1 = 0x5
+2020ba8a: IF CC JUMP 0x2020ba92
+2020ba88: CC = R0 < 0x1
+2020ba84: LOAD R0 = B [P1 + 0x37] (Z)
+2020ba82: LOAD P1 = [FP + 0x10]
+2020ba7e: CALL 0x2020b0c6
+2020ba7c: LOAD R0 = [FP + -0x38]
+2020ba78: STORE B [P0 + 0x10] = R3
+2020ba76: LOAD R3 = B [P1] (Z)
+2020ba74: LOAD R2 = W [P5 + 0x1c] (Z)
+2020ba72: LOAD R1 = W [P5 + 0x1a] (Z)
+2020ba70: LOAD P0 = [FP + -0x18]
+2020ba6e: MOVE P1 = R5
+2020ba6c: IF !CC JUMP 0x2020ba82 (bp)
+2020ba6a: CC = R0 == R4

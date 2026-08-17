@@ -1,0 +1,118 @@
+Consumers of peak grade_ptr (0x25d04+0x8 / 0x5d04) that STORE W
+
+===== PASS1 peak-obj materializations =====
+
+===== peakobj @ ffa03922 : LOAD P5.L = 0x5d04 =====
+ffa038ea: ASH|| R3 = R0 >>> 0xf
+ffa038ee: _LOAD P3 = [FP + 0x20]
+ffa038f0: _NOP
+ffa038f2: LOAD P0 = 0x4c08
+ffa038f6: LOAD P0.H = 0x3
+ffa038fa: LOAD R5.H = 0x5cfc
+ffa038fe: ASH|| R4 = R0 >>> 0x11
+ffa03902: _STORE [FP + 0x24] = R1
+ffa03904: _NOP
+ffa03906: ADD P0 = P3 + P0
+ffa03908: LOAD R7 = W [P0] (X)
+ffa0390a: MULT|| R1 = R7.L * R5.H (is)
+ffa0390e: STORE [SP + 0x28] = R2
+ffa03910: NOP
+ffa03912: MOVE P0 = R1
+ffa03914: MOVE P1 = R3
+ffa03916: LOAD P2 = 0x578
+ffa0391a: ADD P2 = P3 + P2
+ffa0391c: LOAD P3 = 0x44
+ffa03920: ADD P2 = P2 + P0
+ffa03922: LOAD P5.L = 0x5d04
+ffa03926: LOAD P5.H = 0x2022
+ffa0392a: ADD P0 = P2 + P3
+ffa0392c: LOAD P4 = 0x2938
+ffa03930: STORE [P5] = R3
+ffa03932: ADD P1 = P0 + (P1 << 1)
+ffa03934: ADD P4 = P2 + P4
+ffa03936: LOAD R1 = [P2 + 0x5cd4]
+ffa0393a: LOAD R3 = [P2 + 0x5cd8]
+ffa0393e: STORE [P5 + 0x8] = P0
+ffa03940: STORE [P5 + 0x14] = R3
+ffa03942: STORE [P5 + 0xc] = P4
+ffa03944: STORE [P5 + 0x4] = R4
+ffa03946: STORE [P5 + 0x10] = R1
+ffa03948: LOAD R0 = W [P1] (X)
+ffa0394a: CALL 0xffa02948
+ffa0394e: LOAD P4 = [P5 + 0x8]
+ffa03950: LOAD P3 = [P5]
+ffa03952: LOAD R1 = [P5 + 0x10]
+ffa03954: CALL 0xffa018f0
+ffa03958: LOAD R1 = 0x47ae
+ffa0395c: LOAD R1.H = 0x3f81
+ffa03960: CALL 0xffa018f0
+ffa03964: ADD P1 = P4 + (P3 << 1)
+ffa03966: STORE [SP + 0x38] = R0
+ffa03968: LOAD R0 = W [P1] (X)
+ffa0396a: CALL 0xffa02948
+ffa0396e: LOAD P4 = [P5 + 0xc]
+ffa03970: LOAD P3 = [P5 + 0x4]
+ffa03972: LOAD R1 = [P5 + 0x10]
+ffa03974: CALL 0xffa018f0
+ffa03978: MOVE R7 = R0
+ffa0397a: ADD P1 = P4 + (P3 << 1)
+ffa0397c: LOAD R0 = W [P1] (X)
+ffa0397e: CALL 0xffa02948
+ffa03982: LOAD R1 = [P5 + 0x14]
+ffa03984: CALL 0xffa018f0
+ffa03988: MOVE R1 = R0
+ffa0398a: MOVE R0 = R7
+ffa0398c: LOAD R6 = -0x1
+ffa0398e: CALL 0xffa01714
+PASS1=1
+
+===== PASS2 LOAD [P+0x8] near peakobj then STORE W =====
+PASS2=0
+
+===== PASS3 FFA0393E grade_ptr install =====
+ffa03930: STORE [P5] = R3
+ffa03932: ADD P1 = P0 + (P1 << 1)
+ffa03934: ADD P4 = P2 + P4
+ffa03936: LOAD R1 = [P2 + 0x5cd4]
+ffa0393a: LOAD R3 = [P2 + 0x5cd8]
+ffa0393e: STORE [P5 + 0x8] = P0
+ffa03940: STORE [P5 + 0x14] = R3
+ffa03942: STORE [P5 + 0xc] = P4
+ffa03944: STORE [P5 + 0x4] = R4
+ffa03946: STORE [P5 + 0x10] = R1
+ffa03948: LOAD R0 = W [P1] (X)
+ffa0394a: CALL 0xffa02948
+ffa0394e: LOAD P4 = [P5 + 0x8]
+ffa03950: LOAD P3 = [P5]
+ffa03952: LOAD R1 = [P5 + 0x10]
+ffa03954: CALL 0xffa018f0
+ffa03958: LOAD R1 = 0x47ae
+ffa0395c: LOAD R1.H = 0x3f81
+ffa03960: CALL 0xffa018f0
+ffa03964: ADD P1 = P4 + (P3 << 1)
+ffa03966: STORE [SP + 0x38] = R0
+ffa03968: LOAD R0 = W [P1] (X)
+ffa0396a: CALL 0xffa02948
+ffa0396e: LOAD P4 = [P5 + 0xc]
+ffa03970: LOAD P3 = [P5 + 0x4]
+ffa03972: LOAD R1 = [P5 + 0x10]
+ffa03974: CALL 0xffa018f0
+ffa03978: MOVE R7 = R0
+ffa0397a: ADD P1 = P4 + (P3 << 1)
+ffa0397c: LOAD R0 = W [P1] (X)
+ffa0397e: CALL 0xffa02948
+ffa03982: LOAD R1 = [P5 + 0x14]
+ffa03984: CALL 0xffa018f0
+ffa03988: MOVE R1 = R0
+ffa0398a: MOVE R0 = R7
+ffa0398c: LOAD R6 = -0x1
+ffa0398e: CALL 0xffa01714
+ffa03992: LSHIFT R6 <<= 0x17
+ffa03994: CC = R0 <= R6
+ffa03996: LSH R1 = R0 >> 0x1f
+ffa0399a: LOAD R2 = 0x0
+ffa0399c: IF !CC R1 = R2
+ffa0399e: CC = R0 == 0x0
+ffa039a0: LOAD R3 = 0x1
+ffa039a2: IF CC R1 = R3
+ffa039a4: CC = BITTST (R1,0x0)

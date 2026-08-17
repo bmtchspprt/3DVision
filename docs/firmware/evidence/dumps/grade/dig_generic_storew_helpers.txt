@@ -1,0 +1,4 @@
+Find small helpers: early MOVE P0=R0 then LSETUP STORE W [P0++]
+Then find callers where R0 setup involves 0x44 / 0x578 / 0x5bc
+helper 2020f306
+%n===== Callers of helpers with Grade-ish arg setup =====

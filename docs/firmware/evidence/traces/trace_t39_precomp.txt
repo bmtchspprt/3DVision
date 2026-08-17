@@ -1,0 +1,225 @@
+Connected to the simulator.
+Loading section .text, size 0x4 lma 20200000
+Start address ffa00000
+Transfer rate: 32 bits in <1 sec.
+
+=== 0x202ecc64 ===
+Dump of assembler code from 0x202ecc64 to 0x202eccf2:
+   0x202ecc64:	warning: Can not parse XML memory map; XML support was disabled at compile time
+LINK 0x0;		/* (0) */
+   0x202ecc68:	[--SP] = (P5:3);
+   0x202ecc6a:	SP += -0x1c;		/* (-28) */
+   0x202ecc6c:	P4.L = 0xc0;		/* (192)	P4=0xc0 */
+   0x202ecc70:	P4.H = 0xff90;		/* (-112)	P4=0xff9000c0 */
+   0x202ecc74:	P5.L = 0x20c0;		/* (8384)	P5=0x20c0 */
+   0x202ecc78:	P5.H = 0xff90;		/* (-112)	P5=0xff9020c0 */
+   0x202ecc7c:	R3 = [SP + 0x3c];
+   0x202ecc7e:	P1 = 0x4050 (X);		/*		P1=0x4050(16464) */
+   0x202ecc82:	P1.H = 0x1;		/* (  1)	P1=0x14050 */
+   0x202ecc86:	[SP + 0x10] = R3;
+   0x202ecc88:	[SP + 0xc] = P1;
+   0x202ecc8a:	[SP + 0x14] = P4;
+   0x202ecc8c:	[SP + 0x18] = P5;
+   0x202ecc8e:	CALL 0x0x202ec5de;
+   0x202ecc92:	R2 = [FP + 0x1c];
+   0x202ecc94:	[SP + 0x10] = R2;
+   0x202ecc96:	R2 = [FP + 0x20];
+   0x202ecc98:	R2 = ROT R0 BY 0x0 || [SP + 0x14] = R2 || NOP;
+   0x202ecca0:	R1 = P5;
+   0x202ecca2:	R0 = [FP + 0x18];
+   0x202ecca4:	P5 = [FP + 0x24];
+   0x202ecca6:	P3.L = 0xadc2;		/* (-21054)	P3=0xadc2 */
+   0x202eccaa:	P3.H = 0x202e;		/* (8238)	P3=0x202eadc2 */
+   0x202eccae:	[SP + 0xc] = R0;
+   0x202eccb0:	W[P3] = R2.L;
+   0x202eccb2:	[SP + 0x18] = P5;
+   0x202eccb4:	R0 = P4;
+   0x202eccb6:	CALL 0x0x202eca00;
+   0x202eccba:	R1 = W[P3] (Z);
+   0x202eccbc:	R0 = [FP + 0x1c];
+   0x202eccbe:	CALL 0x0x202ec1dc;
+   0x202eccc2:	R1 = [P5];
+   0x202eccc4:	P1.L = 0x18f0;		/* (6384)	P1=0x118f0 */
+   0x202eccc8:	P1.H = 0xffa0;		/* (-96)	P1=0xffa018f0 */
+   0x202ecccc:	CALL (P1);
+   0x202eccce:	[P5] = R0;
+   0x202eccd0:	R1 = W[P3] (Z);
+   0x202eccd2:	R0 = [FP + 0x1c];
+   0x202eccd4:	CALL 0x0x202ec914;
+   0x202eccd8:	R1 = [P5];
+   0x202eccda:	P1.L = 0x18f0;		/* (6384)	P1=0xffa018f0 */
+   0x202eccde:	P1.H = 0xffa0;		/* (-96)	P1=0xffa018f0 */
+   0x202ecce2:	CALL (P1);
+   0x202ecce4:	[P5] = R0;
+   0x202ecce6:	R0 = W[P3] (Z);
+   0x202ecce8:	SP += 0x1c;		/* ( 28) */
+   0x202eccea:	(P5:3) = [SP++];
+   0x202eccec:	UNLINK;
+   0x202eccf0:	RTS;
+End of assembler dump.
+
+=== 0x202eccf2 ===
+Dump of assembler code from 0x202eccf2 to 0x202ecec8:
+   0x202eccf2:	LINK 0x0;		/* (0) */
+   0x202eccf6:	[--SP] = (R7:4, P5:3);
+   0x202eccf8:	SP += -0x20;		/* (-32) */
+   0x202eccfa:	P4 = [FP + 0x18];
+   0x202eccfc:	R7.L = 0xc0;		/* (192)	R7=0xc0(192) */
+   0x202ecd00:	R7.H = 0xff90;		/* (-112)	R7=0xff9000c0(-7339840) */
+   0x202ecd04:	P3.L = 0x20c0;		/* (8384)	P3=0x202e20c0 */
+   0x202ecd08:	P3.H = 0xff90;		/* (-112)	P3=0xff9020c0 */
+   0x202ecd0c:	P0 = 0x4050 (X);		/*		P0=0x4050(16464) */
+   0x202ecd10:	P0.H = 0x1;		/* (  1)	P0=0x14050 */
+   0x202ecd14:	R3 = [FP + 0x14];
+   0x202ecd16:	[SP + 0x10] = R3;
+   0x202ecd18:	[SP + 0x14] = R7;
+   0x202ecd1a:	[SP + 0x18] = P3;
+   0x202ecd1c:	[SP + 0xc] = P0;
+   0x202ecd1e:	CALL 0x0x202ec5de;
+   0x202ecd22:	P2 = 0x5788 (X);		/*		P2=0x5788(22408) */
+   0x202ecd26:	P0 = 0x1770 (X);		/*		P0=0x1770(6000) */
+   0x202ecd2a:	R4.L = 0xd088;		/* (-12152)	R4=0xd088(53384) */
+   0x202ecd2e:	R4.H = 0x202e;		/* (8238)	R4=0x202ed088(539938952) */
+   0x202ecd32:	W[P4 + 0x5770] = R0;
+   0x202ecd36:	P1 = P4 + P2;
+   0x202ecd38:	P0 = P4 + P0;
+   0x202ecd3a:	R2 = R0 << 0x1;
+   0x202ecd3e:	R1 = R7;
+   0x202ecd40:	R0 = R4;
+   0x202ecd42:	[FP + 0x8] = P0;
+   0x202ecd44:	[FP + 0xc] = P1;
+   0x202ecd46:	P1.L = 0x5f92;		/* (24466)	P1=0xffa05f92 */
+   0x202ecd4a:	P1.H = 0xffa0;		/* (-96)	P1=0xffa05f92 */
+   0x202ecd4e:	CALL (P1);
+   0x202ecd50:	R3 = W[P4 + 0x5776] (Z);
+   0x202ecd54:	R0 = ROT R7 BY 0x0 || P1 = [FP + 0xc] || NOP;
+   0x202ecd5c:	P2 = [FP + 0x8];
+   0x202ecd5e:	[SP + 0xc] = R3;
+   0x202ecd60:	[SP + 0x18] = P1;
+   0x202ecd62:	[SP + 0x14] = P2;
+   0x202ecd64:	[SP + 0x10] = P4;
+   0x202ecd66:	R1 = P3;
+   0x202ecd68:	R2 = W[P4 + 0x5770] (Z);
+   0x202ecd6c:	CALL 0x0x202eca00;
+   0x202ecd70:	R1 = W[P4 + 0x5770] (Z);
+   0x202ecd74:	R0 = P4;
+   0x202ecd76:	CALL 0x0x202ec1dc;
+   0x202ecd7a:	R1 = [P4 + 0x5788];
+   0x202ecd7e:	P1.L = 0x18f0;		/* (6384)	P1=0xffa018f0 */
+   0x202ecd82:	P1.H = 0xffa0;		/* (-96)	P1=0xffa018f0 */
+   0x202ecd86:	CALL (P1);
+   0x202ecd88:	[P4 + 0x5788] = R0;
+   0x202ecd8c:	R1 = W[P4 + 0x5770] (Z);
+   0x202ecd90:	R0 = P4;
+   0x202ecd92:	CALL 0x0x202ec914;
+   0x202ecd96:	R1 = [P4 + 0x5788];
+   0x202ecd9a:	P1.L = 0x18f0;		/* (6384)	P1=0xffa018f0 */
+   0x202ecd9e:	P1.H = 0xffa0;		/* (-96)	P1=0xffa018f0 */
+   0x202ecda2:	CALL (P1);
+   0x202ecda4:	[P4 + 0x5788] = R0;
+   0x202ecda8:	R0 = W[P4 + 0x5770] (X);
+   0x202ecdac:	W[P4 + 0x5772] = R0;
+   0x202ecdb0:	R0 = [P4 + 0x57bc];
+   0x202ecdb4:	R5 = 0x0 (X);		/*		R5=0x0(  0) */
+   0x202ecdb6:	P5.L = 0xadc4;		/* (-21052)	P5=0xff90adc4 */
+   0x202ecdba:	P5.H = 0x202e;		/* (8238)	P5=0x202eadc4 */
+   0x202ecdbe:	CC = R0 <= 0x0;
+   0x202ecdc0:	W[P5] = R5.L;
+   0x202ecdc2:	IF CC JUMP 0x0x202ece24;
+   0x202ecdc4:	P0 = 0x578c (X);		/*		P0=0x578c(22412) */
+   0x202ecdc8:	P0 = P4 + P0;
+   0x202ecdca:	R6 = 0x1 (X);		/*		R6=0x1(  1) */
+   0x202ecdcc:	P1 = 0x5772 (X);		/*		P1=0x5772(22386) */
+   0x202ecdd0:	R0.L = R6.H << 0x0 || [FP + 0x8] = R4 || NOP;
+   0x202ecdd8:	[FP + 0xc] = P0;
+   0x202ecdda:	P3 = P4 + P1;
+   0x202ecddc:	R7 = 0xc (X);		/*		R7=0xc( 12) */
+   0x202ecdde:	R2 = R0.L * R7.L (IS) || P0 = [FP + 0xc] || NOP;
+   0x202ecde6:	P1 = R2;
+   0x202ecde8:	[SP + 0x1c] = P3;
+   0x202ecdea:	R0 = ROT R4 BY 0x0 || P2 = [FP + 0x8] || NOP;
+   0x202ecdf2:	[SP + 0x18] = P2;
+   0x202ecdf4:	R1 = W[P4 + 0x5772] (Z);
+   0x202ecdf8:	P1 = P0 + P1;
+   0x202ecdfa:	P0 = [P1];
+   0x202ecdfc:	R3 = [P1 + 0x4];
+   0x202ecdfe:	[SP + 0x10] = R3;
+   0x202ece00:	R2 = [P0 + 0x8];
+   0x202ece02:	R3 = W[P0 + 0x4] (X);
+   0x202ece04:	[SP + 0xc] = R2;
+   0x202ece06:	[SP + 0x14] = R3;
+   0x202ece08:	R2 = [P0];
+   0x202ece0a:	P1.L = 0x6cfc;		/* (27900)	P1=0x6cfc */
+   0x202ece0e:	P1.H = 0xffa0;		/* (-96)	P1=0xffa06cfc */
+   0x202ece12:	CALL (P1);
+   0x202ece14:	R1.L = W[P5];
+   0x202ece16:	R0 = R1 + R6;
+   0x202ece18:	R2 = [P4 + 0x57bc];
+   0x202ece1c:	R1 = R0.L (X);
+   0x202ece1e:	CC = R1 < R2;
+   0x202ece20:	W[P5] = R0.L;
+   0x202ece22:	IF CC JUMP 0x0x202ecdde (BP);
+   0x202ece24:	R1 = W[P4 + 0x5772] (X);
+   0x202ece28:	R0 = R4;
+   0x202ece2a:	R6 = R1.L (Z);
+   0x202ece2c:	P1.L = 0x705c;		/* (28764)	P1=0xffa0705c */
+   0x202ece30:	P1.H = 0xffa0;		/* (-96)	P1=0xffa0705c */
+   0x202ece34:	CALL (P1);
+   0x202ece36:	W[P5] = R5.L;
+   0x202ece38:	R7 = R0;
+   0x202ece3a:	P1.L = 0x1688;		/* (5768)	P1=0xffa01688 */
+   0x202ece3e:	P1.H = 0xffa0;		/* (-96)	P1=0xffa01688 */
+   0x202ece42:	CALL (P1);
+   0x202ece44:	R1 = R0;
+   0x202ece46:	R0 = -0x200 (X);		/*		R0=0xfffffe00(-512) */
+   0x202ece4a:	R0.H = 0x46ff;		/* (18175)	R0=0x46fffe00(1191181824) */
+   0x202ece4e:	P1.L = 0x1814;		/* (6164)	P1=0xffa01814 */
+   0x202ece52:	P1.H = 0xffa0;		/* (-96)	P1=0xffa01814 */
+   0x202ece56:	CALL (P1);
+   0x202ece58:	R1 = [P4 + 0x5788];
+   0x202ece5c:	P1.L = 0x18f0;		/* (6384)	P1=0xffa018f0 */
+   0x202ece60:	P1.H = 0xffa0;		/* (-96)	P1=0xffa018f0 */
+   0x202ece64:	CALL (P1);
+   0x202ece66:	[P4 + 0x5788] = R0;
+   0x202ece6a:	R1 = R7;
+   0x202ece6c:	R0 = -0x1 (X);		/*		R0=0xffffffff( -1) */
+   0x202ece6e:	R0 >>= 0x1;
+   0x202ece70:	P1.L = 0xfb4;		/* (4020)	P1=0xffa00fb4 */
+   0x202ece74:	P1.H = 0xffa0;		/* (-96)	P1=0xffa00fb4 */
+   0x202ece78:	CALL (P1);
+   0x202ece7a:	CC = R6 <= 0x0;
+   0x202ece7c:	[P5 + 0x4] = R0;
+   0x202ece7e:	IF CC JUMP 0x0x202eceae;
+   0x202ece80:	P3.L = 0x64f4;		/* (25844)	P3=0xff9064f4 */
+   0x202ece84:	P3.H = 0x2020;		/* (8224)	P3=0x202064f4 */
+   0x202ece88:	P1 = R4;
+   0x202ece8a:	P2 = -0x1 (X);		/*		P2=0xffffffff( -1) */
+   0x202ece8c:	R2 = B[P3] (Z);
+   0x202ece8e:	P0 = [FP + 0x18];
+   0x202ece90:	LSETUP(0x0x202ece94, 0x0x202ecea8) LC0 = P2;
+   0x202ece94:	R5 += 0x1;		/* (  1) */
+   0x202ece96:	R1 = W[P1++] (X);
+   0x202ece98:	R1 *= R0;
+   0x202ece9a:	R1 >>>= 0x18;
+   0x202ece9c:	R1 = R2 + R1;
+   0x202ece9e:	B[P0++] = R1;
+   0x202ecea0:	R1 = W[P4 + 0x5772] (Z);
+   0x202ecea4:	R3 = R5.L (X);
+   0x202ecea6:	CC = R3 < R1;
+   0x202ecea8:	IF !CC JUMP 0x0x202eceac;
+   0x202eceaa:	JUMP.S 0x0x202ece90;
+   0x202eceac:	W[P5 + 0x0] = R5;
+   0x202eceae:	R0 = 0x1 (X);		/*		R0=0x1(  1) */
+   0x202eceb0:	R2 = 0x1 (X);		/*		R2=0x1(  1) */
+   0x202eceb2:	R1 = 0x0 (X);		/*		R1=0x0(  0) */
+   0x202eceb4:	P1.L = 0x6008;		/* (24584)	P1=0xffa06008 */
+   0x202eceb8:	P1.H = 0xffa0;		/* (-96)	P1=0xffa06008 */
+   0x202ecebc:	CALL (P1);
+   0x202ecebe:	SP += 0x20;		/* ( 32) */
+   0x202ecec0:	(R7:4, P5:3) = [SP++];
+   0x202ecec2:	UNLINK;
+   0x202ecec6:	RTS;
+End of assembler dump.
+
+=== done ===
+GDB-EXIT:0

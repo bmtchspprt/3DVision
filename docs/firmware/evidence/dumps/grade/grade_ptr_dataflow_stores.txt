@@ -1,0 +1,269 @@
+===== grade-ptr construct @2021112a :: LOAD R4 = 0x44
+  2021112a: LOAD R4 = 0x44
+  2021112e: LOAD R0 = 0x22
+  20211130: STORE [P2 + 0x579c] = R4
+  20211134: STORE [P2 + 0x57a0] = R0
+  20211138: LOAD R4 = 0x3
+  2021113a: LOAD R0 = 0x6
+  2021113c: STORE [P2 + 0x5794] = R4
+  20211140: STORE [P2 + 0x578c] = R3
+  20211144: STORE [P2 + 0x5798] = R5
+  20211148: STORE [P2 + 0x5790] = R0
+  2021114e: STORE [P0 + 0x5794] = R4
+  20211156: STORE [P0 + 0x5790] = R4
+  2021115e: STORE [P0 + 0x57a0] = R4
+  20211166: STORE [P0 + 0x579c] = R4
+  2021116a: STORE [P0 + 0x578c] = R3
+  2021116e: STORE [P0 + 0x5798] = R5
+  20211174: STORE [P1 + 0x5794] = R4
+  2021117c: STORE [P1 + 0x5790] = R4
+  20211184: STORE [P1 + 0x57a0] = R4
+  20211194: STORE [P1 + 0x578c] = R3
+  20211198: STORE [P1 + 0x5798] = R5
+  2021119c: STORE [P1 + 0x579c] = R4
+  202111a8: STORE [P0 + 0x64] = R2
+  202111ac: STORE [P0 + 0x68] = R1
+  202111d8: CALL 0x2020f882
+  202111e6: STORE [P0 + -0x4] = R0
+  202111ea: STORE [P0++] = R1
+  202111f4: STORE [P1] = R2
+  202111f6: STORE [P1 + 0x4] = R1
+  202111fc: STORE [P0--] = R6
+  202111fe: STORE [P0 + 0x8] = R7
+  20211210: STORE [P5--] = R3
+  20211220: STORE [P5 + 0x8] = R0
+  20211230: STORE [P5 + 0x18] = R5
+  20211248: STORE [P5 + 0x1c] = R7
+  storeW_autoinc_hits=0
+
+===== grade-ptr construct @20211d5c :: LOAD R3 = 0x44
+  20211d5c: LOAD R3 = 0x44
+  20211d60: ADD R0 = R0 + R3
+  20211d62: LOAD R2 = 0x28f4
+  20211d66: LOAD R1 = 0x0
+  20211d68: LOAD P1.L = 0x5f2e
+  20211d6c: LOAD P1.H = 0xffa0
+  20211d70: CALL (P1)
+  20211d72: LOAD R0 = [P5 + 0x3c]
+  20211d86: LOAD P1.L = 0x5f2e
+  20211d8e: CALL (P1)
+  20211da4: LOAD P1.L = 0x5f2e
+  20211dac: CALL (P1)
+  20211dc2: LOAD P1.L = 0x5f2e
+  20211dca: CALL (P1)
+  20211de0: LOAD P1.L = 0x5f2e
+  20211de8: CALL (P1)
+  20211df0: STORE W [P5 + 0x3c] = R0
+  20211e0c: STORE [P3 + 0x8] = R2
+  20211e16: STORE [P3 + 0x10] = R0
+  20211e1a: STORE [P3 + 0x8] = R1
+  20211e24: STORE [P3 + 0x10] = R1
+  storeW_autoinc_hits=1
+
+===== grade-ptr construct @20212c86 :: LOAD R3 = 0x44
+  20212c86: LOAD R3 = 0x44
+  20212c8a: LOAD R2 = [FP + -0x38]
+  20212c8c: LOAD R0 = W [P1] (X)
+  20212c8e: MULT R0 = R0.L * R1.L (is)
+  20212c92: ADD R0 = R2 + R0
+  20212c94: ADD R0 = R0 + R3
+  20212c96: ADD R0 = R0 + R4
+  20212c98: MOVE P1 = R0
+  20212cac: CALL (P1)
+  20212cb8: CALL (P1)
+  20212cbc: STORE [P5++] = R0
+  20212cec: LSETUP (0x20212cf0,0x20212d38) LC0 = P1
+  20212d1c: CALL (P1)
+  20212d28: CALL (P1)
+  20212d2c: STORE [P5++] = R0
+  20212d5a: CALL (P1)
+  20212d66: CALL (P1)
+  20212d7a: CALL (P1)
+  20212d8e: CALL (P1)
+  20212da2: CALL (P1)
+  20212da4: STORE [P3 + 0x90] = R0
+  20212db0: STORE [P3 + 0x90] = R0
+  storeW_autoinc_hits=0
+
+===== grade-ptr construct @20212d6c :: LOAD R1.H = 0x4489
+  20212d6c: LOAD R1.H = 0x4489
+  20212d70: MOVE R7 = R0
+  20212d72: LOAD P1.L = 0x165c
+  20212d76: LOAD P1.H = 0xffa0
+  20212d7a: CALL (P1)
+  20212d7c: IF !CC JUMP 0x20212daa
+  20212d7e: MOVE R1 = R7
+  20212d80: LOAD R0 = 0x0
+  20212d8e: CALL (P1)
+  20212da2: CALL (P1)
+  20212da4: STORE [P3 + 0x90] = R0
+  20212db0: STORE [P3 + 0x90] = R0
+  20212ddc: LSETUP (0x20212de0,0x20212e32) LC0 = P1
+  20212e0a: CALL (P1)
+  20212e16: CALL (P1)
+  20212e22: CALL (P1)
+  20212e26: STORE [P5++] = R0
+  20212e58: LSETUP (0x20212e5c,0x20212e8e) LC0 = P0
+  20212e80: CALL (P1)
+  20212e8c: CALL (P1)
+  20212e8e: STORE [P5++] = R0
+  20212eae: STORE W [P3 + -0x4] = R0
+  storeW_autoinc_hits=1
+
+===== grade-ptr construct @20212d82 :: LOAD R0.H = 0x442f
+  20212d82: LOAD R0.H = 0x442f
+  20212d86: LOAD P1.L = 0x165c
+  20212d8a: LOAD P1.H = 0xffa0
+  20212d8e: CALL (P1)
+  20212d90: IF !CC JUMP 0x20212daa
+  20212d92: MOVE R1 = R7
+  20212d94: LOAD R0 = 0x0
+  20212d96: LOAD R0.H = 0x447a
+  20212da2: CALL (P1)
+  20212da4: STORE [P3 + 0x90] = R0
+  20212db0: STORE [P3 + 0x90] = R0
+  20212ddc: LSETUP (0x20212de0,0x20212e32) LC0 = P1
+  20212e0a: CALL (P1)
+  20212e16: CALL (P1)
+  20212e22: CALL (P1)
+  20212e26: STORE [P5++] = R0
+  20212e58: LSETUP (0x20212e5c,0x20212e8e) LC0 = P0
+  20212e80: CALL (P1)
+  20212e8c: CALL (P1)
+  20212e8e: STORE [P5++] = R0
+  20212eae: STORE W [P3 + -0x4] = R0
+  20212eba: STORE [P3 + 0x80] = R0
+  storeW_autoinc_hits=1
+
+===== grade-ptr construct @20212d96 :: LOAD R0.H = 0x447a
+  20212d96: LOAD R0.H = 0x447a
+  20212d9a: LOAD P1.L = 0x1814
+  20212d9e: LOAD P1.H = 0xffa0
+  20212da2: CALL (P1)
+  20212da4: STORE [P3 + 0x90] = R0
+  20212da8: JUMP.S 0x20212db4
+  20212daa: LOAD R0 = 0x0
+  20212dac: LOAD R0.H = 0x3f80
+  20212db0: STORE [P3 + 0x90] = R0
+  20212ddc: LSETUP (0x20212de0,0x20212e32) LC0 = P1
+  20212e0a: CALL (P1)
+  20212e16: CALL (P1)
+  20212e22: CALL (P1)
+  20212e26: STORE [P5++] = R0
+  20212e58: LSETUP (0x20212e5c,0x20212e8e) LC0 = P0
+  20212e80: CALL (P1)
+  20212e8c: CALL (P1)
+  20212e8e: STORE [P5++] = R0
+  20212eae: STORE W [P3 + -0x4] = R0
+  20212eba: STORE [P3 + 0x80] = R0
+  20212eca: CALL (P1)
+  storeW_autoinc_hits=1
+
+===== grade-ptr construct @20224678 :: LOAD R7.H = 0x447a
+  20224678: LOAD R7.H = 0x447a
+  2022467c: MOVE R1 = R7
+  2022467e: LOAD R3 = [P0 + 0x5cf8]
+  20224682: STORE [SP + 0x3c] = R3
+  20224684: LOAD P2 = 0x146
+  20224688: LOAD R0 = [SP + 0x3c]
+  2022468a: LOAD P1.L = 0x1814
+  2022468e: LOAD P1.H = 0xffa0
+  20224692: CALL (P1)
+  20224698: _STORE [P5 + 0x4] = R0
+  202246c4: STORE [P0 + 0x5cf8] = R7
+  202246fc: STORE [P5 + 0x4] = R7
+  202246fe: STORE W [P4++] = R2
+  20224700: LSETUP (0x20224704,0x20224726) LC0 = P2
+  2022470e: CALL (P1)
+  2022471a: CALL (P1)
+  20224724: CALL (P1)
+  20224726: STORE W [P4 ++ P3] = R0.L
+  2022472e: STORE W [P5 + 0x2] = R0
+  20224734: STORE W [P5] = R6.L
+  20224754: CALL (P1)
+  2022475e: CALL (P1)
+  20224762: STORE W [P0 + 0x5a26] = R0
+  2022476e: CALL 0x20204044
+  storeW_autoinc_hits=5
+
+===== grade-ptr construct @2022d128 :: LOAD R1 = 0x44
+  2022d128: LOAD R1 = 0x44
+  2022d12c: ADD R0 = R0 + R1
+  2022d12e: ADD R0 = R0 + R4
+  2022d130: MOVE P1 = R0
+  2022d132: ADD R7 += 0x1
+  2022d134: ADD R4 += 0x2
+  2022d136: LOAD R0 = W [P1] (X)
+  2022d138: LOAD P1.L = 0x1688
+  2022d140: CALL (P1)
+  2022d14c: CALL (P1)
+  2022d150: STORE [P3++] = R0
+  2022d18c: LSETUP (0x2022d190,0x2022d224) LC0 = P1
+  2022d1ae: CALL (P1)
+  2022d1ba: CALL (P1)
+  2022d1bc: STORE [P3++] = R0
+  2022d1da: CALL (P1)
+  2022d1e6: CALL (P1)
+  2022d1e8: STORE [I1++] = R0
+  2022d208: CALL (P1)
+  2022d214: CALL (P1)
+  2022d218: STORE [P5++] = R0
+  2022d22a: STORE W [I0] = R6.L
+  storeW_autoinc_hits=1
+
+===== grade-ptr construct @ffa0391c :: LOAD P3 = 0x44
+  ffa0391c: LOAD P3 = 0x44
+  ffa03920: ADD P2 = P2 + P0
+  ffa03922: LOAD P5.L = 0x5d04
+  ffa03926: LOAD P5.H = 0x2022
+  ffa0392a: ADD P0 = P2 + P3
+  ffa0392c: LOAD P4 = 0x2938
+  ffa03930: STORE [P5] = R3
+  ffa03932: ADD P1 = P0 + (P1 << 1)
+  ffa0393e: STORE [P5 + 0x8] = P0
+  ffa03940: STORE [P5 + 0x14] = R3
+  ffa03942: STORE [P5 + 0xc] = P4
+  ffa03944: STORE [P5 + 0x4] = R4
+  ffa03946: STORE [P5 + 0x10] = R1
+  ffa0394a: CALL 0xffa02948
+  ffa03954: CALL 0xffa018f0
+  ffa03960: CALL 0xffa018f0
+  ffa0396a: CALL 0xffa02948
+  ffa03974: CALL 0xffa018f0
+  ffa0397e: CALL 0xffa02948
+  ffa03984: CALL 0xffa018f0
+  ffa0398e: CALL 0xffa01714
+  ffa039e4: CALL 0xffa02948
+  ffa039ea: CALL 0xffa018f0
+  ffa03a02: CALL 0xffa02948
+  ffa03a08: CALL 0xffa018f0
+  ffa03a12: CALL 0xffa01714
+  ffa03a20: CALL 0xffa018f0
+  storeW_autoinc_hits=0
+
+===== grade-ptr construct @ffa04b90 :: LOAD P2 = 0x44
+  ffa04b90: LOAD P2 = 0x44
+  ffa04b94: LOAD P1 = [FP + -0x44]
+  ffa04b96: MOVE I0 = P1
+  ffa04b98: LOAD P1 = -0x1
+  ffa04b9a: LSETUP (0xffa04b9e,0xffa04bd6) LC1 = P1
+  ffa04b9e: MNOP||
+  ffa04ba2: _LOAD R1 = [FP + 0x8]
+  ffa04ba4: _LOAD R0 = [I0++]
+  ffa04ba6: CALL 0xffa01814
+  ffa04baa: CALL 0xffa0290c
+  ffa04bca: STORE W [P1] = R0.L
+  ffa04bde: STORE W [P1 + -0x6] = R6
+  ffa04bf8: STORE W [P0 + -0x6] = R7
+  ffa04c08: LSETUP (0xffa04c0c,0xffa04c4a) LC1 = P1
+  ffa04c20: CALL 0xffa01814
+  ffa04c24: CALL 0xffa0290c
+  ffa04c3c: STORE W [P1] = R0.L
+  ffa04c50: STORE W [P1 + -0x6] = R5
+  ffa04c6a: STORE W [P0 + -0x6] = R7
+  ffa04c7e: LSETUP (0xffa04c82,0xffa04cba) LC1 = P1
+  ffa04c8a: CALL 0xffa01814
+  ffa04c8e: CALL 0xffa0290c
+  ffa04cae: STORE W [P1] = R0.L
+  storeW_autoinc_hits=7
+

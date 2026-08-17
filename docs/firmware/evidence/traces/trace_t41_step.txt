@@ -1,0 +1,130 @@
+Connected to the simulator.
+Loading section .text, size 0x4 lma 20200000
+Start address ffa00000
+Transfer rate: 32 bits in <1 sec.
+Temporary breakpoint 1 at 0xffa00000
+
+Temporary breakpoint 1, 0xffa00000 in ?? ()
+=> 0x20210be6:	LINK 0x1c;		/* (28) */
+0xffa00002 in ?? ()
+=> 0xffa00002:	LC0 = R7;
+0xffa00004 in ?? ()
+=> 0xffa00004:	LC1 = R7;
+0xffa00006 in ?? ()
+=> 0xffa00006:	L0 = R7;
+0xffa00008 in ?? ()
+=> 0xffa00008:	L1 = R7;
+0xffa0000a in ?? ()
+=> 0xffa0000a:	L2 = R7;
+0xffa0000c in ?? ()
+=> 0xffa0000c:	L3 = R7;
+0xffa0000e in ?? ()
+=> 0xffa0000e:	I0.L = 0x1300;		/* (4864)	I0=0x1300(4864) */
+0xffa00012 in ?? ()
+=> 0xffa00012:	I0.H = 0xffe0;		/* (-32)	I0=0xffe01300(-2092288) */
+0xffa00016 in ?? ()
+=> 0xffa00016:	I1.L = 0x300;		/* (768)	I1=0x300(768) */
+0xffa0001a in ?? ()
+=> 0xffa0001a:	I1.H = 0xffe0;		/* (-32)	I1=0xffe00300(-2096384) */
+0xffa0001e in ?? ()
+=> 0xffa0001e:	[I0] = R7;
+0xffa00020 in ?? ()
+=> 0xffa00020:	[I1] = R7;
+0xffa00022 in ?? ()
+=> 0xffa00022:	CSYNC;
+0xffa00024 in ?? ()
+=> 0xffa00024:	P0.H = 0xffe0;		/* (-32)	P0=0xffe00000(-2097152) */
+0xffa00028 in ?? ()
+=> 0xffa00028:	P0.L = 0x2000;		/* (8192)	P0=0xffe02000(-2088960) */
+0xffa0002c in ?? ()
+=> 0xffa0002c:	P0 += 0x8;		/* (  8) */
+0xffa0002e in ?? ()
+=> 0xffa0002e:	P1 = 0xd (X);		/*		P1=0xd( 13) */
+0xffa00030 in ?? ()
+=> 0xffa00030:	R1.L = 0x7310;		/* (29456)	R1=0x7310(29456) */
+0xffa00034 in ?? ()
+=> 0xffa00034:	R1.H = 0xffa0;		/* (-96)	R1=0xffa07310(-6262000) */
+0xffa00038 in ?? ()
+=> 0xffa00038:	LSETUP(0x0xffa0003c, 0x0xffa0003c) LC0 = P1;
+0xffa0003c in ?? ()
+=> 0xffa0003c:	[P0++] = R1;
+0xffa0003c in ?? ()
+=> 0xffa0003c:	[P0++] = R1;
+0xffa0003c in ?? ()
+=> 0xffa0003c:	[P0++] = R1;
+0xffa0003c in ?? ()
+=> 0xffa0003c:	[P0++] = R1;
+0xffa0003c in ?? ()
+=> 0xffa0003c:	[P0++] = R1;
+0xffa0003c in ?? ()
+=> 0xffa0003c:	[P0++] = R1;
+0xffa0003c in ?? ()
+=> 0xffa0003c:	[P0++] = R1;
+0xffa0003c in ?? ()
+=> 0xffa0003c:	[P0++] = R1;
+0xffa0003c in ?? ()
+=> 0xffa0003c:	[P0++] = R1;
+0xffa0003c in ?? ()
+=> 0xffa0003c:	[P0++] = R1;
+0xffa0003c in ?? ()
+=> 0xffa0003c:	[P0++] = R1;
+0xffa0003c in ?? ()
+=> 0xffa0003c:	[P0++] = R1;
+0xffa0003c in ?? ()
+=> 0xffa0003c:	[P0++] = R1;
+0xffa0003e in ?? ()
+=> 0xffa0003e:	P1.H = 0xffa0;		/* (-96)	P1=0xffa0000d */
+0xffa00042 in ?? ()
+=> 0xffa00042:	P1.L = 0x76;		/* (118)	P1=0xffa00076 */
+0xffa00046 in ?? ()
+=> 0xffa00046:	[P0] = P1;
+0xffa00048 in ?? ()
+=> 0xffa00048:	SP.L = 0x7fb0;		/* (32688)	SP=0x7fb0 */
+0xffa0004c in ?? ()
+=> 0xffa0004c:	SP.H = 0xff80;		/* (-128)	SP=0xff807fb0 */
+0xffa00050 in ?? ()
+=> 0xffa00050:	USP = SP;
+0xffa00052 in ?? ()
+=> 0xffa00052:	FP = SP;
+0xffa00054 in ?? ()
+=> 0xffa00054:	SP += -0xc;		/* (-12) */
+0xffa00056 in ?? ()
+=> 0xffa00056:	R0 = 0x400 (X);		/*		R0=0x400(1024) */
+0xffa0005a in ?? ()
+=> 0xffa0005a:	R0 <<= 0x5;
+0xffa0005c in ?? ()
+=> 0xffa0005c:	R1 = SYSCFG;
+0xffa0005e in ?? ()
+=> 0xffa0005e:	R4 = R0;
+0xffa00060 in ?? ()
+=> 0xffa00060:	BITSET (R1, 0x1);		/* bit  1 */
+0xffa00062 in ?? ()
+=> 0xffa00062:	SYSCFG = R1;
+0xffa00064 in ?? ()
+=> 0xffa00064:	STI R4;
+0xffa00066 in ?? ()
+=> 0xffa00066:	RAISE 0xf;
+0xffa00068 in ?? ()
+=> 0xffa00068:	P0.L = 0x74;		/* (116)	P0=0xffe00074(-2097036) */
+0xffa0006c in ?? ()
+=> 0xffa0006c:	P0.H = 0xffa0;		/* (-96)	P0=0xffa00074 */
+0xffa00070 in ?? ()
+=> 0xffa00070:	RETI = P0;
+0xffa00072 in ?? ()
+=> 0xffa00072:	NOP;
+0xffa00074 in ?? ()
+=> 0xffa00074:	RTI;
+0xffa00074 in ?? ()
+=> 0xffa00074:	RTI;
+0xffa00074 in ?? ()
+=> 0xffa00074:	RTI;
+0xffa00074 in ?? ()
+=> 0xffa00074:	RTI;
+0xffa00074 in ?? ()
+=> 0xffa00074:	RTI;
+0xffa00074 in ?? ()
+=> 0xffa00074:	RTI;
+0xffa00074 in ?? ()
+
+=== done stepping ===
+GDB-EXIT:0

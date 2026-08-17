@@ -1,0 +1,155 @@
+Peak obj 0x20225D04: +0x8 = grade_ptr (proven at FFA0393E); +0x14 = meta
+%n===== FFA038E2 peak — stores into peak obj =====
+ffa03902: _STORE [FP + 0x24] = R1
+ffa0390e: STORE [SP + 0x28] = R2
+ffa03916: LOAD P2 = 0x578
+ffa0391c: LOAD P3 = 0x44
+ffa03922: LOAD P5.L = 0x5d04
+ffa0392c: LOAD P4 = 0x2938
+ffa03930: STORE [P5] = R3
+ffa0393e: STORE [P5 + 0x8] = P0
+ffa03940: STORE [P5 + 0x14] = R3
+ffa03942: STORE [P5 + 0xc] = P4
+ffa03944: STORE [P5 + 0x4] = R4
+ffa03946: STORE [P5 + 0x10] = R1
+ffa0394a: CALL 0xffa02948
+ffa03954: CALL 0xffa018f0
+ffa03960: CALL 0xffa018f0
+ffa03966: STORE [SP + 0x38] = R0
+ffa0396a: CALL 0xffa02948
+ffa03974: CALL 0xffa018f0
+ffa0397e: CALL 0xffa02948
+ffa03984: CALL 0xffa018f0
+ffa0398e: CALL 0xffa01714
+ffa039b0: STORE [FP + 0x10] = R0
+ffa039ba: _STORE [SP + 0x2c] = R6
+ffa039c6: STORE [FP + 0x28] = R6
+ffa039cc: _STORE [SP + 0x3c] = R2
+ffa039d6: STORE [FP + 0x1c] = R2
+ffa039e4: CALL 0xffa02948
+ffa039ea: CALL 0xffa018f0
+ffa03a02: CALL 0xffa02948
+ffa03a08: CALL 0xffa018f0
+ffa03a12: CALL 0xffa01714
+%n===== Sites loading peak obj 0x5D04 =====
+
+--- ffa03922: LOAD P5.L = 0x5d04 ---
+ffa03922: LOAD P5.L = 0x5d04
+ffa03926: LOAD P5.H = 0x2022
+ffa0392a: ADD P0 = P2 + P3
+ffa0392c: LOAD P4 = 0x2938
+ffa03930: STORE [P5] = R3
+ffa03932: ADD P1 = P0 + (P1 << 1)
+ffa03934: ADD P4 = P2 + P4
+ffa03936: LOAD R1 = [P2 + 0x5cd4]
+ffa0393a: LOAD R3 = [P2 + 0x5cd8]
+ffa0393e: STORE [P5 + 0x8] = P0
+ffa03940: STORE [P5 + 0x14] = R3
+ffa03942: STORE [P5 + 0xc] = P4
+ffa03944: STORE [P5 + 0x4] = R4
+ffa03946: STORE [P5 + 0x10] = R1
+ffa03948: LOAD R0 = W [P1] (X)
+ffa0394a: CALL 0xffa02948
+%n===== LOAD [P+0x8] within 20 of peak-obj materialize =====
+ffa0394e (after 5d04@ffa03922): LOAD P4 = [P5 + 0x8]
+  ffa0394e: LOAD P4 = [P5 + 0x8]
+  ffa03950: LOAD P3 = [P5]
+  ffa03952: LOAD R1 = [P5 + 0x10]
+  ffa03954: CALL 0xffa018f0
+  ffa03958: LOAD R1 = 0x47ae
+  ffa0395c: LOAD R1.H = 0x3f81
+  ffa03960: CALL 0xffa018f0
+  ffa03964: ADD P1 = P4 + (P3 << 1)
+  ffa03966: STORE [SP + 0x38] = R0
+  ffa03968: LOAD R0 = W [P1] (X)
+  ffa0396a: CALL 0xffa02948
+  ffa0396e: LOAD P4 = [P5 + 0xc]
+  ffa03970: LOAD P3 = [P5 + 0x4]
+  ffa03972: LOAD R1 = [P5 + 0x10]
+  ffa03974: CALL 0xffa018f0
+%n===== Callers of FFA038E2 =====
+20212f1c: CALL (P1)
+2022db02: CALL (P1)
+%n===== After LOAD peak+0x8, STORE to +0x8/+0x14 within 30 =====
+scan LOAD of absolute 0x5d0c / uses of [peak+8]
+%n===== FFA038E2 continuation after peak+8 store =====
+ffa0393e: STORE [P5 + 0x8] = P0
+ffa03940: STORE [P5 + 0x14] = R3
+ffa03942: STORE [P5 + 0xc] = P4
+ffa03944: STORE [P5 + 0x4] = R4
+ffa03946: STORE [P5 + 0x10] = R1
+ffa03948: LOAD R0 = W [P1] (X)
+ffa0394a: CALL 0xffa02948
+ffa0394e: LOAD P4 = [P5 + 0x8]
+ffa03950: LOAD P3 = [P5]
+ffa03952: LOAD R1 = [P5 + 0x10]
+ffa03954: CALL 0xffa018f0
+ffa03958: LOAD R1 = 0x47ae
+ffa0395c: LOAD R1.H = 0x3f81
+ffa03960: CALL 0xffa018f0
+ffa03964: ADD P1 = P4 + (P3 << 1)
+ffa03966: STORE [SP + 0x38] = R0
+ffa03968: LOAD R0 = W [P1] (X)
+ffa0396a: CALL 0xffa02948
+ffa0396e: LOAD P4 = [P5 + 0xc]
+ffa03970: LOAD P3 = [P5 + 0x4]
+ffa03972: LOAD R1 = [P5 + 0x10]
+ffa03974: CALL 0xffa018f0
+ffa03978: MOVE R7 = R0
+ffa0397a: ADD P1 = P4 + (P3 << 1)
+ffa0397c: LOAD R0 = W [P1] (X)
+ffa0397e: CALL 0xffa02948
+ffa03982: LOAD R1 = [P5 + 0x14]
+ffa03984: CALL 0xffa018f0
+ffa03988: MOVE R1 = R0
+ffa0398a: MOVE R0 = R7
+ffa0398c: LOAD R6 = -0x1
+ffa0398e: CALL 0xffa01714
+ffa03992: LSHIFT R6 <<= 0x17
+ffa03994: CC = R0 <= R6
+ffa03996: LSH R1 = R0 >> 0x1f
+ffa0399a: LOAD R2 = 0x0
+ffa0399c: IF !CC R1 = R2
+ffa0399e: CC = R0 == 0x0
+ffa039a0: LOAD R3 = 0x1
+ffa039a2: IF CC R1 = R3
+ffa039a4: CC = BITTST (R1,0x0)
+ffa039a6: IF CC JUMP 0xffa03c6c
+ffa039a8: LOAD R6 = [P5]
+ffa039aa: MOVE R2 = R6.L (X)
+ffa039ac: MOVE P1 = R2
+ffa039ae: LOAD R0 = 0x0
+ffa039b0: STORE [FP + 0x10] = R0
+ffa039b2: ADD P4 = P1 + P1
+ffa039b4: MOVE R0 = R6.L (X)
+ffa039b6: ROT|| R3 = rot R2 by 0
+ffa039ba: _STORE [SP + 0x2c] = R6
+ffa039bc: _NOP
+ffa039be: ADD R6 += -0x1
+ffa039c0: ADD R2 += -0x1
+ffa039c2: CC = R0 <= 0x0
+ffa039c4: MOVE P1 = P4
+ffa039c6: STORE [FP + 0x28] = R6
+ffa039c8: ASH|| R2 = R3 >>> 0x2
+ffa039cc: _STORE [SP + 0x3c] = R2
+ffa039ce: _NOP
+ffa039d0: ADD P4 += -0x2
+ffa039d2: IF CC JUMP 0xffa03ade
+ffa039d4: LOAD P0 = [P5 + 0x8]
+ffa039d6: STORE [FP + 0x1c] = R2
+ffa039d8: LOAD R6 = 0xff
+ffa039dc: LSH R4 = R6 << 0x17
+ffa039e0: ADD P1 = P0 + P1
+ffa039e2: LOAD R0 = W [P1] (X)
+ffa039e4: CALL 0xffa02948
+ffa039e8: LOAD R1 = [P5 + 0x10]
+ffa039ea: CALL 0xffa018f0
+ffa039ee: ROT|| R7 = rot R0 by 0
+ffa039f2: _LOAD P3 = [P5 + 0xc]
+ffa039f4: _NOP
+ffa039f6: ROT|| R5 = rot R0 by 0
+ffa039fa: _LOAD P1 = [FP + 0x1c]
+ffa039fc: _NOP
+ffa039fe: ADD P1 = P3 + (P1 << 1)
+ffa03a00: LOAD R0 = W [P1] (X)
+ffa03a02: CALL 0xffa02948

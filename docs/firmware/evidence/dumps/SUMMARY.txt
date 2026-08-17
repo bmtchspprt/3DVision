@@ -1,0 +1,57 @@
+Language: blackfin:LE:32:default
+  ram 20200000..202fffff
+  L1_DATA ff800000..ff80ffff
+  L1_CODE0 ffa00000..ffa0ffff
+  L1_CODE1 ffa10000..ffa1ffff
+
+===== 2020caa4 =====
+  fn FUN_2020caa4 2020caa4..2020cc67
+  decompile OK
+
+===== 20204400 =====
+  fn FUN_20204400 20204400..20204693
+  decompile OK
+
+===== 20204630 =====
+  fn FUN_20204630 20204630..20204693
+  decompile OK
+
+===== 2020b6e0 =====
+  fn FUN_2020b6e0 2020b6e0..2020b741
+  decompile OK
+
+===== 202105f0 =====
+  no function
+
+===== ffa05f2e =====
+  fn FUN_ffa05f2e ffa05f2e..ffa05f91
+  decompile OK
+
+===== ffa018f0 =====
+  fn FUN_ffa018f0 ffa018f0..ffa01a27
+  decompile OK
+
+===== ffa01814 =====
+  fn FUN_ffa01814 ffa01814..ffa018ed
+  decompile OK
+
+===== ffa01716 =====
+  fn FUN_ffa01716 ffa01716..ffa01813
+  decompile OK
+
+===== ffa02894 =====
+  fn FUN_ffa02894 ffa02894..ffa028c7
+  decompile OK
+
+===== ffa01fd0 =====
+  fn FUN_ffa01fd0 ffa01fd0..ffa01fef
+  decompile OK
+
+===== ffa06592 =====
+  fn FUN_ffa06592 ffa06592..ffa06653
+  decompile OK
+
+===== ff8023ac =====
+  fn FUN_ff8023ac ff8023ac..ff8023ac
+  decompile OK
+

@@ -1,0 +1,56 @@
+Connected to the simulator.
+Loading section .text, size 0x4 lma 20200000
+Start address ffa00000
+Transfer rate: 32 bits in <1 sec.
+
+=== 0x202ec6c0..0x202ec740 ===
+Dump of assembler code from 0x202ec6c0 to 0x202ec740:
+   0x202ec6c0:	warning: Can not parse XML memory map; XML support was disabled at compile time
+R0 = [FP + 0x10];
+   0x202ec6c2:	R1 = 0xfdb (X);		/*		R1=0xfdb(4059) */
+   0x202ec6c6:	R1.H = 0x40c9;		/* (16585)	R1=0x40c90fdb(1086918619) */
+   0x202ec6ca:	P1.L = 0x18f0;		/* (6384)	P1=0x18f0 */
+   0x202ec6ce:	P1.H = 0xffa0;		/* (-96)	P1=0xffa018f0 */
+   0x202ec6d2:	CALL (P1);
+   0x202ec6d4:	[FP + 0x8] = P5;
+   0x202ec6d6:	[FP + 0x10] = R0;
+   0x202ec6d8:	R5 = R6;
+   0x202ec6da:	P4 = [SP + 0x34];
+   0x202ec6dc:	R7 = 0x0 (X);		/*		R7=0x0(  0) */
+   0x202ec6de:	R0 = ROT R7 BY 0x0 || R1 = [FP + 0x10] || NOP;
+   0x202ec6e6:	P1.L = 0x18f0;		/* (6384)	P1=0xffa018f0 */
+   0x202ec6ea:	P1.H = 0xffa0;		/* (-96)	P1=0xffa018f0 */
+   0x202ec6ee:	CALL (P1);
+   0x202ec6f0:	[FP + 0xc] = R0;
+   0x202ec6f2:	P1.L = 0x20d4;		/* (8404)	P1=0xffa020d4 */
+   0x202ec6f6:	P1.H = 0xffa0;		/* (-96)	P1=0xffa020d4 */
+   0x202ec6fa:	CALL (P1);
+   0x202ec6fc:	[P4++] = R0;
+   0x202ec6fe:	R5 += -0x1;		/* ( -1) */
+   0x202ec700:	R0 = [FP + 0xc];
+   0x202ec702:	P1.L = 0xda4;		/* (3492)	P1=0xffa00da4 */
+   0x202ec706:	P1.H = 0xffa0;		/* (-96)	P1=0xffa00da4 */
+   0x202ec70a:	CALL (P1);
+   0x202ec70c:	R1 = ROT R7 BY 0x0 || P1 = [FP + 0x8] || NOP;
+   0x202ec714:	[P1++] = R0;
+   0x202ec716:	R0 = [FP -0x4];
+   0x202ec718:	[FP + 0x8] = P1;
+   0x202ec71a:	P1.L = 0x1716;		/* (5910)	P1=0xffa01716 */
+   0x202ec71e:	P1.H = 0xffa0;		/* (-96)	P1=0xffa01716 */
+   0x202ec722:	CALL (P1);
+   0x202ec724:	CC = R5 == 0x0;
+   0x202ec726:	R7 = R0;
+   0x202ec728:	IF !CC JUMP 0x0x202ec6de (BP);
+   0x202ec72a:	[P3 + 0x8] = R0;
+   0x202ec72c:	W[P3] = R4.L;
+   0x202ec72e:	R0 = [SP + 0x3c];
+   0x202ec730:	CC = R0 == 0x0;
+   0x202ec732:	P4.L = 0xaddc;		/* (-21028)	P4=0xaddc */
+   0x202ec736:	P4.H = 0x202e;		/* (8238)	P4=0x202eaddc */
+   0x202ec73a:	IF CC JUMP 0x0x202ec8fa;
+   0x202ec73c:	R0 = R6;
+   0x202ec73e:	P1.L = 0x16d4;		/* (5844)	P1=0xffa016d4 */
+End of assembler dump.
+
+=== done ===
+GDB-EXIT:0

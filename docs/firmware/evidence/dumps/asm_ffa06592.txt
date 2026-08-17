@@ -1,0 +1,120 @@
+ffa06592: LOAD P4.H = 0x2020
+ffa06596: LOAD P3.L = 0x76c0
+ffa0659a: LOAD P3.H = 0x2023
+ffa0659e: LOAD P5.L = 0x651c
+ffa065a2: LOAD P5.H = 0x2023
+ffa065a6: LOAD R6 = 0x1
+ffa065a8: NOP
+ffa065aa: PACK|| R4 = pack(R4.H,R6.L)
+ffa065ae: _LOAD R0 = B [P5] (Z)
+ffa065b0: _NOP
+ffa065b2: CC = R0 == 0x0
+ffa065b4: IF !CC JUMP 0xffa065e4
+ffa065b6: ADD R7 += -0x1
+ffa065b8: CC = R7 == 0x0
+ffa065ba: ADD P3 += 0x4
+ffa065bc: ADD P5 += 0xc
+ffa065be: MOVE R6 = R4
+ffa065c0: IF !CC JUMP 0xffa065a8 (bp)
+ffa065c2: MOVE R0 = R4.B (Z)
+ffa065c4: CC = R0 == 0x0
+ffa065c6: IF CC JUMP 0xffa065da (bp)
+ffa065c8: LOAD R2 = 0x0
+ffa065ca: LOAD R1 = 0x18
+ffa065cc: LOAD R1.H = 0x7
+ffa065d0: LOAD R0 = 0x8
+ffa065d2: LOAD R0.H = 0x1800
+ffa065d6: CALL 0xffa0b610
+ffa065da: ADD SP += 0xc
+ffa065dc: POP (R7:4,P5:3) = [SP++]
+ffa065de: UNLINK
+ffa065e2: RTS
+ffa065e4: LOAD R0 = [P5 + 0x4]
+ffa065e6: ADD R0 += 0x1
+ffa065e8: STORE [P5 + 0x4] = R0
+ffa065ea: MOVE R1 = FP
+ffa065ec: ADD R1 += 0x8
+ffa065ee: LOAD R0 = [P3]
+ffa065f0: CALL 0xffa086ca
+ffa065f4: LOAD R1 = [SP + 0x30]
+ffa065f6: CC = R1 == 0x0
+ffa065f8: IF !CC JUMP 0xffa06600
+ffa065fa: LOAD R0 = [P5 + 0x8]
+ffa065fc: ADD R0 += 0x1
+ffa065fe: STORE [P5 + 0x8] = R0
+ffa06600: LOAD R0 = [P5 + 0x4]
+ffa06602: LOAD R2 = 0x5
+ffa06604: CC = R2 < R0
+ffa06606: LOAD R4 = 0x0
+ffa06608: IF !CC JUMP 0xffa065b6 (bp)
+ffa0660a: LOAD R0 = [P5 + 0x8]
+ffa0660c: CC = R0 <= 0x3
+ffa0660e: IF CC JUMP 0xffa06636
+ffa06610: CC = R1 == 0x0
+ffa06612: IF !CC JUMP 0xffa06636
+ffa06614: LOAD R2 = [P3]
+ffa06616: LOAD P1.L = 0xc82c
+ffa0661a: LOAD P1.H = 0x2020
+ffa0661e: STORE [P4] = R2
+ffa06620: STORE B [P1] = R5
+ffa06622: LOAD R0 = 0x8
+ffa06624: LOAD R0.H = 0x4013
+ffa06628: CALL 0xffa02ed4
+ffa0662c: LOAD R0 = [P3]
+ffa0662e: LOAD R1 = 0x2
+ffa06630: CALL 0xffa08888
+ffa06634: JUMP.S 0xffa06640
+ffa06636: STORE B [P5] = R5
+ffa06638: LOAD R0 = [P3]
+ffa0663a: LOAD R1 = 0x6
+ffa0663c: CALL 0xffa08888
+ffa06640: LOAD R0 = [P3]
+ffa06642: MOVE R4 = R6
+ffa06644: LOAD R1 = 0x12
+ffa06646: LOAD R1.H = 0x420
+ffa0664a: CALL 0xffa08874
+ffa0664e: STORE [P5 + 0x8] = R5
+ffa06650: STORE [P5 + 0x4] = R5
+ffa06652: JUMP.S 0xffa065b6
+ffa06654: <no insn>
+ffa06656: <no insn>
+ffa06658: <no insn>
+ffa0665a: <no insn>
+ffa0665c: <no insn>
+ffa0665e: <no insn>
+ffa06660: <no insn>
+ffa06662: <no insn>
+ffa06664: <no insn>
+ffa06666: <no insn>
+ffa06668: <no insn>
+ffa0666a: <no insn>
+ffa0666c: <no insn>
+ffa0666e: <no insn>
+ffa06670: <no insn>
+ffa06672: <no insn>
+ffa06674: <no insn>
+ffa06676: <no insn>
+ffa06678: <no insn>
+ffa0667a: <no insn>
+ffa0667c: <no insn>
+ffa0667e: <no insn>
+ffa06680: <no insn>
+ffa06682: <no insn>
+ffa06684: <no insn>
+ffa06686: <no insn>
+ffa06688: <no insn>
+ffa0668a: <no insn>
+ffa0668c: <no insn>
+ffa0668e: <no insn>
+ffa06690: <no insn>
+ffa06692: <no insn>
+ffa06694: <no insn>
+ffa06696: <no insn>
+ffa06698: <no insn>
+ffa0669a: <no insn>
+ffa0669c: <no insn>
+ffa0669e: <no insn>
+ffa066a0: <no insn>
+ffa066a2: <no insn>
+ffa066a4: <no insn>
+ffa066a6: <no insn>

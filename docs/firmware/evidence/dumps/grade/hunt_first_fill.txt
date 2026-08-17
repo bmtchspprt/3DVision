@@ -1,0 +1,1013 @@
+===== RESOLVED 2021f97a =====
+2021f9d0: STORE W [SP + 0x54] = R6
+2021fa46: CALL 0x2020fd42  => 0x2020fd42
+2021fa94: CALL 0x20210546  => 0x20210546
+2021faac: CALL (P1)  => 0xffa018f0
+2021fabe: CALL (P1)  => 0xffa018f0
+2021fad0: CALL (P1)  => 0xffa018f0
+2021fb2e: CALL (P1)  => 0xffa05ca0
+2021fb34: LOAD P1.H = 0xff80
+2021fb4a: RTS
+
+===== RESOLVED 2020fd42 =====
+2020fd88: STORE W [SP + 0x52] = R2
+2020fd8c: STORE W [SP + 0x50] = R1
+2020fdb6: CALL (P1)  => 0xffa0872a
+2020fdbc: STORE W [SP + 0x56] = R6
+2020fdc0: STORE W [SP + 0x54] = R3
+2020fdce: CALL (P1)  => 0xffa0872a
+2020fdf2: CALL 0x2020644e  => 0x2020644e
+2020fe04: CALL (P1)  => 0xffa0872a
+2020fe10: LOAD P1.L = 0x5f92
+2020fe18: CALL (P1)  => 0xffa05f92
+2020fe2a: LOAD R1 = [FP + -0x44]
+2020fe30: LOAD P1.H = 0xff80
+2020fe40: LOAD P4.H = 0xff80
+2020fe4e: LOAD P3.H = 0xff80
+2020fe8c: CALL (P1)  => 0xffa01150
+2020feb8: CALL (P1)  => 0xffa06008
+2020fed4: LOAD P1.H = 0xff80
+2020ff18: CALL 0x2020916c  => 0x2020916c
+2020ff2c: CALL (P1)  => 0xffa06008
+2020ff66: CALL (P1)  => 0xffa01c38
+2020ff6c: LOAD P1.H = 0xff80
+2020ff88: LOAD P0.H = 0xff80
+2020ffbc: CALL (P1)  => 0xffa01c38
+2021000c: CALL (P1)  => 0xffa015b4
+2021001a: CALL (P1)  => 0xffa018f0
+20210024: CALL (P1)  => 0xffa02750
+20210048: CALL (P1)  => 0xffa01150
+2021005e: CALL (P1)  => 0xffa01c38
+202100a6: CALL (P1)  => 0xffa01150
+202100c8: CALL (P1)  => 0xffa01150
+202100e6: CALL (P1)  => 0xffa01c38
+20210116: LOAD R3 = [P3 + 0x44]
+20210148: CALL (P1)  => 0xffa01150
+2021019e: CALL (P1)  => 0xffa01150
+202101ac: CALL (P1)  => 0xffa06008
+202101e0: CALL (P1)  => 0xffa01150
+202101fe: CALL (P1)  => 0xffa06008
+2021024c: CALL (P1)  => 0xffa06008
+20210276: CALL (P1)  => 0xffa06008
+2021028e: CALL 0x20205c98  => 0x20205c98
+202102a2: CALL (P1)  => 0xffa08700
+202102a8: LOAD P1.H = 0xff80
+202102bc: CALL 0x20205d50  => 0x20205d50
+202102ea: CALL (P1)  => 0xffa05ee4
+20210310: CALL (P1)  => 0xffa06008
+2021031c: CALL (P1)  => 0xffa08700
+20210328: CALL (P1)  => 0xffa08700
+20210354: CALL (P1)  => 0xffa05ee4
+2021037e: CALL 0x20205e82  => 0x20205e82
+20210392: CALL (P1)  => 0xffa06008
+2021039e: CALL (P1)  => 0xffa0872a
+202103aa: CALL (P1)  => 0xffa0872a
+202103c4: STORE W [P1 + 0x8] = R0
+202103c6: CALL 0x20205cd2  => 0x20205cd2
+202103e6: CALL (P1)  => 0xffa05ee4
+202103fa: RTS
+
+===== RESOLVED 20210546 =====
+20210574: STORE W [P3 + 0x2] = R0
+202105cc: CALL (P1)  => 0xffa058ac
+202105d8: CALL 0x202ecec8  => 0x202ecec8
+202105f2: LOAD P1.L = 0x5f92
+202105fa: CALL (P1)  => 0xffa05f92
+20210604: LOAD P1.L = 0x5f2e
+2021060c: CALL (P1)  => 0xffa05f2e
+2021062a: CALL (P1)  => 0xffa058ac
+20210648: LOAD P1.L = 0x5f2e
+20210650: CALL (P1)  => 0xffa05f2e
+20210662: CALL 0x2020f2d8  => 0x2020f2d8
+20210668: STORE W [P1] = R0.L
+20210678: CALL (P1)  => 0xffa06008
+202106a6: CALL (P1)  => 0xffa06688
+202106a8: STORE W [P3] = R0.L
+202106b8: CALL (P1)  => 0xffa06008
+202106d8: LOAD P1.L = 0x5a56
+202106e0: CALL (P1)  => 0xffa05a56
+202106ec: CALL (P1)  => 0xffa018f0
+202106fe: CALL (P1)  => 0xffa06008
+20210726: CALL (P1)  => 0xffa06688
+2021072e: STORE W [P3] = R3.L
+2021073e: CALL (P1)  => 0xffa06008
+2021075e: CALL 0x2020f306  => 0x2020f306
+20210778: CALL (P1)  => 0xffa01688
+20210784: CALL (P1)  => 0xffa018f0
+20210790: CALL (P1)  => 0xffa01814
+202107c4: CALL (P1)  => 0xffa058ac
+202107de: LOAD P1.L = 0x5f2e
+202107e6: CALL (P1)  => 0xffa05f2e
+202107fe: CALL 0x2020f2d8  => 0x2020f2d8
+20210804: STORE W [P1 + 0x2] = R0
+20210814: CALL (P1)  => 0xffa06008
+20210842: CALL (P1)  => 0xffa06688
+20210844: STORE W [P3] = R0.L
+20210854: CALL (P1)  => 0xffa06008
+20210874: LOAD P1.L = 0x5a56
+2021087c: CALL (P1)  => 0xffa05a56
+20210888: CALL (P1)  => 0xffa018f0
+2021089a: CALL (P1)  => 0xffa06008
+202108c2: CALL (P1)  => 0xffa06688
+202108ca: STORE W [P3] = R3.L
+202108da: CALL (P1)  => 0xffa06008
+202108f4: CALL 0x2020f306  => 0x2020f306
+2021090e: CALL (P1)  => 0xffa01688
+2021091a: CALL (P1)  => 0xffa018f0
+20210926: CALL (P1)  => 0xffa01814
+2021095a: CALL (P1)  => 0xffa058ac
+20210978: LOAD P1.L = 0x5f2e
+20210980: CALL (P1)  => 0xffa05f2e
+20210992: CALL 0x2020f2d8  => 0x2020f2d8
+20210998: STORE W [P1 + 0x4] = R0
+202109a8: CALL (P1)  => 0xffa06008
+202109d6: CALL (P1)  => 0xffa06688
+202109d8: STORE W [P3] = R0.L
+202109e8: CALL (P1)  => 0xffa06008
+20210a08: LOAD P1.L = 0x5a56
+20210a10: CALL (P1)  => 0xffa05a56
+20210a1c: CALL (P1)  => 0xffa018f0
+20210a2e: CALL (P1)  => 0xffa06008
+20210a56: CALL (P1)  => 0xffa06688
+20210a5c: STORE W [P3] = R0.L
+20210a6c: CALL (P1)  => 0xffa06008
+20210a8c: CALL 0x2020f306  => 0x2020f306
+20210aa2: CALL (P1)  => 0xffa01688
+20210aae: CALL (P1)  => 0xffa018f0
+20210aba: CALL (P1)  => 0xffa01814
+20210aca: RTS
+
+===== RESOLVED 202122fa =====
+20212322: LSETUP (0x20212326,0x20212328) LC0 = P2
+20212354: LSETUP (0x20212358,0x202123e4) LC1 = P1
+2021236e: LSETUP (0x20212372,0x202123d0) LC0 = P1
+20212396: CALL (P1)  => 0xffa01716
+202123b0: CALL (P1)  => 0xffa01716
+202123ce: CALL (P1)  => 0xffa01716
+202123fc: STORE W [P3--] = R3
+20212418: _STORE W [P3] = R4.L
+2021241e: STORE W [SP + 0x5a] = R1
+20212422: STORE W [SP + 0x58] = R2
+20212444: CALL (P1)  => 0xffa018f0
+202124a6: CALL (P1)  => 0xffa018f0
+202124fe: STORE W [P3] = R5.L
+20212518: LSETUP (0x2021251c,0x20212592) LC1 = P1
+20212532: LSETUP (0x20212536,0x20212586) LC0 = P2
+20212546: CALL (P1)  => 0xffa018f0
+20212558: CALL (P1)  => 0xffa018f0
+2021256c: CALL (P1)  => 0xffa018f0
+20212578: CALL (P1)  => 0xffa018f0
+20212584: CALL (P1)  => 0xffa01716
+202125c4: CALL (P1)  => 0xffa01814
+202125ce: CALL (P1)  => 0xffa0248c
+202125ee: LSETUP (0x202125f2,0x2021260e) LC1 = P1
+202125f6: LSETUP (0x202125fa,0x2021260c) LC0 = P1
+2021260a: CALL (P1)  => 0xffa018f0
+20212620: RTS
+
+===== RESOLVED 2020f47c =====
+2020f4e0: STORE W [P3 + 0x8] = R6
+2020f50e: CALL (P1)  => 0xffa0595c
+2020f522: CALL (P1)  => 0xffa06008
+2020f546: LOAD P0.H = 0xff80
+2020f554: STORE W [P1] = R7.L
+2020f584: CALL (P1)  => 0xffa01688
+2020f59e: CALL (P1)  => 0xffa0165c
+2020f5ba: CALL (P1)  => 0xffa0165c
+2020f610: CALL (P1)  => 0xffa01630
+2020f630: STORE W [P1] = R4.L
+2020f63e: CALL (P1)  => 0xffa01814
+2020f64a: CALL (P1)  => 0xffa018f0
+2020f65e: RTS
+
+===== RESOLVED 20210be6 =====
+20210c06: STORE W [P1 + 0x14] = R5
+20210c60: STORE W [P2 + 0x5774] = R1
+20210c66: STORE W [P3 + 0x5774] = R1
+20210c6e: STORE W [P1 + 0x5774] = R2
+20210c74: STORE W [P0 + 0x5774] = R3
+20210c78: STORE W [P3 + 0x5774] = R3
+20210c8a: LOAD R7.H = 0xff80
+20210c8e: LSETUP (0x20210c92,0x20210cae) LC0 = P3
+20210c9c: STORE W [P3 + 0x5776] = R0
+20210cbc: LOAD R1 = 0x5cfc
+20210d1e: STORE [P1 + 0x578c] = R3
+20210d3a: STORE [P0 + 0x578c] = R3
+20210d5c: STORE [P1 + 0x578c] = R3
+20210d8c: STORE [P0 + 0x578c] = R3
+20210db6: STORE W [SP + 0x50] = R0
+20210dd4: LOAD P1 = 0x5788
+20210dfc: CALL 0x202ecc64  => 0x202ecc64
+20210e0e: STORE W [P1 + 0x5772] = R0
+20210e12: STORE W [P1 + 0x5770] = R0
+20210e22: CALL 0x202eccf2  => 0x202eccf2
+20210e3c: CALL 0x202eccf2  => 0x202eccf2
+20210e56: CALL 0x202eccf2  => 0x202eccf2
+20210e70: CALL 0x202eccf2  => 0x202eccf2
+20210e7c: LSETUP (0x20210e80,0x20210f22) LC1 = P2
+20210e88: STORE W [P0++] = R0
+20210e8a: STORE W [P2 + 0x5784] = R7
+20210e94: STORE [P2 + 0x5780] = R2
+20210ec0: LSETUP (0x20210ec4,0x20210f16) LC0 = P2
+20210ec4: LOAD P2 = 0x578c
+20210ede: LOAD P5 = 0x578c
+20210f30: CALL (P1)  => 0xffa05ee4
+20210f3c: LOAD R2.H = 0x5cfc
+20210f52: CALL (P1)  => 0xffa0586c
+20210f96: CALL (P1)  => 0xffa05ee4
+20210fb8: CALL (P1)  => 0xffa05ee4
+20210fd8: CALL (P1)  => 0xffa05ee4
+20210ff8: CALL (P1)  => 0xffa05ee4
+20211010: CALL (P1)  => 0xffa05ee4
+20211024: RTS
+
+===== sites: imm 0x578 within 40 insn of STORE involving computed ptr =====
+--- @202040e8: LOAD R5 = 0x578
+  202040fa: CALL (P1)
+  2020410c: LOAD R2 = 0x5cfc
+  20204124: STORE [SP + 0x38] = R2
+  20204126: STORE [FP + 0x10] = R0
+  20204150: CALL (P1)
+--- @20204358: LOAD R5 = 0x578
+  20204362: LOAD R6 = 0x5cfc
+  20204380: CALL (P1)
+  20204392: CALL (P1)
+  202043c0: CALL (P1)
+--- @202044b2: LOAD R5 = 0x578
+  202044bc: LOAD R6 = 0x5cfc
+  202044da: CALL (P1)
+  202044e6: STORE [FP + -0x18] = R3
+  202044f6: CALL (P1)
+  20204506: CALL (P1)
+  20204508: STORE [FP + -0x14] = R0
+  2020450a: STORE [FP + -0xc] = R0
+  20204532: CALL (P1)
+--- @2020b704: LOAD P0 = 0x578
+  2020b710: LOAD P2 = 0x5cfc
+  2020b716: STORE [P1 + 0x5cf0] = R0
+  2020b724: STORE [SP + 0x10] = R7
+  2020b726: STORE [SP + 0xc] = R3
+  2020b734: CALL 0x2022477c
+  2020bfbe: CALL (P1)
+--- @20210ec4: LOAD P2 = 0x578c
+  20210ee6: STORE [P0 + 0x57c0] = R1
+  20210f0a: STORE [P2 + 0x57c4] = R1
+  20210f30: CALL (P1)
+--- @20210ede: LOAD P5 = 0x578c
+  20210ee6: STORE [P0 + 0x57c0] = R1
+  20210f0a: STORE [P2 + 0x57c4] = R1
+  20210f30: CALL (P1)
+  20210f3c: LOAD R2.H = 0x5cfc
+  20210f52: CALL (P1)
+--- @20211d50: LOAD R2 = 0x578
+  20211d5c: LOAD R3 = 0x44
+  20211d62: LOAD R2 = 0x28f4
+  20211d70: CALL (P1)
+  20211d8e: CALL (P1)
+  20211dac: CALL (P1)
+  20211dca: CALL (P1)
+--- @20212bd2: LOAD P0 = 0x578
+  20212bdc: STORE [FP + -0x54] = R1
+  20212bfa: STORE [FP + -0x58] = P0
+  20212bfe: STORE [FP + 0xc] = R2
+  20212c00: STORE [FP + 0x10] = R3
+  20212c0a: CALL (P1)
+  20212c20: CALL (P1)
+  20212c2a: STORE [FP + -0x6c] = R0
+  20212c32: STORE [FP + -0x44] = P1
+  20212c3c: CALL (P1)
+  20212c46: STORE [FP + -0x5c] = R0
+--- @20212e36: LOAD R0 = 0x578
+  20212e44: STORE [FP + -0x18] = R0
+  20212e48: STORE [FP + -0x34] = P2
+  20212e58: LSETUP (0x20212e5c,0x20212e8e) LC0 = P0
+  20212e64: LOAD R1 = 0x5cfc
+  20212e80: CALL (P1)
+  20212e8c: CALL (P1)
+  20212e8e: STORE [P5++] = R0
+  20212eae: STORE W [P3 + -0x4] = R0
+--- @2021475a: LOAD P2 = 0x578
+  2021475e: STORE [FP + -0x18] = P1
+  20214764: STORE [FP + -0x28] = P1
+  2021476a: STORE W [FP + 0x10] = R3
+  20214778: STORE [FP + 0xc] = R7
+  2021477a: STORE [P5 + -0x4] = R3
+  20214780: STORE [P5 + 0xc] = R2
+  20214782: STORE [FP + 0x8] = R3
+  20214784: STORE [FP + -0x10] = R0
+  20214786: CALL 0x20210be6
+  20214790: STORE [SP + 0xc] = P0
+  20214796: STORE [FP + -0x24] = R0
+  20214798: CALL 0x2020f330
+  202147b6: STORE [FP + -0x20] = P1
+  202147b8: STORE [FP + -0x4] = P0
+  202147ca: STORE [SP + 0x10] = P0
+--- @2021fb5e: LOAD P0 = 0x578
+  2021fb7a: LOAD R0.H = 0x5cfc
+  2021fba2: STORE [SP + 0x24] = P1
+  2021fbcc: STORE [FP + -0x4] = R3
+  2021fbce: STORE [SP + 0xc] = R2
+--- @2021fb84: LOAD P0 = 0x578
+  2021fba2: STORE [SP + 0x24] = P1
+  2021fbcc: STORE [FP + -0x4] = R3
+  2021fbce: STORE [SP + 0xc] = R2
+  2021fbdc: STORE [SP + 0x1c] = R0
+  2021fbf4: STORE [SP + 0x18] = R4
+--- @2021fc68: LOAD P2 = 0x578
+  2021fc7c: STORE [P5 + 0x4] = R0
+  2021fc82: STORE [P5 + 0x4] = R0
+  2021fc90: STORE [SP + 0x28] = R1
+  2021fcaa: STORE W [P4] = R4.L
+  2021fcb8: LSETUP (0x2021fcbc,0x2021fd04) LC0 = P0
+  2021fccc: STORE [FP + 0x8] = R5
+--- @20220186: LOAD P0 = 0x578
+  2022018c: STORE [FP + -0x3c] = P0
+  2022019a: STORE W [P4 + 0xc] = R1
+  202201aa: CALL (P1)
+  202201ac: STORE [P4 + 0x10] = R0
+  202201ba: CALL (P1)
+  202201cc: CALL (P1)
+  202201de: CALL (P1)
+  202201e8: STORE [FP + -0x20] = R3
+  202201ec: STORE [FP + -0x30] = R2
+  202201fe: STORE [FP + -0x34] = R3
+--- @20220b48: LOAD P0 = 0x578
+  20220b4c: LOAD P2 = [FP + -0x44]
+  20220b5e: STORE [FP + -0x10] = P0
+  20220b78: STORE W [P1 + -0x12] = R0
+  20220b80: STORE [SP + 0x24] = R4
+  20220b84: STORE [SP + 0x20] = R5
+  20220b92: STORE [SP + 0x28] = R0
+  20220b94: STORE [SP + 0x18] = R1
+  20220b96: STORE [SP + 0x2c] = R7
+  20220b98: STORE [SP + 0x14] = R4
+  20220b9a: STORE [SP + 0xc] = R3
+  20220b9c: STORE [SP + 0x10] = R5
+  20220b9e: STORE [SP + 0x1c] = P1
+  20220ba4: CALL 0x2021f97a
+--- @20220e30: LOAD P0 = 0x578
+  20220e40: STORE [FP + -0x10] = P0
+  20220e4a: STORE [FP + -0x4] = R1
+  20220e60: STORE W [P1 + -0x8] = R0
+--- @2022109e: LOAD P1 = 0x578
+  202210ae: LOAD R5.H = 0x5cfc
+  202210b2: STORE W [P4] = R0.L
+  202210c2: CALL 0x202b5024
+  202210c8: STORE W [P4] = R0.L
+  202210ec: STORE [P0 + 0x3c] = R1
+  202210ee: STORE W [P2] = R0.L
+--- @20221352: LOAD P0 = 0x578
+  20221356: LOAD R6.H = 0x5cfc
+  20221362: STORE [FP + -0x48] = P0
+  20221368: STORE W [P4] = R0.L
+  20221374: CALL 0x202b5024
+  2022137a: STORE W [P4] = R0.L
+  202213a0: STORE [P0 + 0x3c] = R1
+  202213a2: STORE W [P3] = R0.L
+  202213b2: STORE [SP + 0xc] = R7
+--- @20224470: LOAD R3 = 0x578
+  20224484: STORE W [P5] = R0.L
+  202244a6: CALL (P1)
+  202244c8: STORE [P0 + 0x8] = R0
+  202244d2: STORE [P0 + 0xc] = R0
+  202244de: STORE [FP + 0xc] = R1
+--- @2022451e: LOAD R3 = 0x578
+  2022453a: LOAD R0.H = 0x5cfc
+  20224548: STORE W [P5] = R0.L
+  2022456a: CALL (P1)
+  20224584: STORE W [P4 + -0x4] = R6
+--- @20224666: LOAD R1 = 0x578
+  20224678: LOAD R7.H = 0x447a
+  20224682: STORE [SP + 0x3c] = R3
+  20224692: CALL (P1)
+  202246c4: STORE [P0 + 0x5cf8] = R7
+--- @202246c0: LOAD R1 = 0x578
+  202246c4: STORE [P0 + 0x5cf8] = R7
+  202246fc: STORE [P5 + 0x4] = R7
+  202246fe: STORE W [P4++] = R2
+  20224700: LSETUP (0x20224704,0x20224726) LC0 = P2
+  2022470e: CALL (P1)
+  2022471a: CALL (P1)
+  20224724: CALL (P1)
+  20224726: STORE W [P4 ++ P3] = R0.L
+  2022472e: STORE W [P5 + 0x2] = R0
+  20224734: STORE W [P5] = R6.L
+--- @20224738: LOAD R2 = 0x578
+  20224754: CALL (P1)
+  2022475e: CALL (P1)
+  20224762: STORE W [P0 + 0x5a26] = R0
+  2022476e: CALL 0x20204044
+  202247a0: STORE [SP + 0x14] = P5
+  202247a2: STORE [SP + 0x10] = R6
+  202247a6: CALL 0x202b5066
+  202247aa: CALL 0x202ec3c0
+--- @2022d076: LOAD P1 = 0x578
+  2022d082: STORE [FP + 0x8] = R0
+  2022d0a0: CALL (P1)
+  2022d0b6: CALL (P1)
+  2022d0cc: CALL (P1)
+  2022d0d6: STORE [FP + 0x10] = R0
+  2022d0f0: CALL (P1)
+  2022d0f8: STORE W [I0] = R6.L
+--- @2022d106: LOAD R0 = 0x578
+  2022d10e: STORE [SP + 0x2c] = R0
+  2022d118: LSETUP (0x2022d11c,0x2022d15c) LC0 = P1
+  2022d128: LOAD R1 = 0x44
+  2022d140: CALL (P1)
+  2022d14c: CALL (P1)
+  2022d150: STORE [P3++] = R0
+--- @2022d174: LOAD R0 = 0x578
+  2022d18c: LSETUP (0x2022d190,0x2022d224) LC0 = P1
+  2022d1ae: CALL (P1)
+  2022d1ba: CALL (P1)
+  2022d1bc: STORE [P3++] = R0
+  2022d1da: CALL (P1)
+  2022d1e6: CALL (P1)
+  2022d1e8: STORE [I1++] = R0
+--- @2022d24e: LOAD P0 = 0x578
+  2022d252: STORE [SP + 0x30] = R0
+  2022d26a: STORE [P4 + 0x1c] = R2
+  2022d26c: STORE [SP + 0x34] = R3
+  2022d26e: STORE [FP + -0x4] = R1
+  2022d27a: CALL (P1)
+  2022d28a: CALL (P1)
+  2022d294: CALL (P1)
+  2022d2a4: STORE [P4 + 0x20] = R0
+  2022d2a6: STORE [P4 + 0x10] = R5
+  2022d2a8: STORE [P4 + 0x14] = R5
+  2022d2aa: STORE [P4 + 0x4] = R6
+  2022d2ac: STORE W [P4 + 0x0] = R7
+  2022d2b0: STORE [FP + 0x10] = P3
+  2022d2bc: STORE W [SP + 0x28] = R0
+  2022d2c0: STORE W [SP + 0x2a] = R1
+--- @2022d706: LOAD R3 = 0x578
+  2022d710: STORE [FP + -0x8] = R0
+  2022d722: STORE [FP + -0xc] = R3
+  2022d724: STORE [FP + -0x28] = R2
+  2022d732: CALL (P1)
+  2022d740: CALL (P1)
+  2022d74a: CALL (P1)
+  2022d768: CALL (P1)
+  2022d770: STORE [P3 + 0x10] = R7
+  2022d774: STORE [FP + -0x3c] = R0
+--- @2022d85a: LOAD P0 = 0x578
+  2022d876: STORE [FP + -0x3c] = R0
+  2022d87e: STORE W [P1] = R7.L
+  2022d880: STORE [P2 + 0x5cb4] = R6
+  2022d896: STORE [FP + -0x14] = P0
+  2022d8ac: STORE [FP + -0x1c] = P2
+  2022d8be: STORE [P1 + 0x5cb8] = R5
+  2022d8c4: STORE [P0] = R3
+--- @2022fa68: LOAD R3 = 0x578
+  2022fa94: CALL (P1)
+  2022fa9c: LOAD R1 = 0x5cfc
+  2022facc: STORE [P0 + 0x5cec] = R7
+  2022fad6: STORE [FP + -0x2c] = P2
+--- @2022fb30: LOAD P1 = 0x578
+  2022fb3c: STORE [SP + 0x50] = R3
+  2022fb52: STORE [FP + -0x28] = P1
+  2022fb66: LOAD R3 = 0x5cfc
+  2022fb72: STORE [FP + -0x8] = R3
+  2022fb92: STORE [FP + -0x8] = R7
+--- @20230a60: LOAD P0 = 0x578
+  20230a8a: STORE [FP + -0x30] = P0
+  20230a8c: STORE [FP + -0x14] = P2
+  20230a9e: STORE W [SP + 0xa6] = R7
+  20230aa2: STORE W [SP + 0xa4] = R6
+  20230aa6: STORE W [SP + 0x9c] = R5
+  20230ac2: STORE [FP + -0x48] = P1
+  20230ac4: STORE [FP + -0x2c] = P0
+  20230ac6: STORE [FP + -0x24] = P2
+  20230ac8: STORE W [SP + 0x80] = R4
+  20230acc: STORE W [SP + 0x8a] = R3
+  20230ad0: STORE W [SP + 0x82] = R2
+  20230ad4: STORE W [SP + 0x76] = R1
+  20230ad8: STORE W [SP + 0x74] = R7
+  20230adc: STORE W [SP + 0x88] = R5
+  20230aea: LOAD R1 = [FP + -0x44]
+--- @20230b08: LOAD R5 = 0x578
+  20230b1a: STORE [FP + -0x38] = R5
+  20230b1e: STORE [SP + 0x5c] = R1
+  20230b2a: STORE [FP + -0x68] = R1
+  20230b2c: LOAD R3 = [FP + -0x44]
+  20230b3e: CALL (P1)
+  20230b4c: CALL (P1)
+  20230b50: LOAD R3 = 0x5cfc
+  20230b70: LOAD R3 = 0x2938
+  20230b82: STORE [FP + -0x74] = R2
+--- @20230e46: LOAD P1 = 0x578
+  20230e54: STORE [P3 + -0x44] = R5
+  20230e5c: STORE [FP + -0x58] = R5
+  20230e72: STORE [P3 + -0x48] = R4
+  20230e76: STORE [P3 + -0x40] = R4
+  20230e7a: STORE [P3 + -0x3c] = R4
+  20230e7e: STORE [P3 + -0x38] = R4
+  20230e8e: STORE [FP + -0x6c] = P1
+  20230e98: CALL (P1)
+  20230ea4: LOAD R3 = 0x5cfc
+  20230ea8: STORE [P3 + -0x34] = R4
+  20230eb2: STORE [FP + -0x6c] = R2
+  20230ebc: CALL (P1)
+  20230ec8: CALL (P1)
+  20230eca: STORE [P3 + -0xa0] = R0
+--- @202312c0: LOAD P1 = 0x578
+  202312ce: STORE [FP + -0x58] = P2
+  202312e0: STORE [FP + -0x60] = P4
+  202312e6: STORE W [SP + 0xb4] = R6
+  202312ea: STORE [FP + -0x3c] = P1
+  20231310: STORE [FP + -0x30] = P0
+  20231312: STORE [FP + -0x6c] = P1
+  20231314: STORE W [SP + 0x9e] = R0
+  20231318: STORE W [SP + 0x62] = R1
+  2023131c: STORE W [SP + 0x9c] = R2
+  20231320: STORE W [SP + 0x60] = R7
+  20231330: LOAD R1 = 0x5cfc
+--- @2023141c: LOAD P2 = 0x578
+  20231428: LOAD R1 = 0x5cfc
+  2023144a: CALL (P1)
+  20231454: STORE [FP + -0x3c] = R2
+  2023145e: CALL (P1)
+  20231462: STORE [FP + -0x58] = R3
+  20231464: STORE [P3 + -0x1c] = R0
+  20231470: CALL (P1)
+  20231480: STORE [P3 + -0x58] = R1
+  2023148e: LSETUP (0x20231492,0x202314b8) LC0 = P1
+--- @20231502: LOAD P1 = 0x578
+  2023151a: STORE W [SP + 0xa6] = R3
+  2023151e: STORE W [SP + 0x8a] = R1
+  20231522: STORE W [SP + 0x82] = R0
+  20231526: STORE W [SP + 0x60] = R6
+  2023152a: STORE W [SP + 0xa4] = R2
+  2023152e: STORE W [SP + 0x88] = R5
+  20231532: STORE W [SP + 0x80] = R7
+  20231550: _LOAD R1 = [FP + -0x44]
+  20231560: STORE [SP + 0x14] = R7
+  20231562: STORE [SP + 0xc] = R5
+  2023156a: CALL 0x2022e876
+  20231572: STORE [P3 + 0x4] = R0
+  2023157c: CALL (P1)
+  20231584: STORE [P3 + -0x1c] = R0
+--- @2023183e: LOAD P2 = 0x578
+  2023184a: STORE [FP + -0x58] = R1
+  2023184c: STORE W [SP + 0xa6] = R2
+  2023185e: LOAD R2 = [FP + -0x44]
+  20231860: STORE [FP + -0x30] = P2
+  20231862: STORE [FP + -0x14] = P1
+  20231864: STORE [FP + -0x48] = R2
+  20231866: STORE W [SP + 0xb6] = R0
+  2023186a: STORE W [SP + 0xa4] = R3
+  2023186e: STORE W [SP + 0xb4] = R1
+  20231898: STORE W [P3 + -0xaa] = R7
+  202318b4: CALL (P1)
+--- @20231a22: LOAD P0 = 0x578
+  20231a26: STORE [FP + -0x60] = R2
+  20231a28: STORE W [SP + 0x8a] = R1
+  20231a40: LOAD R1 = [FP + -0x44]
+  20231a42: STORE [FP + -0x6c] = P0
+  20231a46: STORE [FP + -0x20] = R1
+  20231a48: STORE W [SP + 0xb2] = R0
+  20231a4c: STORE W [SP + 0x88] = R3
+  20231a50: STORE W [SP + 0xb0] = R2
+  20231a84: STORE W [P3 + -0xaa] = R7
+  20231a98: CALL (P1)
+--- @20231b22: LOAD P1 = 0x578
+  20231b36: STORE W [SP + 0x82] = R2
+  20231b3a: STORE W [SP + 0x76] = R1
+  20231b3e: STORE W [SP + 0xb2] = R0
+  20231b42: STORE W [SP + 0x80] = R7
+  20231b46: STORE W [SP + 0x74] = R5
+  20231b4a: STORE W [SP + 0xb0] = R3
+  20231b56: LOAD R7 = [FP + -0x44]
+  20231b74: STORE [P3 + -0x58] = R7
+  20231b92: STORE [P3 + -0x58] = R7
+  20231b96: LOAD R0 = [FP + -0x44]
+--- @20231d94: LOAD P0 = 0x578
+  20231db4: STORE W [P3 + -0xaa] = R2
+  20231dd0: CALL (P1)
+  20231de2: STORE W [P3 + -0xac] = R3
+  20231dea: STORE W [P3 + -0xac] = R4
+--- @20231ffc: LOAD P1 = 0x578
+  20232012: STORE [FP + -0x44] = P2
+  20232014: STORE [SP + 0x60] = P1
+  20232018: LOAD R7.L = 0x5cfc
+  2023203e: CALL (P1)
+  2023204a: CALL (P1)
+  2023204e: LOAD P2 = [FP + -0x44]
+  20232050: STORE [P3 + 0x28] = R0
+  20232064: STORE W [P3 + -0xac] = R3
+  20232074: STORE W [P2] = R2.L
+--- @202b59a4: LOAD P2 = 0x578
+  202b59a8: STORE [P0 + 0x1a198] = R4
+  202b59ae: STORE [P5 + 0x54] = R4
+  202b59ba: STORE W [P1 ++ P2] = R4.L
+  202b59bc: STORE [SP + 0x88] = P2
+  202b59c4: STORE [SP + 0x50] = R1
+  202b59d0: STORE [FP + -0x5c] = P1
+  202b59d2: STORE [FP + -0x70] = R0
+  202b59d4: STORE [SP + 0x98] = P0
+  202b59d8: STORE [FP + -0x6c] = R1
+  202b59da: STORE [FP + -0x78] = P2
+  202b59dc: LOAD R5.H = 0x5cfc
+  202b5a12: STORE [FP + -0x44] = P0
+  202b5a16: STORE [FP + -0x58] = P2
+--- @202b5ec2: LOAD R2 = 0x578
+  202b5ee8: STORE [P1 + 0x5cbc] = R4
+  202b5ef6: STORE [P1 + 0x5cc0] = R4
+  202b5efa: LSETUP (0x202b5efe,0x202b5f22) LC0 = P0
+  202b5f10: STORE [P1] = R7
+  202b5f22: STORE [P1 + 0x4] = R4
+  202b5f28: STORE [FP + -0x60] = R2
+  202b5f34: CALL (P1)
+--- @202ecdc4: LOAD P0 = 0x578c
+  202ecdd4: STORE [FP + 0x8] = R4
+  202ecdd8: STORE [FP + 0xc] = P0
+  202ecde8: STORE [SP + 0x1c] = P3
+  202ecdf2: STORE [SP + 0x18] = P2
+  202ecdfe: STORE [SP + 0x10] = R3
+  202ece04: STORE [SP + 0xc] = R2
+  202ece06: STORE [SP + 0x14] = R3
+  202ece12: CALL (P1)
+  202ece20: STORE W [P5] = R0.L
+  202ece34: CALL (P1)
+  202ece36: STORE W [P5] = R5.L
+--- @202ecf02: LOAD P0 = 0x578c
+  202ecf24: STORE [FP + -0x10] = P1
+  202ecf26: STORE [SP + 0x3c] = R5
+  202ecf56: CALL (P1)
+  202ecf5c: STORE W [P5 + 0x4] = R0
+  202ecf74: CALL (P1)
+  202ecf78: STORE W [P2 + 0x18] = R2
+--- @ffa03736: LOAD P0 = 0x578
+  ffa03760: CALL 0xffa01814
+  ffa0376a: CALL 0xffa01814
+  ffa03776: CALL 0xffa01814
+  ffa03784: CALL 0xffa01814
+  ffa03798: STORE [P0++] = R0
+  ffa0379e: STORE [FP + -0xc] = R7
+  ffa037a0: STORE [FP + -0x14] = P0
+  ffa037a2: STORE [FP + -0x10] = P1
+--- @ffa03916: LOAD P2 = 0x578
+  ffa0391c: LOAD P3 = 0x44
+  ffa0392c: LOAD P4 = 0x2938
+  ffa03930: STORE [P5] = R3
+  ffa0393e: STORE [P5 + 0x8] = P0
+  ffa03940: STORE [P5 + 0x14] = R3
+  ffa03942: STORE [P5 + 0xc] = P4
+  ffa03944: STORE [P5 + 0x4] = R4
+  ffa03946: STORE [P5 + 0x10] = R1
+  ffa0394a: CALL 0xffa02948
+  ffa03954: CALL 0xffa018f0
+  ffa03960: CALL 0xffa018f0
+  ffa03966: STORE [SP + 0x38] = R0
+  ffa0396a: CALL 0xffa02948
+  ffa03974: CALL 0xffa018f0
+  ffa0397e: CALL 0xffa02948
+  ffa03984: CALL 0xffa018f0
+  ffa0398e: CALL 0xffa01714
+--- @ffa03cac: LOAD P0 = 0x578
+  ffa03cb4: STORE [FP + -0x5c] = R1
+  ffa03cb6: STORE [SP + 0x34] = R0
+  ffa03cc4: CALL 0xffa01814
+  ffa03cc8: CALL 0xffa028c8
+  ffa03cd4: STORE W [SP + 0x3a] = R3
+  ffa03cd8: STORE W [SP + 0x38] = R2
+  ffa03ce8: STORE [SP + 0x40] = R0
+  ffa03cf4: CALL 0xffa01814
+  ffa03cf8: CALL 0xffa028c8
+  ffa03cfe: STORE [SP + 0x48] = R0
+  ffa03d02: CALL 0xffa00fb4
+  ffa03d0a: STORE [SP + 0x44] = R0
+  ffa03d12: STORE [FP + -0x78] = R2
+  ffa03d14: CALL 0xffa05ee4
+  ffa03d1a: STORE [FP + -0x7c] = R0
+  ffa03d1e: LSETUP (0xffa03d22,0xffa03d3c) LC0 = P1
+  ffa03d24: CALL 0xffa028c8
+  ffa03d30: CALL 0xffa028c8
+--- @ffa043d8: LOAD P2 = 0x578
+  ffa043e6: STORE [SP + 0x34] = P2
+  ffa043fc: STORE [SP + 0x34] = P1
+  ffa04410: STORE [SP + 0x28] = P1
+  ffa04412: STORE [SP + 0x38] = R0
+  ffa04414: STORE [FP + -0x20] = R1
+  ffa04416: STORE [FP + -0x24] = R2
+  ffa0441e: CALL 0xffa02948
+  ffa04424: CALL 0xffa018f0
+  ffa0442c: STORE [SP + 0x34] = R0
+  ffa04432: CALL 0xffa02948
+  ffa04438: CALL 0xffa018f0
+--- @ffa046c6: LOAD P0 = 0x578
+  ffa046ca: STORE [FP + -0x24] = R1
+  ffa046e4: CALL 0xffa01814
+  ffa046f4: CALL 0xffa01814
+  ffa04704: CALL 0xffa01814
+  ffa04714: CALL 0xffa01814
+  ffa04722: STORE [FP + -0xc] = R0
+  ffa04728: STORE [FP + -0x28] = P1
+  ffa0472a: STORE [FP + -0x40] = P3
+  ffa0472c: STORE [FP + -0x18] = R2
+  ffa0472e: CALL 0xffa01814
+  ffa04740: CALL 0xffa01814
+--- @ffa04766: LOAD R0 = 0x578
+  ffa04778: LSETUP (0xffa0477c,0xffa047c4) LC0 = P1
+  ffa0477e: LOAD R1 = 0x5cfc
+  ffa04794: CALL 0xffa01688
+  ffa0479a: CALL 0xffa018f0
+  ffa0479e: STORE [I0++] = R0
+  ffa047a2: LOAD R1 = 0x5cfc
+  ffa047ba: CALL 0xffa01688
+  ffa047c0: CALL 0xffa018f0
+  ffa047c4: STORE [P3++] = R0
+  ffa047ce: STORE W [P1] = R0.L
+  ffa047d8: CALL 0xffa016d4
+  ffa047de: STORE [P2 + 0x1c] = R0
+--- @ffa04dc8: LOAD R0 = 0x578
+  ffa04dd6: LSETUP (0xffa04dda,0xffa04e02) LC1 = P1
+  ffa04de2: LOAD R2 = 0x5cfc
+  ffa04df8: CALL 0xffa01814
+  ffa04dfc: CALL 0xffa0290c
+  ffa04e02: STORE W [P0] = R0.L
+  ffa04e14: STORE [FP + 0x8] = R0
+  ffa04e1e: LSETUP (0xffa04e22,0xffa04e6a) LC0 = P2
+--- @ffa04e9a: LOAD R0 = 0x578
+  ffa04eaa: LSETUP (0xffa04eae,0xffa04ed2) LC1 = P2
+  ffa04eb6: LOAD R2 = 0x5cfc
+  ffa04ec8: CALL 0xffa01814
+  ffa04ecc: CALL 0xffa0290c
+  ffa04ed2: STORE W [P2] = R0.L
+  ffa04ee4: STORE [P1] = R6
+  ffa04ef2: CALL 0xffa0165c
+  ffa04efa: STORE [P0] = R6
+--- @ffa05d88: LOAD P0 = 0x578
+  ffa05db2: CALL 0xffa016d4
+  ffa05dce: CALL 0xffa01716
+  ffa05dd4: CALL 0xffa01716
+hits=55
+===== FULL ffa0763c..ffa07800 =====
+ffa0763c: MOVE P0 = R0
+ffa0763e: PUSH [--SP] = (R7:6,P5:5)
+ffa07640: LOAD R0 = [P0 + 0x48]
+ffa07644: CC = R0 == 0x2
+ffa07646: IF CC JUMP 0xffa07738
+ffa07648: SUB|| R6 = R6 - R6 (ns)
+ffa0764c: _LOAD R0 = [P0 + 0x3c]
+ffa0764e: _NOP
+ffa07650: CC = R0 < 0x4 (IU)
+ffa07652: IF CC JUMP 0xffa076b8
+ffa07654: LOAD R2 = 0x4
+ffa07656: CC = R0 == R2
+ffa07658: IF CC JUMP 0xffa076cc
+ffa0765a: LOAD R2 = 0x5
+ffa0765c: CC = R0 == R2
+ffa0765e: IF !CC JUMP 0xffa076b8
+ffa07660: LOAD R3 = 0x701
+ffa07664: LOAD R2 = 0xc03
+ffa07668: MOVE R0 = R1
+ffa0766a: LOAD P2 = -0x1
+ffa0766c: LOAD R7 = 0x0
+ffa0766e: MOVE P1 = R0
+ffa07670: LSETUP (0xffa07674,0xffa076ac) LC0 = P2
+ffa07674: CC = P1 == 0x0
+ffa07676: IF CC JUMP 0xffa076c4
+ffa07678: NOP
+ffa0767a: MOVE P5 = P1
+ffa0767c: ADD P5 += 0x8
+ffa0767e: LOAD R0 = W [P5] (X)
+ffa07680: EXTRACT R0 = extract(R0,R3.L) (z)
+ffa07684: CC = R0 == 0x1
+ffa07686: IF CC JUMP 0xffa076bc
+ffa07688: NOP
+ffa0768a: NOP
+ffa0768c: NOP
+ffa0768e: LOAD R0 = W [P5] (X)
+ffa07690: EXTRACT R0 = extract(R0,R2.L) (z)
+ffa07694: CC = R0 == 0x0
+ffa07696: IF CC JUMP 0xffa076b0
+ffa07698: NOP
+ffa0769a: NOP
+ffa0769c: NOP
+ffa0769e: LOAD R0 = W [P1 + 0x2] (X)
+ffa076a0: LSH|| R0.H = R0.L << 0x0
+ffa076a4: LOAD R0.L = W [P1]
+ffa076a6: NOP
+ffa076a8: CC = R1 == R0
+ffa076aa: IF CC R0 = R7
+ffa076ac: MOVE P1 = R0
+ffa076ae: JUMP.S 0xffa0766e
+ffa076b0: STORE [P0 + 0x54] = P1
+ffa076b4: POP (R7:6,P5:5) = [SP++]
+ffa076b6: RTS
+
+===== FULL ffa07bde..ffa07e00 =====
+ffa07bde: LOAD P1 = [P5++]
+ffa07be0: LOAD R2 = 0x2
+ffa07be2: LOAD R1 = W [P1] (X)
+ffa07be4: BITSET (R1,0x0)
+ffa07be6: STORE W [P1] = R1.L
+ffa07be8: STORE [P5 + 0x3c] = R2
+ffa07bea: JUMP.S 0xffa07bc8
+ffa07bec: LOAD R0 = B [P5 + 0x46] (Z)
+ffa07bf0: CC = R0 == 0x0
+ffa07bf2: IF CC JUMP 0xffa07ca8
+ffa07bf4: LOAD R1 = [P5 + 0x58]
+ffa07bf8: CC = R1 == 0x0
+ffa07bfa: IF CC JUMP 0xffa07ca0
+ffa07bfc: MOVE R0 = R6
+ffa07bfe: CALL 0xffa0763c
+ffa07c02: LOAD P1 = [P5 + 0x4]
+ffa07c04: LOAD R0 = [P5 + 0x3c]
+ffa07c06: LOAD R1 = [P5 + 0x58]
+ffa07c0a: LOAD R2 = 0x4
+ffa07c0c: STORE [P1] = R1
+ffa07c0e: CC = R0 == R2
+ffa07c10: LOAD P1 = [P5 + 0x58]
+ffa07c14: LOAD P0 = [P5 + 0x8]
+ffa07c16: IF !CC JUMP 0xffa07c5a
+ffa07c18: LOAD R0 = W [P1 + 0x4] (X)
+ffa07c1a: LSH|| R1 = R0 << 0x10
+ffa07c1e: _LOAD R0 = W [P1 + 0x2] (Z)
+ffa07c20: _NOP
+ffa07c22: OR R0 = R1 | R0
+ffa07c24: STORE [P0] = R0
+ffa07c26: LOAD P1 = [P5 + 0x58]
+ffa07c2a: LOAD P0 = [P5 + 0xc]
+ffa07c2c: LOAD R0 = W [P1 + 0x8] (X)
+ffa07c2e: STORE W [P0] = R0.L
+ffa07c30: LOAD P1 = [P5 + 0x58]
+ffa07c34: LOAD P0 = [P5 + 0x14]
+ffa07c36: LOAD R0 = W [P1 + 0xa] (X)
+ffa07c38: STORE W [P0] = R0.L
+ffa07c3a: LOAD P1 = [P5 + 0x58]
+ffa07c3e: LOAD P0 = [P5 + 0x10]
+ffa07c40: LOAD R0 = W [P1 + 0xc] (X)
+ffa07c42: STORE W [P0] = R0.L
+ffa07c44: LOAD P1 = [P5 + 0x58]
+ffa07c48: LOAD P0 = [P5 + 0x18]
+ffa07c4a: LOAD R0 = W [P1 + 0xe] (X)
+ffa07c4c: STORE W [P0] = R0.L
+ffa07c4e: LOAD P1 = [P5 + 0x58]
+ffa07c52: LOAD P0 = [P5]
+ffa07c54: LOAD R0 = W [P1 + 0x6] (X)
+ffa07c56: STORE W [P0] = R0.L
+ffa07c58: JUMP.S 0xffa07c96
+ffa07c5a: LOAD R0 = W [P1 + 0x6] (X)
+ffa07c5c: LOAD R1 = W [P1 + 0x4] (X)
+ffa07c5e: PACK R0 = pack(R0.L,R1.L)
+ffa07c62: STORE [P0] = R0
+ffa07c64: LOAD P1 = [P5 + 0x58]
+ffa07c68: LOAD P0 = [P5 + 0xc]
+ffa07c6a: LOAD R0 = W [P1 + 0xa] (X)
+ffa07c6c: STORE W [P0] = R0.L
+ffa07c6e: LOAD P1 = [P5 + 0x58]
+ffa07c72: LOAD P0 = [P5 + 0x14]
+ffa07c74: LOAD R0 = W [P1 + 0xc] (X)
+ffa07c76: STORE W [P0] = R0.L
+ffa07c78: LOAD P1 = [P5 + 0x58]
+ffa07c7c: LOAD P0 = [P5 + 0x10]
+ffa07c7e: LOAD R0 = W [P1 + 0xe] (X)
+ffa07c80: STORE W [P0] = R0.L
+ffa07c82: LOAD P1 = [P5 + 0x58]
+ffa07c86: LOAD P0 = [P5 + 0x18]
+ffa07c88: LOAD R0 = W [P1 + 0x10] (X)
+ffa07c8a: STORE W [P0] = R0.L
+ffa07c8c: LOAD P1 = [P5 + 0x58]
+ffa07c90: LOAD P0 = [P5]
+ffa07c92: LOAD R0 = W [P1 + 0x8] (X)
+ffa07c94: STORE W [P0] = R0.L
+ffa07c96: MOVE R0 = R7
+ffa07c98: LOAD R1 = 0x2
+ffa07c9a: STORE [P5 + 0x40] = R1
+ffa07c9e: JUMP.S 0xffa07bc8
+ffa07ca0: STORE [P5 + 0x40] = R5
+ffa07ca4: MOVE R0 = R7
+ffa07ca6: JUMP.S 0xffa07bc8
+ffa07ca8: LOAD R1 = [P5 + 0x60]
+ffa07cac: CC = R1 == 0x0
+ffa07cae: IF CC JUMP 0xffa07cc8
+ffa07cb0: STORE [P5 + 0x58] = R1
+ffa07cb4: LOAD R0 = [P5 + 0x64]
+ffa07cb8: STORE [P5 + 0x5c] = R0
+ffa07cbc: LOAD R0 = 0x0
+ffa07cbe: STORE [P5 + 0x60] = R0
+ffa07cc2: STORE [P5 + 0x64] = R0
+ffa07cc6: JUMP.S 0xffa07bfc
+ffa07cc8: STORE [P5 + 0x40] = R5
+ffa07ccc: MOVE R0 = R7
+ffa07cce: JUMP.S 0xffa07bc8
+ffa07cd0: LINK 0x0
+ffa07cd4: PUSH [--SP] = (R7:6,P5:3)
+ffa07cd6: MOVE P1 = R1
+ffa07cd8: MOVE P4 = R0
+ffa07cda: MOVE R6 = R0
+ffa07cdc: MOVE P5 = R2
+ffa07cde: ADD SP += -0xc
+ffa07ce0: LOAD P0 = -0x1
+ffa07ce2: LOAD P0.H = 0xfffc
+ffa07ce6: LOAD P2.L = 0x37b4
+ffa07cea: LOAD P2.H = 0xff80
+ffa07cee: LOAD R3.L = 0x3680
+ffa07cf2: LOAD R3.H = 0xff80
+ffa07cf6: LOAD P3 = -0x1
+ffa07cf8: LSETUP (0xffa07cfe,0xffa07d30) LC0 = P3
+ffa07cfc: LOAD P3 = 0xb
+ffa07cfe: ADD P1 = P1 + P0
+ffa07d00: CC = P1 < P3 (IU)
+ffa07d02: IF !CC JUMP 0xffa07d0e
+ffa07d04: NOP
+ffa07d06: NOP
+ffa07d08: ADD P1 = P2 + (P1 << 2)
+ffa07d0a: LOAD P1 = [P1]
+ffa07d0c: JUMP (P1)
+ffa07d0e: ADD SP += 0xc
+ffa07d10: LOAD P0 = [FP + 0x4]
+ffa07d12: POP (R7:6,P5:3) = [SP++]
+ffa07d14: UNLINK
+ffa07d18: LOAD R0 = 0xd
+ffa07d1a: LOAD R0.H = 0x3
+ffa07d1e: JUMP (P0)
+ffa07d20: LOAD R0 = 0x0
+ffa07d22: ADD SP += 0xc
+ffa07d24: LOAD P0 = [FP + 0x4]
+ffa07d26: POP (R7:6,P5:3) = [SP++]
+ffa07d28: UNLINK
+ffa07d2c: JUMP (P0)
+ffa07d2e: LOAD P1 = [P5]
+ffa07d30: LOAD P5 = [P5 + 0x4]
+ffa07d32: JUMP.S 0xffa07cf6
+ffa07d34: LOAD R7 = 0x1
+ffa07d36: LOAD R7.H = 0x3
+ffa07d3a: LOAD R0 = [P5]
+ffa07d3c: CC = R0 == R7
+ffa07d3e: IF CC JUMP 0xffa07d5e
+ffa07d40: ROT|| R0 = rot R6 by 0
+ffa07d44: _LOAD R1 = [P5++]
+ffa07d46: _NOP
+ffa07d48: LOAD R2 = [P5++]
+ffa07d4a: CALL 0xffa07cd0
+ffa07d4e: CC = R0 == 0x0
+ffa07d50: IF CC JUMP 0xffa07d3a (bp)
+ffa07d52: ADD SP += 0xc
+ffa07d54: LOAD P0 = [FP + 0x4]
+ffa07d56: POP (R7:6,P5:3) = [SP++]
+ffa07d58: UNLINK
+ffa07d5c: JUMP (P0)
+ffa07d5e: ADD SP += 0xc
+ffa07d60: SUB|| R0 = R0 - R0 (ns)
+ffa07d64: _LOAD P0 = [FP + 0x4]
+ffa07d66: _NOP
+ffa07d68: POP (R7:6,P5:3) = [SP++]
+ffa07d6a: UNLINK
+ffa07d6e: JUMP (P0)
+ffa07d70: LOAD R0 = [P4 + 0x40]
+ffa07d74: CC = R0 == 0x0
+ffa07d76: IF CC JUMP 0xffa07d8a
+ffa07d78: ADD SP += 0xc
+ffa07d7a: LOAD P0 = [FP + 0x4]
+ffa07d7c: POP (R7:6,P5:3) = [SP++]
+ffa07d7e: UNLINK
+ffa07d82: LOAD R0 = 0x3
+ffa07d84: LOAD R0.H = 0x3
+ffa07d88: JUMP (P0)
+ffa07d8a: MOVE R1 = P5
+ffa07d8c: STORE B [P4 + 0x45] = R1
+ffa07d90: ADD SP += 0xc
+ffa07d92: LOAD P0 = [FP + 0x4]
+ffa07d94: POP (R7:6,P5:3) = [SP++]
+ffa07d96: UNLINK
+ffa07d9a: JUMP (P0)
+ffa07d9c: LOAD R0 = [P4 + 0x40]
+ffa07da0: CC = R0 == 0x0
+ffa07da2: IF CC JUMP 0xffa07db6
+ffa07da4: ADD SP += 0xc
+ffa07da6: LOAD P0 = [FP + 0x4]
+ffa07da8: POP (R7:6,P5:3) = [SP++]
+ffa07daa: UNLINK
+ffa07dae: LOAD R0 = 0x3
+ffa07db0: LOAD R0.H = 0x3
+ffa07db4: JUMP (P0)
+ffa07db6: MOVE R1 = P5
+ffa07db8: STORE B [P4 + 0x46] = R1
+ffa07dbc: ADD SP += 0xc
+ffa07dbe: LOAD P0 = [FP + 0x4]
+ffa07dc0: POP (R7:6,P5:3) = [SP++]
+ffa07dc2: UNLINK
+ffa07dc6: JUMP (P0)
+ffa07dc8: MOVE R1 = P5
+ffa07dca: CALL 0xffa07b64
+ffa07dce: ADD SP += 0xc
+ffa07dd0: LOAD P0 = [FP + 0x4]
+ffa07dd2: POP (R7:6,P5:3) = [SP++]
+ffa07dd4: UNLINK
+ffa07dd8: JUMP (P0)
+ffa07dda: LOAD P1 = [P4 + 0x30]
+ffa07ddc: LOAD R7 = 0x3
+ffa07dde: LOAD R7.H = 0x3
+ffa07de2: LOAD R0 = [P1 + 0x4]
+ffa07de4: CALL 0xffa08cea
+ffa07de8: LOAD R2 = [P4 + 0x40]
+ffa07dec: CC = R2 == 0x0
+ffa07dee: IF !CC JUMP 0xffa07e0a
+ffa07df0: STORE B [P4 + 0x47] = R2
+ffa07df4: STORE [P4 + 0x54] = R2
+ffa07df8: STORE [P4 + 0x58] = R2
+ffa07dfc: STORE [P4 + 0x5c] = R2
+

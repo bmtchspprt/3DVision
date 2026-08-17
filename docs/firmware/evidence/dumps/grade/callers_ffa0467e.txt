@@ -1,0 +1,42 @@
+2022e2d6: LOAD P1.L = 0x467e
+  2022e29a: LOAD P4 = [FP + 0xc]
+  2022e29c: ADD P1 = P1 + (P2 << 1)
+  2022e29e: LOAD R0 = W [P1] (Z)
+  2022e2a0: MOVE P1 = R0
+  2022e2a2: LOAD R7 = [FP + 0x18]
+  2022e2a4: ADD P1 = P0 + (P1 << 2)
+  2022e2a6: LOAD P1 = [P1]
+  2022e2a8: LOAD R0 = [P1 + 0x57c0]
+  2022e2ac: LOAD P1.L = 0x5ee4
+  2022e2b0: LOAD P1.H = 0xffa0
+  2022e2b4: CALL (P1)
+  2022e2b6: LOAD R2 = [P4]
+  2022e2b8: LOAD R3 = [FP + 0x1c]
+  2022e2ba: ADD R0 = R0 + R2
+  2022e2bc: STORE [SP + 0x1c] = R3
+  2022e2be: LOAD R1 = [P5 + 0x14]
+  2022e2c0: LOAD R2 = [P5 + 0x18]
+  2022e2c2: LOAD P2 = [FP + 0x24]
+  2022e2c4: LOAD R3 = [FP + 0x14]
+  2022e2c6: STORE [SP + 0x20] = R4
+  2022e2c8: STORE [SP + 0x10] = R6
+  2022e2ca: STORE [SP + 0x24] = P2
+  2022e2cc: STORE [SP + 0xc] = R5
+  2022e2ce: STORE [SP + 0x18] = R7
+  2022e2d0: STORE [SP + 0x14] = R3
+  2022e2d2: MOVE R1 = R1.L (X)
+  2022e2d4: MOVE R2 = R2.L (X)
+  2022e2d6: LOAD P1.L = 0x467e
+  2022e2da: LOAD P1.H = 0xffa0
+  2022e2de: CALL (P1)
+  2022e2e0: STORE [SP + 0x20] = R4
+  2022e2e2: MOVE R0 = R5
+  2022e2e4: STORE [SP + 0x10] = R6
+  2022e2e6: LOAD R3 = [FP + 0x14]
+  2022e2e8: LOAD R4 = [FP + 0x1c]
+  2022e2ea: LOAD R6 = [FP + -0x4]
+  2022e2ec: STORE [SP + 0x18] = R7
+  2022e2ee: STORE [SP + 0x14] = R3
+  2022e2f0: STORE [SP + 0x1c] = R4
+  2022e2f2: STORE [SP + 0xc] = R6
+

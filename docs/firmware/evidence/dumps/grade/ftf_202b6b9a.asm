@@ -1,0 +1,46 @@
+202b6b6a: LOAD R0 = [P5 + 0x5c]
+202b6b6e: LSH R2 = R0 << 0x2
+202b6b72: SUB R0 = R2 - R0
+202b6b74: LOAD P1.L = 0x2894
+202b6b78: LOAD P1.H = 0xffa0
+202b6b7c: CALL (P1)
+202b6b7e: LOAD R1 = [FP + -0x2c]
+202b6b80: LOAD P1.L = 0x18f0
+202b6b84: LOAD P1.H = 0xffa0
+202b6b88: CALL (P1)
+202b6b8a: LOAD P1.L = 0xda4
+202b6b8e: LOAD P1.H = 0xffa0
+202b6b92: CALL (P1)
+202b6b94: STORE [P4 + 0x18] = R0
+202b6b96: LOAD R0 = [P5 + 0x5c]
+202b6b9a: LOAD P1.L = 0x2894
+202b6b9e: LOAD P1.H = 0xffa0
+202b6ba2: CALL (P1)
+202b6ba4: LOAD R1 = [FP + -0x2c]
+202b6ba6: LOAD P1.L = 0x18f0
+202b6baa: LOAD P1.H = 0xffa0
+202b6bae: CALL (P1)
+202b6bb0: LOAD P1.L = 0xda4
+202b6bb4: LOAD P1.H = 0xffa0
+202b6bb8: CALL (P1)
+202b6bba: STORE [P4 + 0x1c] = R0
+202b6bbc: LOAD R0 = [P5 + 0x20]
+202b6bbe: MOVE R1 = R0
+202b6bc0: BITTGL (R1,0x1d)
+202b6bc2: CC = R1 == 0x0
+202b6bc4: IF !CC JUMP 0x202b6d24
+202b6bc6: LOAD P0 = [FP + -0x40]
+202b6bc8: LOAD R1 = [FP + -0x58]
+202b6bca: STORE [P0] = R1
+202b6bcc: STORE [P0 + 0x4] = R1
+202b6bce: LOAD P0 = [FP + -0x64]
+202b6bd0: LOAD P1 = -0x1464
+202b6bd4: LOAD P1.H = 0x4
+202b6bd8: LOAD R1 = -0x6666
+202b6bdc: LOAD R0 = 0x0
+202b6bde: ADD P5 = P0 + P1
+202b6be0: LSH|| R2.L = R1.L << 0x0
+202b6be4: LOAD P1 = [FP + -0x50]
+202b6be6: NOP
+202b6be8: BITSET (R0,0x1e)
+202b6bea: LOAD R2.H = 0x3f19

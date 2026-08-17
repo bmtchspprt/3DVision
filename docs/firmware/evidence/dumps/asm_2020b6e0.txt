@@ -1,0 +1,120 @@
+2020b6e0: LOAD R5 = 0x4d5c
+2020b6e4: LOAD R3 = [P4 + 0xf8]
+2020b6e8: ADD R3 = R3 + R6
+2020b6ea: MOVE R0 = P5
+2020b6ec: ADD R0 = R3 + R0
+2020b6ee: ADD R0 = R0 + R5
+2020b6f0: LOAD R2 = 0x51e
+2020b6f4: LOAD R1 = 0x0
+2020b6f6: LOAD P1.L = 0x5f2e
+2020b6fa: LOAD P1.H = 0xffa0
+2020b6fe: CALL (P1)
+2020b700: LOAD P1 = [P4 + 0xf8]
+2020b704: LOAD P0 = 0x578
+2020b708: ADD R7 += -0x1
+2020b70a: LOAD R0 = [FP + 0x8]
+2020b70c: ADD P1 = P1 + P0
+2020b70e: ADD P1 = P1 + P5
+2020b710: LOAD P2 = 0x5cfc
+2020b714: CC = R7 == 0x0
+2020b716: STORE [P1 + 0x5cf0] = R0
+2020b71a: ADD P5 = P5 + P2
+2020b71c: IF !CC JUMP 0x2020b6e4 (bp)
+2020b71e: LOAD R3 = [P4 + 0x100]
+2020b722: LOAD R7 = [FP + -0x8]
+2020b724: STORE [SP + 0x10] = R7
+2020b726: STORE [SP + 0xc] = R3
+2020b728: LOAD R0 = [P4 + 0xf4]
+2020b72c: LOAD R1 = [P4 + 0xf8]
+2020b730: LOAD R2 = [P4 + 0xfc]
+2020b734: CALL 0x2022477c
+2020b738: ADD SP += 0x14
+2020b73a: POP (R7:4,P5:3) = [SP++]
+2020b73c: UNLINK
+2020b740: RTS
+2020b742: <no insn>
+2020b744: <no insn>
+2020b746: <no insn>
+2020b748: <no insn>
+2020b74a: <no insn>
+2020b74c: <no insn>
+2020b74e: <no insn>
+2020b750: <no insn>
+2020b752: <no insn>
+2020b754: <no insn>
+2020b756: <no insn>
+2020b758: <no insn>
+2020b75a: <no insn>
+2020b75c: <no insn>
+2020b75e: <no insn>
+2020b760: <no insn>
+2020b762: <no insn>
+2020b764: <no insn>
+2020b766: <no insn>
+2020b768: <no insn>
+2020b76a: <no insn>
+2020b76c: <no insn>
+2020b76e: <no insn>
+2020b770: <no insn>
+2020b772: <no insn>
+2020b774: <no insn>
+2020b776: <no insn>
+2020b778: <no insn>
+2020b77a: <no insn>
+2020b77c: <no insn>
+2020b77e: <no insn>
+2020b780: <no insn>
+2020b782: <no insn>
+2020b784: <no insn>
+2020b786: <no insn>
+2020b788: <no insn>
+2020b78a: <no insn>
+2020b78c: <no insn>
+2020b78e: <no insn>
+2020b790: <no insn>
+2020b792: <no insn>
+2020b794: <no insn>
+2020b796: <no insn>
+2020b798: <no insn>
+2020b79a: <no insn>
+2020b79c: <no insn>
+2020b79e: <no insn>
+2020b7a0: <no insn>
+2020b7a2: <no insn>
+2020b7a4: <no insn>
+2020b7a6: <no insn>
+2020b7a8: <no insn>
+2020b7aa: <no insn>
+2020b7ac: <no insn>
+2020b7ae: <no insn>
+2020b7b0: <no insn>
+2020b7b2: <no insn>
+2020b7b4: <no insn>
+2020b7b6: <no insn>
+2020b7b8: <no insn>
+2020b7ba: <no insn>
+2020b7bc: <no insn>
+2020b7be: <no insn>
+2020b7c0: <no insn>
+2020b7c2: <no insn>
+2020b7c4: <no insn>
+2020b7c6: <no insn>
+2020b7c8: <no insn>
+2020b7ca: <no insn>
+2020b7cc: <no insn>
+2020b7ce: <no insn>
+2020b7d0: <no insn>
+2020b7d2: <no insn>
+2020b7d4: <no insn>
+2020b7d6: <no insn>
+2020b7d8: <no insn>
+2020b7da: <no insn>
+2020b7dc: <no insn>
+2020b7de: <no insn>
+2020b7e0: <no insn>
+2020b7e2: <no insn>
+2020b7e4: <no insn>
+2020b7e6: <no insn>
+2020b7e8: <no insn>
+2020b7ea: <no insn>
+2020b7ec: <no insn>

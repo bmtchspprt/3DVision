@@ -1,0 +1,136 @@
+===== Known soft-desc field dump =====
+layout guess: +0=cfg, +4=MMRbase, +8=START_ADDR_reg*, +0xc=CONFIG*, +0x10=X_COUNT*, +0x14=Y_COUNT* OR buffer-arg struct
+NOTE: after init, +0x8 holds MMR *address* of START_ADDR; buffer ptr is programmed through that.
+Caller struct for FFA10420 uses +0x14 as BUFFER PTR to pass as R1.
+%n===== Scan L1 FF804000..FF805000 for soft-desc-like (word+4 in FFC00C00..FFC01000) =====
+softishCount=0
+%n===== L1 data words in 0x20200000..0x202F0000 (possible SDRAM buf ptrs) =====
+@ff800048 -> 20206568 even
+@ff8000d4 -> 202883f0 even
+@ff8000d8 -> 20288484 even
+@ff8000dc -> 202386f8 even
+@ff8000e0 -> 20238778 even
+@ff80221c -> 202064b4 even
+@ff802220 -> 202064b6 even
+@ff802224 -> 202064dc even
+@ff802228 -> 202064e0 even
+@ff80222c -> 202064e4 even
+@ff802230 -> 202064e8 even
+@ff802234 -> 202064ec even
+@ff802238 -> 202064f0 even
+@ff80223c -> 202064e8 even
+@ff802240 -> 202064ec even
+@ff802244 -> 202064f0 even
+@ff802390 -> 20202020 even
+@ff802394 -> 20202020 even
+@ff802398 -> 20202020 even
+@ff80239c -> 20202020 even
+@ff8023a0 -> 20202020 even
+@ff8023a4 -> 20202020 even
+@ff8023ac -> 2020cbc4 even
+@ff8023b0 -> 2020ccc6 even
+@ff8023b4 -> 2020ccda even
+@ff8023b8 -> 2020ccea even
+@ff8023bc -> 2020ccfa even
+@ff8023c0 -> 2020cd0a even
+@ff8023c4 -> 2020cd2a even
+@ff8023c8 -> 2020cd32 even
+@ff8023cc -> 2020cd3a even
+@ff8023d0 -> 2020cd42 even
+@ff8023d4 -> 2020cd5a even
+@ff8023d8 -> 2020cd76 even
+@ff8023dc -> 2020cd9e even
+@ff8023e0 -> 2020cdc6 even
+@ff8023e4 -> 2020ce34 even
+@ff8023e8 -> 2020ce56 even
+@ff8023ec -> 2020ce62 even
+@ff8023f0 -> 2020ceae even
+@ff8023f4 -> 2020cec4 even
+@ff8023f8 -> 2020cede even
+@ff8023fc -> 2020cef4 even
+@ff802400 -> 2020cf00 even
+@ff802404 -> 2020cf08 even
+@ff802408 -> 2020cf10 even
+@ff80240c -> 2020cc52 even
+@ff802410 -> 2020cf18 even
+@ff802414 -> 2020cf20 even
+@ff802418 -> 2020cf3c even
+@ff80241c -> 2020cf3e even
+@ff802420 -> 2020cf40 even
+@ff802424 -> 2020cf58 even
+@ff802428 -> 2020cf76 even
+@ff80242c -> 2020cf96 even
+@ff802430 -> 2020cfd6 even
+@ff802434 -> 2020cfea even
+@ff802438 -> 2020d02a even
+@ff80243c -> 2020d06a even
+@ff802440 -> 2020d0aa even
+@ff802444 -> 2020d0ec even
+@ff802448 -> 2020d12e even
+@ff80244c -> 2020d16e even
+@ff802450 -> 2020d1ae even
+@ff802454 -> 2020d1f4 even
+@ff802458 -> 2020d234 even
+@ff80245c -> 2020d274 even
+@ff802460 -> 2020d28e even
+@ff802464 -> 2020d2c8 even
+@ff802468 -> 2020d2e4 even
+@ff80246c -> 2020d2f0 even
+@ff802470 -> 2020d2fc even
+@ff802474 -> 2020d304 even
+@ff802478 -> 2020d342 even
+@ff80247c -> 2020d34e even
+@ff802480 -> 2020cc52 even
+@ff802484 -> 2020d356 even
+@ff802488 -> 2020d35e even
+@ff80248c -> 2020d422 even
+@ff802490 -> 2020d4c0 even
+sdramPtrCount=515
+by 4K page (top):
+  2020d000: 115
+  2020e000: 84
+  20207000: 83
+  2020c000: 53
+  20200000: 27
+  20206000: 22
+  20202000: 18
+  20237000: 17
+  20203000: 14
+  20201000: 13
+  20208000: 13
+  20204000: 12
+  202b7000: 10
+  2020f000: 9
+  20236000: 9
+  20209000: 4
+  20223000: 4
+  20212000: 3
+  20238000: 2
+  20288000: 2
+%n===== Image u32 with low16==0x05BC (arena+Grade offset) =====
+absGradeish=0
+%n===== FF8046A0 full 0x60 =====
++00: 00000000
++04: 00000000
++08: 00000000
++0c: 00000000
++10: 00000000
++14: 00000000
++18: 00000000
++1c: 00000000
++20: 00000000
++24: 00000000
++28: 00000000
++2c: 00000000
++30: 00000000
++34: 00000000
++38: 00000000
++3c: 00000000
++40: 00000000
++44: 00000000
++48: 00000000
++4c: 00000000
++50: 00000000
++54: 00000000
++58: 00000000
++5c: 00000000

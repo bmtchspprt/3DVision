@@ -1,0 +1,120 @@
+ffa02894: LSH R1 = R0 << 0x1
+ffa02898: MOVE CC = az
+ffa0289a: IF CC JUMP 0xffa028be
+ffa0289c: ABS R1 = abs R0
+ffa028a0: CC = BITTST (R0,0x1f)
+ffa028a2: SIGN R2.L = signbits R1
+ffa028a6: MOVE R2 = R2.L (Z)
+ffa028a8: ADD R2 += -0x6
+ffa028aa: LSH R1 = lshift R1 by R2.L
+ffa028ae: LOAD R0 = 0x77
+ffa028b2: SUB R0 = R0 - R2
+ffa028b4: LSHIFT R0 <<= 0x18
+ffa028b6: ADD R0 = R0 + R1
+ffa028b8: ROT R0 = rot R0 by -0x1
+ffa028bc: RTS
+ffa028be: CC = BITTST (R0,0x1f)
+ffa028c0: LOAD R1.H = 0xbf80
+ffa028c4: IF CC R0 = R1
+ffa028c6: RTS
+ffa028c8: <no insn>
+ffa028ca: <no insn>
+ffa028cc: <no insn>
+ffa028ce: <no insn>
+ffa028d0: <no insn>
+ffa028d2: <no insn>
+ffa028d4: <no insn>
+ffa028d6: <no insn>
+ffa028d8: <no insn>
+ffa028da: <no insn>
+ffa028dc: <no insn>
+ffa028de: <no insn>
+ffa028e0: <no insn>
+ffa028e2: <no insn>
+ffa028e4: <no insn>
+ffa028e6: <no insn>
+ffa028e8: <no insn>
+ffa028ea: <no insn>
+ffa028ec: <no insn>
+ffa028ee: <no insn>
+ffa028f0: <no insn>
+ffa028f2: <no insn>
+ffa028f4: <no insn>
+ffa028f6: <no insn>
+ffa028f8: <no insn>
+ffa028fa: <no insn>
+ffa028fc: <no insn>
+ffa028fe: <no insn>
+ffa02900: <no insn>
+ffa02902: <no insn>
+ffa02904: <no insn>
+ffa02906: <no insn>
+ffa02908: <no insn>
+ffa0290a: <no insn>
+ffa0290c: <no insn>
+ffa0290e: <no insn>
+ffa02910: <no insn>
+ffa02912: <no insn>
+ffa02914: <no insn>
+ffa02916: <no insn>
+ffa02918: <no insn>
+ffa0291a: <no insn>
+ffa0291c: <no insn>
+ffa0291e: <no insn>
+ffa02920: <no insn>
+ffa02922: <no insn>
+ffa02924: <no insn>
+ffa02926: <no insn>
+ffa02928: <no insn>
+ffa0292a: <no insn>
+ffa0292c: <no insn>
+ffa0292e: <no insn>
+ffa02930: <no insn>
+ffa02932: <no insn>
+ffa02934: <no insn>
+ffa02936: <no insn>
+ffa02938: <no insn>
+ffa0293a: <no insn>
+ffa0293c: <no insn>
+ffa0293e: <no insn>
+ffa02940: <no insn>
+ffa02942: <no insn>
+ffa02944: <no insn>
+ffa02946: <no insn>
+ffa02948: <no insn>
+ffa0294a: <no insn>
+ffa0294c: <no insn>
+ffa0294e: <no insn>
+ffa02950: <no insn>
+ffa02952: <no insn>
+ffa02954: <no insn>
+ffa02956: <no insn>
+ffa02958: <no insn>
+ffa0295a: <no insn>
+ffa0295c: <no insn>
+ffa0295e: <no insn>
+ffa02960: <no insn>
+ffa02962: <no insn>
+ffa02964: <no insn>
+ffa02966: <no insn>
+ffa02968: <no insn>
+ffa0296a: <no insn>
+ffa0296c: <no insn>
+ffa0296e: <no insn>
+ffa02970: <no insn>
+ffa02972: <no insn>
+ffa02974: <no insn>
+ffa02976: <no insn>
+ffa02978: <no insn>
+ffa0297a: <no insn>
+ffa0297c: <no insn>
+ffa0297e: <no insn>
+ffa02980: <no insn>
+ffa02982: <no insn>
+ffa02984: <no insn>
+ffa02986: <no insn>
+ffa02988: <no insn>
+ffa0298a: <no insn>
+ffa0298c: <no insn>
+ffa0298e: <no insn>
+ffa02990: <no insn>

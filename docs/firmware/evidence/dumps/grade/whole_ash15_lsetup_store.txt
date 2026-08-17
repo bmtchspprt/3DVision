@@ -1,0 +1,530 @@
+--- @2020c722 beam=false has44=false
+2020c722: ASH A1 = A1 >>> 0xf
+2020c726: MOVE R5 = A1.W
+2020c728: LOAD R6 = 0x0
+2020c72a: MAX R2 = max(R5,R6)
+2020c72e: CC = R2 <= 0x0
+2020c730: IF CC JUMP 0x2020c770
+2020c732: LOAD R5 = 0x1
+2020c734: AND R0 = R7 & R5
+2020c736: CC = R0 == 0x0
+2020c738: MOVE P0 = R2
+2020c73a: IF !CC JUMP 0x2020c7e8
+2020c73c: CC = R2 == 0x1
+2020c73e: MOVE P0 = P5
+2020c740: IF CC JUMP 0x2020c7e4
+2020c742: LOAD R3 = 0x101
+2020c746: ASH R1 = R2 >>> 0x1
+2020c74a: LSHIFT R7 <<= 0x1e
+2020c74c: MOVE CC = az
+2020c74e: MOVE P1 = R1
+2020c750: IF !CC JUMP 0x2020c7dc
+2020c752: CC = R1 == 0x1
+2020c754: IF CC JUMP 0x2020c76a
+2020c756: ASH R0 = R1 >>> 0x1
+2020c75a: MOVE P1 = R0
+2020c75c: LOAD R3.H = 0x101
+2020c760: LSETUP (0x2020c764,0x2020c764) LC0 = P1
+2020c764: STORE [P0++] = R3
+2020c766: CC = BITTST (R1,0x0)
+2020c768: IF !CC JUMP 0x2020c76c
+2020c76a: STORE W [P0++] = R3
+2020c76c: CC = BITTST (R2,0x0)
+2020c76e: IF CC JUMP 0x2020c7e4
+2020c770: LOAD R0 = 0x14
+2020c772: CC = R2 < R0
+2020c774: IF !CC JUMP 0x2020c7be
+2020c776: MOVE P1 = R2
+2020c778: SUB R3 = R0 - R2
+2020c77a: MOVE P0 = R3
+2020c77c: LOAD R7 = 0x2
+2020c77e: ADD P2 = P5 + P1
+2020c780: MOVE R0 = P2
+2020c782: LSH R1 = R0 << 0x1f
+2020c786: MOVE CC = az
+2020c788: IF !CC JUMP 0x2020c7d4
+2020c78a: CC = R3 == 0x1
+2020c78c: IF CC JUMP 0x2020c7bc
+2020c78e: LOAD R2 = 0x202
+2020c792: ASH R1 = R3 >>> 0x1
+2020c796: LSHIFT R0 <<= 0x1e
+2020c798: MOVE CC = az
+2020c79a: MOVE P1 = R1
+
+--- @2021ff1e beam=false has44=false
+2021ff1e: ASH A1 = A1 >>> 0xf
+2021ff22: MOVE R2 = A1.W
+2021ff24: CC = R2 < 0x0
+2021ff26: LOAD R0 = 0x0
+2021ff28: IF CC R2 = R0
+2021ff2a: MOVE R1 = R2
+2021ff2c: STORE [P4 + 0x4] = R2
+2021ff2e: ADD R1 += -0x28
+2021ff30: ADD R2 += 0x28
+2021ff32: LOAD R3 = 0x3c4
+2021ff36: MAX|| R1 = max(R1,R0) (v)
+2021ff3a: STORE [P4 + 0x10] = R0
+2021ff3c: NOP
+2021ff3e: MIN|| R2 = min(R2,R3) (v)
+2021ff42: STORE [P4 + 0xc] = R0
+2021ff44: NOP
+2021ff46: MOVE R3 = R2.L (X)
+2021ff48: LSH|| R1.H = R2.L << 0x0
+2021ff4c: STORE W [P4] = R1.L
+2021ff4e: NOP
+2021ff50: MOVE R2 = R1.L (X)
+2021ff52: LOAD P1 = -0x13d0
+2021ff56: LOAD P1.H = 0x4
+2021ff5a: CC = R2 < R3
+2021ff5c: STORE [P4 + 0x8] = R1
+2021ff5e: ADD P5 = P5 + P1
+2021ff60: IF !CC JUMP 0x2021ffac
+2021ff62: MOVE R1 = R2
+2021ff64: ADD R1 += 0x1
+2021ff66: MOVE R1 = R1.L (X)
+2021ff68: CC = R3 <= R1
+2021ff6a: ADD R3 += 0x1
+2021ff6c: SUB R1 = R3 - R1
+2021ff6e: LOAD R3 = 0x1
+2021ff70: IF CC R1 = R3
+2021ff72: MOVE P0 = R1
+2021ff74: MOVE P1 = R2
+2021ff76: LOAD P2 = 0x788
+2021ff7a: ADD P2 = P5 + P2
+2021ff7c: ADD R7.H = R2.L + R1.L (ns)
+2021ff80: ADD P0 += -0x1
+2021ff82: ADD P2 = P2 + (P1 << 1)
+2021ff84: ADD P1 = P5 + (P1 << 1)
+2021ff86: CC = P0 == 0x0
+2021ff88: LOAD R1 = 0x0
+2021ff8a: LOAD R2 = W [P2++] (X)
+2021ff8c: LOAD R3 = W [P1++] (X)
+2021ff8e: IF CC JUMP 0x2021ffa4
+2021ff90: LSETUP (0x2021ff94,0x2021ff9c) LC0 = P0
+2021ff94: ADD|| R1 = R1 + R3 (ns)
+2021ff98: _LOAD R3 = W [P2++] (X)
+
+--- @2022d0e6 beam=true has44=true
+2022d0e6: ASHIFT R4 >>>= 0xf
+2022d0e8: LOAD P1.L = 0x1814
+2022d0ec: LOAD P1.H = 0xffa0
+2022d0f0: CALL (P1)
+2022d0f2: ADD R4 += 0x1
+2022d0f4: LOAD R6 = 0x0
+2022d0f6: CC = R4 <= 0x0
+2022d0f8: STORE W [I0] = R6.L
+2022d0fa: STORE [FP + 0xc] = R0
+2022d0fc: LOAD P5.L = 0x5060
+2022d100: LOAD P5.H = 0x2021
+2022d104: IF CC JUMP 0x2022d160
+2022d106: LOAD R0 = 0x578
+2022d10a: LOAD R1 = [SP + 0x28]
+2022d10c: ADD R0 = R1 + R0
+2022d10e: STORE [SP + 0x2c] = R0
+2022d110: MOVE P3 = P5
+2022d112: LOAD R7 = 0x0
+2022d114: LOAD R4 = 0x0
+2022d116: LOAD P1 = -0x1
+2022d118: LSETUP (0x2022d11c,0x2022d15c) LC0 = P1
+2022d11c: LOAD R0 = W [P4] (X)
+2022d11e: MULT|| R0 = R0.L * R5.H (is)
+2022d122: LOAD R2 = [SP + 0x2c]
+2022d124: NOP
+2022d126: ADD R0 = R2 + R0
+2022d128: LOAD R1 = 0x44
+2022d12c: ADD R0 = R0 + R1
+2022d12e: ADD R0 = R0 + R4
+2022d130: MOVE P1 = R0
+2022d132: ADD R7 += 0x1
+2022d134: ADD R4 += 0x2
+2022d136: LOAD R0 = W [P1] (X)
+2022d138: LOAD P1.L = 0x1688
+2022d13c: LOAD P1.H = 0xffa0
+2022d140: CALL (P1)
+2022d142: LOAD R1 = [SP + 0x30]
+2022d144: LOAD P1.L = 0x18f0
+2022d148: LOAD P1.H = 0xffa0
+2022d14c: CALL (P1)
+2022d14e: LOAD P1 = [FP + 0x8]
+2022d150: STORE [P3++] = R0
+2022d152: MOVE R1 = R7.L (X)
+2022d154: LOAD R0 = [P1 + 0xc]
+2022d156: ASHIFT R0 >>>= 0xf
+2022d158: ADD R0 += 0x1
+2022d15a: CC = R1 < R0
+2022d15c: IF !CC JUMP 0x2022d160
+2022d15e: JUMP.S 0x2022d116
+2022d160: LOAD P1 = [FP + 0x8]
+2022d162: LOAD R0 = [P1 + 0xc]
+
+--- @2022d7da beam=false has44=false
+2022d7da: ASH A1 = A1 >>> 0xf
+2022d7de: MOVE R3 = R1.L (X)
+2022d7e0: MOVE R1 = A1.W
+2022d7e2: LSHIFT R2 <<= 0x1
+2022d7e4: ROT|| R1 = rot R3 by 0
+2022d7e8: _STORE W [P3 + 0x8] = R1
+2022d7ea: _NOP
+2022d7ec: ADD R0 = R7 + R2
+2022d7ee: LOAD P1.L = 0x33f8
+2022d7f2: LOAD P1.H = 0xffa0
+2022d7f6: CALL (P1)
+2022d7f8: LOAD R2 = W [P3 + 0x1c] (X)
+2022d7fa: LOAD R7 = 0x0
+2022d7fc: CC = R2 <= 0x0
+2022d7fe: STORE [P3 + 0x20] = R0
+2022d800: STORE W [P3] = R7.L
+2022d802: IF CC JUMP 0x2022d84e
+2022d804: LSH|| R1 = R0 << 0x1e
+2022d808: _LOAD R3 = [P3 + 0x14]
+2022d80a: _NOP
+2022d80c: MOVE CC = az
+2022d80e: MOVE P2 = R0
+2022d810: MOVE P0 = R2
+2022d812: IF CC JUMP 0x2022d816 (bp)
+2022d814: JUMP.S 0x2022e0fa
+2022d816: CC = R2 == 0x1
+2022d818: IF !CC JUMP 0x2022d81c (bp)
+2022d81a: JUMP.S 0x2022e0f2
+2022d81c: ASH R0 = R2 >>> 0x1
+2022d820: MOVE P1 = R0
+2022d822: MOVE P0 = P2
+2022d824: PACK R3 = pack(R3.L,R3.L)
+2022d828: LOAD R0 = [P2++]
+2022d82a: ADD P1 += -0x1
+2022d82c: CC = P1 == 0x0
+2022d82e: IF CC JUMP 0x2022d83e
+2022d830: LSETUP (0x2022d834,0x2022d83c) LC0 = P1
+2022d834: ADD|| R1 = R3 +|+ R0
+2022d838: _LOAD R0 = [P2++]
+2022d83a: _NOP
+2022d83c: STORE [P0++] = R1
+2022d83e: ADD R0 = R3 +|+ R0
+2022d842: STORE [P0++] = R0
+2022d844: CC = BITTST (R2,0x0)
+2022d846: MOVE P2 = P0
+2022d848: IF !CC JUMP 0x2022d84c (bp)
+2022d84a: JUMP.S 0x2022e0f2
+2022d84c: STORE W [P3 + 0x0] = R2
+2022d84e: LOAD R0 = W [P4] (X)
+2022d850: MULT|| R0 = R0.L * R4.H (is)
+2022d854: LOAD P2 = [FP + 0x1c]
+
+--- @2022ebb4 beam=false has44=false
+2022ebb4: ASH A1 = A1 >>> 0xf
+2022ebb8: LOAD R0 = [P5 + 0x14]
+2022ebba: LOAD P1.L = 0x28c8
+2022ebbe: LOAD P1.H = 0xffa0
+2022ebc2: CALL (P1)
+2022ebc4: MOVE R1 = (A0 += A1)
+2022ebc8: STORE [P5 + 0x1c] = R1
+2022ebca: LOAD R1 = [P5 + 0x24]
+2022ebcc: LOAD P1.L = 0x5ee4
+2022ebd0: LOAD P1.H = 0xffa0
+2022ebd4: CALL (P1)
+2022ebd6: LOAD R1 = [P5 + 0x20]
+2022ebd8: MAC A1 = R1.L * R0.L (fu)
+2022ebdc: LSH A1 = A1 >> 0x10
+2022ebe0: MAC A1 += R1.H * R0.L (m),A0 = R1.H * R0.H 
+2022ebe4: MAC A1 += R0.H * R1.L (m)
+2022ebe8: ASH A1 = A1 >>> 0xf
+2022ebec: MOVE R0 = (A0 += A1)
+2022ebf0: STORE [P5 + 0x20] = R0
+2022ebf2: LOAD R0 = B [P3 + 0x25] (Z)
+2022ebf6: CC = R0 == 0x3
+2022ebf8: IF !CC JUMP 0x2022edce
+2022ebfa: LOAD R0 = [P5 + 0x1c]
+2022ebfc: CC = R0 <= 0x0
+2022ebfe: IF !CC JUMP 0x2022ec02 (bp)
+2022ec00: JUMP.S 0x2022efac
+2022ec02: LOAD R7 = [P5 + 0x24]
+2022ec04: CC = R7 <= 0x0
+2022ec06: IF !CC JUMP 0x2022ec0a (bp)
+2022ec08: JUMP.S 0x2022efac
+2022ec0a: LOAD R0 = [P3 + 0x90]
+2022ec0e: CC = R7 < R0
+2022ec10: IF !CC JUMP 0x2022eca4
+2022ec12: LOAD R4 = -0x1
+2022ec14: LSHIFT R4 >>= 0x2
+2022ec16: LOAD P1 = 0x20
+2022ec18: MOVE R3 = R7
+2022ec1a: LOAD R2 = 0x0
+2022ec1c: LSETUP (0x2022ec20,0x2022ec2a) LC0 = P1
+2022ec20: CC = R3 < R4
+2022ec22: MOVE R1 = R2
+2022ec24: ADD R1 += 0x1
+2022ec26: IF !CC JUMP 0x2022ec30
+2022ec28: LSHIFT R3 <<= 0x1
+2022ec2a: MOVE R2 = R1
+2022ec2c: CC = R3 < R4
+2022ec2e: IF CC JUMP 0x2022ec30
+2022ec30: ASH R1 = ashift R7 by R2.L
+2022ec34: STORE W [P5 + 0x70] = R2
+2022ec38: STORE [P5 + 0x50] = R1
+2022ec3c: LOAD P1.L = 0x5ee4
+
+--- @2022ebe8 beam=false has44=false
+2022ebe8: ASH A1 = A1 >>> 0xf
+2022ebec: MOVE R0 = (A0 += A1)
+2022ebf0: STORE [P5 + 0x20] = R0
+2022ebf2: LOAD R0 = B [P3 + 0x25] (Z)
+2022ebf6: CC = R0 == 0x3
+2022ebf8: IF !CC JUMP 0x2022edce
+2022ebfa: LOAD R0 = [P5 + 0x1c]
+2022ebfc: CC = R0 <= 0x0
+2022ebfe: IF !CC JUMP 0x2022ec02 (bp)
+2022ec00: JUMP.S 0x2022efac
+2022ec02: LOAD R7 = [P5 + 0x24]
+2022ec04: CC = R7 <= 0x0
+2022ec06: IF !CC JUMP 0x2022ec0a (bp)
+2022ec08: JUMP.S 0x2022efac
+2022ec0a: LOAD R0 = [P3 + 0x90]
+2022ec0e: CC = R7 < R0
+2022ec10: IF !CC JUMP 0x2022eca4
+2022ec12: LOAD R4 = -0x1
+2022ec14: LSHIFT R4 >>= 0x2
+2022ec16: LOAD P1 = 0x20
+2022ec18: MOVE R3 = R7
+2022ec1a: LOAD R2 = 0x0
+2022ec1c: LSETUP (0x2022ec20,0x2022ec2a) LC0 = P1
+2022ec20: CC = R3 < R4
+2022ec22: MOVE R1 = R2
+2022ec24: ADD R1 += 0x1
+2022ec26: IF !CC JUMP 0x2022ec30
+2022ec28: LSHIFT R3 <<= 0x1
+2022ec2a: MOVE R2 = R1
+2022ec2c: CC = R3 < R4
+2022ec2e: IF CC JUMP 0x2022ec30
+2022ec30: ASH R1 = ashift R7 by R2.L
+2022ec34: STORE W [P5 + 0x70] = R2
+2022ec38: STORE [P5 + 0x50] = R1
+2022ec3c: LOAD P1.L = 0x5ee4
+2022ec40: LOAD P1.H = 0xffa0
+2022ec44: CALL (P1)
+2022ec46: LOAD R1 = [P5 + 0x1c]
+2022ec48: MAC A1 = R1.L * R0.L (fu)
+2022ec4c: LSH A1 = A1 >> 0x10
+2022ec50: MAC A1 += R1.H * R0.L (m),A0 = R1.H * R0.H 
+2022ec54: MAC A1 += R0.H * R1.L (m)
+2022ec58: ASH A1 = A1 >>> 0xf
+2022ec5c: LOAD R0 = [P3 + 0x90]
+2022ec60: MOVE R1 = (A0 += A1)
+2022ec64: STORE [P5 + 0x1c] = R1
+2022ec66: LOAD R1 = [P5 + 0x50]
+2022ec6a: LOAD P1.L = 0x5ee4
+2022ec6e: LOAD P1.H = 0xffa0
+2022ec72: CALL (P1)
+2022ec74: LOAD R1 = [P5 + 0x20]
+
+--- @ffa04952 beam=false has44=false
+ffa04952: ASH|| R6 = R0 >>> 0xf
+ffa04956: _STORE [FP + 0x8] = R0
+ffa04958: _NOP
+ffa0495a: ADD R6 += 0x1
+ffa0495c: CC = R6 <= 0x0
+ffa0495e: STORE W [P0 + -0x6] = R7
+ffa04962: IF CC JUMP 0xffa049b4
+ffa04964: MOVE P1 = R6
+ffa04966: LOAD P0 = [FP + -0x44]
+ffa04968: LOAD R3 = 0xff
+ffa0496c: LSHIFT R3 <<= 0x17
+ffa0496e: LOAD R2 = [FP + -0x2c]
+ffa04970: LSETUP (0xffa04974,0xffa049b0) LC0 = P1
+ffa04974: ROT|| R6 = rot R2 by 0
+ffa04978: _LOAD R1 = [P0++]
+ffa0497a: _NOP
+ffa0497c: MOVE R0 = R1
+ffa0497e: BITCLR (R2,0x1f)
+ffa04980: BITCLR (R1,0x1f)
+ffa04982: CC = R3 < R2
+ffa04984: OR R4 = R2 | R1
+ffa04986: AND R2 = R6 & R0
+ffa04988: LSHIFT R2 >>= 0x1f
+ffa0498a: STORE [FP + 0x10] = R2
+ffa0498c: MOVE R2 = CC
+ffa0498e: CC = R3 < R1
+ffa04990: LOAD R5 = 0x1
+ffa04992: IF !CC R5 = R2
+ffa04994: CC = R0 < R6
+ffa04996: MOVE R1 = CC
+ffa04998: CC = R6 == R0
+ffa0499a: ROT|| R2 = rot R0 by 0
+ffa0499e: _LOAD R0 = [FP + 0x10]
+ffa049a0: _NOP
+ffa049a2: XOR R0 = R0 ^ R1
+ffa049a4: IF !CC R1 = R0
+ffa049a6: CC = R4 == 0x0
+ffa049a8: IF CC R1 = R4
+ffa049aa: CC = BITTST (R5,0x0)
+ffa049ac: IF CC R1 = R7
+ffa049ae: CC = BITTST (R1,0x0)
+ffa049b0: IF CC R2 = R6
+ffa049b2: STORE [FP + -0x18] = R2
+ffa049b4: LOAD R0 = [FP + 0x8]
+ffa049b6: ASHIFT R0 >>>= 0x12
+ffa049b8: ADD R0 += 0x1
+ffa049ba: CC = R0 <= 0x0
+ffa049bc: STORE [FP + 0x8] = R0
+ffa049be: IF CC JUMP 0xffa04ae8
+ffa049c0: LOAD P0 = [FP + -0x54]
+ffa049c2: LOAD P2 = [FP + 0x8]
+
+--- @ffa04b80 beam=true has44=true
+ffa04b80: ASHIFT R0 >>>= 0xf
+ffa04b82: ADD R0 += 0x1
+ffa04b84: CC = R0 <= 0x0
+ffa04b86: STORE W [P0 + -0x6] = R7
+ffa04b8a: IF CC JUMP 0xffa04be2
+ffa04b8c: LOAD P0 = 0x0
+ffa04b8e: LOAD R6 = 0x0
+ffa04b90: LOAD P2 = 0x44
+ffa04b94: LOAD P1 = [FP + -0x44]
+ffa04b96: MOVE I0 = P1
+ffa04b98: LOAD P1 = -0x1
+ffa04b9a: LSETUP (0xffa04b9e,0xffa04bd6) LC1 = P1
+ffa04b9e: MNOP||
+ffa04ba2: _LOAD R1 = [FP + 0x8]
+ffa04ba4: _LOAD R0 = [I0++]
+ffa04ba6: CALL 0xffa01814
+ffa04baa: CALL 0xffa0290c
+ffa04bae: LOAD R4 = W [P5] (X)
+ffa04bb0: LOAD R1 = 0x5cfc
+ffa04bb4: MULT|| R1 = R4.L * R1.L (is)
+ffa04bb8: LOAD P3 = [FP + 0xc]
+ffa04bba: NOP
+ffa04bbc: MOVE P1 = R1
+ffa04bbe: ADD R6 += 0x1
+ffa04bc0: MOVE R2 = R6.L (X)
+ffa04bc2: ADD P1 = P3 + P1
+ffa04bc4: LOAD P3 = [FP + 0x18]
+ffa04bc6: ADD P1 = P1 + P2
+ffa04bc8: ADD P1 = P1 + P0
+ffa04bca: STORE W [P1] = R0.L
+ffa04bcc: LOAD R0 = [P3 + 0xc]
+ffa04bce: ASHIFT R0 >>>= 0xf
+ffa04bd0: ADD R0 += 0x1
+ffa04bd2: CC = R2 < R0
+ffa04bd4: ADD P0 += 0x2
+ffa04bd6: IF !CC JUMP 0xffa04bdc
+ffa04bd8: MOVE P1 = I0
+ffa04bda: JUMP.S 0xffa04b96
+ffa04bdc: LOAD P1 = [FP + -0x5c]
+ffa04bde: STORE W [P1 + -0x6] = R6
+ffa04be2: MOVE R6 = R5
+ffa04be4: BITCLR (R5,0x1f)
+ffa04be6: CC = R5 == 0x0
+ffa04be8: IF CC JUMP 0xffa04c54
+ffa04bea: NOP
+ffa04bec: LOAD P1 = [FP + 0x18]
+ffa04bee: LOAD P0 = [FP + -0x5c]
+ffa04bf0: LOAD R0 = [P1 + 0xc]
+ffa04bf2: ASHIFT R0 >>>= 0x12
+ffa04bf4: ADD R0 += 0x1
+ffa04bf6: CC = R0 <= 0x0
+
+--- @ffa04bce beam=true has44=false
+ffa04bce: ASHIFT R0 >>>= 0xf
+ffa04bd0: ADD R0 += 0x1
+ffa04bd2: CC = R2 < R0
+ffa04bd4: ADD P0 += 0x2
+ffa04bd6: IF !CC JUMP 0xffa04bdc
+ffa04bd8: MOVE P1 = I0
+ffa04bda: JUMP.S 0xffa04b96
+ffa04bdc: LOAD P1 = [FP + -0x5c]
+ffa04bde: STORE W [P1 + -0x6] = R6
+ffa04be2: MOVE R6 = R5
+ffa04be4: BITCLR (R5,0x1f)
+ffa04be6: CC = R5 == 0x0
+ffa04be8: IF CC JUMP 0xffa04c54
+ffa04bea: NOP
+ffa04bec: LOAD P1 = [FP + 0x18]
+ffa04bee: LOAD P0 = [FP + -0x5c]
+ffa04bf0: LOAD R0 = [P1 + 0xc]
+ffa04bf2: ASHIFT R0 >>>= 0x12
+ffa04bf4: ADD R0 += 0x1
+ffa04bf6: CC = R0 <= 0x0
+ffa04bf8: STORE W [P0 + -0x6] = R7
+ffa04bfc: IF CC JUMP 0xffa04c54
+ffa04bfe: LOAD P0 = 0x0
+ffa04c00: LOAD R5 = 0x0
+ffa04c02: LOAD P2 = [FP + -0x4c]
+ffa04c04: LOAD P1 = -0x1
+ffa04c06: LOAD R1 = W [P5] (X)
+ffa04c08: LSETUP (0xffa04c0c,0xffa04c4a) LC1 = P1
+ffa04c0c: LOAD R1.H = 0x5cfc
+ffa04c10: MULT|| R1 = R1.L * R1.H (is)
+ffa04c14: LOAD R0 = [P2++]
+ffa04c16: NOP
+ffa04c18: ROT|| R1 = rot R6 by 0
+ffa04c1c: _STORE [FP + -0x58] = R1
+ffa04c1e: _NOP
+ffa04c20: CALL 0xffa01814
+ffa04c24: CALL 0xffa0290c
+ffa04c28: LOAD P3 = [FP + -0x58]
+ffa04c2a: LOAD P1 = [FP + 0xc]
+ffa04c2c: ADD R5 += 0x1
+ffa04c2e: MOVE R1 = R5.L (X)
+ffa04c30: ADD P1 = P1 + P3
+ffa04c32: LOAD P3 = 0x3374
+ffa04c36: ADD P1 = P1 + P3
+ffa04c38: LOAD P3 = [FP + 0x18]
+ffa04c3a: ADD P1 = P1 + P0
+ffa04c3c: STORE W [P1] = R0.L
+ffa04c3e: ADD P0 += 0x2
+ffa04c40: LOAD R0 = [P3 + 0xc]
+ffa04c42: ASHIFT R0 >>>= 0x12
+ffa04c44: ADD R0 += 0x1
+
+--- @ffa0588a beam=false has44=false
+ffa0588a: ASH A1 = A1 >>> 0xf
+ffa0588e: MOVE R0 = (A0 += A1)
+ffa05892: ASHIFT R0 >>>= 0x1
+ffa05894: RTS
+ffa05896: MOVE P1 = R1
+ffa05898: LINK 0xc
+ffa0589c: LOAD R1 = [P1 + 0x4ec]
+ffa058a0: CALL 0xffa05ee4
+ffa058a4: UNLINK
+ffa058a8: LSHIFT R0 <<= 0x1
+ffa058aa: RTS
+ffa058ac: LINK 0x0
+ffa058b0: PUSH [--SP] = (R7:6,P5:4)
+ffa058b2: ADD SP += -0xc
+ffa058b4: ROT|| R7 = rot R2 by 0
+ffa058b8: _LOAD P5 = [SP + 0x34]
+ffa058ba: _NOP
+ffa058bc: MOVE P2 = R7
+ffa058be: LSH|| R0 = R0 << 0x1
+ffa058c2: _LOAD P1 = [SP + 0x30]
+ffa058c4: _NOP
+ffa058c6: ADD R0 = R1 + R0
+ffa058c8: CC = P5 <= 0x0
+ffa058ca: MOVE P0 = R0
+ffa058cc: MOVE R6 = P5
+ffa058ce: LOAD R0 = 0x0
+ffa058d0: IF CC JUMP 0xffa058ea
+ffa058d2: ADD P4 = P1 + P1
+ffa058d4: MOVE P1 = P2
+ffa058d6: LSETUP (0xffa058da,0xffa058e2) LC0 = P5
+ffa058da: LOAD R1.L = W [P0 ++ P4]
+ffa058dc: LSHIFT R1 <<= 0x4
+ffa058de: NEG R2 = -R1
+ffa058e0: MOVE R1 = R1.L (X)
+ffa058e2: SUB|| R0 = R0 - R1 (ns)
+ffa058e6: _STORE W [P1++] = R2
+ffa058e8: _NOP
+ffa058ea: MOVE R1 = R6
+ffa058ec: CALL 0xffa00fb4
+ffa058f0: CC = P5 <= 0x0
+ffa058f2: IF CC JUMP 0xffa05932
+ffa058f4: LSHIFT R7 <<= 0x1e
+ffa058f6: MOVE CC = az
+ffa058f8: IF !CC JUMP 0xffa0593c
+ffa058fa: CC = P5 == 0x1
+ffa058fc: IF CC JUMP 0xffa0592a
+ffa058fe: ASH R1 = R6 >>> 0x1
+ffa05902: MOVE P1 = R1
+ffa05904: MOVE P0 = P2
+ffa05906: LSH R0.H = R0.L << 0x0
+ffa0590a: LOAD R1 = [P0++]
+

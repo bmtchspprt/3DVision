@@ -1,0 +1,184 @@
+===== imm 0x44 then within 25 insn STORE [Preg+imm] of pointer-sized (not STORE W) =====
+--- @2021112a: LOAD R4 = 0x44
+  20211110: STORE [P1 + 0x57a0] = R0
+  2021111a: STORE [P1 + 0x579c] = R4
+  2021111e: STORE [P1 + 0x5790] = R0
+  20211122: STORE [P1 + 0x5798] = R5
+  20211126: STORE [P1 + 0x578c] = R3
+  2021112a: LOAD R4 = 0x44
+  20211130: STORE [P2 + 0x579c] = R4
+  20211134: STORE [P2 + 0x57a0] = R0
+  2021113c: STORE [P2 + 0x5794] = R4
+  20211140: STORE [P2 + 0x578c] = R3
+  20211144: STORE [P2 + 0x5798] = R5
+  20211148: STORE [P2 + 0x5790] = R0
+  2021114e: STORE [P0 + 0x5794] = R4
+  20211156: STORE [P0 + 0x5790] = R4
+  2021115e: STORE [P0 + 0x57a0] = R4
+  20211166: STORE [P0 + 0x579c] = R4
+  2021116a: STORE [P0 + 0x578c] = R3
+  2021116e: STORE [P0 + 0x5798] = R5
+  20211174: STORE [P1 + 0x5794] = R4
+  2021117c: STORE [P1 + 0x5790] = R4
+--- @20211d5c: LOAD R3 = 0x44
+  20211d50: LOAD R2 = 0x578
+  20211d5c: LOAD R3 = 0x44
+  20211d62: LOAD R2 = 0x28f4
+  20211d70: CALL (P1)  => 0xffa05f2e
+  20211d8e: CALL (P1)  => 0xffa05f2e
+  20211dac: CALL (P1)  => 0xffa05f2e
+--- @20212c86: LOAD R3 = 0x44
+  20212c72: STORE [FP + -0x38] = P1
+  20212c7c: LSETUP (0x20212c80,0x20212cc8) LC0 = P1
+  20212c82: LOAD R1 = 0x5cfc
+  20212c86: LOAD R3 = 0x44
+  20212c9e: STORE [FP + -0x34] = R2
+  20212cac: CALL (P1)  => 0xffa01688
+  20212cb8: CALL (P1)  => 0xffa018f0
+  20212cbc: STORE [P5++] = R0
+--- @2022d128: LOAD R1 = 0x44
+  2022d118: LSETUP (0x2022d11c,0x2022d15c) LC0 = P1
+  2022d128: LOAD R1 = 0x44
+  2022d140: CALL (P1)  => 0xffa01688
+  2022d14c: CALL (P1)  => 0xffa018f0
+  2022d150: STORE [P3++] = R0
+--- @ffa0391c: LOAD P3 = 0x44
+  ffa0390e: STORE [SP + 0x28] = R2
+  ffa03916: LOAD P2 = 0x578
+  ffa0391c: LOAD P3 = 0x44
+  ffa03930: STORE [P5] = R3
+  ffa0393e: STORE [P5 + 0x8] = P0
+  ffa03940: STORE [P5 + 0x14] = R3
+  ffa03942: STORE [P5 + 0xc] = P4
+  ffa03944: STORE [P5 + 0x4] = R4
+  ffa03946: STORE [P5 + 0x10] = R1
+  ffa0394a: CALL 0xffa02948
+  ffa03954: CALL 0xffa018f0
+  ffa03960: CALL 0xffa018f0
+  ffa03966: STORE [SP + 0x38] = R0
+--- @ffa04b90: LOAD P2 = 0x44
+  ffa04b86: STORE W [P0 + -0x6] = R7
+  ffa04b90: LOAD P2 = 0x44
+  ffa04b94: LOAD P1 = [FP + -0x44]
+  ffa04b9a: LSETUP (0xffa04b9e,0xffa04bd6) LC1 = P1
+  ffa04ba6: CALL 0xffa01814
+  ffa04baa: CALL 0xffa0290c
+  ffa04bb0: LOAD R1 = 0x5cfc
+  ffa04bca: STORE W [P1] = R0.L
+hits=6
+
+===== CALL FFA0763C sites =====
+ffa07bfe: CALL 0xffa0763c
+  ffa07bdc: JUMP (P0)
+  ffa07bde: LOAD P1 = [P5++]
+  ffa07be0: LOAD R2 = 0x2
+  ffa07be2: LOAD R1 = W [P1] (X)
+  ffa07be4: BITSET (R1,0x0)
+  ffa07be6: STORE W [P1] = R1.L
+  ffa07be8: STORE [P5 + 0x3c] = R2
+  ffa07bea: JUMP.S 0xffa07bc8
+  ffa07bec: LOAD R0 = B [P5 + 0x46] (Z)
+  ffa07bf0: CC = R0 == 0x0
+  ffa07bf2: IF CC JUMP 0xffa07ca8
+  ffa07bf4: LOAD R1 = [P5 + 0x58]
+  ffa07bf8: CC = R1 == 0x0
+  ffa07bfa: IF CC JUMP 0xffa07ca0
+  ffa07bfc: MOVE R0 = R6
+  ffa07bfe: CALL 0xffa0763c
+  ffa07c02: LOAD P1 = [P5 + 0x4]
+  ffa07c04: LOAD R0 = [P5 + 0x3c]
+  ffa07c06: LOAD R1 = [P5 + 0x58]
+  ffa07c0a: LOAD R2 = 0x4
+ffa08096: CALL 0xffa0763c
+  ffa08072: ADD P1 = P0 + (P1 << 2)
+  ffa08074: LOAD P1 = [P1]
+  ffa08076: LOAD R2 = 0x701
+  ffa0807a: LOAD R3 = -0x1
+  ffa0807c: JUMP (P1)
+  ffa0807e: MOVE P1 = P4
+  ffa08080: SUB|| R7 = R7 - R7 (ns)
+  ffa08084: _LOAD P0 = [P1++]
+  ffa08086: _NOP
+  ffa08088: LOAD R3 = W [P0] (X)
+  ffa0808a: EXTRACT R2 = extract(R3,R2.L) (z)
+  ffa0808e: CC = R2 == 0x1
+  ffa08090: LOAD R3 = 0x0
+  ffa08092: STORE [P1 + 0x3c] = R3
+  ffa08094: IF CC R7 = R2
+  ffa08096: CALL 0xffa0763c
+  ffa0809a: CC = R7 == 0x0
+  ffa0809c: IF CC JUMP 0xffa080c6
+  ffa0809e: CC = R5 == 0x0
+  ffa080a0: IF CC JUMP 0xffa080c6
+
+===== 2021FFE4 Threshold writer (full interesting) =====
+20220008: LOAD P2.H = 0xff80
+20220030: LOAD P3.H = 0xff80
+20220038: LOAD P4.H = 0xff80
+2022007e: CALL (P1)  => 0xffa01c38
+20220092: CALL (P1)  => 0xffa01c38
+202200dc: STORE W [P0 + -0x14] = R5
+202200f8: CALL (P1)  => 0xffa01688
+20220128: STORE W [P0 + -0x8] = R4
+2022012c: STORE W [P0 + -0x12] = R4
+20220130: STORE W [P0 + -0xc] = R0
+2022013e: STORE [FP + -0x44] = P0
+20220142: LOAD P1 = [FP + -0x44]
+20220152: CALL 0x202b5024
+20220156: LOAD P1 = [FP + -0x44]
+2022015a: STORE W [P1] = R0.L
+20220176: STORE W [P1] = R4.L
+2022017a: LOAD R6.H = 0x5cfc
+20220186: LOAD P0 = 0x578
+2022019a: STORE W [P4 + 0xc] = R1
+202201aa: CALL (P1)  => 0xffa01814
+202201ba: CALL (P1)  => 0xffa016d4
+202201cc: CALL (P1)  => 0xffa01814
+202201de: CALL (P1)  => 0xffa01c74
+20220216: CALL (P1)  => 0xffa018f0
+20220222: CALL (P1)  => 0xffa01814
+20220238: CALL (P1)  => 0xffa01814
+2022024e: STORE [FP + -0x40] = P0
+20220264: LOAD P1 = 0x2938
+20220272: LOAD R3 = 0x4ad6
+202202dc: LSETUP (0x202202e0,0x2022037a) LC0 = P0
+202202fa: CALL (P1)  => 0xffa01688
+20220306: CALL (P1)  => 0xffa018f0
+2022031c: CALL (P1)  => 0xffa01688
+20220328: CALL (P1)  => 0xffa018f0
+2022032c: LOAD P0 = [FP + -0x40]
+2022033c: CALL (P1)  => 0xffa0165c
+2022034e: CALL (P1)  => 0xffa01714
+20220370: STORE W [P0++] = R1
+20220396: STORE W [P4 + 0x2] = R0
+202203b0: CALL (P1)  => 0xffa01688
+202203c2: CALL (P1)  => 0xffa018f0
+202203d2: CALL (P1)  => 0xffa01688
+202203de: CALL (P1)  => 0xffa018f0
+202203ee: CALL (P1)  => 0xffa01688
+202203fa: CALL (P1)  => 0xffa018f0
+2022040a: CALL (P1)  => 0xffa01714
+20220422: CALL (P1)  => 0xffa018f0
+2022042e: CALL (P1)  => 0xffa0165c
+2022043c: LOAD R0.H = 0x44bb
+20220448: CALL (P1)  => 0xffa0165c
+2022045e: CALL (P1)  => 0xffa0165c
+20220466: LOAD R1 = 0x4000
+20220476: CALL (P1)  => 0xffa0165c
+20220488: CALL (P1)  => 0xffa0165c
+202204b4: CALL (P1)  => 0xffa0165c
+202204d0: STORE W [P1] = R1.L
+2022051e: LSETUP (0x20220524,0x2022054a) LC1 = P4
+20220526: STORE [FP + -0x44] = R0
+20220532: LSETUP (0x20220536,0x2022053e) LC0 = P4
+20220550: STORE W [P3 + -0xa] = R1
+20220554: STORE W [P3 + -0x12] = R0
+2022055c: STORE W [P3 + -0x10] = R4
+20220570: LSETUP (0x20220574,0x20220582) LC0 = P1
+20220580: CALL (P1)  => 0xffa01716
+20220586: STORE W [P3 + -0x10] = R7
+20220594: CALL (P1)  => 0xffa01688
+202205a2: CALL (P1)  => 0xffa01814
+202205b2: CALL (P1)  => 0xffa0165c
+202205cc: CALL 0x2021f878
+202205e6: RTS

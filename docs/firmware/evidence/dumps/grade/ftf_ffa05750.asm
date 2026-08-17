@@ -1,0 +1,48 @@
+ffa05720: CALL 0xffa01814
+ffa05724: MOVE R1 = R0
+ffa05726: CALL 0xffa018f0
+ffa0572a: STORE [P3 + 0x4] = R0
+ffa0572c: LOAD R1 = 0x0
+ffa0572e: LOAD R1.H = 0x4100
+ffa05732: CALL 0xffa01814
+ffa05736: MOVE R1 = R7
+ffa05738: CALL 0xffa018f0
+ffa0573c: JUMP.S 0xffa05746
+ffa0573e: MOVE R1 = R6
+ffa05740: MOVE R0 = R7
+ffa05742: CALL 0xffa01714
+ffa05746: STORE [P3] = R0
+ffa05748: LOAD R0 = [P5]
+ffa0574a: LOAD R1 = [P4]
+ffa0574c: MAX R0 = max(R0,R1)
+ffa05750: CALL 0xffa02894
+ffa05754: LOAD R1 = [P3]
+ffa05756: CALL 0xffa018f0
+ffa0575a: MOVE R1 = R0
+ffa0575c: CALL 0xffa018f0
+ffa05760: MOVE R7 = R0
+ffa05762: LOAD R1 = [P3 + 0x10]
+ffa05764: LOAD R0 = [P3 + 0xc]
+ffa05766: CALL 0xffa01714
+ffa0576a: MOVE R1 = R0
+ffa0576c: CALL 0xffa018f0
+ffa05770: MOVE R1 = R7
+ffa05772: CALL 0xffa01716
+ffa05776: STORE [P3] = R0
+ffa05778: CALL 0xffa0248c
+ffa0577c: STORE [P3] = R0
+ffa0577e: ADD SP += 0xc
+ffa05780: POP (R7:4,P5:3) = [SP++]
+ffa05782: UNLINK
+ffa05786: RTS
+ffa05788: LOAD R0 = [P5 + 0x8]
+ffa0578a: STORE [FP + 0x10] = R0
+ffa0578c: MOVE R0 = R7
+ffa0578e: CALL 0xffa00da4
+ffa05792: LOAD R6 = [P4 + 0x4]
+ffa05794: LOAD R2 = [P4 + 0x8]
+ffa05796: MOVE R4 = R0
+ffa05798: MOVE R0 = R6
+ffa0579a: STORE [SP + 0x38] = R2
+ffa0579c: CALL 0xffa00da4
+ffa057a0: LOAD R3 = [P3 + 0xc]

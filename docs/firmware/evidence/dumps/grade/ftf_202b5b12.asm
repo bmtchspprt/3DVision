@@ -1,0 +1,41 @@
+202b5ae2: LOAD P1.H = 0xffa0
+202b5ae6: CALL (P1)
+202b5ae8: LOAD R1 = [P2 + 0x5cc4]
+202b5aec: LOAD P1.L = 0x18f0
+202b5af0: LOAD P1.H = 0xffa0
+202b5af4: CALL (P1)
+202b5af6: LOAD P0 = [SP + 0x9c]
+202b5afa: LOAD R2 = -0x62ea
+202b5afe: STORE W [SP + 0x9c] = R2
+202b5b02: STORE W [SP + 0x9e] = R7
+202b5b06: STORE [P0 + 0x5cc4] = R0
+202b5b0a: LOAD R7 = 0x3f80
+202b5b0e: LOAD R0 = [SP + 0x9c]
+202b5b12: LOAD P1.L = 0x2894
+202b5b16: LOAD P1.H = 0xffa0
+202b5b1a: CALL (P1)
+202b5b1c: LOAD P1 = [FP + -0x58]
+202b5b1e: LOAD P0 = [FP + -0x5c]
+202b5b20: LOAD P2 = [SP + 0x70]
+202b5b24: LOAD R1 = W [P1] (X)
+202b5b26: MULT R1 = R1.L * R5.H (is)
+202b5b2a: MOVE P1 = R1
+202b5b2c: ADD P0 = P0 + P2
+202b5b2e: STORE [FP + -0x34] = P0
+202b5b30: ADD P2 = P3 + P1
+202b5b32: LOAD R1 = [P2 + 0x5cc4]
+202b5b36: STORE [FP + -0x2c] = P2
+202b5b38: LOAD P1.L = 0x18f0
+202b5b3c: LOAD P1.H = 0xffa0
+202b5b40: CALL (P1)
+202b5b42: LOAD P2 = [FP + -0x2c]
+202b5b44: LOAD P1 = [FP + -0x58]
+202b5b46: LOAD R3 = 0xfdb
+202b5b4a: STORE W [SP + 0xf0] = R3
+202b5b4e: LOAD R2 = 0x40c9
+202b5b52: STORE [P2 + 0x5cc4] = R0
+202b5b56: STORE W [SP + 0xf2] = R2
+202b5b5a: LOAD R1 = W [P1] (X)
+202b5b5c: MULT R3 = R1.L * R5.H (is)
+202b5b60: MOVE P1 = R3
+202b5b62: ADD P0 = P3 + P1

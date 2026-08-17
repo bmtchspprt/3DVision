@@ -1,0 +1,9 @@
+ffa02c70: LOAD P4.L = 0x44
+ffa0391c: LOAD P3 = 0x44
+ffa03d0a: STORE [SP + 0x44] = R0
+ffa042b2: LOAD R3 = [SP + 0x44]
+ffa04b90: LOAD P2 = 0x44
+ffa077ee: LOAD P3 = 0x44
+ffa0794a: STORE B [P5 + 0x44] = R6
+ffa079a6: STORE B [P5 + 0x44] = R1
+ffa07a60: STORE B [P5 + 0x44] = R6

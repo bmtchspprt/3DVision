@@ -1,0 +1,162 @@
+===== Jump table @ FF803BDC (16 entries?) =====
+[ff803bdc] = ffa103f4
+[ff803be0] = ffa103fe
+[ff803be4] = ffa1040a
+[ff803be8] = ffa1042c
+[ff803bec] = ffa10430
+[ff803bf0] = ffa10434
+[ff803bf4] = ffa10318
+[ff803bf8] = ffa106c2
+[ff803bfc] = ffa106f8
+[ff803c00] = ffa1070a
+[ff803c04] = ffa10730
+[ff803c08] = ffa10756
+[ff803c0c] = ffa106c4
+[ff803c10] = ffa10838
+[ff803c14] = ffa10840
+[ff803c18] = ffa10842
+[ff803c1c] = ffa108cc
+[ff803c20] = ffa108ce
+[ff803c24] = ffa108d0
+[ff803c28] = ffa108d2
+%n===== Soft-desc registry @ FF803690 (first 16 slots x 16B) =====
+slot0 @ff803690: ffc00c00 00000000 08000004 02000001 
+slot1 @ff8036a0: ffc00c40 00000000 02200011 02000001 
+slot2 @ff8036b0: ffc00c80 00000000 04200012 02000001 
+slot3 @ff8036c0: ffc00cc0 00000000 0a000005 02000001 
+slot4 @ff8036d0: ffc00d00 00000000 0c000006 02000001 
+slot5 @ff8036e0: ffc00d40 00000000 0e000007 02000001 
+slot6 @ff8036f0: ffc00d80 00000000 00100008 02000001 
+slot7 @ff803700: ffc00dc0 00000000 0410000a 02000001 
+slot8 @ff803710: ffc00e00 00000000 0610000b 02000001 
+slot9 @ff803720: ffc00e40 00000000 0810000c 02000001 
+slot10 @ff803730: ffc00e80 00000000 0a10000d 02000001 
+slot11 @ff803740: ffc00ec0 00000000 0c10000e 02000001 
+slot12 @ff803750: ffc00f00 00000000 0a30001d 02000001 
+slot13 @ff803760: ffc00f40 00000000 0a30001d 02000001 
+slot14 @ff803770: ffc00f80 00000000 0c30001e 02000001 
+slot15 @ff803780: ffc00fc0 00000000 0c30001e 02000001 
+%n===== FULL FFA07C14 =====
+ffa07c14: LOAD P0 = [P5 + 0x8]
+ffa07c16: IF !CC JUMP 0xffa07c5a
+ffa07c18: LOAD R0 = W [P1 + 0x4] (X)
+ffa07c1a: LSH|| R1 = R0 << 0x10
+ffa07c1e: _LOAD R0 = W [P1 + 0x2] (Z)
+ffa07c20: _NOP
+ffa07c22: OR R0 = R1 | R0
+ffa07c24: STORE [P0] = R0
+ffa07c26: LOAD P1 = [P5 + 0x58]
+ffa07c2a: LOAD P0 = [P5 + 0xc]
+ffa07c2c: LOAD R0 = W [P1 + 0x8] (X)
+ffa07c2e: STORE W [P0] = R0.L
+ffa07c30: LOAD P1 = [P5 + 0x58]
+ffa07c34: LOAD P0 = [P5 + 0x14]
+ffa07c36: LOAD R0 = W [P1 + 0xa] (X)
+ffa07c38: STORE W [P0] = R0.L
+ffa07c3a: LOAD P1 = [P5 + 0x58]
+ffa07c3e: LOAD P0 = [P5 + 0x10]
+ffa07c40: LOAD R0 = W [P1 + 0xc] (X)
+ffa07c42: STORE W [P0] = R0.L
+ffa07c44: LOAD P1 = [P5 + 0x58]
+ffa07c48: LOAD P0 = [P5 + 0x18]
+ffa07c4a: LOAD R0 = W [P1 + 0xe] (X)
+ffa07c4c: STORE W [P0] = R0.L
+ffa07c4e: LOAD P1 = [P5 + 0x58]
+ffa07c52: LOAD P0 = [P5]
+ffa07c54: LOAD R0 = W [P1 + 0x6] (X)
+ffa07c56: STORE W [P0] = R0.L
+ffa07c58: JUMP.S 0xffa07c96
+ffa07c5a: LOAD R0 = W [P1 + 0x6] (X)
+ffa07c5c: LOAD R1 = W [P1 + 0x4] (X)
+ffa07c5e: PACK R0 = pack(R0.L,R1.L)
+ffa07c62: STORE [P0] = R0
+ffa07c64: LOAD P1 = [P5 + 0x58]
+ffa07c68: LOAD P0 = [P5 + 0xc]
+ffa07c6a: LOAD R0 = W [P1 + 0xa] (X)
+ffa07c6c: STORE W [P0] = R0.L
+ffa07c6e: LOAD P1 = [P5 + 0x58]
+ffa07c72: LOAD P0 = [P5 + 0x14]
+ffa07c74: LOAD R0 = W [P1 + 0xc] (X)
+ffa07c76: STORE W [P0] = R0.L
+ffa07c78: LOAD P1 = [P5 + 0x58]
+ffa07c7c: LOAD P0 = [P5 + 0x10]
+ffa07c7e: LOAD R0 = W [P1 + 0xe] (X)
+ffa07c80: STORE W [P0] = R0.L
+ffa07c82: LOAD P1 = [P5 + 0x58]
+ffa07c86: LOAD P0 = [P5 + 0x18]
+ffa07c88: LOAD R0 = W [P1 + 0x10] (X)
+ffa07c8a: STORE W [P0] = R0.L
+ffa07c8c: LOAD P1 = [P5 + 0x58]
+ffa07c90: LOAD P0 = [P5]
+ffa07c92: LOAD R0 = W [P1 + 0x8] (X)
+ffa07c94: STORE W [P0] = R0.L
+ffa07c96: MOVE R0 = R7
+ffa07c98: LOAD R1 = 0x2
+ffa07c9a: STORE [P5 + 0x40] = R1
+ffa07c9e: JUMP.S 0xffa07bc8
+ffa07ca0: STORE [P5 + 0x40] = R5
+ffa07ca4: MOVE R0 = R7
+ffa07ca6: JUMP.S 0xffa07bc8
+%n===== Reach FFA07C14 =====
+data07c14=0
+%n===== After grade_ptr ADD, STORE W within 20 (possible HW desc half install) =====
+---
+20211e52: LOAD R1 = 0x44
+20211e56: MIN R3 = min(R2,R3)
+20211e5a: ADD R0 = R0 + R1
+20211e5c: STORE W [P5 + 0x58] = R3
+20211e60: LSH R2 = R3 << 0x1
+20211e64: LOAD R1 = 0x0
+20211e66: LOAD P1.L = 0x5f2e
+20211e6a: LOAD P1.H = 0xffa0
+20211e6e: CALL (P1)
+---
+20211f22: LOAD R1 = 0x44
+20211f26: LOAD R2 = 0x147a
+20211f2a: ADD R0 = R0 + R1
+20211f2c: LSH R1 = R3 << 0x1
+20211f30: SUB R2 = R2 - R3
+20211f32: ADD R0 = R0 + R1
+20211f34: STORE W [P5 + 0x58] = R3
+20211f38: LSHIFT R2 <<= 0x1
+20211f3a: LOAD R1 = 0x0
+20211f3c: LOAD P1.L = 0x5f2e
+20211f40: LOAD P1.H = 0xffa0
+20211f44: CALL (P1)
+---
+ffa02c70: LOAD P4.L = 0x44
+ffa02c74: LOAD P4.H = 0xff80
+ffa02c78: LOAD R1 = W [P4] (Z)
+ffa02c7a: LSH R1 = R1 << 0xe
+ffa02c7e: OR R1 = R0 | R1
+ffa02c80: STORE W [FP + -0x4] = R1
+ffa02c84: LOAD P1.L = 0x4c
+ffa02c88: LOAD P1.H = 0xff80
+ffa02c8c: LOAD R2 = B [P1] (Z)
+ffa02c8e: CC = R2 == 0x0
+ffa02c90: IF CC JUMP 0xffa02cf4
+ffa02c92: NOP
+ffa02c94: NOP
+ffa02c96: LOAD P1 = 0x500
+ffa02c9a: LOAD P1.H = 0xffc0
+ffa02c9e: LOAD R0 = W [P1] (Z)
+ffa02ca0: BITSET (R0,0xe)
+ffa02ca2: STORE W [P1] = R0.L
+ffa02ca4: LOAD R0 = W [FP + -0x4] (X)
+ffa02ca8: LOAD P0 = 0x50c
+ffa02cac: LOAD P0.H = 0xffc0
+gradeAddThenStoreW=3
+%n===== data u32 == FFA0BF00 / FFA0BEE0 / FFA0763C =====
+tgt ffa0bf00
+  hits=0
+tgt ffa0bee0
+  hits=0
+tgt ffa0be00
+  hits=0
+tgt ffa0763c
+  hits=0
+tgt ffa100d4
+  hits=0
+%n===== FFA0763C interesting =====
+ffa076b0: STORE [P0 + 0x54] = P1
+ffa076b6: RTS

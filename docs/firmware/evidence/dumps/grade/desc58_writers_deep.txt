@@ -1,0 +1,915 @@
+--- @20204eaa beam=false has44=false addish=true
+(skip body)
+
+--- @202076a2 beam=false has44=true addish=true
+2020764e: MOVE R1 = CYCLES2
+20207650: STORE [P1] = R2
+20207652: STORE [P1 + 0x4] = R1
+20207654: LOAD R1 = [FP + 0x8]
+20207656: LOAD R2 = [FP + 0xc]
+20207658: LOAD P1.L = 0xe0
+2020765c: LOAD P1.H = 0xff80
+20207660: LOAD P1 = [P1]
+20207662: MOVE R0 = P4
+20207664: ADD R0 += 0x25
+20207666: LOAD P0 = -0x13e0
+2020766a: LOAD P0.H = 0x4
+2020766e: STORE [P4 + 0x30] = R1
+20207670: STORE [P4 + 0x34] = R2
+20207672: STORE [P4 + 0x38] = R4
+20207674: ADD P1 = P1 + P0
+20207676: STORE [SP + 0x44] = R0
+2020767a: MOVE R7 = P4
+2020767c: STORE B [P5 + 0x1a] = R4
+20207680: LOAD P0.L = 0x47d8
+20207684: LOAD P0.H = 0xff80
+20207688: LOAD P4.L = 0x46a0
+2020768c: LOAD P4.H = 0xff80
+20207690: LOAD P2.L = 0x478c
+20207694: LOAD P2.H = 0xff80
+20207698: LOAD R1 = 0x2
+2020769a: LOAD R2 = 0x2
+2020769c: LOAD R0 = 0x0
+2020769e: STORE [P4 + 0x20] = R5
+202076a0: STORE B [P1] = R1
+>>> 202076a2: STORE [P4 + 0x54] = R2
+202076a6: STORE [SP + 0x48] = P0
+202076aa: STORE [FP + 0x10] = P0
+202076ac: STORE [SP + 0x50] = P2
+202076b0: STORE [SP + 0x4c] = R0
+202076b4: ADD R7 += 0x1c
+202076b6: LOAD P3.L = 0x471c
+202076ba: LOAD P3.H = 0xff80
+202076be: LOAD R6.L = 0x96c8
+202076c2: LOAD R6.H = 0x2020
+202076c6: LOAD R1 = 0x5
+202076c8: LOAD R0 = [P5]
+202076ca: BITSET (R1,0x1e)
+202076cc: LOAD R2 = 0x1
+202076ce: LOAD P1.L = 0x684
+202076d2: LOAD P1.H = 0xffa1
+
+--- @20207766 beam=false has44=true addish=true
+20207722: STORE [P1++] = R5
+20207724: STORE [P1 + 0x4] = R4
+20207726: LOAD P0 = [FP + 0x10]
+20207728: LOAD P2 = [FP + 0x10]
+2020772a: LOAD R1 = [SP + 0x44]
+2020772e: STORE [P1 + 0x8] = R4
+20207730: STORE [P1] = R4
+20207732: STORE [P1 + 0xc] = P2
+20207734: STORE [P0 + 0x1c] = R5
+20207736: STORE [P2 + 0x18] = R0
+20207738: STORE [P2 + 0x14] = R1
+2020773a: STORE [P0 + 0x24] = R4
+2020773c: STORE [P0 + 0x28] = R4
+2020773e: STORE [P0 + 0x2c] = R4
+20207740: ADD P1 += 0x30
+20207742: ADD P0 += 0x34
+20207744: LOAD R0 = 0xbb8
+20207748: CC = R3 < 0x2
+2020774a: STORE [SP + 0x50] = P1
+2020774e: STORE [FP + 0x10] = P0
+20207750: ADD R6 = R6 + R0
+20207752: ADD R7 += 0x3
+20207754: ADD P4 += 0x34
+20207756: ADD P3 += 0x34
+20207758: IF CC JUMP 0x202076c6
+2020775a: LOAD P1 = [SP + 0x48]
+2020775e: LOAD R1 = 0x3
+20207760: LOAD R2 = 0x4
+20207762: LOAD R0 = 0x0
+20207764: STORE [P1 + 0x20] = R1
+>>> 20207766: STORE [P1 + 0x54] = R2
+2020776a: ADD SP += 0x24
+2020776c: POP (R7:4,P5:3) = [SP++]
+2020776e: UNLINK
+20207772: RTS
+20207774: LINK 0x10
+20207778: PUSH [--SP] = (R7:4,P5:3)
+2020777a: MOVE R6 = R2
+2020777c: MOVE CC = R6
+2020777e: MOVE R4 = CC
+20207780: MOVE P5 = R4
+20207782: ADD SP += -0x10
+20207784: LOAD P2.L = 0x4708
+20207788: LOAD P2.H = 0xff80
+2020778c: MOVE R7 = R1
+2020778e: LOAD P4 = [FP + 0x14]
+
+--- @202086c4 beam=false has44=false addish=true
+(skip body)
+
+--- @2020885c beam=false has44=false addish=true
+(skip body)
+
+--- @2020891e beam=false has44=false addish=true
+(skip body)
+
+--- @202089c6 beam=false has44=false addish=true
+(skip body)
+
+--- @20208a64 beam=false has44=false addish=true
+(skip body)
+
+--- @20208a6a beam=false has44=false addish=true
+(skip body)
+
+--- @20208aa4 beam=false has44=false addish=true
+(skip body)
+
+--- @20208ad6 beam=false has44=false addish=true
+(skip body)
+
+--- @20208b22 beam=false has44=false addish=true
+(skip body)
+
+--- @20208b42 beam=false has44=false addish=true
+(skip body)
+
+--- @20208b78 beam=false has44=false addish=true
+(skip body)
+
+--- @20208baa beam=false has44=false addish=true
+(skip body)
+
+--- @20208ca8 beam=false has44=false addish=true
+(skip body)
+
+--- @20208cbc beam=false has44=false addish=false
+(skip body)
+
+--- @20208cda beam=false has44=false addish=true
+(skip body)
+
+--- @20208cf4 beam=false has44=false addish=true
+(skip body)
+
+--- @20208e36 beam=false has44=false addish=true
+(skip body)
+
+--- @20208e70 beam=false has44=false addish=true
+(skip body)
+
+--- @20208e8a beam=false has44=false addish=true
+(skip body)
+
+--- @20208ea6 beam=false has44=false addish=true
+(skip body)
+
+--- @20208ee8 beam=false has44=false addish=true
+(skip body)
+
+--- @20208efa beam=false has44=false addish=true
+(skip body)
+
+--- @20208f2e beam=false has44=false addish=true
+(skip body)
+
+--- @20208f40 beam=false has44=false addish=true
+(skip body)
+
+--- @20208f84 beam=false has44=false addish=true
+(skip body)
+
+--- @20208fa2 beam=false has44=false addish=true
+(skip body)
+
+--- @20208fbc beam=false has44=false addish=true
+(skip body)
+
+--- @20208fdc beam=false has44=false addish=true
+(skip body)
+
+--- @2020901c beam=false has44=false addish=true
+(skip body)
+
+--- @20209038 beam=false has44=false addish=true
+(skip body)
+
+--- @20209046 beam=false has44=false addish=true
+(skip body)
+
+--- @2020908e beam=false has44=false addish=true
+(skip body)
+
+--- @202090ac beam=false has44=false addish=true
+(skip body)
+
+--- @202090ba beam=false has44=false addish=true
+(skip body)
+
+--- @202090d8 beam=false has44=false addish=false
+(skip body)
+
+--- @20209114 beam=false has44=false addish=true
+(skip body)
+
+--- @2020912c beam=false has44=false addish=true
+(skip body)
+
+--- @20209142 beam=false has44=false addish=true
+(skip body)
+
+--- @20209164 beam=false has44=false addish=true
+(skip body)
+
+--- @2020cbda beam=false has44=false addish=true
+(skip body)
+
+--- @2021161c beam=false has44=false addish=false
+(skip body)
+
+--- @202116a2 beam=false has44=false addish=false
+(skip body)
+
+--- @20211706 beam=false has44=false addish=false
+(skip body)
+
+--- @202117ea beam=false has44=false addish=false
+(skip body)
+
+--- @20211854 beam=false has44=false addish=false
+(skip body)
+
+--- @20211bcc beam=false has44=false addish=false
+(skip body)
+
+--- @202120b4 beam=false has44=false addish=false
+(skip body)
+
+--- @202121fe beam=false has44=false addish=false
+(skip body)
+
+--- @202122ea beam=false has44=false addish=false
+(skip body)
+
+--- @202122f4 beam=false has44=false addish=false
+(skip body)
+
+--- @20213590 beam=true has44=false addish=true
+2021353a: CALL (P1)
+2021353c: LOAD P1 = [FP + 0x10]
+2021353e: LOAD P5 = [P2 + 0x4d4]
+20213542: LOAD R2 = [P1 + 0x68]
+20213546: MAX|| R5 = max(R0,R2)
+2021354a: _LOAD R4 = [P5]
+2021354c: _NOP
+2021354e: LOAD R0 = B [P1 + 0x38] (Z)
+20213552: LOAD P1.L = 0x16d4
+20213556: LOAD P1.H = 0xffa0
+2021355a: CALL (P1)
+2021355c: ROT|| R1 = rot R4 by 0
+20213560: _LOAD P1 = [FP + -0x24]
+20213562: _NOP
+20213564: ASHIFT R5 >>>= 0x11
+20213566: MOVE R2 = R5
+20213568: ADD R2 += 0x10
+2021356a: STORE [P3 + 0x64] = R2
+2021356e: LOAD R3.L = W [P1 ++ P0]
+20213570: LOAD R2 = 0x5cfc
+20213574: LOAD R4 = 0x0
+20213576: MULT|| R6 = R3.L * R2.L (is)
+2021357a: STORE [FP + -0x44] = R0
+2021357c: NOP
+2021357e: STORE [FP + -0x28] = P1
+20213580: LOAD P1.L = 0x18f0
+20213584: LOAD P1.H = 0xffa0
+20213588: CALL (P1)
+2021358a: LOAD R4.H = 0x42c8
+2021358e: MOVE R1 = R4
+>>> 20213590: STORE [P3 + 0x60] = R5
+20213594: ADD R5 += 0x30
+20213596: LOAD P1.L = 0x1814
+2021359a: LOAD P1.H = 0xffa0
+2021359e: CALL (P1)
+202135a0: STORE [P3 + 0x68] = R5
+202135a4: STORE [P3 + 0x94] = R0
+202135a8: ROT|| R5 = rot R0 by 0
+202135ac: _LOAD R1 = [P5 + 0x4]
+202135ae: _NOP
+202135b0: LOAD R0 = [FP + -0x44]
+202135b2: LOAD P1.L = 0x18f0
+202135b6: LOAD P1.H = 0xffa0
+202135ba: CALL (P1)
+202135bc: ROT|| R1 = rot R4 by 0
+202135c0: _STORE [FP + 0xc] = R6
+
+--- @20213808 beam=false has44=false addish=true
+(skip body)
+
+--- @2021388e beam=false has44=false addish=true
+(skip body)
+
+--- @20213b06 beam=false has44=false addish=true
+(skip body)
+
+--- @20213b92 beam=false has44=false addish=true
+(skip body)
+
+--- @20213ce4 beam=false has44=false addish=true
+(skip body)
+
+--- @20214ca2 beam=false has44=false addish=false
+(skip body)
+
+--- @20214cf8 beam=false has44=false addish=true
+(skip body)
+
+--- @20214cfc beam=false has44=false addish=true
+(skip body)
+
+--- @20214dba beam=false has44=false addish=true
+(skip body)
+
+--- @20214ec8 beam=false has44=false addish=true
+(skip body)
+
+--- @20214fe4 beam=false has44=false addish=true
+(skip body)
+
+--- @20214fec beam=false has44=false addish=true
+(skip body)
+
+--- @20221aa2 beam=true has44=false addish=true
+20221a56: IF !CC JUMP 0x20221a36 (bp)
+20221a58: LOAD P0 = [FP + -0x4]
+20221a5a: LOAD R2 = 0x5cfc
+20221a5e: LOAD R0 = 0x1
+20221a60: ADD P1 = P0 + (P1 << 1)
+20221a62: LOAD R1 = W [P1] (X)
+20221a64: MULT R2 = R1.L * R2.L (is)
+20221a68: MOVE P1 = R2
+20221a6a: ADD P1 = P2 + P1
+20221a6c: LOAD R1 = [P1 + 0x4]
+20221a6e: LOAD P1.L = 0x5ee4
+20221a72: LOAD P1.H = 0xffa0
+20221a76: CALL (P1)
+20221a78: LOAD R1 = [FP + -0x48]
+20221a7a: LOAD P1.L = 0x586c
+20221a7e: LOAD P1.H = 0xffa0
+20221a82: CALL (P1)
+20221a84: LOAD P0 = [FP + 0x14]
+20221a86: STORE [SP + 0x10] = P0
+20221a88: MOVE P1 = P5
+20221a8a: LOAD P2 = 0x48
+20221a8e: STORE [SP + 0xc] = R7
+20221a90: LOAD R7.H = W [P1 ++ P2]
+20221a92: LOAD R3 = [FP + 0xc]
+20221a94: MULT|| R3 = R7.H * R3.L (is)
+20221a98: LOAD P2 = [FP + 0x10]
+20221a9a: NOP
+20221a9c: MOVE P0 = R3
+20221a9e: STORE [FP + -0x34] = P1
+20221aa0: LOAD R7 = [FP + -0x48]
+>>> 20221aa2: STORE [P5 + 0x58] = R0
+20221aa6: STORE [SP + 0x14] = R7
+20221aa8: ADD P2 = P2 + P0
+20221aaa: LOAD P0 = [FP + -0x34]
+20221aac: LOAD R3 = [P2]
+20221aae: SUB|| R3 = R3 - R0 (ns)
+20221ab2: _LOAD R1 = [FP + -0x58]
+20221ab4: _NOP
+20221ab6: STORE [P1 + 0x1c] = R3
+20221ab8: LOAD R3 = [P2 + 0x4]
+20221aba: STORE [P0 + 0x20] = R3
+20221abc: LOAD R3 = [P2 + 0x8]
+20221abe: STORE [P0 + 0x24] = R3
+20221ac0: LOAD R2 = 0x1
+20221ac2: LOAD R0 = [FP + -0x28]
+20221ac4: CALL 0x2022e876
+
+--- @202220b4 beam=false has44=false addish=true
+(skip body)
+
+--- @20223d1e beam=false has44=false addish=true
+(skip body)
+
+--- @202242a6 beam=false has44=false addish=true
+(skip body)
+
+--- @2022dbd6 beam=false has44=false addish=true
+(skip body)
+
+--- @2022dc72 beam=false has44=false addish=false
+(skip body)
+
+--- @2022dfc4 beam=false has44=false addish=false
+(skip body)
+
+--- @2022e020 beam=false has44=false addish=true
+(skip body)
+
+--- @2022e0ac beam=false has44=false addish=true
+(skip body)
+
+--- @2022eac0 beam=false has44=false addish=false
+(skip body)
+
+--- @2022eae6 beam=false has44=false addish=false
+(skip body)
+
+--- @2022eb18 beam=false has44=false addish=false
+(skip body)
+
+--- @2022eb2c beam=false has44=false addish=false
+(skip body)
+
+--- @2022ecee beam=false has44=false addish=false
+(skip body)
+
+--- @2022ed1c beam=false has44=false addish=false
+(skip body)
+
+--- @2022ed54 beam=false has44=false addish=false
+(skip body)
+
+--- @2022f23e beam=false has44=false addish=true
+(skip body)
+
+--- @2022f264 beam=false has44=false addish=true
+(skip body)
+
+--- @2022f294 beam=false has44=false addish=true
+(skip body)
+
+--- @2022f3c2 beam=false has44=false addish=false
+(skip body)
+
+--- @2022f3e8 beam=false has44=false addish=false
+(skip body)
+
+--- @2022f418 beam=false has44=false addish=true
+(skip body)
+
+--- @2022f434 beam=false has44=false addish=true
+(skip body)
+
+--- @2022f45a beam=false has44=false addish=false
+(skip body)
+
+--- @2022f48a beam=false has44=false addish=true
+(skip body)
+
+--- @2022f50a beam=false has44=false addish=true
+(skip body)
+
+--- @2022f530 beam=false has44=false addish=true
+(skip body)
+
+--- @2022f7cc beam=false has44=false addish=true
+(skip body)
+
+--- @2022f7f2 beam=false has44=false addish=false
+(skip body)
+
+--- @2022f822 beam=false has44=false addish=true
+(skip body)
+
+--- @2022f83e beam=false has44=false addish=true
+(skip body)
+
+--- @2022f864 beam=false has44=false addish=false
+(skip body)
+
+--- @2022f894 beam=false has44=false addish=true
+(skip body)
+
+--- @2022f922 beam=false has44=false addish=false
+(skip body)
+
+--- @2022f948 beam=false has44=false addish=false
+(skip body)
+
+--- @2022f980 beam=false has44=false addish=true
+(skip body)
+
+--- @2022f9c0 beam=false has44=false addish=true
+(skip body)
+
+--- @2022f9f4 beam=true has44=false addish=true
+2022f9a2: STORE [FP + -0x50] = R1
+2022f9a4: STORE [FP + -0x7c] = P1
+2022f9a6: LOAD P1 = [FP + -0x50]
+2022f9a8: MOVE P0 = P3
+2022f9aa: ADD P0 += 0x38
+2022f9ac: STORE [FP + -0x44] = P0
+2022f9ae: LOAD P0 = 0x4c0c
+2022f9b2: LOAD P0.H = 0x3
+2022f9b6: ADD P1 = P1 + P0
+2022f9b8: LOAD P0 = [FP + 0x14]
+2022f9ba: LOAD P2 = -0xa6
+2022f9be: ADD P2 = P3 + P2
+2022f9c0: STORE [SP + 0x60] = P2
+2022f9c4: LOAD P2 = 0x5280
+2022f9c8: ADD P2 = P0 + P2
+2022f9ca: LOAD R7 = 0xa3d
+2022f9ce: LOAD R6 = 0x70a3
+2022f9d2: STORE [FP + -0x3c] = P2
+2022f9d4: LOAD P2 = [FP + 0x14]
+2022f9d6: STORE W [SP + 0x86] = R7
+2022f9da: STORE W [SP + 0x84] = R6
+2022f9de: LOAD P5 = 0x58c0
+2022f9e2: STORE [FP + -0x70] = R2
+2022f9e4: ADD P5 = P0 + P5
+2022f9e6: STORE [FP + -0x58] = P5
+2022f9e8: LOAD P5 = 0x71c0
+2022f9ec: ADD P0 = P2 + P5
+2022f9ee: LOAD P5 = [FP + 0x14]
+2022f9f0: LOAD R4 = 0x0
+2022f9f2: STORE [FP + -0x64] = R0
+>>> 2022f9f4: STORE [SP + 0x54] = R0
+2022f9f8: STORE [P3 + -0x74] = R4
+2022f9fc: STORE [P3 + -0x70] = R4
+2022fa00: STORE W [P1] = R4.L
+2022fa02: LOAD R0 = [FP + -0x70]
+2022fa04: STORE [FP + -0x34] = R1
+2022fa06: STORE [SP + 0x58] = R2
+2022fa0a: STORE [FP + -0x40] = P1
+2022fa0c: CALL 0x2022cfc8
+2022fa10: LOAD P4 = 0x5b40
+2022fa14: LOAD P1 = 0x5640
+2022fa18: ADD P4 = P2 + P4
+2022fa1a: ADD P1 = P5 + P1
+2022fa1c: LOAD R1 = [FP + -0x5c]
+2022fa1e: STORE [P2 + 0x744c] = R1
+2022fa22: STORE W [P3 + -0xa6] = R4
+
+--- @2022fa06 beam=true has44=false addish=true
+2022f9ae: LOAD P0 = 0x4c0c
+2022f9b2: LOAD P0.H = 0x3
+2022f9b6: ADD P1 = P1 + P0
+2022f9b8: LOAD P0 = [FP + 0x14]
+2022f9ba: LOAD P2 = -0xa6
+2022f9be: ADD P2 = P3 + P2
+2022f9c0: STORE [SP + 0x60] = P2
+2022f9c4: LOAD P2 = 0x5280
+2022f9c8: ADD P2 = P0 + P2
+2022f9ca: LOAD R7 = 0xa3d
+2022f9ce: LOAD R6 = 0x70a3
+2022f9d2: STORE [FP + -0x3c] = P2
+2022f9d4: LOAD P2 = [FP + 0x14]
+2022f9d6: STORE W [SP + 0x86] = R7
+2022f9da: STORE W [SP + 0x84] = R6
+2022f9de: LOAD P5 = 0x58c0
+2022f9e2: STORE [FP + -0x70] = R2
+2022f9e4: ADD P5 = P0 + P5
+2022f9e6: STORE [FP + -0x58] = P5
+2022f9e8: LOAD P5 = 0x71c0
+2022f9ec: ADD P0 = P2 + P5
+2022f9ee: LOAD P5 = [FP + 0x14]
+2022f9f0: LOAD R4 = 0x0
+2022f9f2: STORE [FP + -0x64] = R0
+2022f9f4: STORE [SP + 0x54] = R0
+2022f9f8: STORE [P3 + -0x74] = R4
+2022f9fc: STORE [P3 + -0x70] = R4
+2022fa00: STORE W [P1] = R4.L
+2022fa02: LOAD R0 = [FP + -0x70]
+2022fa04: STORE [FP + -0x34] = R1
+>>> 2022fa06: STORE [SP + 0x58] = R2
+2022fa0a: STORE [FP + -0x40] = P1
+2022fa0c: CALL 0x2022cfc8
+2022fa10: LOAD P4 = 0x5b40
+2022fa14: LOAD P1 = 0x5640
+2022fa18: ADD P4 = P2 + P4
+2022fa1a: ADD P1 = P5 + P1
+2022fa1c: LOAD R1 = [FP + -0x5c]
+2022fa1e: STORE [P2 + 0x744c] = R1
+2022fa22: STORE W [P3 + -0xa6] = R4
+2022fa26: STORE W [P3 + 0x58] = R0
+2022fa2a: STORE [FP + -0x30] = P2
+2022fa2c: STORE [FP + -0x6c] = P0
+2022fa2e: STORE [FP + -0x60] = P4
+2022fa30: STORE [FP + -0x14] = P1
+2022fa32: LOAD P0 = [FP + -0x50]
+
+--- @20230d5c beam=false has44=false addish=true
+(skip body)
+
+--- @20230daa beam=false has44=false addish=true
+(skip body)
+
+--- @20231400 beam=false has44=false addish=true
+(skip body)
+
+--- @20231676 beam=false has44=false addish=true
+(skip body)
+
+--- @202316a2 beam=false has44=false addish=false
+(skip body)
+
+--- @202316ba beam=false has44=false addish=false
+(skip body)
+
+--- @20231c7c beam=false has44=false addish=true
+(skip body)
+
+--- @20231d1a beam=false has44=false addish=true
+(skip body)
+
+--- @20231d30 beam=false has44=false addish=true
+(skip body)
+
+--- @20232014 beam=true has44=false addish=true
+20231fc2: LOAD R0 = [P1 + 0x7448]
+20231fc6: CC = R0 == R1
+20231fc8: IF !CC JUMP 0x20231fce
+20231fca: STORE [P1 + 0x7448] = R4
+20231fce: LOAD P1 = [FP + -0x40]
+20231fd0: LOAD R0 = [P3 + 0x2c]
+20231fd2: CC = R0 <= 0x0
+20231fd4: LOAD R1 = W [P1] (X)
+20231fd6: IF !CC JUMP 0x202320a0
+20231fd8: LOAD P1 = [FP + -0x50]
+20231fda: LOAD R0 = 0x50
+20231fde: MIN R0 = min(R1,R0) (v)
+20231fe2: MOVE R0 = R0.L (X)
+20231fe4: CC = R0 <= 0x0
+20231fe6: STORE W [P3 + -0xac] = R4
+20231fea: STORE W [P1 + 0xf4] = R0
+20231fee: IF CC JUMP 0x20232096
+20231ff0: LOAD P5 = [FP + -0x50]
+20231ff2: LOAD P4 = [FP + -0x50]
+20231ff4: LOAD P0 = 0x4c10
+20231ff8: LOAD P0.H = 0x3
+20231ffc: LOAD P1 = 0x578
+20232000: ADD P5 = P5 + P0
+20232002: LOAD P0 = [FP + -0x50]
+20232004: ADD P4 = P4 + P1
+20232006: LOAD P2 = 0xf8
+2023200a: LOAD P1 = 0xf4
+2023200e: ADD P2 = P0 + P2
+20232010: ADD P1 = P0 + P1
+20232012: STORE [FP + -0x44] = P2
+>>> 20232014: STORE [SP + 0x60] = P1
+20232018: LOAD R7.L = 0x5cfc
+2023201c: LOAD R3 = 0x0
+2023201e: LOAD R6 = 0xc
+20232020: MULT R1 = R3.L * R7.H (is)
+20232024: MOVE P1 = R1
+20232026: LOAD R0 = 0x1
+20232028: ADD P1 = P5 + P1
+2023202a: LOAD R2 = W [P1] (X)
+2023202c: MULT R2 = R2.L * R7.L (is)
+20232030: MOVE P1 = R2
+20232032: ADD P1 = P4 + P1
+20232034: LOAD R1 = [P1 + 0x4]
+20232036: LOAD P1.L = 0x5ee4
+2023203a: LOAD P1.H = 0xffa0
+2023203e: CALL (P1)
+
+--- @202320d8 beam=false has44=false addish=true
+(skip body)
+
+--- @2023268c beam=false has44=false addish=true
+(skip body)
+
+--- @202326d0 beam=false has44=false addish=true
+(skip body)
+
+--- @20232930 beam=false has44=false addish=false
+(skip body)
+
+--- @202b5090 beam=false has44=false addish=true
+(skip body)
+
+--- @202b50a4 beam=false has44=false addish=true
+(skip body)
+
+--- @202b50e0 beam=false has44=true addish=false
+202b507e: LOAD R6.L = 0x2f24
+202b5082: LOAD R6.H = 0xff80
+202b5086: CC = R0 == 0x0
+202b5088: LOAD P1 = [P4 + 0x8]
+202b508a: LOAD P0 = [P4 + 0x14]
+202b508c: STORE [SP + 0x40] = P1
+202b5090: STORE [SP + 0x54] = P0
+202b5094: LOAD P2 = [P4 + 0x50]
+202b5098: LOAD P1 = [P4 + 0x74]
+202b509c: LOAD P0 = [P4 + 0x80]
+202b50a0: STORE [SP + 0x3c] = P2
+202b50a2: STORE [FP + -0x74] = P1
+202b50a4: STORE [SP + 0x58] = P0
+202b50a8: LOAD P2 = [P4 + 0x8c]
+202b50ac: LOAD P1 = [P4 + 0x98]
+202b50b0: LOAD P0 = [P4 + 0xa4]
+202b50b4: STORE [SP + 0x44] = P2
+202b50b8: STORE [SP + 0x48] = P1
+202b50bc: STORE [SP + 0x5c] = P0
+202b50c0: LOAD P2 = [P4 + 0xbc]
+202b50c4: LOAD P1 = [P4 + 0xd8]
+202b50c8: LOAD P0 = [P4 + 0xc8]
+202b50cc: STORE [FP + -0x20] = R2
+202b50ce: STORE [FP + -0x24] = R1
+202b50d0: STORE [FP + -0x64] = R2
+202b50d2: STORE [FP + -0x50] = R1
+202b50d4: STORE [SP + 0x50] = R1
+202b50d8: STORE [FP + -0x40] = R3
+202b50da: STORE [FP + -0x38] = R6
+202b50dc: STORE [SP + 0x68] = P2
+>>> 202b50e0: STORE [SP + 0x60] = P1
+202b50e4: STORE [SP + 0x6c] = P0
+202b50e8: LOAD P3 = [P4 + 0x44]
+202b50ec: LOAD P5 = [FP + 0x14]
+202b50ee: IF CC JUMP 0x202b51e0
+202b50f0: LOAD P0 = [FP + -0x64]
+202b50f2: LOAD P2 = [SP + 0x40]
+202b50f6: LOAD P1 = -0x13e0
+202b50fa: LOAD P1.H = 0x4
+202b50fe: LOAD R5 = 0x0
+202b5100: ADD P1 = P0 + P1
+202b5102: STORE B [P1] = R5
+202b5104: LOAD R0 = [P2]
+202b5106: LOAD R7 = -0x217d
+202b510a: MAC R1 = (A1 = R0.L * R7.L) (fu)
+202b510e: LSH A1 = A1 >> 0x10
+
+--- @202b52b2 beam=false has44=true addish=true
+202b525a: LOAD R0 = [FP + -0x20]
+202b525c: STORE [P1 + 0x24] = R5
+202b525e: ADD R0 += 0x38
+202b5260: LOAD R2 = 0xa
+202b5262: LOAD P1.L = 0x5f92
+202b5266: LOAD P1.H = 0xffa0
+202b526a: CALL (P1)
+202b526c: LOAD P1 = [P4 + 0x38]
+202b526e: LOAD P0 = [FP + -0x64]
+202b5270: LOAD R4 = 0x58
+202b5274: LOAD R2 = [FP + -0x38]
+202b5276: LOAD R1 = -0x48
+202b527a: LOAD R0 = [FP + -0x20]
+202b527c: LOAD R5 = 0x2142
+202b5280: ADD R1 = R2 + R1
+202b5282: ADD R0 = R0 + R4
+202b5284: LSH|| R2.L = R5.L << 0x0
+202b5288: LOAD R4 = [P1 + 0x4]
+202b528a: NOP
+202b528c: LOAD R2.H = 0x3
+202b5290: ADD R2 = R4 + R2
+202b5292: STORE [P0 + 0x44] = R2
+202b5296: LOAD R4 = 0x4328
+202b529a: STORE [P0 + 0x50] = R4
+202b529e: LOAD R5 = 0x0
+202b52a0: LOAD R4 = 0x6250
+202b52a4: STORE [P0 + 0x4c] = R4
+202b52a8: BITSET (R5,0x11)
+202b52aa: STORE [P0 + 0x48] = R5
+202b52ae: LOAD R3 = 0x28f
+>>> 202b52b2: STORE [P0 + 0x54] = R3
+202b52b6: LOAD R2 = 0x9
+202b52b8: LOAD P1.L = 0x5f92
+202b52bc: LOAD P1.H = 0xffa0
+202b52c0: CALL (P1)
+202b52c2: LOAD P1 = [P4 + 0x38]
+202b52c4: LOAD P0 = [FP + -0x64]
+202b52c6: LOAD R4 = 0x78
+202b52ca: LOAD R0 = [FP + -0x20]
+202b52cc: ADD R0 = R0 + R4
+202b52ce: LOAD R4 = [P1 + 0x4]
+202b52d0: LOAD R2 = 0x52d4
+202b52d4: STORE [P0 + 0x70] = R2
+202b52d8: LOAD R5 = 0x2142
+202b52dc: LOAD P1 = [FP + -0x64]
+202b52de: LOAD R2 = 0x625c
+
+--- @202b59ae beam=true has44=false addish=true
+202b595a: CALL (P1)
+202b595c: IF CC R5 = R6
+202b595e: STORE [SP + 0x6c] = R5
+202b5962: LOAD P3 = [FP + -0x64]
+202b5964: LOAD P0 = 0x4a50
+202b5968: LOAD P0.H = 0x3
+202b596c: LOAD P2 = [FP + -0x64]
+202b596e: LOAD P1 = 0x4a54
+202b5972: LOAD P1.H = 0x3
+202b5976: ADD P0 = P3 + P0
+202b5978: LOAD P3 = [FP + -0x50]
+202b597a: ADD P2 = P2 + P1
+202b597c: STORE [FP + -0x4c] = P2
+202b597e: STORE [SP + 0x70] = P1
+202b5982: SUB P0 -= P3
+202b5984: STORE [FP + -0x3c] = P0
+202b5986: LOAD P0 = [FP + -0x4c]
+202b5988: MOVE P1 = FP
+202b598a: LOAD P3 = [FP + -0x64]
+202b598c: ADD P1 += -0xc
+202b598e: LOAD R0 = [P5 + 0x54]
+202b5992: STORE [SP + 0x38] = P1
+202b5994: LOAD P1 = [FP + -0x4c]
+202b5996: STORE [SP + 0x4c] = R0
+202b599a: LOAD R0 = 0x1
+202b599c: LOAD R1 = [P0 + 0x1a198]
+202b59a0: STORE [SP + 0x8c] = R0
+202b59a4: LOAD P2 = 0x578
+202b59a8: STORE [P0 + 0x1a198] = R4
+202b59ac: ADD P3 = P3 + P2
+>>> 202b59ae: STORE [P5 + 0x54] = R4
+202b59b2: LOAD P2 = -0x4a54
+202b59b6: LOAD P2.H = 0xfffc
+202b59ba: STORE W [P1 ++ P2] = R4.L
+202b59bc: STORE [SP + 0x88] = P2
+202b59c0: LOAD P2 = [FP + -0x3c]
+202b59c2: LOAD P0 = 0x0
+202b59c4: STORE [SP + 0x50] = R1
+202b59c8: LOAD R0 = 0x0
+202b59ca: SUB P0 -= P2
+202b59cc: LOAD R1 = 0x1
+202b59ce: LOAD P2 = [SP + 0x38]
+202b59d0: STORE [FP + -0x5c] = P1
+202b59d2: STORE [FP + -0x70] = R0
+202b59d4: STORE [SP + 0x98] = P0
+202b59d8: STORE [FP + -0x6c] = R1
+
+--- @202b675a beam=false has44=false addish=true
+(skip body)
+
+--- @202b69f0 beam=false has44=false addish=false
+(skip body)
+
+--- @202b69f6 beam=false has44=false addish=false
+(skip body)
+
+--- @202b70bc beam=false has44=false addish=false
+(skip body)
+
+--- @202b70fa beam=false has44=false addish=true
+(skip body)
+
+--- @ffa076b0 beam=false has44=false addish=true
+(skip body)
+
+--- @ffa076bc beam=false has44=false addish=true
+(skip body)
+
+--- @ffa076c4 beam=false has44=false addish=false
+(skip body)
+
+--- @ffa07720 beam=false has44=false addish=true
+(skip body)
+
+--- @ffa07728 beam=false has44=false addish=true
+(skip body)
+
+--- @ffa07730 beam=false has44=false addish=true
+(skip body)
+
+--- @ffa07742 beam=false has44=false addish=false
+(skip body)
+
+--- @ffa078dc beam=false has44=false addish=true
+(skip body)
+
+--- @ffa078e0 beam=false has44=false addish=true
+(skip body)
+
+--- @ffa078e8 beam=false has44=false addish=true
+(skip body)
+
+--- @ffa07bb6 beam=false has44=false addish=true
+(skip body)
+
+--- @ffa07bba beam=false has44=false addish=true
+(skip body)
+
+--- @ffa07bc2 beam=false has44=false addish=true
+(skip body)
+
+--- @ffa07cb0 beam=false has44=false addish=false
+(skip body)
+
+--- @ffa07cbe beam=false has44=false addish=false
+(skip body)
+
+--- @ffa07df4 beam=false has44=false addish=false
+(skip body)
+
+--- @ffa07df8 beam=false has44=false addish=false
+(skip body)
+
+--- @ffa07e00 beam=false has44=false addish=false
+(skip body)
+
+--- @ffa08120 beam=false has44=false addish=false
+(skip body)
+
+--- @ffa08146 beam=false has44=false addish=false
+(skip body)
+
+--- @ffa08198 beam=false has44=false addish=false
+(skip body)
+
+--- @ffa081ba beam=false has44=false addish=false
+(skip body)
+
+--- @ffa081ea beam=false has44=false addish=false
+(skip body)
+
+--- @ffa08216 beam=false has44=false addish=false
+(skip body)
+
+--- @ffa08264 beam=false has44=false addish=false
+(skip body)
+
+--- @ffa08284 beam=false has44=false addish=false
+(skip body)
+

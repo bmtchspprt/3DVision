@@ -1,0 +1,33 @@
+ffa02c70: LOAD P4.L = 0x44
+ffa02c80: STORE W [FP + -0x4] = R1
+---
+ffa02c70: LOAD P4.L = 0x44
+ffa02ca2: STORE W [P1] = R0.L
+---
+ffa02c70: LOAD P4.L = 0x44
+ffa02cb0: STORE W [P0] = R0.L
+---
+ffa04b90: LOAD P2 = 0x44
+ffa04bca: STORE W [P1] = R0.L
+---
+ffa04b90: LOAD P2 = 0x44
+ffa04bde: STORE W [P1 + -0x6] = R6
+---
+20211e52: LOAD R1 = 0x44
+20211e5c: STORE W [P5 + 0x58] = R3
+---
+20211e52: LOAD R1 = 0x44
+20211e92: STORE W [P5 + 0x58] = R3
+---
+20211f22: LOAD R1 = 0x44
+20211f34: STORE W [P5 + 0x58] = R3
+---
+20211f22: LOAD R1 = 0x44
+20211f6e: STORE W [P5 + 0x58] = R3
+---
+2022d78a: LOAD R1 = 0x44
+2022d7c6: STORE W [P3 + 0x1c] = R1
+---
+2022d78a: LOAD R1 = 0x44
+2022d7e8: _STORE W [P3 + 0x8] = R1
+---

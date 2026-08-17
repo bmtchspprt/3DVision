@@ -1,0 +1,500 @@
+===== ALL 0xFFC0 pointer materializations with low half =====
+--- @20203d5c: LOAD P1.H = 0xffc0
+  20203d4a: LOAD P1.L = 0x1814
+  20203d4e: LOAD P1.H = 0xffa0
+  20203d52: CALL (P1)
+  20203d54: STORE [SP + 0x20] = R0
+  20203d58: LOAD P1 = 0x100
+  20203d5c: LOAD P1.H = 0xffc0
+  20203d66: STORE W [FP + 0x8] = R2
+  20203d6e: LOAD P1.L = 0x5f92
+  20203d72: LOAD P1.H = 0xffa0
+--- @ffa000a0: LOAD P1.H = 0xffc0
+  ffa0008c: CALL 0xffa07324
+  ffa00090: CALL 0xffa03338
+  ffa00094: CALL 0xffa1383c
+  ffa000a0: LOAD P1.H = 0xffc0
+  ffa000a4: LOAD P1.L = 0xa14
+  ffa000a8: LOAD P2.H = 0xffc0
+  ffa000ac: LOAD P2.L = 0xa18
+  ffa000b0: LOAD P3.H = 0xffc0
+  ffa000b4: LOAD P3.L = 0xa1c
+  ffa000ba: LOAD P0.H = 0xffc0
+  ffa000be: LOAD P0.L = 0xa10
+--- @ffa000a8: LOAD P2.H = 0xffc0
+  ffa00094: CALL 0xffa1383c
+  ffa000a0: LOAD P1.H = 0xffc0
+  ffa000a4: LOAD P1.L = 0xa14
+  ffa000a8: LOAD P2.H = 0xffc0
+  ffa000ac: LOAD P2.L = 0xa18
+  ffa000b0: LOAD P3.H = 0xffc0
+  ffa000b4: LOAD P3.L = 0xa1c
+  ffa000ba: LOAD P0.H = 0xffc0
+  ffa000be: LOAD P0.L = 0xa10
+--- @ffa000b0: LOAD P3.H = 0xffc0
+  ffa000a0: LOAD P1.H = 0xffc0
+  ffa000a4: LOAD P1.L = 0xa14
+  ffa000a8: LOAD P2.H = 0xffc0
+  ffa000ac: LOAD P2.L = 0xa18
+  ffa000b0: LOAD P3.H = 0xffc0
+  ffa000b4: LOAD P3.L = 0xa1c
+  ffa000ba: LOAD P0.H = 0xffc0
+  ffa000be: LOAD P0.L = 0xa10
+  ffa000c8: LOAD P4.H = 0x0
+  ffa000cc: LOAD P4.L = 0x0
+--- @ffa000ba: LOAD P0.H = 0xffc0
+  ffa000a4: LOAD P1.L = 0xa14
+  ffa000a8: LOAD P2.H = 0xffc0
+  ffa000ac: LOAD P2.L = 0xa18
+  ffa000b0: LOAD P3.H = 0xffc0
+  ffa000b4: LOAD P3.L = 0xa1c
+  ffa000ba: LOAD P0.H = 0xffc0
+  ffa000be: LOAD P0.L = 0xa10
+  ffa000c8: LOAD P4.H = 0x0
+  ffa000cc: LOAD P4.L = 0x0
+--- @ffa0019e: LOAD P0.H = 0xffc0
+  ffa0019e: LOAD P0.H = 0xffc0
+  ffa001a2: LOAD P0.L = 0xa10
+  ffa001a6: LOAD P1.H = 0xffc0
+  ffa001aa: LOAD P1.L = 0xa1c
+  ffa001ae: LOAD P2.H = 0xffc0
+  ffa001b2: LOAD P2.L = 0xa14
+--- @ffa001a6: LOAD P1.H = 0xffc0
+  ffa0019e: LOAD P0.H = 0xffc0
+  ffa001a2: LOAD P0.L = 0xa10
+  ffa001a6: LOAD P1.H = 0xffc0
+  ffa001aa: LOAD P1.L = 0xa1c
+  ffa001ae: LOAD P2.H = 0xffc0
+  ffa001b2: LOAD P2.L = 0xa14
+  ffa001be: LOAD P0.L = 0x0
+  ffa001c2: LOAD P0.H = 0x0
+--- @ffa001ae: LOAD P2.H = 0xffc0
+  ffa0019e: LOAD P0.H = 0xffc0
+  ffa001a2: LOAD P0.L = 0xa10
+  ffa001a6: LOAD P1.H = 0xffc0
+  ffa001aa: LOAD P1.L = 0xa1c
+  ffa001ae: LOAD P2.H = 0xffc0
+  ffa001b2: LOAD P2.L = 0xa14
+  ffa001be: LOAD P0.L = 0x0
+  ffa001c2: LOAD P0.H = 0x0
+  ffa001c8: LOAD P0.H = 0xffc0
+--- @ffa001c8: LOAD P0.H = 0xffc0
+  ffa001be: LOAD P0.L = 0x0
+  ffa001c2: LOAD P0.H = 0x0
+  ffa001c8: LOAD P0.H = 0xffc0
+  ffa001cc: LOAD P0.L = 0xa10
+  ffa001d4: STORE [P0] = R5
+  ffa001da: LOAD P0.L = 0x0
+  ffa001de: LOAD P0.H = 0x0
+--- @ffa001ea: LOAD P0.H = 0xffc0
+  ffa001da: LOAD P0.L = 0x0
+  ffa001de: LOAD P0.H = 0x0
+  ffa001ea: LOAD P0.H = 0xffc0
+  ffa001ee: LOAD P0.L = 0x0
+  ffa001fa: STORE W [P0 + 0x4] = R3
+  ffa00202: STORE W [P0 + 0x10] = R3
+--- @ffa0026e: LOAD P0.H = 0xffc0
+  ffa0026e: LOAD P0.H = 0xffc0
+  ffa00272: LOAD P0.L = 0xa10
+  ffa0027c: STORE [P0] = R5
+  ffa00282: LOAD P0.L = 0x0
+  ffa00286: LOAD P0.H = 0x0
+--- @ffa002a0: LOAD P0.H = 0xffc0
+  ffa00298: LOAD P0 = [FP + 0x4]
+  ffa002a0: LOAD P0.H = 0xffc0
+  ffa002a4: LOAD P0.L = 0x0
+  ffa002ae: STORE W [P0] = R0
+--- @ffa029a0: LOAD P0.H = 0xffc0
+  ffa02990: STORE [P5] = R3
+  ffa02992: LOAD P2.L = 0x3e30
+  ffa02996: LOAD P2.H = 0xff80
+  ffa0299a: STORE [P2] = R3
+  ffa0299c: LOAD P0 = 0x500
+  ffa029a0: LOAD P0.H = 0xffc0
+  ffa029a8: STORE W [P0] = R0.L
+  ffa029ac: LOAD P1 = 0x50c
+  ffa029b0: LOAD P1.H = 0xffc0
+  ffa029b4: STORE W [P1] = R0.L
+  ffa029b6: LOAD P1 = 0x508
+  ffa029ba: LOAD P1.H = 0xffc0
+--- @ffa029b0: LOAD P1.H = 0xffc0
+  ffa029a0: LOAD P0.H = 0xffc0
+  ffa029a8: STORE W [P0] = R0.L
+  ffa029ac: LOAD P1 = 0x50c
+  ffa029b0: LOAD P1.H = 0xffc0
+  ffa029b4: STORE W [P1] = R0.L
+  ffa029b6: LOAD P1 = 0x508
+  ffa029ba: LOAD P1.H = 0xffc0
+--- @ffa029ba: LOAD P1.H = 0xffc0
+  ffa029a8: STORE W [P0] = R0.L
+  ffa029ac: LOAD P1 = 0x50c
+  ffa029b0: LOAD P1.H = 0xffc0
+  ffa029b4: STORE W [P1] = R0.L
+  ffa029b6: LOAD P1 = 0x508
+  ffa029ba: LOAD P1.H = 0xffc0
+  ffa029ce: STORE [P5] = R0
+--- @ffa02a08: LOAD P1.H = 0xffc0
+  ffa02a02: STORE W [P0] = R0.L
+  ffa02a04: LOAD P1 = 0x510
+  ffa02a08: LOAD P1.H = 0xffc0
+  ffa02a0e: LOAD P1 = [FP + 0xc]
+  ffa02a10: STORE W [P1] = R0.L
+  ffa02a14: LOAD P5 = [SP++]
+--- @ffa02c9a: LOAD P1.H = 0xffc0
+  ffa02c96: LOAD P1 = 0x500
+  ffa02c9a: LOAD P1.H = 0xffc0
+  ffa02ca2: STORE W [P1] = R0.L
+  ffa02ca8: LOAD P0 = 0x50c
+  ffa02cac: LOAD P0.H = 0xffc0
+  ffa02cb0: STORE W [P0] = R0.L
+  ffa02cb4: STORE [FP + -0x8] = R1
+--- @ffa02cac: LOAD P0.H = 0xffc0
+  ffa02c9a: LOAD P1.H = 0xffc0
+  ffa02ca2: STORE W [P1] = R0.L
+  ffa02ca8: LOAD P0 = 0x50c
+  ffa02cac: LOAD P0.H = 0xffc0
+  ffa02cb0: STORE W [P0] = R0.L
+  ffa02cb4: STORE [FP + -0x8] = R1
+--- @ffa02cc6: LOAD P0.H = 0xffc0
+  ffa02cc2: LOAD P0 = 0x508
+  ffa02cc6: LOAD P0.H = 0xffc0
+  ffa02cd6: STORE [FP + -0x8] = R0
+--- @ffa02ce8: LOAD P0.H = 0xffc0
+  ffa02ce2: STORE W [P1] = R0.L
+  ffa02ce4: LOAD P0 = 0x510
+  ffa02ce8: LOAD P0.H = 0xffc0
+  ffa02cee: STORE W [FP + -0x2] = R0
+  ffa02cf4: LOAD P1.L = 0x3c
+  ffa02cf8: LOAD P1.H = 0xff80
+  ffa02cfc: STORE [FP + -0x14] = P1
+  ffa02d00: STORE B [P1] = R1
+  ffa02d02: LOAD P0 = 0x504
+--- @ffa02d06: LOAD P0.H = 0xffc0
+  ffa02cf4: LOAD P1.L = 0x3c
+  ffa02cf8: LOAD P1.H = 0xff80
+  ffa02cfc: STORE [FP + -0x14] = P1
+  ffa02d00: STORE B [P1] = R1
+  ffa02d02: LOAD P0 = 0x504
+  ffa02d06: LOAD P0.H = 0xffc0
+  ffa02d0a: STORE [FP + -0xc] = P0
+  ffa02d0e: STORE W [P0] = R2.L
+  ffa02d10: LOAD P0 = 0x500
+  ffa02d14: LOAD P0.H = 0xffc0
+  ffa02d1c: STORE W [P0] = R0.L
+--- @ffa02d14: LOAD P0.H = 0xffc0
+  ffa02d02: LOAD P0 = 0x504
+  ffa02d06: LOAD P0.H = 0xffc0
+  ffa02d0a: STORE [FP + -0xc] = P0
+  ffa02d0e: STORE W [P0] = R2.L
+  ffa02d10: LOAD P0 = 0x500
+  ffa02d14: LOAD P0.H = 0xffc0
+  ffa02d1c: STORE W [P0] = R0.L
+  ffa02d22: LOAD P1 = 0x50c
+  ffa02d26: LOAD P1.H = 0xffc0
+  ffa02d2a: STORE [FP + -0x10] = P1
+  ffa02d2c: STORE W [P1] = R0.L
+  ffa02d2e: STORE [FP + -0x8] = R1
+--- @ffa02d26: LOAD P1.H = 0xffc0
+  ffa02d14: LOAD P0.H = 0xffc0
+  ffa02d1c: STORE W [P0] = R0.L
+  ffa02d22: LOAD P1 = 0x50c
+  ffa02d26: LOAD P1.H = 0xffc0
+  ffa02d2a: STORE [FP + -0x10] = P1
+  ffa02d2c: STORE W [P1] = R0.L
+  ffa02d2e: STORE [FP + -0x8] = R1
+--- @ffa02d40: LOAD P1.H = 0xffc0
+  ffa02d3c: LOAD P1 = 0x508
+  ffa02d40: LOAD P1.H = 0xffc0
+  ffa02d50: STORE [FP + -0x8] = R0
+--- @ffa02d62: LOAD P1.H = 0xffc0
+  ffa02d5c: STORE W [P0] = R0.L
+  ffa02d5e: LOAD P1 = 0x510
+  ffa02d62: LOAD P1.H = 0xffc0
+  ffa02d66: STORE [FP + -0x1c] = P1
+  ffa02d6a: STORE W [FP + -0x2] = R0
+  ffa02d7a: CALL 0xffa0add0
+--- @ffa02df6: LOAD P1.H = 0xffc0
+  ffa02df2: LOAD P1 = 0x508
+  ffa02df6: LOAD P1.H = 0xffc0
+  ffa02e06: STORE [FP + -0x8] = R0
+--- @ffa02e94: LOAD P1.H = 0xffc0
+  ffa02e90: LOAD P1 = 0x508
+  ffa02e94: LOAD P1.H = 0xffc0
+  ffa02ea4: STORE [FP + -0x8] = R0
+--- @ffa06034: LOAD P1.H = 0xffc0
+  ffa06028: STORE [FP + -0x44] = R0
+  ffa0602a: STORE [FP + -0x40] = R1
+  ffa0602c: STORE [FP + -0xc] = R0
+  ffa0602e: STORE [FP + -0x8] = R0
+  ffa06030: LOAD P1 = 0x208
+  ffa06034: LOAD P1.H = 0xffc0
+  ffa0603a: STORE [P1] = R6
+  ffa06042: LOAD P1.L = 0x6eec
+  ffa06046: LOAD P1.H = 0xff80
+  ffa0604a: STORE [P1] = R0
+--- @ffa07118: LOAD P1.H = 0xffc0
+  ffa0710c: CALL 0xffa08c78
+  ffa07114: LOAD P1 = 0xa00
+  ffa07118: LOAD P1.H = 0xffc0
+  ffa07122: _STORE W [P1] = R7.L
+  ffa0712a: LOAD P1 = 0xa04
+  ffa0712e: LOAD P1.H = 0xffc0
+--- @ffa0712e: LOAD P1.H = 0xffc0
+  ffa07122: _STORE W [P1] = R7.L
+  ffa0712a: LOAD P1 = 0xa04
+  ffa0712e: LOAD P1.H = 0xffc0
+  ffa0713a: _STORE [P1] = R7
+  ffa07140: LOAD P1 = 0xa08
+  ffa07144: LOAD P1.H = 0xffc0
+  ffa0714a: STORE [P1] = R7
+--- @ffa07144: LOAD P1.H = 0xffc0
+  ffa0713a: _STORE [P1] = R7
+  ffa07140: LOAD P1 = 0xa08
+  ffa07144: LOAD P1.H = 0xffc0
+  ffa0714a: STORE [P1] = R7
+  ffa0714e: CALL 0xffa0a9a4
+  ffa0715a: CALL 0xffa0a7f0
+--- @ffa085f8: LOAD P1.H = 0xffc0
+  ffa085f2: STORE W [P5 + 0xa] = R0
+  ffa085f4: LOAD P1 = 0xa1c
+  ffa085f8: LOAD P1.H = 0xffc0
+  ffa0860c: STORE [P5 + 0x4] = R0
+--- @ffa08630: LOAD P1.H = 0xffc0
+  ffa08624: _LOAD P0 = [FP + 0x4]
+  ffa08630: LOAD P1.H = 0xffc0
+  ffa08634: LOAD P1.L = 0xa14
+  ffa08640: LOAD P1.H = 0x0
+  ffa08644: LOAD P1.L = 0x0
+  ffa0864a: STORE [P1] = R1
+--- @ffa0864e: LOAD P2.H = 0xffc0
+  ffa08640: LOAD P1.H = 0x0
+  ffa08644: LOAD P1.L = 0x0
+  ffa0864a: STORE [P1] = R1
+  ffa0864e: LOAD P2.H = 0xffc0
+  ffa08652: LOAD P2.L = 0xa10
+  ffa0865a: STORE [P2] = R3
+  ffa0865c: LOAD P2.H = 0xffc0
+  ffa08660: LOAD P2.L = 0xa1c
+--- @ffa0865c: LOAD P2.H = 0xffc0
+  ffa0864e: LOAD P2.H = 0xffc0
+  ffa08652: LOAD P2.L = 0xa10
+  ffa0865a: STORE [P2] = R3
+  ffa0865c: LOAD P2.H = 0xffc0
+  ffa08660: LOAD P2.L = 0xa1c
+--- @ffa08b4c: LOAD P0.H = 0xffc0
+--- @ffa08b7a: LOAD P0.H = 0xffc0
+  ffa08b76: LOAD P0 = 0x124
+  ffa08b7a: LOAD P0.H = 0xffc0
+  ffa08b86: _STORE [P0] = R0
+--- @ffa08bb8: LOAD P0.H = 0xffc0
+  ffa08bb4: LOAD P0 = 0x124
+  ffa08bb8: LOAD P0.H = 0xffc0
+--- @ffa08bfa: LOAD P2.H = 0xffc0
+  ffa08bf6: LOAD P2 = 0x110
+  ffa08bfa: LOAD P2.H = 0xffc0
+--- @ffa08c32: LOAD P0.H = 0xffc0
+  ffa08c2e: LOAD P0 = 0x10c
+  ffa08c32: LOAD P0.H = 0xffc0
+  ffa08c46: _STORE [P1] = R1
+--- @ffa08c5c: LOAD P0.H = 0xffc0
+  ffa08c58: LOAD P0 = 0x10c
+  ffa08c5c: LOAD P0.H = 0xffc0
+  ffa08c72: STORE [P1] = R1
+--- @ffa096d8: LOAD P1.H = 0xffc0
+  ffa096d4: LOAD P1 = 0x3200
+  ffa096d8: LOAD P1.H = 0xffc0
+  ffa096e2: STORE W [SP + 0x28] = R0
+  ffa096e6: LOAD P1 = 0x3204
+  ffa096ea: LOAD P1.H = 0xffc0
+  ffa096f0: STORE W [SP + 0x2a] = R0
+  ffa096f4: LOAD P1 = 0x3208
+--- @ffa096ea: LOAD P1.H = 0xffc0
+  ffa096d8: LOAD P1.H = 0xffc0
+  ffa096e2: STORE W [SP + 0x28] = R0
+  ffa096e6: LOAD P1 = 0x3204
+  ffa096ea: LOAD P1.H = 0xffc0
+  ffa096f0: STORE W [SP + 0x2a] = R0
+  ffa096f4: LOAD P1 = 0x3208
+  ffa096f8: LOAD P1.H = 0xffc0
+  ffa096fe: STORE W [SP + 0x2c] = R0
+  ffa09702: LOAD P3 = 0x320c
+  ffa09706: LOAD P3.H = 0xffc0
+--- @ffa096f8: LOAD P1.H = 0xffc0
+  ffa096e2: STORE W [SP + 0x28] = R0
+  ffa096e6: LOAD P1 = 0x3204
+  ffa096ea: LOAD P1.H = 0xffc0
+  ffa096f0: STORE W [SP + 0x2a] = R0
+  ffa096f4: LOAD P1 = 0x3208
+  ffa096f8: LOAD P1.H = 0xffc0
+  ffa096fe: STORE W [SP + 0x2c] = R0
+  ffa09702: LOAD P3 = 0x320c
+  ffa09706: LOAD P3.H = 0xffc0
+  ffa0970c: LOAD P1.L = 0x7730
+  ffa09710: LOAD P1.H = 0xff80
+--- @ffa09706: LOAD P3.H = 0xffc0
+  ffa096f0: STORE W [SP + 0x2a] = R0
+  ffa096f4: LOAD P1 = 0x3208
+  ffa096f8: LOAD P1.H = 0xffc0
+  ffa096fe: STORE W [SP + 0x2c] = R0
+  ffa09702: LOAD P3 = 0x320c
+  ffa09706: LOAD P3.H = 0xffc0
+  ffa0970c: LOAD P1.L = 0x7730
+  ffa09710: LOAD P1.H = 0xff80
+  ffa09718: CALL 0xffa08cea
+--- @ffa09810: LOAD P5.H = 0xffc0
+  ffa0980c: LOAD P5 = 0x504
+  ffa09810: LOAD P5.H = 0xffc0
+--- @ffa09a38: LOAD P2.H = 0xffc0
+  ffa09a34: LOAD P2 = 0x730
+  ffa09a38: LOAD P2.H = 0xffc0
+  ffa09a3c: LOAD P5 = 0x740
+  ffa09a40: LOAD P5.H = 0xffc0
+--- @ffa09a40: LOAD P5.H = 0xffc0
+  ffa09a34: LOAD P2 = 0x730
+  ffa09a38: LOAD P2.H = 0xffc0
+  ffa09a3c: LOAD P5 = 0x740
+  ffa09a40: LOAD P5.H = 0xffc0
+--- @ffa09eb0: LOAD P1.H = 0xffc0
+  ffa09ea0: STORE W [P1] = R0.L
+  ffa09eac: STORE [SP + 0xc] = R7
+  ffa09eae: LOAD P1 = 0x0
+  ffa09eb0: LOAD P1.H = 0xffc0
+  ffa09ebe: LOAD P1 = 0x4
+  ffa09ec0: LOAD P1.H = 0xffc0
+  ffa09ec8: LOAD P1.L = 0x1d8c
+--- @ffa09ec0: LOAD P1.H = 0xffc0
+  ffa09eae: LOAD P1 = 0x0
+  ffa09eb0: LOAD P1.H = 0xffc0
+  ffa09ebe: LOAD P1 = 0x4
+  ffa09ec0: LOAD P1.H = 0xffc0
+  ffa09ec8: LOAD P1.L = 0x1d8c
+  ffa09ecc: LOAD P1.H = 0xff80
+--- @ffa0a97a: LOAD P1.H = 0xffc0
+  ffa0a970: STORE W [P1] = R0.L
+  ffa0a978: LOAD P1 = 0x8
+  ffa0a97a: LOAD P1.H = 0xffc0
+  ffa0a97e: STORE W [P1] = R0.L
+  ffa0a980: CALL 0xffa08630
+  ffa0a988: LOAD P1.L = 0x1d74
+  ffa0a98c: LOAD P1.H = 0xff80
+--- @ffa0a9ca: LOAD P2.H = 0xffc0
+  ffa0a9c0: STORE W [SP + 0x28] = R6
+  ffa0a9c4: STORE W [SP + 0x2c] = R5
+  ffa0a9c8: LOAD P2 = 0x0
+  ffa0a9ca: LOAD P2.H = 0xffc0
+  ffa0a9d0: LOAD P5.L = 0x1d78
+  ffa0a9d4: LOAD P5.H = 0xff80
+  ffa0a9de: _STORE W [P5] = R5.L
+  ffa0a9e2: LOAD P2 = 0x4
+  ffa0a9e4: LOAD P2.H = 0xffc0
+--- @ffa0a9e4: LOAD P2.H = 0xffc0
+  ffa0a9d4: LOAD P5.H = 0xff80
+  ffa0a9de: _STORE W [P5] = R5.L
+  ffa0a9e2: LOAD P2 = 0x4
+  ffa0a9e4: LOAD P2.H = 0xffc0
+  ffa0a9ea: STORE W [P5 + 0x2] = R3
+  ffa0a9ec: LOAD P3 = 0x8
+  ffa0a9ee: LOAD P3.H = 0xffc0
+  ffa0a9f2: LOAD P1 = 0x4
+  ffa0a9f4: LOAD P1.H = 0x6
+  ffa0a9fc: STORE W [P5 + 0x4] = R3
+--- @ffa0a9ee: LOAD P3.H = 0xffc0
+  ffa0a9e2: LOAD P2 = 0x4
+  ffa0a9e4: LOAD P2.H = 0xffc0
+  ffa0a9ea: STORE W [P5 + 0x2] = R3
+  ffa0a9ec: LOAD P3 = 0x8
+  ffa0a9ee: LOAD P3.H = 0xffc0
+  ffa0a9f2: LOAD P1 = 0x4
+  ffa0a9f4: LOAD P1.H = 0x6
+  ffa0a9fc: STORE W [P5 + 0x4] = R3
+  ffa0a9fe: STORE [FP + -0x4] = P5
+  ffa0aa00: LOAD P1 = 0x10
+  ffa0aa02: LOAD P1.H = 0xffc0
+--- @ffa0aa02: LOAD P1.H = 0xffc0
+  ffa0a9f4: LOAD P1.H = 0x6
+  ffa0a9fc: STORE W [P5 + 0x4] = R3
+  ffa0a9fe: STORE [FP + -0x4] = P5
+  ffa0aa00: LOAD P1 = 0x10
+  ffa0aa02: LOAD P1.H = 0xffc0
+  ffa0aa08: STORE W [P5 + 0x8] = R3
+  ffa0aa10: STORE W [SP + 0x30] = R3
+  ffa0aa14: STORE W [SP + 0x32] = R2
+  ffa0aa18: STORE [P5 + 0x18] = R2
+  ffa0aa1c: LOAD P0 = 0x3c
+--- @ffa1270c: LOAD R0.H = 0xffc0
+  ffa12708: STORE [P5 + 0x4] = R5
+  ffa1270c: LOAD R0.H = 0xffc0
+  ffa12714: _STORE [P5] = R0
+  ffa1271c: LOAD P0 = [FP + 0x4]
+
+===== ADD/LOAD 0x44 then STORE [P+0x4]/[P+0x8]/[P+0xc] within 20 insn =====
+--- @2022d78a: LOAD R1 = 0x44
+  2022d798: STORE [FP + -0x1c] = R1
+  2022d7a2: _STORE [P3 + 0x18] = R7
+  2022d7b2: _STORE [P3 + 0xc] = R0
+--- @2022f5b4: LOAD R1 = [P5 + 0x44]
+  2022f5e0: CALL (P1)
+  2022f5e2: STORE [P5 + 0x34] = R0
+  2022f5e8: STORE [P5 + 0x20] = R0
+  2022f5f0: STORE [P5 + 0x1c] = R3
+--- @ffa0391c: LOAD P3 = 0x44
+  ffa03930: STORE [P5] = R3
+  ffa0393e: STORE [P5 + 0x8] = P0
+  ffa03940: STORE [P5 + 0x14] = R3
+  ffa03942: STORE [P5 + 0xc] = P4
+  ffa03944: STORE [P5 + 0x4] = R4
+  ffa03946: STORE [P5 + 0x10] = R1
+  ffa0394a: CALL 0xffa02948
+  ffa03954: CALL 0xffa018f0
+hits=3
+
+===== acquire 20220ba4..20221050: waits / FFC0 / bit tests =====
+20220ba4: CALL 0x2021f97a
+20220bba: IF CC JUMP 0x20220b7c (bp)
+20220bc2: IF CC JUMP 0x20220bc6 (bp)
+20220bfa: CALL (P1)
+20220c1e: CALL (P1)
+20220c42: IF !CC JUMP 0x20220c54
+20220c4c: CALL (P1)
+20220c60: IF !CC JUMP 0x20220c68
+20220c66: JUMP.S 0x20220c6c
+20220c70: LOAD P0 = [FP + -0x44]
+20220c82: IF !CC JUMP 0x20220dd6
+20220c9c: IF !CC JUMP 0x20220d16
+20220ca2: BITSET (R0,0x11)
+20220cee: CALL (P1)
+20220d0a: CALL (P1)
+20220d14: IF CC JUMP 0x20220ca6 (bp)
+20220d24: CALL (P1)
+20220d36: CALL (P1)
+20220d42: CALL (P1)
+20220d58: LOAD R5 = [P5 + 0x44]
+20220d74: CALL (P1)
+20220d84: CALL (P1)
+20220d9c: CALL (P1)
+20220db2: CALL (P1)
+20220dca: IF CC JUMP 0x20220c92 (bp)
+20220e10: CALL (P1)
+20220e20: CALL (P1)
+20220e2e: LOAD P2 = [FP + -0x44]
+20220e30: LOAD P0 = 0x578
+20220e54: IF !CC JUMP 0x20220e58 (bp)
+20220e72: IF CC JUMP 0x20220e76 (bp)
+20220ec8: IF !CC JUMP 0x20220efc
+20220ed0: IF CC JUMP 0x20220efc
+20220ede: CALL (P1)
+20220ef0: CALL 0x202b5066
+20220ef8: JUMP.S 0x20220ebc
+20220f16: IF CC JUMP 0x20220f1a (bp)
+20220f24: IF CC JUMP 0x20220e64 (bp)
+20220f36: IF !CC JUMP 0x20220f3a (bp)
+20220f60: BITSET (R1,0x11)
+20220f7a: BITSET (R4,0x12)
+20220f7c: BITSET (R5,0x12)
+20220f9a: CALL 0x202122fa
+20220fae: IF CC JUMP 0x20220fb2 (bp)
+20220fc2: CALL 0x202b5024
+20220fce: IF CC JUMP 0x20220fd2 (bp)
+20220ff8: CALL 0x202b5024
+20221004: JUMP.S 0x20220fd8
+20221020: BITSET (R1,0x12)

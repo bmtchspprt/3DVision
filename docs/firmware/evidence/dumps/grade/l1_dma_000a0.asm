@@ -1,0 +1,239 @@
+ffa00080: PUSH [--SP] = R0
+ffa00082: PUSH [--SP] = R0
+ffa00084: MOVE FP = SP
+ffa00086: ADD SP += -0xc
+ffa00088: CALL 0xffa0727c
+ffa0008c: CALL 0xffa07324
+ffa00090: CALL 0xffa03338
+ffa00094: CALL 0xffa1383c
+ffa00098: LINK 0x14
+ffa0009c: PUSH [--SP] = (R7:4,P5:3)
+ffa0009e: MOVE P0 = R1
+ffa000a0: LOAD P1.H = 0xffc0
+ffa000a4: LOAD P1.L = 0xa14
+ffa000a8: LOAD P2.H = 0xffc0
+ffa000ac: LOAD P2.L = 0xa18
+ffa000b0: LOAD P3.H = 0xffc0
+ffa000b4: LOAD P3.L = 0xa1c
+ffa000b8: LOAD R1 = W [P0] (Z)
+ffa000ba: LOAD P0.H = 0xffc0
+ffa000be: LOAD P0.L = 0xa10
+ffa000c2: LOAD R5 = W [P1] (Z)
+ffa000c4: CC = BITTST (R5,0x0)
+ffa000c6: IF !CC JUMP 0xffa000e2
+ffa000c8: LOAD P4.H = 0x0
+ffa000cc: LOAD P4.L = 0x0
+ffa000d0: NOP
+ffa000d2: LOAD R5 = [P4]
+ffa000d4: LOAD R5 = [P0]
+ffa000d6: BITCLR (R5,0x17)
+ffa000d8: BITSET (R5,0x18)
+ffa000da: STORE [P0] = R5
+ffa000dc: LOAD R5 = W [P3] (Z)
+ffa000de: CC = BITTST (R5,0x1)
+ffa000e0: IF !CC JUMP 0xffa000dc
+ffa000e2: LOAD R4 = [P0]
+ffa000e4: LOAD R5.L = 0x202
+ffa000e8: NOP
+ffa000ea: EXTRACT R4 = extract(R4,R5.L) (z)
+ffa000ee: CLI R6
+ffa000f0: LOAD R5 = W [P1] (Z)
+ffa000f2: BITCLR (R5,0x0)
+ffa000f4: MOVE R5 = R5.L (Z)
+ffa000f6: LOAD R3 = [FP + 0x14]
+ffa000f8: STORE W [P1] = R5
+ffa000fa: LOAD R5 = W [P3] (Z)
+ffa000fc: CC = !BITTST (R5,0x0)
+ffa000fe: IF CC JUMP 0xffa000fa
+ffa00100: CC = R2 == 0x0
+ffa00102: IF CC JUMP 0xffa00108
+ffa00104: MOVE R5 = R2.L (Z)
+ffa00106: STORE W [P2] = R5
+ffa00108: CC = R1 == 0x0
+ffa0010a: IF CC JUMP 0xffa00110
+ffa0010c: MOVE R5 = R1.L (Z)
+ffa0010e: STORE W [P1] = R5
+ffa00110: LOAD R5 = 0x0
+ffa00112: STORE [P0] = R5
+ffa00114: STORE [P0] = R0
+ffa00116: CSYNC
+ffa00118: LOAD P4.H = 0xffa0
+ffa0011c: LOAD P4.L = 0x160
+ffa00120: CC = R3 == 0x1
+ffa00122: IF CC JUMP 0xffa00132
+ffa00124: LOAD R5.L = 0x202
+ffa00128: NOP
+ffa0012a: EXTRACT R5 = extract(R0,R5.L) (z)
+ffa0012e: CC = R4 == R5
+ffa00130: IF CC JUMP 0xffa00142
+ffa00132: LOAD P4.H = 0xffa0
+ffa00136: LOAD P4.L = 0x14c
+ffa0013a: LOAD R5 = [P0]
+ffa0013c: BITSET (R5,0x17)
+ffa0013e: STORE [P0] = R5
+ffa00140: CSYNC
+ffa00142: LOAD R5 = W [P1] (Z)
+ffa00144: BITSET (R5,0x0)
+ffa00146: MOVE R5 = R5.L (Z)
+ffa00148: STORE W [P1] = R5
+ffa0014a: JUMP (P4)
+ffa0014c: LOAD P4.H = 0x0
+ffa00150: LOAD P4.L = 0x0
+ffa00154: LOAD R5 = [P4]
+ffa00156: LOAD R5 = W [P3] (Z)
+ffa00158: CC = BITTST (R5,0x2)
+ffa0015a: IF CC JUMP 0xffa00156
+ffa0015c: STI R6
+ffa0015e: JUMP.S 0xffa00170
+ffa00160: STI R6
+ffa00162: LOAD P4.H = 0x0
+ffa00166: LOAD P4.L = 0x0
+ffa0016a: LOAD R5 = [P4]
+ffa0016c: STORE [P4] = R5
+ffa0016e: FLUSH [P4]
+ffa00170: NOP
+ffa00172: NOP
+ffa00174: POP (R7:4,P5:3) = [SP++]
+ffa00176: LOAD P0 = [FP + 0x4]
+ffa00178: UNLINK
+ffa0017c: JUMP (P0)
+ffa00180: LINK 0x14
+ffa00184: PUSH [--SP] = (R7:4,P5:3)
+ffa00186: MOVE P4 = R0
+ffa00188: LOAD R7 = W [P4 + 0x6] (Z)
+ffa0018a: LOAD R6 = W [P4 + 0xc] (Z)
+ffa0018c: LSH R6 = R6 << 0x10
+ffa00190: OR R7 = R7 | R6
+ffa00192: MOVE P3 = R7
+ffa00194: LOAD R7 = W [P4 + 0x8] (Z)
+ffa00196: LOAD R6 = W [P4 + 0x4] (Z)
+ffa00198: LSH R6 = R6 << 0x10
+ffa0019c: OR R7 = R7 | R6
+ffa0019e: LOAD P0.H = 0xffc0
+ffa001a2: LOAD P0.L = 0xa10
+ffa001a6: LOAD P1.H = 0xffc0
+ffa001aa: LOAD P1.L = 0xa1c
+ffa001ae: LOAD P2.H = 0xffc0
+ffa001b2: LOAD P2.L = 0xa14
+ffa001b6: LOAD R5 = [P2]
+ffa001b8: CC = BITTST (R5,0x0)
+ffa001ba: IF !CC JUMP 0xffa001ea
+ffa001bc: CLI R0
+ffa001be: LOAD P0.L = 0x0
+ffa001c2: LOAD P0.H = 0x0
+ffa001c6: LOAD R5 = [P0]
+ffa001c8: LOAD P0.H = 0xffc0
+ffa001cc: LOAD P0.L = 0xa10
+ffa001d0: LOAD R5 = [P0]
+ffa001d2: BITSET (R5,0x18)
+ffa001d4: STORE [P0] = R5
+ffa001d6: CSYNC
+ffa001d8: STI R0
+ffa001da: LOAD P0.L = 0x0
+ffa001de: LOAD P0.H = 0x0
+ffa001e2: LOAD R0 = [P0]
+ffa001e4: LOAD R4 = W [P1] (Z)
+ffa001e6: CC = BITTST (R4,0x1)
+ffa001e8: IF !CC JUMP 0xffa001e4
+ffa001ea: LOAD P0.H = 0xffc0
+ffa001ee: LOAD P0.L = 0x0
+ffa001f2: LOAD R6 = 0x0
+ffa001f4: NOP
+ffa001f6: MOVE R2 = P3
+ffa001f8: MOVE R3 = R2.L (Z)
+ffa001fa: STORE W [P0 + 0x4] = R3
+ffa001fc: MOVE R3 = R2
+ffa001fe: LSH R3 = R3 >> 0x10
+ffa00202: STORE W [P0 + 0x10] = R3
+ffa00204: MOVE R3 = R7.L (Z)
+ffa00206: LOAD R2 = W [P0 + 0x8] (Z)
+ffa00208: CC = R3 == R2
+ffa0020a: IF CC JUMP 0xffa00242
+ffa0020c: LOAD R6 = 0x1
+ffa0020e: LOAD R5 = 0xf0
+ffa00212: AND R2 = R2 & R5
+ffa00214: AND R3 = R3 & R5
+ffa00216: CC = R3 == R2
+ffa00218: IF CC JUMP 0xffa00222
+ffa0021a: ADD R6 += 0x1
+ffa0021c: CC = R3 < R2
+ffa0021e: MOVE R3 = R7.L (Z)
+ffa00220: IF CC JUMP 0xffa00242
+ffa00222: LOAD R2 = W [P0 + 0x8] (Z)
+ffa00224: LOAD R5 = 0xf
+ffa00226: AND R2 = R2 & R5
+ffa00228: AND R3 = R3 & R5
+ffa0022a: CC = R3 == R2
+ffa0022c: MOVE R3 = R7.L (Z)
+ffa0022e: IF CC JUMP 0xffa00232
+ffa00230: ADD R6 += 0x1
+ffa00232: CLI R5
+ffa00234: STORE W [P0 + 0x8] = R3
+ffa00236: CSYNC
+ffa00238: CC = R6 < 0x2
+ffa0023a: IF CC JUMP 0xffa00240
+ffa0023c: LOAD R6 = 0x0
+ffa0023e: IDLE
+ffa00240: STI R5
+ffa00242: MOVE R2 = R7
+ffa00244: LSH R2 = R2 >> 0x10
+ffa00248: LOAD R1 = W [P0] (Z)
+ffa0024a: CC = R1 == R2
+ffa0024c: IF CC JUMP 0xffa00256
+ffa0024e: CLI R5
+ffa00250: STORE W [P0] = R2
+ffa00252: IDLE
+ffa00254: STI R5
+ffa00256: CC = R6 == 0x0
+ffa00258: IF CC JUMP 0xffa00268
+ffa0025a: CLI R5
+ffa0025c: STORE W [P0 + 0x8] = R3
+ffa0025e: CSYNC
+ffa00260: CC = R6 < 0x2
+ffa00262: IF CC JUMP 0xffa00266
+ffa00264: IDLE
+ffa00266: STI R5
+ffa00268: LOAD R5 = [P2]
+ffa0026a: CC = BITTST (R5,0x0)
+ffa0026c: IF !CC JUMP 0xffa00296
+ffa0026e: LOAD P0.H = 0xffc0
+ffa00272: LOAD P0.L = 0xa10
+ffa00276: CLI R0
+ffa00278: LOAD R5 = [P0]
+ffa0027a: BITCLR (R5,0x18)
+ffa0027c: STORE [P0] = R5
+ffa0027e: CSYNC
+ffa00280: STI R0
+ffa00282: LOAD P0.L = 0x0
+ffa00286: LOAD P0.H = 0x0
+ffa0028a: LOAD R0 = [P0]
+ffa0028c: STORE [P0] = R0
+ffa0028e: FLUSH [P0]
+ffa00290: LOAD R4 = W [P1] (Z)
+ffa00292: CC = BITTST (R4,0x1)
+ffa00294: IF CC JUMP 0xffa00290
+ffa00296: POP (R7:4,P5:3) = [SP++]
+ffa00298: LOAD P0 = [FP + 0x4]
+ffa0029a: UNLINK
+ffa0029e: JUMP (P0)
+ffa002a0: LOAD P0.H = 0xffc0
+ffa002a4: LOAD P0.L = 0x0
+ffa002a8: CLI R1
+ffa002aa: NOP
+ffa002ac: NOP
+ffa002ae: STORE W [P0] = R0
+ffa002b0: CSYNC
+ffa002b2: IDLE
+ffa002b4: STI R1
+ffa002b6: RTS
+ffa002e8: LINK 0x0
+ffa002ec: PUSH [--SP] = (R7:4,P5:5)
+ffa002ee: MOVE R5 = R0
+ffa002f0: BITCLR (R5,0x1f)
+ffa002f2: LOAD R1 = 0x0
+ffa002f4: LOAD R1.H = 0x3f80
+ffa002f8: CC = R5 <= R1
+ffa002fa: MOVE R6 = R0
+ffa002fc: ADD SP += -0x10
+ffa002fe: IF !CC JUMP 0xffa0049e
+ffa00300: LOAD R1 = 0x4f3

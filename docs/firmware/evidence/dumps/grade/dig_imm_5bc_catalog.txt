@@ -1,0 +1,35 @@
+CATALOG: every insn with word-boundary 0x5BC (arena+Grade offset)
+Near flags: STOREW / soft14 / FFC0 / MEMSET / MEMCPY / 0x147A / 0x578 / 0x44
+
+===== BM4 @202b5202 fn=FUN_202b5066 =====
+hit: LOAD R2 = 0x5bc
+near SW=true soft14=true ffc0=false memset=false memcpy=true 147a=true 578=false 44=false 5cfc=false
+202b51ee: LOAD R6 = 0x9
+202b51f0: STORE [P1 + 0x8] = R6
+202b51f2: LOAD P1 = [P4 + 0x38]
+202b51f4: LOAD P0 = [FP + -0x64]
+202b51f6: LOAD R5 = 0x4c10
+202b51fa: LOAD R4 = 0x18
+202b51fc: LOAD R6 = [P1 + 0x4]
+202b51fe: STORE [P0 + 0xf0] = R6
+202b5202: LOAD R2 = 0x5bc
+202b5206: STORE [SP + 0x4c] = R5
+202b520a: STORE [FP + -0x3c] = R4
+202b520c: STORE [P0 + 0x10] = R2
+202b520e: LOAD R4 = [FP + -0x38]
+202b5210: LOAD R0 = [FP + -0x20]
+202b5212: LOAD R1 = -0x5c
+202b5216: LOAD R5 = 0x147a
+202b521a: STORE [P0 + 0x14] = R5
+202b521c: ADD R1 = R4 + R1
+202b521e: ADD R0 += 0x18
+202b5220: LOAD R2 = 0x6
+202b5222: LOAD P1.L = 0x5f92
+
+===== ALL =====
+BM4 @202b5202 fn=FUN_202b5066 :: LOAD R2 = 0x5bc | SW=true soft14=true ffc0=false memset=false 147a=true 578=false 44=false
+
+SUMMARY imm_5BC_sites=1
+tags STOREW_BEAM~ check list; BM4 and FFC0_NEAR counted in ALL lines
+INTERPRET: STOREW_BEAM or FFC0_NEAR with 5BC as dest base = first-fill candidate.
+If only BM4/packet/OTHER without SW/FFC0 → 0x5BC fill-base CLOSED.

@@ -1,0 +1,120 @@
+20204630: ADD R0 = R1 + R0 (ns)
+20204634: LOAD R7 = 0x5a26
+20204638: ADD R0 = R0 + R7 (ns)
+2020463c: LOAD R2 = 0x28e
+20204640: LOAD R1 = 0x0
+20204642: LOAD P1.L = 0x5f2e
+20204646: LOAD P1.H = 0xffa0
+2020464a: CALL (P1)
+2020464c: JUMP.S 0x20204672
+2020464e: LOAD R0 = [P0 + 0xf8]
+20204652: ADD R0 = R0 + R5 (ns)
+20204656: ADD R0 = R0 + R7 (ns)
+2020465a: LOAD R3 = 0x5a26
+2020465e: ADD R0 = R0 + R3 (ns)
+20204662: LOAD R2 = 0x28e
+20204666: LOAD R1 = [FP + -0x18]
+20204668: LOAD P1.L = 0x5f92
+2020466c: LOAD P1.H = 0xffa0
+20204670: CALL (P1)
+20204672: LOAD R2 = 0x1
+20204674: LOAD R1 = 0x0
+20204676: LOAD R0 = 0x1
+20204678: LOAD P1.L = 0x6008
+2020467c: LOAD P1.H = 0xffa0
+20204680: CALL (P1)
+20204682: LOAD R0 = [FP + -0x4]
+20204684: ADD R0 += 0x1
+20204686: STORE [FP + -0x4] = R0
+20204688: JUMP.S 0x2020445a
+2020468a: ADD SP += 0xc
+2020468c: POP (R7:4,P5:3) = [SP++]
+2020468e: UNLINK
+20204692: RTS
+20204694: <no insn>
+20204696: <no insn>
+20204698: <no insn>
+2020469a: <no insn>
+2020469c: <no insn>
+2020469e: <no insn>
+202046a0: <no insn>
+202046a2: <no insn>
+202046a4: <no insn>
+202046a6: <no insn>
+202046a8: <no insn>
+202046aa: <no insn>
+202046ac: <no insn>
+202046ae: <no insn>
+202046b0: <no insn>
+202046b2: <no insn>
+202046b4: <no insn>
+202046b6: <no insn>
+202046b8: <no insn>
+202046ba: <no insn>
+202046bc: <no insn>
+202046be: <no insn>
+202046c0: <no insn>
+202046c2: <no insn>
+202046c4: <no insn>
+202046c6: <no insn>
+202046c8: <no insn>
+202046ca: <no insn>
+202046cc: <no insn>
+202046ce: <no insn>
+202046d0: <no insn>
+202046d2: <no insn>
+202046d4: <no insn>
+202046d6: <no insn>
+202046d8: <no insn>
+202046da: <no insn>
+202046dc: <no insn>
+202046de: <no insn>
+202046e0: <no insn>
+202046e2: <no insn>
+202046e4: <no insn>
+202046e6: <no insn>
+202046e8: <no insn>
+202046ea: <no insn>
+202046ec: <no insn>
+202046ee: <no insn>
+202046f0: <no insn>
+202046f2: <no insn>
+202046f4: <no insn>
+202046f6: <no insn>
+202046f8: <no insn>
+202046fa: <no insn>
+202046fc: <no insn>
+202046fe: <no insn>
+20204700: <no insn>
+20204702: <no insn>
+20204704: <no insn>
+20204706: <no insn>
+20204708: <no insn>
+2020470a: <no insn>
+2020470c: <no insn>
+2020470e: <no insn>
+20204710: <no insn>
+20204712: <no insn>
+20204714: <no insn>
+20204716: <no insn>
+20204718: <no insn>
+2020471a: <no insn>
+2020471c: <no insn>
+2020471e: <no insn>
+20204720: <no insn>
+20204722: <no insn>
+20204724: <no insn>
+20204726: <no insn>
+20204728: <no insn>
+2020472a: <no insn>
+2020472c: <no insn>
+2020472e: <no insn>
+20204730: <no insn>
+20204732: <no insn>
+20204734: <no insn>
+20204736: <no insn>
+20204738: <no insn>
+2020473a: <no insn>
+2020473c: <no insn>
+2020473e: <no insn>
+20204740: <no insn>

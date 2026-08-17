@@ -1,0 +1,1084 @@
+KILLER: STORE to soft +0x14/+0x18 or FFC0, with Grade offset FAR (31-120) or none-near
+Skip IMM_NEAR (0x44/0x5BC within 30) — those already catalogued.
+
+===== IMM_FAR_GRADE store@2020b5e2 kind=+0x14 fn= =====
+dist 44=55 5bc=-1 578=-1 addIn30=false ffc0=false
+farImm: STORE B [P1 + 0x44] = R5
+store: STORE [P1 + 0x14] = R7
+2020b5b8: STORE B [P1 + 0x2] = R1
+2020b5bc: LOAD P1 = [P3 + 0x3c]
+2020b5be: LOAD R1 = 0x1111
+2020b5c2: LOAD R1.H = 0x111
+2020b5c6: STORE B [P1 + 0x5] = R3
+2020b5ca: LOAD P1 = [P3 + 0x3c]
+2020b5cc: STORE B [P1 + 0x6] = R3
+2020b5d0: LOAD P1 = [P3 + 0x3c]
+2020b5d2: STORE [P1 + 0x8] = R0
+2020b5d4: LOAD P1 = [P3 + 0x3c]
+2020b5d6: LOAD R0 = [FP + -0x4]
+2020b5d8: STORE [P1 + 0xc] = R1
+2020b5da: LOAD P1 = [P3 + 0x3c]
+2020b5dc: STORE [P1 + 0x10] = R2
+2020b5de: LOAD P1 = [P3 + 0x3c]
+2020b5e0: LOAD R2 = [SP + 0x38]
+2020b5e2: STORE [P1 + 0x14] = R7
+2020b5e4: LOAD P1 = [P3 + 0x3c]
+2020b5e6: LOAD R7 = 0x32
+2020b5e8: STORE [P1 + 0x18] = R0
+2020b5ea: LOAD P1 = [P3 + 0x3c]
+--- far site -55 ---
+2020b52a: LOAD P1 = [P4 + 0x74]
+2020b52e: LOAD R7 = [SP + 0x34]
+2020b530: LOAD R7.H = 0x3f99
+2020b534: STORE B [P1 + 0x44] = R5
+2020b538: LOAD P1 = [P4 + 0x74]
+2020b53c: STORE B [P1 + 0x1] = R1
+2020b540: LOAD P1 = [P4 + 0x74]
+
+===== IMM_FAR_GRADE store@2020b5e8 kind=+0x18 fn= =====
+dist 44=58 5bc=-1 578=-1 addIn30=false ffc0=false
+farImm: STORE B [P1 + 0x44] = R5
+store: STORE [P1 + 0x18] = R0
+2020b5c2: LOAD R1.H = 0x111
+2020b5c6: STORE B [P1 + 0x5] = R3
+2020b5ca: LOAD P1 = [P3 + 0x3c]
+2020b5cc: STORE B [P1 + 0x6] = R3
+2020b5d0: LOAD P1 = [P3 + 0x3c]
+2020b5d2: STORE [P1 + 0x8] = R0
+2020b5d4: LOAD P1 = [P3 + 0x3c]
+2020b5d6: LOAD R0 = [FP + -0x4]
+2020b5d8: STORE [P1 + 0xc] = R1
+2020b5da: LOAD P1 = [P3 + 0x3c]
+2020b5dc: STORE [P1 + 0x10] = R2
+2020b5de: LOAD P1 = [P3 + 0x3c]
+2020b5e0: LOAD R2 = [SP + 0x38]
+2020b5e2: STORE [P1 + 0x14] = R7
+2020b5e4: LOAD P1 = [P3 + 0x3c]
+2020b5e6: LOAD R7 = 0x32
+2020b5e8: STORE [P1 + 0x18] = R0
+2020b5ea: LOAD P1 = [P3 + 0x3c]
+2020b5ec: STORE [P1 + 0x1c] = R0
+2020b5ee: LOAD P1 = [P3 + 0x3c]
+2020b5f0: STORE B [P1 + 0x20] = R6
+--- far site -58 ---
+2020b52a: LOAD P1 = [P4 + 0x74]
+2020b52e: LOAD R7 = [SP + 0x34]
+2020b530: LOAD R7.H = 0x3f99
+2020b534: STORE B [P1 + 0x44] = R5
+2020b538: LOAD P1 = [P4 + 0x74]
+2020b53c: STORE B [P1 + 0x1] = R1
+2020b540: LOAD P1 = [P4 + 0x74]
+
+===== IMM_FAR_GRADE store@2020b5ec kind=+0x1c fn= =====
+dist 44=60 5bc=-1 578=-1 addIn30=false ffc0=false
+farImm: STORE B [P1 + 0x44] = R5
+store: STORE [P1 + 0x1c] = R0
+2020b5ca: LOAD P1 = [P3 + 0x3c]
+2020b5cc: STORE B [P1 + 0x6] = R3
+2020b5d0: LOAD P1 = [P3 + 0x3c]
+2020b5d2: STORE [P1 + 0x8] = R0
+2020b5d4: LOAD P1 = [P3 + 0x3c]
+2020b5d6: LOAD R0 = [FP + -0x4]
+2020b5d8: STORE [P1 + 0xc] = R1
+2020b5da: LOAD P1 = [P3 + 0x3c]
+2020b5dc: STORE [P1 + 0x10] = R2
+2020b5de: LOAD P1 = [P3 + 0x3c]
+2020b5e0: LOAD R2 = [SP + 0x38]
+2020b5e2: STORE [P1 + 0x14] = R7
+2020b5e4: LOAD P1 = [P3 + 0x3c]
+2020b5e6: LOAD R7 = 0x32
+2020b5e8: STORE [P1 + 0x18] = R0
+2020b5ea: LOAD P1 = [P3 + 0x3c]
+2020b5ec: STORE [P1 + 0x1c] = R0
+2020b5ee: LOAD P1 = [P3 + 0x3c]
+2020b5f0: STORE B [P1 + 0x20] = R6
+2020b5f4: LOAD P1 = [P3 + 0x3c]
+2020b5f6: STORE B [P1 + 0x26] = R6
+--- far site -60 ---
+2020b52a: LOAD P1 = [P4 + 0x74]
+2020b52e: LOAD R7 = [SP + 0x34]
+2020b530: LOAD R7.H = 0x3f99
+2020b534: STORE B [P1 + 0x44] = R5
+2020b538: LOAD P1 = [P4 + 0x74]
+2020b53c: STORE B [P1 + 0x1] = R1
+2020b540: LOAD P1 = [P4 + 0x74]
+
+===== IMM_FAR_GRADE store@2020bc16 kind=+0x18 fn= =====
+dist 44=83 5bc=-1 578=-1 addIn30=false ffc0=false
+farImm: LOAD P1 = 0x44
+store: STORE [P3 + 0x18] = R4
+2020bbe2: STORE [P1 + 0x8] = R3
+2020bbe4: LOAD R3 = 0x5c28
+2020bbe8: LOAD R3.H = 0x28f
+2020bbec: STORE [P2 + 0x8] = R3
+2020bbee: LOAD P2 = [FP + -0x4]
+2020bbf0: LOAD P1 = [FP + -0x1c]
+2020bbf2: LOAD R0 = 0x5e86
+2020bbf6: LOAD R0.H = 0x17
+2020bbfa: STORE [P2 + 0x4] = R0
+2020bbfc: LOAD R4 = 0x12c
+2020bc00: LOAD R1 = 0xc35
+2020bc04: LOAD P2 = 0x1e
+2020bc06: STORE B [P3 + 0x8] = R6
+2020bc0a: STORE B [P3 + 0x9] = R7
+2020bc0e: STORE B [P3 + 0x14] = R6
+2020bc12: STORE B [P3 + 0x1d] = R6
+2020bc16: STORE [P3 + 0x18] = R4
+2020bc18: MOVE R0 = R1
+2020bc1a: ADD P1 += 0xc
+2020bc1c: LOAD P0 = [FP + -0x1c]
+2020bc1e: LSETUP (0x2020bc22,0x2020bc26) LC0 = P2
+--- far site -83 ---
+2020bb2c: STORE B [P1++] = R1
+2020bb2e: STORE B [P1++] = R2
+2020bb30: LOAD P2 = [FP + 0x10]
+2020bb32: LOAD P1 = 0x44
+2020bb36: LOAD P0 = 0x4
+2020bb38: ADD P1 = P2 + P1
+2020bb3a: LSETUP (0x2020bb3e,0x2020bb42) LC0 = P0
+
+===== IMM_FAR_GRADE store@2020bc5e kind=+0x1c fn= =====
+dist 44=114 5bc=-1 578=-1 addIn30=true ffc0=false
+farImm: LOAD P1 = 0x44
+store: STORE [P1 + 0x1c] = R7
+2020bc38: STORE [P2 + 0x8] = R4
+2020bc3a: LOAD P2 = [FP + -0x8]
+2020bc3c: LOAD R0 = 0x86a0
+2020bc40: STORE B [P1] = R6
+2020bc42: STORE [P1 + 0x4] = R7
+2020bc44: STORE [P1 + 0x8] = R7
+2020bc46: LOAD P1 = [FP + -0x24]
+2020bc48: STORE [P2 + 0x8] = R3
+2020bc4a: STORE [P2] = R7
+2020bc4c: STORE [P2 + 0x4] = R7
+2020bc4e: STORE [P1 + 0xc] = R3
+2020bc50: LOAD P1 = [FP + -0xc]
+2020bc52: LOAD P2 = [FP + -0xc]
+2020bc54: BITSET (R0,0x10)
+2020bc56: STORE [P0 + 0x100] = R0
+2020bc5a: STORE B [P1 + 0x2] = R6
+2020bc5e: STORE [P1 + 0x1c] = R7
+2020bc60: STORE [P1 + 0x20] = R7
+2020bc62: LOAD P1 = [FP + -0x10]
+2020bc64: STORE [P2 + 0x10] = R3
+2020bc66: STORE [P2 + 0xc] = R7
+--- far site -114 ---
+2020bb2c: STORE B [P1++] = R1
+2020bb2e: STORE B [P1++] = R2
+2020bb30: LOAD P2 = [FP + 0x10]
+2020bb32: LOAD P1 = 0x44
+2020bb36: LOAD P0 = 0x4
+2020bb38: ADD P1 = P2 + P1
+2020bb3a: LSETUP (0x2020bb3e,0x2020bb42) LC0 = P0
+
+===== IMM_FAR_GRADE store@2020ed6c kind=+0x18 fn= =====
+dist 44=37 5bc=-1 578=-1 addIn30=true ffc0=false
+farImm: LOAD R0 = [P4 + 0x44]
+store: STORE [P5 + 0x18] = R7
+2020ed44: LOAD R7 = 0x0
+2020ed46: LOAD R6.L = 0xc978
+2020ed4a: LOAD R6.H = 0x2020
+2020ed4e: LOAD P4 = [P3 + 0x8]
+2020ed50: LOAD R4 = [P3 + 0xdc]
+2020ed54: LOAD R5 = [P4]
+2020ed56: CALL 0x20236ebe
+2020ed5a: MOVE P1 = P5
+2020ed5c: LOAD R0 = 0x1
+2020ed5e: LOAD R1 = 0x1
+2020ed60: STORE [P5] = R6
+2020ed62: STORE [P5 + 0xc] = R7
+2020ed64: STORE [P5 + 0x4] = R0
+2020ed66: STORE [P5 + 0x8] = R1
+2020ed68: ADD P1 += 0x10
+2020ed6a: STORE [P1] = R7
+2020ed6c: STORE [P5 + 0x18] = R7
+2020ed6e: STORE [P5 + 0x1c] = R7
+2020ed70: CALL 0x2020ca1a
+2020ed74: LOAD P1 = [P3 + 0xb0]
+2020ed78: CC = R5 == 0x0
+--- far site -37 ---
+2020ecfe: LOAD R1 = 0x9c
+2020ed02: ADD R1 = R4 + R1
+2020ed04: CALL 0x202b4b54
+2020ed08: LOAD R0 = [P4 + 0x44]
+2020ed0c: ADD R0 += 0x6
+2020ed0e: LOAD R1 = 0xa8
+2020ed12: ADD R1 = R4 + R1
+
+===== IMM_FAR_GRADE store@2020ed6e kind=+0x1c fn= =====
+dist 44=38 5bc=-1 578=-1 addIn30=true ffc0=false
+farImm: LOAD R0 = [P4 + 0x44]
+store: STORE [P5 + 0x1c] = R7
+2020ed46: LOAD R6.L = 0xc978
+2020ed4a: LOAD R6.H = 0x2020
+2020ed4e: LOAD P4 = [P3 + 0x8]
+2020ed50: LOAD R4 = [P3 + 0xdc]
+2020ed54: LOAD R5 = [P4]
+2020ed56: CALL 0x20236ebe
+2020ed5a: MOVE P1 = P5
+2020ed5c: LOAD R0 = 0x1
+2020ed5e: LOAD R1 = 0x1
+2020ed60: STORE [P5] = R6
+2020ed62: STORE [P5 + 0xc] = R7
+2020ed64: STORE [P5 + 0x4] = R0
+2020ed66: STORE [P5 + 0x8] = R1
+2020ed68: ADD P1 += 0x10
+2020ed6a: STORE [P1] = R7
+2020ed6c: STORE [P5 + 0x18] = R7
+2020ed6e: STORE [P5 + 0x1c] = R7
+2020ed70: CALL 0x2020ca1a
+2020ed74: LOAD P1 = [P3 + 0xb0]
+2020ed78: CC = R5 == 0x0
+2020ed7a: STORE B [P1 + 0x1] = R7
+--- far site -38 ---
+2020ecfe: LOAD R1 = 0x9c
+2020ed02: ADD R1 = R4 + R1
+2020ed04: CALL 0x202b4b54
+2020ed08: LOAD R0 = [P4 + 0x44]
+2020ed0c: ADD R0 += 0x6
+2020ed0e: LOAD R1 = 0xa8
+2020ed12: ADD R1 = R4 + R1
+
+===== IMM_FAR_GRADE store@20211230 kind=+0x18 fn=FUN_202111b8 =====
+dist 44=93 5bc=-1 578=-1 addIn30=true ffc0=false
+farImm: LOAD R4 = 0x44
+store: STORE [P5 + 0x18] = R5
+2021120c: CC = R6 < R1 (IU)
+2021120e: MOVE R2 = CC
+20211210: STORE [P5--] = R3
+20211212: LOAD R1 = [P5 + -0x4]
+20211216: SUB R2 = R7 - R2
+20211218: CC = R6 < R1 (IU)
+2021121a: SUB R5 = R6 - R1
+2021121c: SUB R0 = R2 - R0
+2021121e: MOVE R1 = CC
+20211220: STORE [P5 + 0x8] = R0
+20211222: SUB R7 = R7 - R1
+20211224: LOAD R2 = [P5--]
+20211226: LOAD R4 = 0x0
+20211228: CC = R3 <= R4 (IU)
+2021122a: SUB R7 = R7 - R2
+2021122c: SUB|| R6 = R0 - R4 (s)
+20211230: STORE [P5 + 0x18] = R5
+20211232: NOP
+20211234: MOVE CC &= az
+20211236: LOAD P1.L = 0x1a30
+2021123a: LOAD P1.H = 0xff80
+--- far site -93 ---
+2021111e: STORE [P1 + 0x5790] = R0
+20211122: STORE [P1 + 0x5798] = R5
+20211126: STORE [P1 + 0x578c] = R3
+2021112a: LOAD R4 = 0x44
+2021112e: LOAD R0 = 0x22
+20211130: STORE [P2 + 0x579c] = R4
+20211134: STORE [P2 + 0x57a0] = R0
+
+===== IMM_FAR_GRADE store@20211248 kind=+0x1c fn=FUN_202111b8 =====
+dist 44=101 5bc=-1 578=-1 addIn30=false ffc0=false
+farImm: LOAD R4 = 0x44
+store: STORE [P5 + 0x1c] = R7
+2021121e: MOVE R1 = CC
+20211220: STORE [P5 + 0x8] = R0
+20211222: SUB R7 = R7 - R1
+20211224: LOAD R2 = [P5--]
+20211226: LOAD R4 = 0x0
+20211228: CC = R3 <= R4 (IU)
+2021122a: SUB R7 = R7 - R2
+2021122c: SUB|| R6 = R0 - R4 (s)
+20211230: STORE [P5 + 0x18] = R5
+20211232: NOP
+20211234: MOVE CC &= az
+20211236: LOAD P1.L = 0x1a30
+2021123a: LOAD P1.H = 0xff80
+2021123e: LOAD P0.L = 0x2dc4
+20211242: LOAD P0.H = 0xff80
+20211246: MOVE CC |= an
+20211248: STORE [P5 + 0x1c] = R7
+2021124a: STORE [FP + -0x10] = P1
+2021124c: STORE [SP + 0x3c] = P0
+2021124e: IF CC JUMP 0x2021125c
+20211250: LSHIFT R0 >>= 0x8
+--- far site -101 ---
+2021111e: STORE [P1 + 0x5790] = R0
+20211122: STORE [P1 + 0x5798] = R5
+20211126: STORE [P1 + 0x578c] = R3
+2021112a: LOAD R4 = 0x44
+2021112e: LOAD R0 = 0x22
+20211130: STORE [P2 + 0x579c] = R4
+20211134: STORE [P2 + 0x57a0] = R0
+
+===== IMM_FAR_GRADE store@2021204c kind=+0x14 fn=FUN_2021204c =====
+dist 44=100 5bc=-1 578=-1 addIn30=false ffc0=false
+farImm: LOAD R1 = 0x44
+store: STORE [P3 + 0x14] = R2
+20212018: CALL (P1)
+2021201a: LOAD R1 = 0x0
+2021201c: LOAD R1.H = 0x4080
+20212020: LOAD P1.L = 0x18f0
+20212024: LOAD P1.H = 0xffa0
+20212028: CALL (P1)
+2021202a: LOAD R1 = 0xfdb
+2021202e: LOAD R1.H = 0x4049
+20212032: STORE [P5 + 0x50] = R0
+20212036: LOAD P1.L = 0x1814
+2021203a: LOAD P1.H = 0xffa0
+2021203e: CALL (P1)
+20212040: LOAD P1.L = 0x248c
+20212044: LOAD P1.H = 0xffa0
+20212048: CALL (P1)
+2021204a: JUMP.S 0x20211c54
+2021204c: STORE [P3 + 0x14] = R2
+2021204e: JUMP.S 0x20211c3a
+20212050: LOAD R3 = [P5 + 0x34]
+20212052: CC = !BITTST (R3,0x1f)
+20212054: LOAD R1 = 0x0
+--- far site -100 ---
+20211f18: MULT R0 = R0.L * R6.H (is)
+20211f1c: MIN R3 = min(R1,R3)
+20211f20: ADD R0 = R5 + R0
+20211f22: LOAD R1 = 0x44
+20211f26: LOAD R2 = 0x147a
+20211f2a: ADD R0 = R0 + R1
+20211f2c: LSH R1 = R3 << 0x1
+
+===== BEAM_NO_GRADE_IMM store@20220228 kind=+0x14 fn=FUN_2021ffe4 =====
+dist 44=-1 5bc=-1 578=59 addIn30=true ffc0=false
+store: STORE [P4 + 0x14] = R0
+202201fe: STORE [FP + -0x34] = R3
+20220200: MOVE R3 = R5.L (Z)
+20220202: ADD P1 = P0 + (P1 << 2)
+20220204: LOAD R1 = [P2 + 0x5cd8]
+20220208: STORE [FP + -0x4c] = P1
+2022020a: STORE [P4 + 0x4] = R3
+2022020c: STORE [FP + -0x3c] = P2
+2022020e: LOAD P1.L = 0x18f0
+20220212: LOAD P1.H = 0xffa0
+20220216: CALL (P1)
+20220218: MOVE R1 = R7
+2022021a: LOAD P1.L = 0x1814
+2022021e: LOAD P1.H = 0xffa0
+20220222: CALL (P1)
+20220224: LOAD P1 = [FP + -0x4c]
+20220226: MOVE R1 = R7
+20220228: STORE [P4 + 0x14] = R0
+2022022a: STORE [FP + -0x38] = R0
+2022022c: LOAD R6 = W [P4 + 0x8] (X)
+2022022e: LOAD R0 = [P1]
+20220230: LOAD P1.L = 0x1814
+
+===== BEAM_NO_GRADE_IMM store@2022023c kind=+0x18 fn=FUN_2021ffe4 =====
+dist 44=-1 5bc=-1 578=67 addIn30=true ffc0=false
+store: STORE [P4 + 0x18] = R0
+20220212: LOAD P1.H = 0xffa0
+20220216: CALL (P1)
+20220218: MOVE R1 = R7
+2022021a: LOAD P1.L = 0x1814
+2022021e: LOAD P1.H = 0xffa0
+20220222: CALL (P1)
+20220224: LOAD P1 = [FP + -0x4c]
+20220226: MOVE R1 = R7
+20220228: STORE [P4 + 0x14] = R0
+2022022a: STORE [FP + -0x38] = R0
+2022022c: LOAD R6 = W [P4 + 0x8] (X)
+2022022e: LOAD R0 = [P1]
+20220230: LOAD P1.L = 0x1814
+20220234: LOAD P1.H = 0xffa0
+20220238: CALL (P1)
+2022023a: CC = R5 < R6
+2022023c: STORE [P4 + 0x18] = R0
+2022023e: STORE [SP + 0x30] = R6
+20220240: STORE [FP + -0x28] = R0
+20220242: IF !CC JUMP 0x20220388
+20220244: LOAD P0 = -0x420
+
+===== BEAM_NO_GRADE_IMM store@20221ab6 kind=+0x1c fn= =====
+dist 44=-1 5bc=-1 578=87 addIn30=true ffc0=false
+store: STORE [P1 + 0x1c] = R3
+20221a90: LOAD R7.H = W [P1 ++ P2]
+20221a92: LOAD R3 = [FP + 0xc]
+20221a94: MULT|| R3 = R7.H * R3.L (is)
+20221a98: LOAD P2 = [FP + 0x10]
+20221a9a: NOP
+20221a9c: MOVE P0 = R3
+20221a9e: STORE [FP + -0x34] = P1
+20221aa0: LOAD R7 = [FP + -0x48]
+20221aa2: STORE [P5 + 0x58] = R0
+20221aa6: STORE [SP + 0x14] = R7
+20221aa8: ADD P2 = P2 + P0
+20221aaa: LOAD P0 = [FP + -0x34]
+20221aac: LOAD R3 = [P2]
+20221aae: SUB|| R3 = R3 - R0 (ns)
+20221ab2: _LOAD R1 = [FP + -0x58]
+20221ab4: _NOP
+20221ab6: STORE [P1 + 0x1c] = R3
+20221ab8: LOAD R3 = [P2 + 0x4]
+20221aba: STORE [P0 + 0x20] = R3
+20221abc: LOAD R3 = [P2 + 0x8]
+20221abe: STORE [P0 + 0x24] = R3
+
+===== IMM_FAR_GRADE store@2022269c kind=+0x18 fn= =====
+dist 44=69 5bc=-1 578=-1 addIn30=false ffc0=false
+farImm: STORE [P5 + 0x44] = R0
+store: STORE [P5 + 0x18] = R0
+2022266c: LOAD P1 = [FP + -0xc]
+2022266e: JUMP.S 0x20222060
+20222670: LOAD R0 = [P4 + 0x7474]
+20222674: LOAD P1.L = 0x2894
+20222678: LOAD P1.H = 0xffa0
+2022267c: CALL (P1)
+2022267e: LOAD R1 = 0x126f
+20222682: MOVE R5 = R1
+20222684: LOAD R5.H = 0x3a03
+20222688: LOAD P2 = [P4 + 0x7464]
+2022268c: MOVE R1 = R5
+2022268e: STORE [FP + 0xc] = P2
+20222690: LOAD P1.L = 0x1714
+20222694: LOAD P1.H = 0xffa0
+20222698: CALL (P1)
+2022269a: LOAD P1 = [FP + 0xc]
+2022269c: STORE [P5 + 0x18] = R0
+2022269e: LOAD R7 = 0x1375
+202226a2: LOAD R7.H = 0x3283
+202226a6: ADD P1 += -0x1
+202226a8: ADD P0 = P1 + P1
+--- far site -69 ---
+202225e0: LSH|| R1.L = R7.H << 0x0
+202225e4: LOAD R2 = W [P5 + 0x4] (X)
+202225e6: NOP
+202225e8: STORE [P5 + 0x44] = R0
+202225ec: STORE [P5 + 0x40] = R2
+202225f0: JUMP.S 0x20222024
+202225f2: LOAD R0 = [P5 + 0x18]
+
+===== IMM_FAR_GRADE store@202226ca kind=+0x1c fn= =====
+dist 44=86 5bc=-1 578=-1 addIn30=true ffc0=false
+farImm: STORE [P5 + 0x44] = R0
+store: STORE [P5 + 0x1c] = R0
+2022269e: LOAD R7 = 0x1375
+202226a2: LOAD R7.H = 0x3283
+202226a6: ADD P1 += -0x1
+202226a8: ADD P0 = P1 + P1
+202226aa: ADD P1 = P1 + (P0 << 1)
+202226ac: ADD P0 = (P0 + P1) << 2
+202226ae: ADD P1 = P3 + P0
+202226b0: LOAD R0 = [P1 + 0xc]
+202226b2: LOAD P1.L = 0x2894
+202226b6: LOAD P1.H = 0xffa0
+202226ba: CALL (P1)
+202226bc: MOVE R1 = R5
+202226be: LOAD P1.L = 0x1716
+202226c2: LOAD P1.H = 0xffa0
+202226c6: CALL (P1)
+202226c8: LOAD R1 = [P5 + 0x18]
+202226ca: STORE [P5 + 0x1c] = R0
+202226cc: LOAD P1.L = 0x1630
+202226d0: LOAD P1.H = 0xffa0
+202226d4: CALL (P1)
+202226d6: STORE [P5 + 0x80] = R7
+--- far site -86 ---
+202225e0: LSH|| R1.L = R7.H << 0x0
+202225e4: LOAD R2 = W [P5 + 0x4] (X)
+202225e6: NOP
+202225e8: STORE [P5 + 0x44] = R0
+202225ec: STORE [P5 + 0x40] = R2
+202225f0: JUMP.S 0x20222024
+202225f2: LOAD R0 = [P5 + 0x18]
+
+===== BEAM_NO_GRADE_IMM store@2022569c kind=+0x1c fn= =====
+dist 44=-1 5bc=-1 578=71 addIn30=true ffc0=false
+store: STORE [P1 + 0x1c] = R5
+2022567c: LOAD P0 = [FP + -0x20]
+2022567e: NOP
+20225680: MOVE CC = an
+20225682: IF !CC JUMP 0x20225698
+20225684: LOAD P1 = [FP + -0x24]
+20225686: STORE [FP + -0xc] = R0
+20225688: ADD I0 += 4
+2022568a: ADD P1 += 0xc
+2022568c: STORE [FP + -0x24] = P1
+2022568e: ADD P4 += 0x4
+20225690: ADD P5 += 0x4
+20225692: MOVE P2 = I0
+20225694: LOAD R0 = [FP + -0xc]
+20225696: JUMP.S 0x20225636
+20225698: LOAD P1 = [FP + -0x64]
+2022569a: ADD P1 += -0xb
+2022569c: STORE [P1 + 0x1c] = R5
+2022569e: STORE W [P1 + 0x2] = R0
+202256a0: LOAD P2 = [FP + -0x48]
+202256a2: LOAD P0 = [FP + -0x8]
+202256a4: LOAD R7 = [FP + 0x14]
+
+===== BEAM_NO_GRADE_IMM store@2022d26a kind=+0x1c fn=FUN_2022d236 =====
+dist 44=-1 5bc=-1 578=10 addIn30=true ffc0=false
+store: STORE [P4 + 0x1c] = R2
+2022d23e: LOAD R3 = 0x5cfc
+2022d242: MULT|| R2 = R2.L * R3.L (is)
+2022d246: STORE [FP + 0x18] = R2
+2022d248: NOP
+2022d24a: MOVE P1 = R2
+2022d24c: LOAD P2 = [FP + 0x20]
+2022d24e: LOAD P0 = 0x578
+2022d252: STORE [SP + 0x30] = R0
+2022d254: LOAD P4.L = 0x5cc4
+2022d258: LOAD P4.H = 0x2022
+2022d25c: ADD P0 = P2 + P0
+2022d25e: ADD P1 = P0 + P1
+2022d260: LOAD R0 = [P1 + 0x3c]
+2022d262: LSH|| R2 = R0 << 0x1
+2022d266: _LOAD R3 = [FP + 0x14]
+2022d268: _NOP
+2022d26a: STORE [P4 + 0x1c] = R2
+2022d26c: STORE [SP + 0x34] = R3
+2022d26e: STORE [FP + -0x4] = R1
+2022d270: LOAD P3 = [FP + 0x28]
+2022d272: LOAD P1.L = 0x1688
+
+===== BEAM_NO_GRADE_IMM store@2022d2a8 kind=+0x14 fn=FUN_2022d236 =====
+dist 44=-1 5bc=-1 578=33 addIn30=true ffc0=false
+store: STORE [P4 + 0x14] = R5
+2022d27c: LOAD R1 = 0x0
+2022d27e: LOAD R1.H = 0x3f40
+2022d282: LOAD P1.L = 0x18f0
+2022d286: LOAD P1.H = 0xffa0
+2022d28a: CALL (P1)
+2022d28c: LOAD P1.L = 0x14dc
+2022d290: LOAD P1.H = 0xffa0
+2022d294: CALL (P1)
+2022d296: LOAD R5 = -0x1
+2022d298: LOAD R2 = W [P3 + 0x7444] (X)
+2022d29c: LSHIFT R5 >>= 0x1
+2022d29e: LOAD R7 = 0x0
+2022d2a0: LOAD R6 = -0x1
+2022d2a2: CC = R2 <= 0x0
+2022d2a4: STORE [P4 + 0x20] = R0
+2022d2a6: STORE [P4 + 0x10] = R5
+2022d2a8: STORE [P4 + 0x14] = R5
+2022d2aa: STORE [P4 + 0x4] = R6
+2022d2ac: STORE W [P4 + 0x0] = R7
+2022d2ae: MOVE P5 = P4
+2022d2b0: STORE [FP + 0x10] = P3
+
+===== IMM_FAR_GRADE store@2022e9b0 kind=+0x1c fn=FUN_2022e876 =====
+dist 44=83 5bc=-1 578=-1 addIn30=true ffc0=false
+farImm: STORE [P4 + 0x44] = R7
+store: STORE [P5 + 0x1c] = R7
+2022e988: LOAD P0 = 0x0
+2022e98a: STORE [SP + 0x10] = R0
+2022e98c: STORE [SP + 0x14] = P0
+2022e98e: STORE [SP + 0xc] = R7
+2022e990: MOVE R1 = P1
+2022e992: MOVE R2 = P4
+2022e994: MOVE R0 = P5
+2022e996: CALL 0x2022e612
+2022e99a: LOAD R0 = [P5]
+2022e99c: LOAD P1.L = 0x28c8
+2022e9a0: LOAD P1.H = 0xffa0
+2022e9a4: CALL (P1)
+2022e9a6: LOAD R2 = [P3 + 0xc]
+2022e9a8: ADD R7 = R0 + R2
+2022e9aa: LOAD R0 = [P5 + 0x4]
+2022e9ac: MAC|| A1 = R7.L * R7.L (fu)
+2022e9b0: STORE [P5 + 0x1c] = R7
+2022e9b2: NOP
+2022e9b4: LSH A1 = A1 >> 0x10
+2022e9b8: LOAD P1.L = 0x28c8
+2022e9bc: LOAD P1.H = 0xffa0
+--- far site -83 ---
+2022e8c0: STORE [P4 + 0x64] = R0
+2022e8c4: STORE B [P4 + 0x73] = R2
+2022e8c8: STORE [P4 + 0x48] = R1
+2022e8cc: STORE [P4 + 0x44] = R7
+2022e8d0: STORE B [P4 + 0x72] = R5
+2022e8d4: LOAD R0 = [P1]
+2022e8d6: LOAD P1.L = 0x2894
+
+===== IMM_FAR_GRADE store@2022f00a kind=+0x1c fn=FUN_2022e876 =====
+dist 44=39 5bc=-1 578=-1 addIn30=false ffc0=false
+farImm: LOAD R1 = [P5 + 0x44]
+store: STORE [P5 + 0x1c] = R1
+2022efea: STORE [P5 + 0x1c] = R1
+2022efec: LOAD R0 = [P3 + 0x34]
+2022efee: LOAD R1 = [P5 + 0x20]
+2022eff0: CC = R0 < R1
+2022eff2: IF !CC JUMP 0x2022eff8
+2022eff4: STORE [P5 + 0x20] = R0
+2022eff6: JUMP.S 0x2022ebf2
+2022eff8: NEG R0 = -R0
+2022effa: CC = R1 < R0
+2022effc: IF CC JUMP 0x2022f000 (bp)
+2022effe: JUMP.S 0x2022ebf2
+2022f000: STORE [P5 + 0x20] = R0
+2022f002: JUMP.S 0x2022ebf2
+2022f004: NEG R1 = -R1
+2022f006: CC = R0 < R1
+2022f008: IF !CC JUMP 0x2022efec
+2022f00a: STORE [P5 + 0x1c] = R1
+2022f00c: JUMP.S 0x2022efec
+2022f00e: LOAD R1 = [P5 + 0x24]
+2022f010: LOAD R0 = [P3 + 0x30]
+2022f012: CC = R0 < R1
+--- far site -39 ---
+2022efae: LOAD R0 = [P3 + 0x90]
+2022efb2: STORE [P5 + 0x1c] = R0
+2022efb4: JUMP.S 0x2022edce
+2022efb6: LOAD R1 = [P5 + 0x44]
+2022efba: CC = R0 <= R1
+2022efbc: IF CC JUMP 0x2022efce
+2022efbe: LOAD R0 = [P3 + 0x38]
+
+===== IMM_FAR_GRADE store@2022f03c kind=+0x1c fn=FUN_2022e876 =====
+dist 44=56 5bc=-1 578=-1 addIn30=false ffc0=false
+farImm: LOAD R1 = [P5 + 0x44]
+store: STORE [P5 + 0x1c] = R1
+2022f00c: JUMP.S 0x2022efec
+2022f00e: LOAD R1 = [P5 + 0x24]
+2022f010: LOAD R0 = [P3 + 0x30]
+2022f012: CC = R0 < R1
+2022f014: IF !CC JUMP 0x2022f066 (bp)
+2022f016: LOAD P1.L = 0x5ee4
+2022f01a: LOAD P1.H = 0xffa0
+2022f01e: CALL (P1)
+2022f020: LOAD R1 = [P5 + 0x1c]
+2022f022: MAC A1 = R1.L * R0.L (fu)
+2022f026: LSH A1 = A1 >> 0x10
+2022f02a: MAC A1 += R1.H * R0.L (m),A0 = R1.H * R0.H 
+2022f02e: MAC A1 += R0.H * R1.L (m)
+2022f032: ASH A1 = A1 >>> 0xf
+2022f036: LOAD R0 = [P3 + 0x30]
+2022f038: MOVE R1 = (A0 += A1)
+2022f03c: STORE [P5 + 0x1c] = R1
+2022f03e: LOAD R1 = [P5 + 0x24]
+2022f040: LOAD P1.L = 0x5ee4
+2022f044: LOAD P1.H = 0xffa0
+2022f048: CALL (P1)
+--- far site -56 ---
+2022efae: LOAD R0 = [P3 + 0x90]
+2022efb2: STORE [P5 + 0x1c] = R0
+2022efb4: JUMP.S 0x2022edce
+2022efb6: LOAD R1 = [P5 + 0x44]
+2022efba: CC = R0 <= R1
+2022efbc: IF CC JUMP 0x2022efce
+2022efbe: LOAD R0 = [P3 + 0x38]
+
+===== IMM_FAR_GRADE store@2022f0b6 kind=+0x1c fn=FUN_2022e876 =====
+dist 44=100 5bc=-1 578=-1 addIn30=false ffc0=false
+farImm: LOAD R1 = [P5 + 0x44]
+store: STORE [P5 + 0x1c] = R0
+2022f086: IF CC JUMP 0x2022f08a (bp)
+2022f088: JUMP.S 0x2022ebf2
+2022f08a: CC = R1 <= 0x0
+2022f08c: IF !CC JUMP 0x2022f090
+2022f08e: JUMP.S 0x2022ebf2
+2022f090: LOAD R0 = [P5 + 0x1c]
+2022f092: LOAD P1.L = 0x5ee4
+2022f096: LOAD P1.H = 0xffa0
+2022f09a: CALL (P1)
+2022f09c: LOAD R1 = [P5 + 0x3c]
+2022f09e: MAC A1 = R1.L * R0.L (fu)
+2022f0a2: LSH A1 = A1 >> 0x10
+2022f0a6: MAC A1 += R1.H * R0.L (m),A0 = R1.H * R0.H 
+2022f0aa: MAC A1 += R0.H * R1.L (m)
+2022f0ae: ASH A1 = A1 >>> 0xf
+2022f0b2: MOVE R0 = (A0 += A1)
+2022f0b6: STORE [P5 + 0x1c] = R0
+2022f0b8: LOAD R1 = [P5 + 0x24]
+2022f0ba: LOAD R0 = [P5 + 0x20]
+2022f0bc: LOAD P1.L = 0x5ee4
+2022f0c0: LOAD P1.H = 0xffa0
+--- far site -100 ---
+2022efae: LOAD R0 = [P3 + 0x90]
+2022efb2: STORE [P5 + 0x1c] = R0
+2022efb4: JUMP.S 0x2022edce
+2022efb6: LOAD R1 = [P5 + 0x44]
+2022efba: CC = R0 <= R1
+2022efbc: IF CC JUMP 0x2022efce
+2022efbe: LOAD R0 = [P3 + 0x38]
+
+===== IMM_FAR_GRADE store@2022f612 kind=+0x1c fn=FUN_2022e876 =====
+dist 44=34 5bc=-1 578=-1 addIn30=true ffc0=false
+farImm: LOAD R1 = [P5 + 0x44]
+store: STORE [P5 + 0x1c] = R1
+2022f5ec: LOAD R2 = [P5 + 0x30]
+2022f5ee: SUB R3 = R1 - R2
+2022f5f0: STORE [P5 + 0x1c] = R3
+2022f5f2: LOAD R2 = B [P3 + 0x26] (Z)
+2022f5f6: LOAD R1 = 0x6
+2022f5f8: CC = R1 <= R2
+2022f5fa: IF !CC JUMP 0x2022f634
+2022f5fc: CC = R3 <= 0x0
+2022f5fe: LOAD R1 = [P3 + 0x30]
+2022f600: LSH R7 = R1 >> 0x1f
+2022f604: ADD R1 = R1 + R7
+2022f606: ASHIFT R1 >>>= 0x1
+2022f608: ADDSUB R1 = R3 + R1,R3 = R3 - R1 (ns)
+2022f60c: IF !CC R1 = R3
+2022f60e: NOT CC = !CC
+2022f610: LSHIFT R1 <<= 0x1
+2022f612: STORE [P5 + 0x1c] = R1
+2022f614: MOVE R1 = CC
+2022f616: STORE W [P5 + 0x68] = R1
+2022f61a: LOAD R1 = 0x7
+2022f61c: CC = R2 == R1
+--- far site -34 ---
+2022f5ae: CALL (P1)
+2022f5b0: STORE [P5 + 0x30] = R0
+2022f5b2: LOAD R0 = [P5 + 0x2c]
+2022f5b4: LOAD R1 = [P5 + 0x44]
+2022f5b8: SUB R1 = R0 - R1
+2022f5ba: LOAD R0 = [P3 + 0x50]
+2022f5be: MAC A1 = R0.L * R1.L (fu)
+
+===== IMM_FAR_GRADE store@2022f8a6 kind=+0x18 fn=FUN_2022e876 =====
+dist 44=108 5bc=-1 578=-1 addIn30=true ffc0=false
+farImm: LOAD R3 = [P5 + 0x44]
+store: STORE [P5 + 0x18] = R0
+2022f874: LOAD R1 = [P5 + 0x6c]
+2022f878: ADD R0 = R0 + R1
+2022f87a: LOAD P1.L = 0x2894
+2022f87e: LOAD P1.H = 0xffa0
+2022f882: CALL (P1)
+2022f884: MOVE R1 = R0
+2022f886: LOAD R0 = [P5 + 0x54]
+2022f88a: LOAD P1.L = 0x1814
+2022f88e: LOAD P1.H = 0xffa0
+2022f892: CALL (P1)
+2022f894: STORE [P5 + 0x54] = R0
+2022f898: JUMP.S 0x2022eab0
+2022f89a: SUB R0 = R1 - R2
+2022f89c: LOAD P1.L = 0x2894
+2022f8a0: LOAD P1.H = 0xffa0
+2022f8a4: CALL (P1)
+2022f8a6: STORE [P5 + 0x18] = R0
+2022f8a8: LOAD R0 = [P3 + 0x28]
+2022f8aa: LOAD P1.L = 0x2894
+2022f8ae: LOAD P1.H = 0xffa0
+2022f8b2: CALL (P1)
+--- far site -108 ---
+2022f74c: MAC A1 += R1.H * R0.L (m)
+2022f750: LOAD R1 = [P3 + 0x38]
+2022f752: LOAD R0 = [P3 + 0x58]
+2022f756: LOAD R3 = [P5 + 0x44]
+2022f75a: SUB R2 = R2 - R3
+2022f75c: ASH A1 = A1 >>> 0xf
+2022f760: MOVE R3 = (A0 += A1)
+
+===== IMM_FAR_GRADE store@2022f8c2 kind=+0x18 fn=FUN_2022e876 =====
+dist 44=118 5bc=-1 578=-1 addIn30=true ffc0=false
+farImm: LOAD R3 = [P5 + 0x44]
+store: STORE [P5 + 0x18] = R0
+2022f894: STORE [P5 + 0x54] = R0
+2022f898: JUMP.S 0x2022eab0
+2022f89a: SUB R0 = R1 - R2
+2022f89c: LOAD P1.L = 0x2894
+2022f8a0: LOAD P1.H = 0xffa0
+2022f8a4: CALL (P1)
+2022f8a6: STORE [P5 + 0x18] = R0
+2022f8a8: LOAD R0 = [P3 + 0x28]
+2022f8aa: LOAD P1.L = 0x2894
+2022f8ae: LOAD P1.H = 0xffa0
+2022f8b2: CALL (P1)
+2022f8b4: MOVE R1 = R0
+2022f8b6: LOAD R0 = [P5 + 0x18]
+2022f8b8: LOAD P1.L = 0x1814
+2022f8bc: LOAD P1.H = 0xffa0
+2022f8c0: CALL (P1)
+2022f8c2: STORE [P5 + 0x18] = R0
+2022f8c4: LOAD R0 = [P3 + 0x30]
+2022f8c6: LOAD P1.L = 0x2894
+2022f8ca: LOAD P1.H = 0xffa0
+2022f8ce: CALL (P1)
+--- far site -118 ---
+2022f74c: MAC A1 += R1.H * R0.L (m)
+2022f750: LOAD R1 = [P3 + 0x38]
+2022f752: LOAD R0 = [P3 + 0x58]
+2022f756: LOAD R3 = [P5 + 0x44]
+2022f75a: SUB R2 = R2 - R3
+2022f75c: ASH A1 = A1 >>> 0xf
+2022f760: MOVE R3 = (A0 += A1)
+
+===== IMM_FAR_GRADE store@202b692c kind=+0x1c fn=FUN_202b5066 =====
+dist 44=63 5bc=-1 578=-1 addIn30=true ffc0=false
+farImm: STORE B [P3 + 0x44] = R0
+store: STORE [P2 + 0x1c] = R0
+202b68fa: LOAD P0 = [SP + 0x60]
+202b68fe: LOAD R0 = [P3++]
+202b6900: LOAD P2 = [FP + -0x50]
+202b6902: LOAD R1 = 0x64
+202b6906: STORE [P0 + 0x2c] = R0
+202b6908: LOAD R0 = B [P3 + 0x2] (Z)
+202b690c: STORE B [P0 + 0x30] = R0
+202b6910: LOAD R0 = B [P3] (Z)
+202b6912: STORE B [P0 + 0x31] = R0
+202b6916: LOAD P0 = [FP + -0x74]
+202b6918: LOAD P3 = [FP + -0x74]
+202b691a: LOAD R0 = B [P0 + 0x47] (Z)
+202b691e: STORE B [P2 + 0x50] = R0
+202b6922: LOAD R0 = B [P0 + 0x48] (Z)
+202b6926: STORE B [P2 + 0x51] = R0
+202b692a: LOAD R0 = [P3 + 0x28]
+202b692c: STORE [P2 + 0x1c] = R0
+202b692e: LOAD P2 = [SP + 0x68]
+202b6932: LOAD R2 = B [P2 + 0x6] (Z)
+202b6936: CC = R1 <= R2
+202b6938: IF CC JUMP 0x202b693c (bp)
+--- far site -63 ---
+202b6866: LOAD P0 = [FP + -0x74]
+202b6868: LOAD P1 = -0x144c
+202b686c: LOAD P1.H = 0x4
+202b6870: STORE B [P3 + 0x44] = R0
+202b6874: STORE B [P3 + 0x45] = R1
+202b6878: LOAD R0 = B [P0 + 0x14] (Z)
+202b687c: STORE B [P3 + 0x4b] = R0
+
+===== IMM_FAR_GRADE store@202b6b94 kind=+0x18 fn=FUN_202b5066 =====
+dist 44=120 5bc=-1 578=-1 addIn30=false ffc0=false
+farImm: STORE [P5 + 0x44] = R0
+store: STORE [P4 + 0x18] = R0
+202b6b62: LOAD P1.H = 0xffa0
+202b6b66: CALL (P1)
+202b6b68: STORE [P4 + 0x4] = R0
+202b6b6a: LOAD R0 = [P5 + 0x5c]
+202b6b6e: LSH R2 = R0 << 0x2
+202b6b72: SUB R0 = R2 - R0
+202b6b74: LOAD P1.L = 0x2894
+202b6b78: LOAD P1.H = 0xffa0
+202b6b7c: CALL (P1)
+202b6b7e: LOAD R1 = [FP + -0x2c]
+202b6b80: LOAD P1.L = 0x18f0
+202b6b84: LOAD P1.H = 0xffa0
+202b6b88: CALL (P1)
+202b6b8a: LOAD P1.L = 0xda4
+202b6b8e: LOAD P1.H = 0xffa0
+202b6b92: CALL (P1)
+202b6b94: STORE [P4 + 0x18] = R0
+202b6b96: LOAD R0 = [P5 + 0x5c]
+202b6b9a: LOAD P1.L = 0x2894
+202b6b9e: LOAD P1.H = 0xffa0
+202b6ba2: CALL (P1)
+--- far site -120 ---
+202b6a22: LOAD R0 = 0x0
+202b6a24: JUMP.S 0x202b6a2e
+202b6a26: LOAD R0 = [P3 + 0x4]
+202b6a28: STORE [P5 + 0x44] = R0
+202b6a2c: LOAD R0 = [P3 + 0x8]
+202b6a2e: LOAD P1 = [SP + 0x48]
+202b6a32: STORE [P5 + 0x48] = R0
+
+===== BEAM_NO_GRADE_IMM store@ffa047de kind=+0x1c fn=FUN_ffa0467e =====
+dist 44=-1 5bc=-1 578=44 addIn30=true ffc0=false
+store: STORE [P2 + 0x1c] = R0
+ffa047b4: MOVE P1 = R0
+ffa047b6: ADD R7 += 0x2
+ffa047b8: LOAD R0 = W [P1] (X)
+ffa047ba: CALL 0xffa01688
+ffa047be: MOVE R1 = R5
+ffa047c0: CALL 0xffa018f0
+ffa047c4: STORE [P3++] = R0
+ffa047c6: LOAD P1 = [FP + -0x5c]
+ffa047c8: LOAD R0 = 0x147
+ffa047cc: ADD P1 += -0x6
+ffa047ce: STORE W [P1] = R0.L
+ffa047d0: LOAD P0 = [FP + 0x18]
+ffa047d2: LOAD P2 = [FP + -0x5c]
+ffa047d4: LOAD R0 = W [P0 + 0x46] (Z)
+ffa047d8: CALL 0xffa016d4
+ffa047dc: LOAD P1 = [FP + 0x1c]
+ffa047de: STORE [P2 + 0x1c] = R0
+ffa047e0: LOAD R1 = B [P1 + 0x521] (Z)
+ffa047e4: CC = R1 == 0x0
+ffa047e6: IF !CC JUMP 0xffa047f4
+ffa047e8: LOAD R1 = 0x0
+
+===== BEAM_NO_GRADE_IMM store@ffa047f2 kind=+0x1c fn=FUN_ffa0467e =====
+dist 44=-1 5bc=-1 578=51 addIn30=true ffc0=false
+store: STORE [P2 + 0x1c] = R0
+ffa047c6: LOAD P1 = [FP + -0x5c]
+ffa047c8: LOAD R0 = 0x147
+ffa047cc: ADD P1 += -0x6
+ffa047ce: STORE W [P1] = R0.L
+ffa047d0: LOAD P0 = [FP + 0x18]
+ffa047d2: LOAD P2 = [FP + -0x5c]
+ffa047d4: LOAD R0 = W [P0 + 0x46] (Z)
+ffa047d8: CALL 0xffa016d4
+ffa047dc: LOAD P1 = [FP + 0x1c]
+ffa047de: STORE [P2 + 0x1c] = R0
+ffa047e0: LOAD R1 = B [P1 + 0x521] (Z)
+ffa047e4: CC = R1 == 0x0
+ffa047e6: IF !CC JUMP 0xffa047f4
+ffa047e8: LOAD R1 = 0x0
+ffa047ea: LOAD R1.H = 0x4040
+ffa047ee: CALL 0xffa01814
+ffa047f2: STORE [P2 + 0x1c] = R0
+ffa047f4: LOAD R0 = [FP + 0x14]
+ffa047f6: CC = R0 == 0x0
+ffa047f8: IF !CC JUMP 0xffa047fc (bp)
+ffa047fa: JUMP.S 0xffa0549e
+
+===== BEAM_NO_GRADE_IMM store@ffa04882 kind=+0x14 fn=FUN_ffa04800 =====
+dist 44=-1 5bc=-1 578=111 addIn30=true ffc0=false
+store: STORE [P0 + 0x14] = R0
+ffa0485e: _NOP
+ffa04860: MOVE P1 = R0
+ffa04862: STORE [P0 + 0x4] = R0
+ffa04864: ADD P1 = P4 + (P1 << 2)
+ffa04866: LOAD R1 = [P1]
+ffa04868: STORE [P0 + 0xc] = R1
+ffa0486a: LOAD P1 = [FP + -0x5c]
+ffa0486c: LOAD R1 = [FP + -0x28]
+ffa0486e: LOAD R2 = [FP + -0x40]
+ffa04870: LOAD R0 = [P1]
+ffa04872: LOAD P1.L = 0x2a64
+ffa04876: LOAD P1.H = 0x2021
+ffa0487a: CALL (P1)
+ffa0487c: LOAD P0 = [FP + -0x5c]
+ffa0487e: LOAD R3 = [FP + 0x28]
+ffa04880: CC = R3 == 0x3
+ffa04882: STORE [P0 + 0x14] = R0
+ffa04884: IF !CC JUMP 0xffa04888 (bp)
+ffa04886: JUMP.S 0xffa04f6e
+ffa04888: LOAD R1 = 0x5
+ffa0488a: CC = R3 == R1
+
+===== IMM_FAR_GRADE store@ffa0788c kind=+0x14 fn=FUN_ffa077e0 =====
+dist 44=62 5bc=-1 578=-1 addIn30=true ffc0=false
+farImm: LOAD P3 = 0x44
+store: _STORE [P5 + 0x14] = R2
+ffa07864: _NOP
+ffa07866: LOAD R5 = [FP + 0x18]
+ffa07868: ROT|| R5 = rot R3 by 0
+ffa0786c: _STORE [P5 + 0x3c] = R5
+ffa0786e: _NOP
+ffa07870: ADD R2 += 0x8
+ffa07872: ADD R5 += 0x10
+ffa07874: ROT|| R2 = rot R3 by 0
+ffa07878: _STORE [P5] = R2
+ffa0787a: _NOP
+ffa0787c: ROT|| R5 = rot R3 by 0
+ffa07880: _STORE [P5 + 0xc] = R5
+ffa07882: _NOP
+ffa07884: ADD R2 += 0x14
+ffa07886: ADD R5 += 0x18
+ffa07888: ROT|| R2 = rot R3 by 0
+ffa0788c: _STORE [P5 + 0x14] = R2
+ffa0788e: _NOP
+ffa07890: ROT|| R5 = rot R3 by 0
+ffa07894: _STORE [P5 + 0x10] = R5
+ffa07896: _NOP
+--- far site -62 ---
+ffa077e8: ADD SP += -0x10
+ffa077ea: MOVE R5 = R1
+ffa077ec: MOVE R4 = R2
+ffa077ee: LOAD P3 = 0x44
+ffa077f2: LOAD R0 = [P4 + 0x4]
+ffa077f4: CALL 0xffa08cea
+ffa077f8: LOAD P5 = [P4 + 0x8]
+
+===== IMM_FAR_GRADE store@ffa078a0 kind=+0x18 fn=FUN_ffa077e0 =====
+dist 44=70 5bc=-1 578=-1 addIn30=true ffc0=false
+farImm: LOAD P3 = 0x44
+store: _STORE [P5 + 0x18] = R2
+ffa07878: _STORE [P5] = R2
+ffa0787a: _NOP
+ffa0787c: ROT|| R5 = rot R3 by 0
+ffa07880: _STORE [P5 + 0xc] = R5
+ffa07882: _NOP
+ffa07884: ADD R2 += 0x14
+ffa07886: ADD R5 += 0x18
+ffa07888: ROT|| R2 = rot R3 by 0
+ffa0788c: _STORE [P5 + 0x14] = R2
+ffa0788e: _NOP
+ffa07890: ROT|| R5 = rot R3 by 0
+ffa07894: _STORE [P5 + 0x10] = R5
+ffa07896: _NOP
+ffa07898: ADD R2 += 0x1c
+ffa0789a: ADD R5 += 0x24
+ffa0789c: ROT|| R2 = rot R3 by 0
+ffa078a0: _STORE [P5 + 0x18] = R2
+ffa078a2: _NOP
+ffa078a4: ROT|| R5 = rot R3 by 0
+ffa078a8: _STORE [P5 + 0x1c] = R5
+ffa078aa: _NOP
+--- far site -70 ---
+ffa077e8: ADD SP += -0x10
+ffa077ea: MOVE R5 = R1
+ffa077ec: MOVE R4 = R2
+ffa077ee: LOAD P3 = 0x44
+ffa077f2: LOAD R0 = [P4 + 0x4]
+ffa077f4: CALL 0xffa08cea
+ffa077f8: LOAD P5 = [P4 + 0x8]
+
+===== IMM_FAR_GRADE store@ffa078a8 kind=+0x1c fn=FUN_ffa077e0 =====
+dist 44=73 5bc=-1 578=-1 addIn30=true ffc0=false
+farImm: LOAD P3 = 0x44
+store: _STORE [P5 + 0x1c] = R5
+ffa07880: _STORE [P5 + 0xc] = R5
+ffa07882: _NOP
+ffa07884: ADD R2 += 0x14
+ffa07886: ADD R5 += 0x18
+ffa07888: ROT|| R2 = rot R3 by 0
+ffa0788c: _STORE [P5 + 0x14] = R2
+ffa0788e: _NOP
+ffa07890: ROT|| R5 = rot R3 by 0
+ffa07894: _STORE [P5 + 0x10] = R5
+ffa07896: _NOP
+ffa07898: ADD R2 += 0x1c
+ffa0789a: ADD R5 += 0x24
+ffa0789c: ROT|| R2 = rot R3 by 0
+ffa078a0: _STORE [P5 + 0x18] = R2
+ffa078a2: _NOP
+ffa078a4: ROT|| R5 = rot R3 by 0
+ffa078a8: _STORE [P5 + 0x1c] = R5
+ffa078aa: _NOP
+ffa078ac: ADD R2 += 0x28
+ffa078ae: ADD R5 += 0x2c
+ffa078b0: ROT|| R2 = rot R3 by 0
+--- far site -73 ---
+ffa077e8: ADD SP += -0x10
+ffa077ea: MOVE R5 = R1
+ffa077ec: MOVE R4 = R2
+ffa077ee: LOAD P3 = 0x44
+ffa077f2: LOAD R0 = [P4 + 0x4]
+ffa077f4: CALL 0xffa08cea
+ffa077f8: LOAD P5 = [P4 + 0x8]
+
+===== HIT LIST =====
+IMM_FAR_GRADE store@2020b5e2 +0x14 fn= near44=55 near5bc=-1 near578=-1
+IMM_FAR_GRADE store@2020b5e8 +0x18 fn= near44=58 near5bc=-1 near578=-1
+IMM_FAR_GRADE store@2020b5ec +0x1c fn= near44=60 near5bc=-1 near578=-1
+IMM_FAR_GRADE store@2020bc16 +0x18 fn= near44=83 near5bc=-1 near578=-1
+IMM_FAR_GRADE store@2020bc5e +0x1c fn= near44=114 near5bc=-1 near578=-1
+IMM_FAR_GRADE store@2020ed6c +0x18 fn= near44=37 near5bc=-1 near578=-1
+IMM_FAR_GRADE store@2020ed6e +0x1c fn= near44=38 near5bc=-1 near578=-1
+IMM_FAR_GRADE store@20211230 +0x18 fn=FUN_202111b8 near44=93 near5bc=-1 near578=-1
+IMM_FAR_GRADE store@20211248 +0x1c fn=FUN_202111b8 near44=101 near5bc=-1 near578=-1
+IMM_FAR_GRADE store@2021204c +0x14 fn=FUN_2021204c near44=100 near5bc=-1 near578=-1
+BEAM_NO_GRADE_IMM store@20220228 +0x14 fn=FUN_2021ffe4 near44=-1 near5bc=-1 near578=59
+BEAM_NO_GRADE_IMM store@2022023c +0x18 fn=FUN_2021ffe4 near44=-1 near5bc=-1 near578=67
+BEAM_NO_GRADE_IMM store@20221ab6 +0x1c fn= near44=-1 near5bc=-1 near578=87
+IMM_FAR_GRADE store@2022269c +0x18 fn= near44=69 near5bc=-1 near578=-1
+IMM_FAR_GRADE store@202226ca +0x1c fn= near44=86 near5bc=-1 near578=-1
+BEAM_NO_GRADE_IMM store@2022569c +0x1c fn= near44=-1 near5bc=-1 near578=71
+BEAM_NO_GRADE_IMM store@2022d26a +0x1c fn=FUN_2022d236 near44=-1 near5bc=-1 near578=10
+BEAM_NO_GRADE_IMM store@2022d2a8 +0x14 fn=FUN_2022d236 near44=-1 near5bc=-1 near578=33
+IMM_FAR_GRADE store@2022e9b0 +0x1c fn=FUN_2022e876 near44=83 near5bc=-1 near578=-1
+IMM_FAR_GRADE store@2022f00a +0x1c fn=FUN_2022e876 near44=39 near5bc=-1 near578=-1
+IMM_FAR_GRADE store@2022f03c +0x1c fn=FUN_2022e876 near44=56 near5bc=-1 near578=-1
+IMM_FAR_GRADE store@2022f0b6 +0x1c fn=FUN_2022e876 near44=100 near5bc=-1 near578=-1
+IMM_FAR_GRADE store@2022f612 +0x1c fn=FUN_2022e876 near44=34 near5bc=-1 near578=-1
+IMM_FAR_GRADE store@2022f8a6 +0x18 fn=FUN_2022e876 near44=108 near5bc=-1 near578=-1
+IMM_FAR_GRADE store@2022f8c2 +0x18 fn=FUN_2022e876 near44=118 near5bc=-1 near578=-1
+IMM_FAR_GRADE store@202b692c +0x1c fn=FUN_202b5066 near44=63 near5bc=-1 near578=-1
+IMM_FAR_GRADE store@202b6b94 +0x18 fn=FUN_202b5066 near44=120 near5bc=-1 near578=-1
+BEAM_NO_GRADE_IMM store@ffa047de +0x1c fn=FUN_ffa0467e near44=-1 near5bc=-1 near578=44
+BEAM_NO_GRADE_IMM store@ffa047f2 +0x1c fn=FUN_ffa0467e near44=-1 near5bc=-1 near578=51
+BEAM_NO_GRADE_IMM store@ffa04882 +0x14 fn=FUN_ffa04800 near44=-1 near5bc=-1 near578=111
+IMM_FAR_GRADE store@ffa0788c +0x14 fn=FUN_ffa077e0 near44=62 near5bc=-1 near578=-1
+IMM_FAR_GRADE store@ffa078a0 +0x18 fn=FUN_ffa077e0 near44=70 near5bc=-1 near578=-1
+IMM_FAR_GRADE store@ffa078a8 +0x1c fn=FUN_ffa077e0 near44=73 near5bc=-1 near578=-1
+
+SUMMARY soft14_18_1c_or_ffc0_ptr_STORES=282 IMM_NEAR_skipped=7
+IMM_FAR_GRADE=24 BEAM_NO_GRADE_IMM=9 (ffc0_subset_in_hits tracked)
+INTERPRET: IMM_FAR_GRADE = offset loaded far then installed as DMA/soft DEST — first-fill candidate.
+BEAM_NO_GRADE_IMM = beam base near dest install without 0x44/5BC in 120 — weaker; classify manually.
+If IMM_FAR_GRADE==0: register-indirect Grade DEST install CLOSED for this fingerprint.

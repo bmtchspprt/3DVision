@@ -1,0 +1,287 @@
+KILLER: LOAD [P+0x14] or [P+0x18] within 40 insn of STORE W, with 0x44/0x578/0x5BC near store
+Skip emit-only FFA04B if pure known. Classify.
+
+===== CAND softLoad@20211d1e storeW@20211d2e fn=FUN_20211c00 =====
+flags 44=true 578=true 5bc=false 5cfc=true
+soft: LOAD R0 = [P3 + 0x14]
+store: STORE W [P5 + 0x3c] = R4
+20211d12: LOAD P1.H = 0xffa0
+20211d16: CALL (P1)
+20211d18: LOAD P1 = [FP + -0x4]
+20211d1a: STORE [P4 + 0x534] = R0
+20211d1e: LOAD R0 = [P3 + 0x14]
+20211d20: LOAD R1 = [P3 + 0xc]
+20211d22: LOAD R2 = W [P1] (X)
+20211d24: CC = R2 <= 0x0
+20211d26: STORE [P5 + 0x44] = R0
+20211d2a: STORE [P5 + 0x48] = R1
+20211d2e: STORE W [P5 + 0x3c] = R4
+20211d32: IF CC JUMP 0x20211dfe
+20211d34: LOAD R6.H = 0x5cfc
+20211d38: LOAD R7 = 0x28f
+20211d3c: LOAD R0 = W [P5 + 0x3c] (X)
+20211d40: LOAD R1 = [FP + -0xc]
+20211d42: CALL 0x202b4a98
+20211d46: LOAD R1 = [P5 + 0x3c]
+20211d48: MULT|| R3 = R1.L * R6.H (is)
+20211d4c: LOAD R5 = [FP + -0x8]
+20211d4e: NOP
+20211d50: LOAD R2 = 0x578
+20211d54: CC = R0 == 0x0
+20211d56: ADD R5 = R5 + R2
+20211d58: IF !CC JUMP 0x20211e40
+
+===== CAND softLoad@20211e02 storeW@20211e5c fn=FUN_20211e00 =====
+flags 44=true 578=false 5bc=false 5cfc=false
+soft: LOAD R0 = [P3 + 0x18]
+store: STORE W [P5 + 0x58] = R3
+20211dfa: MOVE CC = an
+20211dfc: IF CC JUMP 0x20211d3c (bp)
+20211dfe: LOAD P1 = [FP + 0x18]
+20211e00: LOAD P0 = [FP + 0x18]
+20211e02: LOAD R0 = [P3 + 0x18]
+20211e04: LOAD P1 = [P1 + 0x14]
+20211e06: LOAD R1 = [P3 + 0xc]
+20211e08: LOAD R2 = [P1 + 0x8]
+20211e0a: SUB R2 = R2 - R0
+20211e0c: STORE [P3 + 0x8] = R2
+20211e0e: LOAD P1 = [P0 + 0x14]
+20211e10: CC = R1 < R2
+20211e12: LOAD R3 = [P1 + 0xc]
+20211e14: SUB R0 = R3 - R0
+20211e16: STORE [P3 + 0x10] = R0
+20211e18: IF !CC JUMP 0x20211e1c
+20211e1a: STORE [P3 + 0x8] = R1
+20211e1c: LOAD R0 = [P3 + 0x10]
+20211e1e: LOAD R1 = [P3 + 0x8]
+20211e20: CC = R1 < R0
+20211e22: IF !CC JUMP 0x20211e34
+20211e24: STORE [P3 + 0x10] = R1
+20211e26: LOAD R0 = B [P4 + 0x522] (Z)
+20211e2a: ADD SP += 0x10
+20211e2c: POP (R7:4,P5:3) = [SP++]
+
+===== CAND softLoad@20211e04 storeW@20211e5c fn=FUN_20211e00 =====
+flags 44=true 578=false 5bc=false 5cfc=false
+soft: LOAD P1 = [P1 + 0x14]
+store: STORE W [P5 + 0x58] = R3
+20211dfc: IF CC JUMP 0x20211d3c (bp)
+20211dfe: LOAD P1 = [FP + 0x18]
+20211e00: LOAD P0 = [FP + 0x18]
+20211e02: LOAD R0 = [P3 + 0x18]
+20211e04: LOAD P1 = [P1 + 0x14]
+20211e06: LOAD R1 = [P3 + 0xc]
+20211e08: LOAD R2 = [P1 + 0x8]
+20211e0a: SUB R2 = R2 - R0
+20211e0c: STORE [P3 + 0x8] = R2
+20211e0e: LOAD P1 = [P0 + 0x14]
+20211e10: CC = R1 < R2
+20211e12: LOAD R3 = [P1 + 0xc]
+20211e14: SUB R0 = R3 - R0
+20211e16: STORE [P3 + 0x10] = R0
+20211e18: IF !CC JUMP 0x20211e1c
+20211e1a: STORE [P3 + 0x8] = R1
+20211e1c: LOAD R0 = [P3 + 0x10]
+20211e1e: LOAD R1 = [P3 + 0x8]
+20211e20: CC = R1 < R0
+20211e22: IF !CC JUMP 0x20211e34
+20211e24: STORE [P3 + 0x10] = R1
+20211e26: LOAD R0 = B [P4 + 0x522] (Z)
+20211e2a: ADD SP += 0x10
+20211e2c: POP (R7:4,P5:3) = [SP++]
+20211e2e: UNLINK
+
+===== CAND softLoad@20211e0e storeW@20211e5c fn=FUN_20211e00 =====
+flags 44=true 578=false 5bc=false 5cfc=false
+soft: LOAD P1 = [P0 + 0x14]
+store: STORE W [P5 + 0x58] = R3
+20211e06: LOAD R1 = [P3 + 0xc]
+20211e08: LOAD R2 = [P1 + 0x8]
+20211e0a: SUB R2 = R2 - R0
+20211e0c: STORE [P3 + 0x8] = R2
+20211e0e: LOAD P1 = [P0 + 0x14]
+20211e10: CC = R1 < R2
+20211e12: LOAD R3 = [P1 + 0xc]
+20211e14: SUB R0 = R3 - R0
+20211e16: STORE [P3 + 0x10] = R0
+20211e18: IF !CC JUMP 0x20211e1c
+20211e1a: STORE [P3 + 0x8] = R1
+20211e1c: LOAD R0 = [P3 + 0x10]
+20211e1e: LOAD R1 = [P3 + 0x8]
+20211e20: CC = R1 < R0
+20211e22: IF !CC JUMP 0x20211e34
+20211e24: STORE [P3 + 0x10] = R1
+20211e26: LOAD R0 = B [P4 + 0x522] (Z)
+20211e2a: ADD SP += 0x10
+20211e2c: POP (R7:4,P5:3) = [SP++]
+20211e2e: UNLINK
+20211e32: RTS
+20211e34: LOAD R1 = [P3 + 0x14]
+20211e36: CC = R0 < R1
+20211e38: IF !CC JUMP 0x20211e26
+20211e3a: STORE [P3 + 0x10] = R1
+
+===== CAND softLoad@20211e34 storeW@20211e5c fn=FUN_20211e00 =====
+flags 44=true 578=false 5bc=false 5cfc=false
+soft: LOAD R1 = [P3 + 0x14]
+store: STORE W [P5 + 0x58] = R3
+20211e2a: ADD SP += 0x10
+20211e2c: POP (R7:4,P5:3) = [SP++]
+20211e2e: UNLINK
+20211e32: RTS
+20211e34: LOAD R1 = [P3 + 0x14]
+20211e36: CC = R0 < R1
+20211e38: IF !CC JUMP 0x20211e26
+20211e3a: STORE [P3 + 0x10] = R1
+20211e3c: JUMP.S 0x20211e26
+20211e3e: NOP
+20211e40: LOAD R2 = [P5 + 0x44]
+20211e44: ASHIFT R2 >>>= 0xf
+20211e46: ADD R2 += -0x1
+20211e48: ADD R0 = R5 + R3
+20211e4a: MAX R2 = max(R2,R4)
+20211e4e: LOAD R3 = 0x147a
+20211e52: LOAD R1 = 0x44
+20211e56: MIN R3 = min(R2,R3)
+20211e5a: ADD R0 = R0 + R1
+20211e5c: STORE W [P5 + 0x58] = R3
+20211e60: LSH R2 = R3 << 0x1
+20211e64: LOAD R1 = 0x0
+20211e66: LOAD P1.L = 0x5f2e
+20211e6a: LOAD P1.H = 0xffa0
+20211e6e: CALL (P1)
+
+===== CAND softLoad@20221fae storeW@20222000 fn= =====
+flags 44=true 578=false 5bc=false 5cfc=false
+soft: LOAD R1 = [P5 + 0x14]
+store: _STORE W [P5 + 0x4] = R0
+20221fa2: LOAD R0 = W [P5 + 0x2] (X)
+20221fa4: LOAD P1.L = 0x1688
+20221fa8: LOAD P1.H = 0xffa0
+20221fac: CALL (P1)
+20221fae: LOAD R1 = [P5 + 0x14]
+20221fb0: LOAD P1.L = 0x18f0
+20221fb4: LOAD P1.H = 0xffa0
+20221fb8: CALL (P1)
+20221fba: LOAD R1 = [P5 + 0x24]
+20221fbc: LOAD P1.L = 0x1714
+20221fc0: LOAD P1.H = 0xffa0
+20221fc4: CALL (P1)
+20221fc6: ROT|| R7 = rot R0 by 0
+20221fca: _LOAD P1 = [FP + -0xc]
+20221fcc: _NOP
+20221fce: ROT|| R4 = rot R0 by 0
+20221fd2: _STORE [P5 + 0x1c] = R0
+20221fd4: _NOP
+20221fd6: LOAD R2 = B [P1] (Z)
+20221fd8: CC = R2 == 0x2
+20221fda: IF CC JUMP 0x20221fe0 (bp)
+20221fdc: JUMP.S 0x202225f2
+20221fde: NOP
+20221fe0: SUB|| R0.L = R0.L - R0.L (ns)
+20221fe4: _LOAD P1 = [FP + -0xc]
+
+===== CAND softLoad@2022d794 storeW@2022d7c6 fn=FUN_2022d6dc =====
+flags 44=true 578=false 5bc=false 5cfc=false
+soft: _LOAD R2 = [P1 + 0x14]
+store: STORE W [P3 + 0x1c] = R1
+2022d788: ADD R0 = R1 + R0
+2022d78a: LOAD R1 = 0x44
+2022d78e: ADD R1 = R0 + R1
+2022d790: ASH|| R0 = R6 >>> 0xf
+2022d794: _LOAD R2 = [P1 + 0x14]
+2022d796: _NOP
+2022d798: STORE [FP + -0x1c] = R1
+2022d79a: SUB R1 = R0 - R3
+2022d79c: ASHIFT R2 >>>= 0xf
+2022d79e: MAX|| R2 = max(R1,R2)
+2022d7a2: _STORE [P3 + 0x18] = R7
+2022d7a4: _NOP
+2022d7a6: SUB R7 = R7 - R2
+2022d7a8: ADD R7 += 0x1
+2022d7aa: LOAD R1 = 0x1100
+2022d7ae: MIN|| R1 = min(R7,R1)
+2022d7b2: _STORE [P3 + 0xc] = R0
+2022d7b4: _NOP
+2022d7b6: LOAD R0 = W [SP + 0x46] (Z)
+2022d7ba: LSH|| R1.H = R0.L << 0x0
+2022d7be: LOAD R3 = [FP + -0x3c]
+2022d7c0: NOP
+2022d7c2: MAC|| A1 = R4.L * R3.L (fu)
+2022d7c6: STORE W [P3 + 0x1c] = R1
+2022d7c8: NOP
+
+===== CAND softLoad@2022d808 storeW@2022d84c fn=FUN_2022d800 =====
+flags 44=false 578=true 5bc=false 5cfc=false
+soft: _LOAD R3 = [P3 + 0x14]
+store: STORE W [P3 + 0x0] = R2
+2022d7fe: STORE [P3 + 0x20] = R0
+2022d800: STORE W [P3] = R7.L
+2022d802: IF CC JUMP 0x2022d84e
+2022d804: LSH|| R1 = R0 << 0x1e
+2022d808: _LOAD R3 = [P3 + 0x14]
+2022d80a: _NOP
+2022d80c: MOVE CC = az
+2022d80e: MOVE P2 = R0
+2022d810: MOVE P0 = R2
+2022d812: IF CC JUMP 0x2022d816 (bp)
+2022d814: JUMP.S 0x2022e0fa
+2022d816: CC = R2 == 0x1
+2022d818: IF !CC JUMP 0x2022d81c (bp)
+2022d81a: JUMP.S 0x2022e0f2
+2022d81c: ASH R0 = R2 >>> 0x1
+2022d820: MOVE P1 = R0
+2022d822: MOVE P0 = P2
+2022d824: PACK R3 = pack(R3.L,R3.L)
+2022d828: LOAD R0 = [P2++]
+2022d82a: ADD P1 += -0x1
+2022d82c: CC = P1 == 0x0
+2022d82e: IF CC JUMP 0x2022d83e
+2022d830: LSETUP (0x2022d834,0x2022d83c) LC0 = P1
+2022d834: ADD|| R1 = R3 +|+ R0
+2022d838: _LOAD R0 = [P2++]
+
+===== EMIT softLoad@ffa04eea storeW@ffa04ed2 fn=FUN_ffa04800 =====
+flags 44=false 578=true 5bc=false 5cfc=true
+soft: LOAD R6 = [P2 + 0x18]
+store: STORE W [P2] = R0.L
+ffa04ee2: ADD P1 = P4 + (P1 << 2)
+ffa04ee4: STORE [P1] = R6
+ffa04ee6: JUMP.S 0xffa04930
+ffa04ee8: LOAD P1 = [P2 + 0x4]
+ffa04eea: LOAD R6 = [P2 + 0x18]
+ffa04eec: MOVE R1 = R6
+ffa04eee: ADD P0 = P4 + (P1 << 2)
+ffa04ef0: LOAD R0 = [P0]
+ffa04ef2: CALL 0xffa0165c
+ffa04ef6: IF CC JUMP 0xffa04efa (bp)
+ffa04ef8: JUMP.S 0xffa04930
+ffa04efa: STORE [P0] = R6
+ffa04efc: JUMP.S 0xffa04930
+ffa04efe: LOAD R0 = [FP + 0x28]
+ffa04f00: LOAD R1 = 0x7
+ffa04f02: CC = R0 == R1
+ffa04f04: IF CC JUMP 0xffa04f08 (bp)
+ffa04f06: JUMP.S 0xffa04930
+ffa04f08: LOAD P1 = [FP + -0x5c]
+ffa04f0a: LOAD P3 = [FP + -0x5c]
+ffa04f0c: LOAD R2 = 0xff
+ffa04f10: LSH R6 = R2 << 0x17
+ffa04f14: LOAD P1 = [P1 + 0x4]
+ffa04f16: LOAD R1 = [P3 + 0xc]
+ffa04f18: LOAD R0 = [P3 + 0x14]
+
+===== HIT LIST =====
+CAND soft@20211d1e store@20211d2e fn=FUN_20211c00 44=true 578=true 5bc=false 5cfc=true
+CAND soft@20211e02 store@20211e5c fn=FUN_20211e00 44=true 578=false 5bc=false 5cfc=false
+CAND soft@20211e04 store@20211e5c fn=FUN_20211e00 44=true 578=false 5bc=false 5cfc=false
+CAND soft@20211e0e store@20211e5c fn=FUN_20211e00 44=true 578=false 5bc=false 5cfc=false
+CAND soft@20211e34 store@20211e5c fn=FUN_20211e00 44=true 578=false 5bc=false 5cfc=false
+CAND soft@20221fae store@20222000 fn= 44=true 578=false 5bc=false 5cfc=false
+CAND soft@2022d794 store@2022d7c6 fn=FUN_2022d6dc 44=true 578=false 5bc=false 5cfc=false
+CAND soft@2022d808 store@2022d84c fn=FUN_2022d800 44=false 578=true 5bc=false 5cfc=false
+EMIT soft@ffa04eea store@ffa04ed2 fn=FUN_ffa04800 44=false 578=true 5bc=false 5cfc=true
+
+SUMMARY soft14_18_loads=338 hits_near_STOREW_beamish=9
+INTERPRET: CAND not EMIT/SOFT_SM/MDMA = possible DMA→Grade CPU hop.
+If only known clusters or 0 → soft→Grade hop CLOSED.

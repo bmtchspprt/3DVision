@@ -1,0 +1,80 @@
+===== Scan for EVT-like tables pointing at FFA0BFxx / FFA100xx / FFA07xxx =====
+
+region ffe00000..ffe08000
+  hits=0
+
+region ff800000..ff804000
+  @ff802068 -> ffa11000
+  @ff8037a0 -> ffa07bde
+  @ff8037a4 -> ffa07bde
+  @ff8037a8 -> ffa07bde
+  @ff803bdc -> ffa103f4
+  @ff803be0 -> ffa103fe
+  @ff803be4 -> ffa1040a
+  @ff803be8 -> ffa1042c
+  @ff803bec -> ffa10430
+  @ff803bf0 -> ffa10434
+  @ff803bf4 -> ffa10318
+  @ff803bf8 -> ffa106c2
+  @ff803bfc -> ffa106f8
+  @ff803c00 -> ffa1070a
+  @ff803c04 -> ffa10730
+  @ff803c08 -> ffa10756
+  @ff803c0c -> ffa106c4
+  @ff803c10 -> ffa10838
+  @ff803c14 -> ffa10840
+  @ff803c18 -> ffa10842
+  @ff803c1c -> ffa108cc
+  @ff803c20 -> ffa108ce
+  @ff803c24 -> ffa108d0
+  @ff803c28 -> ffa108d2
+  @ff803c2c -> ffa108d4
+  @ff803c30 -> ffa108d6
+  @ff803c34 -> ffa10942
+  @ff803c38 -> ffa108d6
+  @ff803c3c -> ffa10942
+  @ff803c40 -> ffa1099e
+  @ff803c44 -> ffa109cc
+  @ff803c48 -> ffa109ce
+  @ff803c4c -> ffa109d0
+  @ff803c50 -> ffa109d2
+  @ff803c54 -> ffa109d4
+  @ff803c58 -> ffa109d6
+  @ff803c5c -> ffa109d8
+  @ff803c60 -> ffa109da
+  @ff803c64 -> ffa109dc
+  @ff803c68 -> ffa109de
+  @ff803c6c -> ffa109e0
+  hits=41
+
+region ffa00000..ffa01000
+  @ffa0006c -> ffa0e148
+  @ffa00118 -> ffa0e14c
+  hits=2
+
+region 20200000..20210000
+  @20200fb8 -> ffa0e122
+  @20205628 -> ffa0e148
+  hits=2
+%n===== CALL (P1) to FFA0BFxx band =====
+20205832: CALL (P1) => ffa0bf14
+20205848: CALL (P1) => ffa0bf00
+2020770a: CALL (P1) => ffa0bf00
+202078f6: CALL (P1) => ffa0bf14
+2020afba: CALL (P1) => ffa0bf28
+%n===== FFA0BF00 full =====
+ffa0bf00: LINK 0x10
+ffa0bf04: LOAD P1 = 0x1
+ffa0bf06: STORE [SP + 0xc] = P1
+ffa0bf08: CALL 0xffa100d4
+ffa0bf0c: LOAD P0 = [FP + 0x4]
+ffa0bf0e: UNLINK
+ffa0bf12: JUMP (P0)
+ffa0bf14: LINK 0x10
+ffa0bf18: LOAD P1 = 0x2
+ffa0bf1a: STORE [SP + 0xc] = P1
+ffa0bf1c: CALL 0xffa100d4
+ffa0bf20: LOAD P0 = [FP + 0x4]
+ffa0bf22: UNLINK
+ffa0bf26: JUMP (P0)
+%n===== Functions in FFA0BD00..FFA0BF00 =====

@@ -1,0 +1,123 @@
+===== needle 0xf140 =====
+--- @2021fd10 LOAD P5.L = 0xf140
+  2021fcf4: CC = !BITTST (R1,0x1f)
+  2021fcf6: MOVE R0 = CC
+  2021fcf8: CC = R1 <= R7
+  2021fcfa: IF !CC R0 = R4
+  2021fcfc: CC = R1 == 0x0
+  2021fcfe: IF CC R0 = R1
+  2021fd00: CC = BITTST (R0,0x0)
+  2021fd02: IF CC R6 = R1
+  2021fd04: MOVE R0 = R6
+  2021fd06: LOAD R0 = 0x46ff
+  2021fd0a: LOAD R1 = 0x0
+  2021fd0c: LOAD R2 = -0x200
+  2021fd10: LOAD P5.L = 0xf140
+  2021fd14: LOAD P5.H = 0x2021
+  2021fd18: PACK|| R5 = pack(R5.H,R1.L)
+  2021fd1c: _STORE [P4 + 0x4] = R6
+  2021fd1e: _NOP
+  2021fd20: STORE W [FP + 0xa] = R0
+  2021fd22: STORE W [FP + 0x8] = R2
+  2021fd24: MOVE I1 = P5
+  2021fd26: LOAD R5.H = 0x4380
+  2021fd2a: LSETUP (0x2021fd2e,0x2021fd74) LC1 = P0
+  2021fd2e: ROT|| R1 = rot R5 by 0
+  2021fd32: _LOAD R0 = [I0++]
+  2021fd34: _NOP
+  2021fd36: LOAD P1.L = 0x18f0
+  2021fd3a: LOAD P1.H = 0xffa0
+  2021fd3e: CALL (P1)
+  2021fd40: MOVE R1 = R6
+  2021fd42: LOAD P1.L = 0x1814
+  2021fd46: LOAD P1.H = 0xffa0
+  2021fd4a: CALL (P1)
+  2021fd4c: STORE [FP + 0xc] = R0
+  2021fd4e: BITCLR (R0,0x1f)
+  2021fd50: CC = R7 < R0
+
+hits=1
+
+===== needle 0xea00 =====
+--- @2021fc94 LOAD P4.L = 0xea00
+  2021fc7a: SUB R0 = R0 - R2
+  2021fc7c: STORE [P5 + 0x4] = R0
+  2021fc7e: JUMP.S 0x2021f9ce
+  2021fc80: LOAD R0 = 0x0
+  2021fc82: STORE [P5 + 0x4] = R0
+  2021fc84: JUMP.S 0x2021f9ce
+  2021fc86: MOVE I0 = R2
+  2021fc88: LINK 0x20
+  2021fc8c: PUSH [--SP] = (R7:4,P5:3)
+  2021fc8e: ADD SP += -0xc
+  2021fc90: STORE [SP + 0x28] = R1
+  2021fc92: LOAD R4 = 0x0
+  2021fc94: LOAD P4.L = 0xea00
+  2021fc98: LOAD P4.H = 0x2021
+  2021fc9c: LOAD R7 = 0xff
+  2021fca0: LOAD R1 = 0x2f9
+  2021fca4: LOAD P0 = 0x9
+  2021fca6: LSH|| R0.L = R1.L << 0x0
+  2021fcaa: STORE W [P4] = R4.L
+  2021fcac: NOP
+  2021fcae: MOVE P1 = I0
+  2021fcb0: LSHIFT R7 <<= 0x17
+  2021fcb2: LOAD R0.H = 0x5015
+  2021fcb6: LOAD P3 = [FP + 0x14]
+  2021fcb8: LSETUP (0x2021fcbc,0x2021fd04) LC0 = P0
+  2021fcbc: ROT|| R6 = rot R0 by 0
+  2021fcc0: _LOAD R2 = [P1++]
+  2021fcc2: _NOP
+  2021fcc4: MOVE R1 = R2
+  2021fcc6: AND R5 = R6 & R1
+  2021fcc8: LSHIFT R5 >>= 0x1f
+  2021fcca: BITCLR (R0,0x1f)
+  2021fccc: STORE [FP + 0x8] = R5
+  2021fcce: CC = R7 < R0
+  2021fcd0: BITCLR (R2,0x1f)
+
+hits=1
+
+===== needle 0x2021f140 =====
+hits=0
+
+===== needle 0x5015 =====
+--- @2021fcb2 LOAD R0.H = 0x5015
+  2021fc90: STORE [SP + 0x28] = R1
+  2021fc92: LOAD R4 = 0x0
+  2021fc94: LOAD P4.L = 0xea00
+  2021fc98: LOAD P4.H = 0x2021
+  2021fc9c: LOAD R7 = 0xff
+  2021fca0: LOAD R1 = 0x2f9
+  2021fca4: LOAD P0 = 0x9
+  2021fca6: LSH|| R0.L = R1.L << 0x0
+  2021fcaa: STORE W [P4] = R4.L
+  2021fcac: NOP
+  2021fcae: MOVE P1 = I0
+  2021fcb0: LSHIFT R7 <<= 0x17
+  2021fcb2: LOAD R0.H = 0x5015
+  2021fcb6: LOAD P3 = [FP + 0x14]
+  2021fcb8: LSETUP (0x2021fcbc,0x2021fd04) LC0 = P0
+  2021fcbc: ROT|| R6 = rot R0 by 0
+  2021fcc0: _LOAD R2 = [P1++]
+  2021fcc2: _NOP
+  2021fcc4: MOVE R1 = R2
+  2021fcc6: AND R5 = R6 & R1
+  2021fcc8: LSHIFT R5 >>= 0x1f
+  2021fcca: BITCLR (R0,0x1f)
+  2021fccc: STORE [FP + 0x8] = R5
+  2021fcce: CC = R7 < R0
+  2021fcd0: BITCLR (R2,0x1f)
+  2021fcd2: MOVE R5 = CC
+  2021fcd4: CC = R7 < R2
+  2021fcd6: LOAD R3 = 0x1
+  2021fcd8: IF !CC R3 = R5
+  2021fcda: CC = R1 < R6
+  2021fcdc: OR R0 = R0 | R2
+  2021fcde: MOVE R2 = CC
+  2021fce0: LOAD R5 = [FP + 0x8]
+  2021fce2: CC = R6 == R1
+  2021fce4: XOR R5 = R5 ^ R2
+
+hits=1
+

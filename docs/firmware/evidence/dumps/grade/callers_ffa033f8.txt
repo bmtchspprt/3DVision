@@ -1,0 +1,80 @@
+2022d32a: LOAD P1.L = 0x33f8
+  2022d30e: _LOAD R0 = [FP + -0xc]
+  2022d310: _STORE W [I0++] = R2.H
+  2022d312: LOAD R2 = [P1 + 0x4]
+  2022d314: MNOP||
+  2022d318: _LOAD R4 = [FP + 0x10]
+  2022d31a: _STORE W [I0++] = R2.H
+  2022d31c: LOAD R2 = [P1 + 0x8]
+  2022d31e: STORE W [I0++] = R2.H
+  2022d320: LOAD R2 = [P1 + 0xc]
+  2022d322: STORE W [I0++] = R2.H
+  2022d324: LOAD R2 = [P1 + 0x10]
+  2022d326: STORE W [I0] = R2.H
+  2022d328: LOAD R1 = 0x5
+  2022d32a: LOAD P1.L = 0x33f8
+  2022d32e: LOAD P1.H = 0xffa0
+  2022d332: CALL (P1)
+  2022d334: MOVE P1 = R0
+  2022d336: LOAD R3 = 0x6040
+  2022d33a: ADD|| R3 = R4 + R3 (ns)
+  2022d33e: _LOAD R2 = W [P5] (X)
+  2022d340: _NOP
+  2022d342: LOAD R1 = [SP + 0x28]
+  2022d344: MULT|| R0 = R2.L * R1.L (is)
+  2022d348: STORE [P5 + 0x30] = R0
+
+2022d7ee: LOAD P1.L = 0x33f8
+  2022d7d0: NOP
+  2022d7d2: MAC|| A1 += R1.H * R4.L (m)
+  2022d7d6: LOAD R7 = [FP + -0x1c]
+  2022d7d8: NOP
+  2022d7da: ASH A1 = A1 >>> 0xf
+  2022d7de: MOVE R3 = R1.L (X)
+  2022d7e0: MOVE R1 = A1.W
+  2022d7e2: LSHIFT R2 <<= 0x1
+  2022d7e4: ROT|| R1 = rot R3 by 0
+  2022d7e8: _STORE W [P3 + 0x8] = R1
+  2022d7ea: _NOP
+  2022d7ec: ADD R0 = R7 + R2
+  2022d7ee: LOAD P1.L = 0x33f8
+  2022d7f2: LOAD P1.H = 0xffa0
+  2022d7f6: CALL (P1)
+  2022d7f8: LOAD R2 = W [P3 + 0x1c] (X)
+  2022d7fa: LOAD R7 = 0x0
+  2022d7fc: CC = R2 <= 0x0
+  2022d7fe: STORE [P3 + 0x20] = R0
+  2022d800: STORE W [P3] = R7.L
+  2022d802: IF CC JUMP 0x2022d84e
+  2022d804: LSH|| R1 = R0 << 0x1e
+  2022d808: _LOAD R3 = [P3 + 0x14]
+  2022d80a: _NOP
+  2022d80c: MOVE CC = az
+
+20231e3e: LOAD P1.L = 0x33f8
+  20231e20: ADD P4 = P4 + P2
+  20231e22: STORE W [P4] = R0.L
+  20231e24: ADD R3 += 0x1
+  20231e26: LOAD R0 = W [P1] (X)
+  20231e28: SUB R0.L = R3.L - R0.L (s)
+  20231e2c: MOVE CC = an
+  20231e2e: ADD P2 += 0x2
+  20231e30: IF !CC JUMP 0x20231e34
+  20231e32: JUMP.S 0x20231e06
+  20231e34: STORE W [P3 + -0xac] = R3
+  20231e38: LOAD P0 = [FP + -0x40]
+  20231e3a: LOAD R0 = [P3 + 0x24]
+  20231e3c: LOAD R1 = W [P0] (X)
+  20231e3e: LOAD P1.L = 0x33f8
+  20231e42: LOAD P1.H = 0xffa0
+  20231e46: CALL (P1)
+  20231e48: LOAD P1 = [FP + -0x40]
+  20231e4a: STORE [P3 + 0x3c] = R0
+  20231e4c: STORE W [P3 + -0xac] = R4
+  20231e50: LOAD R1 = W [P1] (X)
+  20231e52: CC = R1 <= 0x0
+  20231e54: IF CC JUMP 0x20231eee
+  20231e56: LOAD R1 = 0x0
+  20231e58: LOAD P5 = -0x1
+  20231e5a: MOVE P1 = R1
+

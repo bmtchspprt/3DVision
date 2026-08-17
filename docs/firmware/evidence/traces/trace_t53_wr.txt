@@ -1,0 +1,15 @@
+Connected to the simulator.
+Loading section .text, size 0x4 lma 20200000
+Start address ffa00000
+Transfer rate: 32 bits in <1 sec.
+Temporary breakpoint 1 at 0xffa00000
+
+Temporary breakpoint 1, 0xffa00000 in ?? ()
+
+=== readback ===
+0x202484ec:	0xdeadbeef
+0x202884ec:	0xcafebabe
+0x202084ec:	0x12345678
+
+=== done ===
+GDB-EXIT:0

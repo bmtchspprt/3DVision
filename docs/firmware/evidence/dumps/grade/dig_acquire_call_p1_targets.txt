@@ -1,0 +1,59 @@
+Resolve CALL (P1) absolute targets in acquire 0x20220636..0x20221100
+and pulse/pre window 0x2020EC00..0x20220636
+
+===== Range 2020ec00..20220636 =====
+
+===== Range 20220636..20221180 =====
+2022068a: CALL 0x202b5024
+20220748: CALL 0x2020f47c
+202207b2: CALL (P1) -> ffa00fb4
+2022093e: CALL (P1) -> ffa00fb4
+202209bc: CALL 0x202b5024
+20220a12: CALL 0x202b5024
+20220a5c: CALL 0x20210be6
+20220a70: CALL (P1) -> ffa05c38
+20220a84: CALL (P1) -> ffa05c38
+20220b2e: CALL 0x2020f330
+20220ba4: CALL 0x2021f97a
+20220bfa: CALL (P1) -> ffa016d4
+20220c1e: CALL (P1) -> ffa01814
+20220c4c: CALL (P1) -> ffa01814
+20220cee: CALL (P1) -> ffa043c4
+20220d0a: CALL (P1) -> ffa01716
+20220d24: CALL (P1) -> ffa01688
+20220d36: CALL (P1) -> ffa01814
+20220d42: CALL (P1) -> ffa0248c
+20220d74: CALL (P1) -> ffa018f0
+20220d84: CALL (P1) -> ffa01716
+20220d9c: CALL (P1) -> ffa01716
+20220db2: CALL (P1) -> ffa01814
+20220e10: CALL (P1) -> ffa018f0
+20220e20: CALL (P1) -> ffa01716
+20220ede: CALL (P1) -> ffa06008
+20220ef0: CALL 0x202b5066
+20220f9a: CALL 0x202122fa
+20220fc2: CALL 0x202b5024
+20220ff8: CALL 0x202b5024
+20221050: CALL 0x2022e118
+202210c2: CALL 0x202b5024
+20221132: CALL (P1) -> ffa06008
+%n===== Unique targets summary =====
+2020f330  n=1  ?  callers=[539101998]
+2020f47c  n=1  ?  callers=[539101000]
+20210be6  n=1  ?  callers=[539101788]
+202122fa  n=1  pre-emit-scratch  callers=[539103130]
+2021f97a  n=1  ?  callers=[539102116]
+2022e118  n=1  emit-wrap  callers=[539103312]
+202b5024  n=6  bm4  callers=[539100810, 539101628, 539101714, 539103170, 539103224, 539103426]
+202b5066  n=1  bm4  callers=[539102960]
+ffa00fb4  n=2  divq  callers=[539101106, 539101502]
+ffa01688  n=1  soft-float  callers=[539102500]
+ffa016d4  n=1  soft-float  callers=[539102202]
+ffa01716  n=4  soft-float  callers=[539102474, 539102596, 539102620, 539102752]
+ffa01814  n=4  soft-float  callers=[539102238, 539102284, 539102518, 539102642]
+ffa018f0  n=2  soft-float  callers=[539102580, 539102736]
+ffa0248c  n=1  soft-float  callers=[539102530]
+ffa043c4  n=1  beam-mix  callers=[539102446]
+ffa05c38  n=2  ?  callers=[539101808, 539101828]
+ffa06008  n=2  wait  callers=[539102942, 539103538]
+%n===== Probe interesting SDRAM targets for Grade STORE =====

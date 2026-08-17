@@ -1,0 +1,43 @@
+2022ea9c: CC = R0 == 0x2
+2022ea9e: IF !CC JUMP 0x2022eaa2 (bp)
+2022eaa0: JUMP.S 0x2022f39c
+2022eaa2: CC = R0 == 0x3
+2022eaa4: IF !CC JUMP 0x2022eaa8 (bp)
+2022eaa6: JUMP.S 0x2022f1e8
+2022eaa8: LOAD R0 = [P3 + 0x58]
+2022eaac: STORE [P5 + 0x4c] = R0
+2022eab0: LOAD R0 = [P5 + 0x28]
+2022eab2: LOAD R1 = [P3 + 0x14]
+2022eab4: SUB R0 = R0 - R1
+2022eab6: LOAD P1.L = 0x2894
+2022eaba: LOAD P1.H = 0xffa0
+2022eabe: CALL (P1)
+2022eac0: STORE [P5 + 0x60] = R0
+2022eac4: LOAD R0 = [P5 + 0x4c]
+2022eac8: CC = R0 < 0x0
+2022eaca: IF !CC JUMP 0x2022eaea (bp)
+2022eacc: LOAD P1.L = 0x2894
+2022ead0: LOAD P1.H = 0xffa0
+2022ead4: CALL (P1)
+2022ead6: MOVE R1 = R0
+2022ead8: LOAD R0 = [P5 + 0x60]
+2022eadc: LOAD P1.L = 0x1714
+2022eae0: LOAD P1.H = 0xffa0
+2022eae4: CALL (P1)
+2022eae6: STORE [P5 + 0x60] = R0
+2022eaea: LOAD R0 = [P5 + 0x4c]
+2022eaee: LOAD R1 = [P5 + 0x64]
+2022eaf2: MAX R0 = max(R0,R1)
+2022eaf6: LOAD P1.L = 0x2894
+2022eafa: LOAD P1.H = 0xffa0
+2022eafe: CALL (P1)
+2022eb00: MOVE R1 = R0
+2022eb02: LOAD R0 = [P5 + 0x60]
+2022eb06: LOAD P1.L = 0x1814
+2022eb0a: LOAD P1.H = 0xffa0
+2022eb0e: CALL (P1)
+2022eb10: LOAD R6 = [P5 + 0x54]
+2022eb14: MOVE R1 = R6
+2022eb16: MOVE R7 = R0
+2022eb18: STORE [P5 + 0x60] = R0
+2022eb1c: LOAD P1.L = 0x165c

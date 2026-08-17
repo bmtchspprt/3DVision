@@ -1,0 +1,46 @@
+ffa056c0: MOVE R0 = R6
+ffa056c2: MOVE R1 = R5
+ffa056c4: CALL 0xffa018f0
+ffa056c8: MOVE R1 = R0
+ffa056ca: MOVE R0 = R4
+ffa056cc: CALL 0xffa01714
+ffa056d0: MOVE R1 = R0
+ffa056d2: STORE [P3 + 0x4] = R0
+ffa056d4: CALL 0xffa018f0
+ffa056d8: MOVE R1 = R7
+ffa056da: CALL 0xffa01716
+ffa056de: STORE [P3] = R0
+ffa056e0: CALL 0xffa0248c
+ffa056e4: LOAD P1 = [FP + 0x18]
+ffa056e6: STORE [P3] = R0
+ffa056e8: LOAD R2 = [P1 + 0x5c]
+ffa056ec: LSH R0 = R2 << 0x1
+ffa056f0: CALL 0xffa02894
+ffa056f4: LOAD R1 = 0xfdb
+ffa056f8: LOAD R1.H = 0x40c9
+ffa056fc: CALL 0xffa018f0
+ffa05700: CALL 0xffa020d4
+ffa05704: LOAD R1 = 0x0
+ffa05706: BITSET (R1,0x1e)
+ffa05708: MOVE R6 = R0
+ffa0570a: CALL 0xffa018f0
+ffa0570e: LOAD R7 = [P3]
+ffa05710: MOVE R1 = R0
+ffa05712: MOVE R0 = R7
+ffa05714: CALL 0xffa0165c
+ffa05718: STORE [P3 + 0x8] = R6
+ffa0571a: IF !CC JUMP 0xffa0573e
+ffa0571c: MOVE R1 = R6
+ffa0571e: MOVE R0 = R7
+ffa05720: CALL 0xffa01814
+ffa05724: MOVE R1 = R0
+ffa05726: CALL 0xffa018f0
+ffa0572a: STORE [P3 + 0x4] = R0
+ffa0572c: LOAD R1 = 0x0
+ffa0572e: LOAD R1.H = 0x4100
+ffa05732: CALL 0xffa01814
+ffa05736: MOVE R1 = R7
+ffa05738: CALL 0xffa018f0
+ffa0573c: JUMP.S 0xffa05746
+ffa0573e: MOVE R1 = R6
+ffa05740: MOVE R0 = R7

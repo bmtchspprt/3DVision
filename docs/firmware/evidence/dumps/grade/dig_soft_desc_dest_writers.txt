@@ -1,0 +1,323 @@
+WHO STORES into soft-desc band FF8046A0..FF8047FF (runtime DEST install)
+Also flag nearby 0x44/0x5BC/0x578/0x5CFC in +/-80 insn
+
+===== store@2020769e softL~0x478c fn= knownSM=false gradeNear=true =====
+store: STORE [P4 + 0x20] = R5
+  20207676: STORE [SP + 0x44] = R0
+20207684: LOAD P0.H = 0xff80
+20207688: LOAD P4.L = 0x46a0
+2020768c: LOAD P4.H = 0xff80
+20207690: LOAD P2.L = 0x478c
+20207694: LOAD P2.H = 0xff80
+20207698: LOAD R1 = 0x2
+2020769a: LOAD R2 = 0x2
+2020769c: LOAD R0 = 0x0
+2020769e: STORE [P4 + 0x20] = R5
+202076a0: STORE B [P1] = R1
+202076a2: STORE [P4 + 0x54] = R2
+202076a6: STORE [SP + 0x48] = P0
+202076aa: STORE [FP + 0x10] = P0
+
+===== store@202076a0 softL~0x478c fn= knownSM=false gradeNear=true =====
+store: STORE B [P1] = R1
+  20207676: STORE [SP + 0x44] = R0
+20207688: LOAD P4.L = 0x46a0
+2020768c: LOAD P4.H = 0xff80
+20207690: LOAD P2.L = 0x478c
+20207694: LOAD P2.H = 0xff80
+20207698: LOAD R1 = 0x2
+2020769a: LOAD R2 = 0x2
+2020769c: LOAD R0 = 0x0
+2020769e: STORE [P4 + 0x20] = R5
+202076a0: STORE B [P1] = R1
+202076a2: STORE [P4 + 0x54] = R2
+202076a6: STORE [SP + 0x48] = P0
+202076aa: STORE [FP + 0x10] = P0
+202076ac: STORE [SP + 0x50] = P2
+
+===== store@202076a2 softL~0x478c fn= knownSM=false gradeNear=true =====
+store: STORE [P4 + 0x54] = R2
+  20207676: STORE [SP + 0x44] = R0
+2020768c: LOAD P4.H = 0xff80
+20207690: LOAD P2.L = 0x478c
+20207694: LOAD P2.H = 0xff80
+20207698: LOAD R1 = 0x2
+2020769a: LOAD R2 = 0x2
+2020769c: LOAD R0 = 0x0
+2020769e: STORE [P4 + 0x20] = R5
+202076a0: STORE B [P1] = R1
+202076a2: STORE [P4 + 0x54] = R2
+202076a6: STORE [SP + 0x48] = P0
+202076aa: STORE [FP + 0x10] = P0
+202076ac: STORE [SP + 0x50] = P2
+202076b0: STORE [SP + 0x4c] = R0
+
+===== store@202076a6 softL~0x478c fn= knownSM=false gradeNear=true =====
+store: STORE [SP + 0x48] = P0
+  20207676: STORE [SP + 0x44] = R0
+20207690: LOAD P2.L = 0x478c
+20207694: LOAD P2.H = 0xff80
+20207698: LOAD R1 = 0x2
+2020769a: LOAD R2 = 0x2
+2020769c: LOAD R0 = 0x0
+2020769e: STORE [P4 + 0x20] = R5
+202076a0: STORE B [P1] = R1
+202076a2: STORE [P4 + 0x54] = R2
+202076a6: STORE [SP + 0x48] = P0
+202076aa: STORE [FP + 0x10] = P0
+202076ac: STORE [SP + 0x50] = P2
+202076b0: STORE [SP + 0x4c] = R0
+202076b4: ADD R7 += 0x1c
+
+===== store@202076aa softL~0x478c fn= knownSM=false gradeNear=true =====
+store: STORE [FP + 0x10] = P0
+  20207676: STORE [SP + 0x44] = R0
+20207694: LOAD P2.H = 0xff80
+20207698: LOAD R1 = 0x2
+2020769a: LOAD R2 = 0x2
+2020769c: LOAD R0 = 0x0
+2020769e: STORE [P4 + 0x20] = R5
+202076a0: STORE B [P1] = R1
+202076a2: STORE [P4 + 0x54] = R2
+202076a6: STORE [SP + 0x48] = P0
+202076aa: STORE [FP + 0x10] = P0
+202076ac: STORE [SP + 0x50] = P2
+202076b0: STORE [SP + 0x4c] = R0
+202076b4: ADD R7 += 0x1c
+202076b6: LOAD P3.L = 0x471c
+
+===== store@202076ac softL~0x478c fn= knownSM=false gradeNear=true =====
+store: STORE [SP + 0x50] = P2
+  20207676: STORE [SP + 0x44] = R0
+20207698: LOAD R1 = 0x2
+2020769a: LOAD R2 = 0x2
+2020769c: LOAD R0 = 0x0
+2020769e: STORE [P4 + 0x20] = R5
+202076a0: STORE B [P1] = R1
+202076a2: STORE [P4 + 0x54] = R2
+202076a6: STORE [SP + 0x48] = P0
+202076aa: STORE [FP + 0x10] = P0
+202076ac: STORE [SP + 0x50] = P2
+202076b0: STORE [SP + 0x4c] = R0
+202076b4: ADD R7 += 0x1c
+202076b6: LOAD P3.L = 0x471c
+202076ba: LOAD P3.H = 0xff80
+
+===== store@202076b0 softL~0x478c fn= knownSM=false gradeNear=true =====
+store: STORE [SP + 0x4c] = R0
+  20207676: STORE [SP + 0x44] = R0
+2020769a: LOAD R2 = 0x2
+2020769c: LOAD R0 = 0x0
+2020769e: STORE [P4 + 0x20] = R5
+202076a0: STORE B [P1] = R1
+202076a2: STORE [P4 + 0x54] = R2
+202076a6: STORE [SP + 0x48] = P0
+202076aa: STORE [FP + 0x10] = P0
+202076ac: STORE [SP + 0x50] = P2
+202076b0: STORE [SP + 0x4c] = R0
+202076b4: ADD R7 += 0x1c
+202076b6: LOAD P3.L = 0x471c
+202076ba: LOAD P3.H = 0xff80
+202076be: LOAD R6.L = 0x96c8
+
+===== store@202076d8 softL~0x471c fn= knownSM=false gradeNear=true =====
+store: STORE [P4 + 0x14] = R7
+  20207676: STORE [SP + 0x44] = R0
+  2020772a: LOAD R1 = [SP + 0x44]
+202076c2: LOAD R6.H = 0x2020
+202076c6: LOAD R1 = 0x5
+202076c8: LOAD R0 = [P5]
+202076ca: BITSET (R1,0x1e)
+202076cc: LOAD R2 = 0x1
+202076ce: LOAD P1.L = 0x684
+202076d2: LOAD P1.H = 0xffa1
+202076d6: CALL (P1)
+202076d8: STORE [P4 + 0x14] = R7
+202076da: STORE [P4 + 0x18] = R5
+202076dc: STORE [P4 + 0x1c] = R5
+202076de: LOAD R0 = [SP + 0x4c]
+202076e2: STORE [P4 + 0x24] = R4
+
+===== store@202076da softL~0x471c fn= knownSM=false gradeNear=true =====
+store: STORE [P4 + 0x18] = R5
+  20207676: STORE [SP + 0x44] = R0
+  2020772a: LOAD R1 = [SP + 0x44]
+202076c6: LOAD R1 = 0x5
+202076c8: LOAD R0 = [P5]
+202076ca: BITSET (R1,0x1e)
+202076cc: LOAD R2 = 0x1
+202076ce: LOAD P1.L = 0x684
+202076d2: LOAD P1.H = 0xffa1
+202076d6: CALL (P1)
+202076d8: STORE [P4 + 0x14] = R7
+202076da: STORE [P4 + 0x18] = R5
+202076dc: STORE [P4 + 0x1c] = R5
+202076de: LOAD R0 = [SP + 0x4c]
+202076e2: STORE [P4 + 0x24] = R4
+202076e4: STORE [P4 + 0x28] = R4
+
+===== store@202076dc softL~0x471c fn= knownSM=false gradeNear=true =====
+store: STORE [P4 + 0x1c] = R5
+  20207676: STORE [SP + 0x44] = R0
+  2020772a: LOAD R1 = [SP + 0x44]
+202076c8: LOAD R0 = [P5]
+202076ca: BITSET (R1,0x1e)
+202076cc: LOAD R2 = 0x1
+202076ce: LOAD P1.L = 0x684
+202076d2: LOAD P1.H = 0xffa1
+202076d6: CALL (P1)
+202076d8: STORE [P4 + 0x14] = R7
+202076da: STORE [P4 + 0x18] = R5
+202076dc: STORE [P4 + 0x1c] = R5
+202076de: LOAD R0 = [SP + 0x4c]
+202076e2: STORE [P4 + 0x24] = R4
+202076e4: STORE [P4 + 0x28] = R4
+202076e6: STORE [P4 + 0x2c] = R4
+
+===== store@2020779e softL~0x4708 fn=FUN_20207774 knownSM=false gradeNear=false =====
+store: STORE [P3 + 0x14] = R0
+2020778e: LOAD P4 = [FP + 0x14]
+20207790: ADD P0 = P5 + P5
+20207792: MOVE P1 = P5
+20207794: ADD P1 = (P1 + P0) << 2
+20207796: MOVE P0 = P5
+20207798: ADD P0 = (P0 + P1) << 2
+2020779a: ADD P3 = P2 + P0
+2020779c: CC = R6 == 0x0
+2020779e: STORE [P3 + 0x14] = R0
+202077a0: STORE [P3 + 0x2c] = P4
+202077a2: STORE [P3 + 0x18] = R7
+202077a4: MOVE R5 = P3
+202077a6: IF CC JUMP 0x202077ce
+
+===== store@202077a0 softL~0x4708 fn=FUN_20207774 knownSM=false gradeNear=false =====
+store: STORE [P3 + 0x2c] = P4
+20207790: ADD P0 = P5 + P5
+20207792: MOVE P1 = P5
+20207794: ADD P1 = (P1 + P0) << 2
+20207796: MOVE P0 = P5
+20207798: ADD P0 = (P0 + P1) << 2
+2020779a: ADD P3 = P2 + P0
+2020779c: CC = R6 == 0x0
+2020779e: STORE [P3 + 0x14] = R0
+202077a0: STORE [P3 + 0x2c] = P4
+202077a2: STORE [P3 + 0x18] = R7
+202077a4: MOVE R5 = P3
+202077a6: IF CC JUMP 0x202077ce
+202077a8: LOAD R0 = 0x4
+
+===== store@202077a2 softL~0x4708 fn=FUN_20207774 knownSM=false gradeNear=false =====
+store: STORE [P3 + 0x18] = R7
+20207792: MOVE P1 = P5
+20207794: ADD P1 = (P1 + P0) << 2
+20207796: MOVE P0 = P5
+20207798: ADD P0 = (P0 + P1) << 2
+2020779a: ADD P3 = P2 + P0
+2020779c: CC = R6 == 0x0
+2020779e: STORE [P3 + 0x14] = R0
+202077a0: STORE [P3 + 0x2c] = P4
+202077a2: STORE [P3 + 0x18] = R7
+202077a4: MOVE R5 = P3
+202077a6: IF CC JUMP 0x202077ce
+202077a8: LOAD R0 = 0x4
+202077aa: STORE [P3 + 0x20] = R0
+
+===== store@20208724 softL~0x4770 fn=FUN_20208644 knownSM=false gradeNear=false =====
+store: STORE [FP + -0x3c] = R0
+2020870a: STORE [P1] = R0
+2020870c: STORE [P1 + 0x4] = R1
+2020870e: LOAD R2 = [P3 + 0x50]
+20208712: LOAD R0.L = 0x96c8
+20208716: LOAD R0.H = 0x2020
+2020871a: LOAD P1.L = 0x4770
+2020871e: LOAD P1.H = 0xff80
+20208722: CC = R2 == 0x0
+20208724: STORE [FP + -0x3c] = R0
+20208726: STORE [FP + -0x40] = P1
+20208728: IF CC JUMP 0x2020898c
+2020872a: LOAD R0 = 0x6
+2020872c: LOAD R0.H = 0x4013
+
+===== store@20208726 softL~0x4770 fn=FUN_20208644 knownSM=false gradeNear=false =====
+store: STORE [FP + -0x40] = P1
+2020870c: STORE [P1 + 0x4] = R1
+2020870e: LOAD R2 = [P3 + 0x50]
+20208712: LOAD R0.L = 0x96c8
+20208716: LOAD R0.H = 0x2020
+2020871a: LOAD P1.L = 0x4770
+2020871e: LOAD P1.H = 0xff80
+20208722: CC = R2 == 0x0
+20208724: STORE [FP + -0x3c] = R0
+20208726: STORE [FP + -0x40] = P1
+20208728: IF CC JUMP 0x2020898c
+2020872a: LOAD R0 = 0x6
+2020872c: LOAD R0.H = 0x4013
+20208730: CC = R2 == R0
+
+===== store@202091ba softL~0x4770 fn=FUN_2020916c knownSM=false gradeNear=false =====
+store: STORE B [P4 + 0x5] = R3
+202091a2: LOAD P3.L = 0x4770
+202091a6: LOAD P3.H = 0xff80
+202091aa: LOAD R4.L = 0x96c8
+202091ae: LOAD R4.H = 0x2020
+202091b2: ADD R5 = R4 + R5
+202091b4: ADD P1 = P3 + P5
+202091b6: LOAD R3 = -0x3f
+202091b8: LOAD P0 = 0x0
+202091ba: STORE B [P4 + 0x5] = R3
+202091be: ROT|| R0 = rot R6 by 0
+202091c2: _STORE [SP + 0x14] = R7
+202091c4: _NOP
+202091c6: STORE [SP + 0xc] = P0
+
+===== store@202091c2 softL~0x4770 fn=FUN_2020916c knownSM=false gradeNear=false =====
+store: _STORE [SP + 0x14] = R7
+202091aa: LOAD R4.L = 0x96c8
+202091ae: LOAD R4.H = 0x2020
+202091b2: ADD R5 = R4 + R5
+202091b4: ADD P1 = P3 + P5
+202091b6: LOAD R3 = -0x3f
+202091b8: LOAD P0 = 0x0
+202091ba: STORE B [P4 + 0x5] = R3
+202091be: ROT|| R0 = rot R6 by 0
+202091c2: _STORE [SP + 0x14] = R7
+202091c4: _NOP
+202091c6: STORE [SP + 0xc] = P0
+202091c8: STORE [SP + 0x10] = P1
+202091ca: MOVE R1 = R5
+
+===== store@202091c6 softL~0x4770 fn=FUN_2020916c knownSM=false gradeNear=false =====
+store: STORE [SP + 0xc] = P0
+202091b2: ADD R5 = R4 + R5
+202091b4: ADD P1 = P3 + P5
+202091b6: LOAD R3 = -0x3f
+202091b8: LOAD P0 = 0x0
+202091ba: STORE B [P4 + 0x5] = R3
+202091be: ROT|| R0 = rot R6 by 0
+202091c2: _STORE [SP + 0x14] = R7
+202091c4: _NOP
+202091c6: STORE [SP + 0xc] = P0
+202091c8: STORE [SP + 0x10] = P1
+202091ca: MOVE R1 = R5
+202091cc: LOAD R2 = 0x0
+202091ce: CALL 0x20207eb6
+
+===== store@202091c8 softL~0x4770 fn=FUN_2020916c knownSM=false gradeNear=false =====
+store: STORE [SP + 0x10] = P1
+202091b4: ADD P1 = P3 + P5
+202091b6: LOAD R3 = -0x3f
+202091b8: LOAD P0 = 0x0
+202091ba: STORE B [P4 + 0x5] = R3
+202091be: ROT|| R0 = rot R6 by 0
+202091c2: _STORE [SP + 0x14] = R7
+202091c4: _NOP
+202091c6: STORE [SP + 0xc] = P0
+202091c8: STORE [SP + 0x10] = P1
+202091ca: MOVE R1 = R5
+202091cc: LOAD R2 = 0x0
+202091ce: CALL 0x20207eb6
+202091d2: LOAD P1 = 0x0
+
+SUMMARY soft_band_store_setups=19 with_grade_imms_near=10
+INTERPRET: with_grade_imms_near>0 and not known SM = Grade DEST install candidate.
+If with_grade=0: soft-desc writers never mention Grade offsets in file → Grade not soft-DMA DEST via this table.

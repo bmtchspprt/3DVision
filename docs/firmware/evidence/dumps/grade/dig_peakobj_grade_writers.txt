@@ -1,0 +1,49 @@
+===== materialize 0x5d04 / 0x25d04 =====
+
+===== @ffa03922 LOAD P5.L = 0x5d04 =====
+ffa038fe: ASH|| R4 = R0 >>> 0x11
+ffa03902: _STORE [FP + 0x24] = R1
+ffa03904: _NOP
+ffa03906: ADD P0 = P3 + P0
+ffa03908: LOAD R7 = W [P0] (X)
+ffa0390a: MULT|| R1 = R7.L * R5.H (is)
+ffa0390e: STORE [SP + 0x28] = R2
+ffa03910: NOP
+ffa03912: MOVE P0 = R1
+ffa03914: MOVE P1 = R3
+ffa03916: LOAD P2 = 0x578
+ffa0391a: ADD P2 = P3 + P2
+ffa0391c: LOAD P3 = 0x44
+ffa03920: ADD P2 = P2 + P0
+ffa03922: LOAD P5.L = 0x5d04
+ffa03926: LOAD P5.H = 0x2022
+ffa0392a: ADD P0 = P2 + P3
+ffa0392c: LOAD P4 = 0x2938
+ffa03930: STORE [P5] = R3
+ffa03932: ADD P1 = P0 + (P1 << 1)
+ffa03934: ADD P4 = P2 + P4
+ffa03936: LOAD R1 = [P2 + 0x5cd4]
+ffa0393a: LOAD R3 = [P2 + 0x5cd8]
+ffa0393e: STORE [P5 + 0x8] = P0
+ffa03940: STORE [P5 + 0x14] = R3
+ffa03942: STORE [P5 + 0xc] = P4
+ffa03944: STORE [P5 + 0x4] = R4
+ffa03946: STORE [P5 + 0x10] = R1
+ffa03948: LOAD R0 = W [P1] (X)
+ffa0394a: CALL 0xffa02948
+ffa0394e: LOAD P4 = [P5 + 0x8]
+ffa03950: LOAD P3 = [P5]
+ffa03952: LOAD R1 = [P5 + 0x10]
+ffa03954: CALL 0xffa018f0
+ffa03958: LOAD R1 = 0x47ae
+ffa0395c: LOAD R1.H = 0x3f81
+ffa03960: CALL 0xffa018f0
+ffa03964: ADD P1 = P4 + (P3 << 1)
+ffa03966: STORE [SP + 0x38] = R0
+ffa03968: LOAD R0 = W [P1] (X)
+mat5d04Hits=1
+%n===== LOAD P*.L=0x5d04/0x5dxx then STORE W [loaded] =====
+%n===== acquire-band LSETUP with STORE W [P++] and 0x578 in -50 =====
+acqLsetupHits=0
+%n===== ALL LSETUP+STORE++ in acquire before emit =====
+allAcqLsetupStoreHits=0

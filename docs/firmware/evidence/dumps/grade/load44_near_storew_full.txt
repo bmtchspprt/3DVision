@@ -1,0 +1,98 @@
+=== 20211e40: LOAD R2 = [P5 + 0x44]
+  20211e40: LOAD R2 = [P5 + 0x44]
+  20211e44: ASHIFT R2 >>>= 0xf
+  20211e46: ADD R2 += -0x1
+  20211e48: ADD R0 = R5 + R3
+  20211e4a: MAX R2 = max(R2,R4)
+  20211e4e: LOAD R3 = 0x147a
+  20211e52: LOAD R1 = 0x44
+  20211e56: MIN R3 = min(R2,R3)
+  20211e5a: ADD R0 = R0 + R1
+  20211e5c: STORE W [P5 + 0x58] = R3
+  20211e60: LSH R2 = R3 << 0x1
+  20211e64: LOAD R1 = 0x0
+  20211e66: LOAD P1.L = 0x5f2e
+  20211e6a: LOAD P1.H = 0xffa0
+  20211e6e: CALL (P1)
+=== 20211e52: LOAD R1 = 0x44
+  20211e52: LOAD R1 = 0x44
+  20211e56: MIN R3 = min(R2,R3)
+  20211e5a: ADD R0 = R0 + R1
+  20211e5c: STORE W [P5 + 0x58] = R3
+  20211e60: LSH R2 = R3 << 0x1
+  20211e64: LOAD R1 = 0x0
+  20211e66: LOAD P1.L = 0x5f2e
+  20211e6a: LOAD P1.H = 0xffa0
+  20211e6e: CALL (P1)
+=== 20211e70: LOAD R1 = [P5 + 0x44]
+  20211e70: LOAD R1 = [P5 + 0x44]
+  20211e74: ASH|| R1 = R1 >>> 0x12
+  20211e78: _LOAD R0 = [P5 + 0x3c]
+  20211e7a: _NOP
+  20211e7c: ADD R1 += -0x1
+  20211e7e: MAX R2 = max(R1,R4)
+  20211e82: MULT R0 = R0.L * R6.H (is)
+  20211e86: MIN R3 = min(R2,R7)
+  20211e8a: ADD R0 = R5 + R0
+  20211e8c: LOAD R2 = 0x3374
+  20211e90: ADD R0 = R0 + R2
+  20211e92: STORE W [P5 + 0x58] = R3
+  20211e96: LSH R2 = R3 << 0x1
+  20211e9a: LOAD R1 = 0x0
+  20211e9c: LOAD P1.L = 0x5f2e
+  20211ea0: LOAD P1.H = 0xffa0
+  20211ea4: CALL (P1)
+=== 20211f22: LOAD R1 = 0x44
+  20211f22: LOAD R1 = 0x44
+  20211f26: LOAD R2 = 0x147a
+  20211f2a: ADD R0 = R0 + R1
+  20211f2c: LSH R1 = R3 << 0x1
+  20211f30: SUB R2 = R2 - R3
+  20211f32: ADD R0 = R0 + R1
+  20211f34: STORE W [P5 + 0x58] = R3
+  20211f38: LSHIFT R2 <<= 0x1
+  20211f3a: LOAD R1 = 0x0
+  20211f3c: LOAD P1.L = 0x5f2e
+  20211f40: LOAD P1.H = 0xffa0
+  20211f44: CALL (P1)
+=== 2022d78a: LOAD R1 = 0x44
+  2022d78a: LOAD R1 = 0x44
+  2022d78e: ADD R1 = R0 + R1
+  2022d790: ASH|| R0 = R6 >>> 0xf
+  2022d794: _LOAD R2 = [P1 + 0x14]
+  2022d796: _NOP
+  2022d798: STORE [FP + -0x1c] = R1
+  2022d79a: SUB R1 = R0 - R3
+  2022d79c: ASHIFT R2 >>>= 0xf
+  2022d79e: MAX|| R2 = max(R1,R2)
+  2022d7a2: _STORE [P3 + 0x18] = R7
+  2022d7a4: _NOP
+  2022d7a6: SUB R7 = R7 - R2
+  2022d7a8: ADD R7 += 0x1
+  2022d7aa: LOAD R1 = 0x1100
+  2022d7ae: MIN|| R1 = min(R7,R1)
+  2022d7b2: _STORE [P3 + 0xc] = R0
+  2022d7b4: _NOP
+  2022d7b6: LOAD R0 = W [SP + 0x46] (Z)
+  2022d7ba: LSH|| R1.H = R0.L << 0x0
+  2022d7be: LOAD R3 = [FP + -0x3c]
+  2022d7c0: NOP
+  2022d7c2: MAC|| A1 = R4.L * R3.L (fu)
+  2022d7c6: STORE W [P3 + 0x1c] = R1
+  2022d7c8: NOP
+  2022d7ca: LSH|| A1 = A1 >> 0x10
+  2022d7ce: STORE [P3 + 0x14] = R2
+  2022d7d0: NOP
+  2022d7d2: MAC|| A1 += R1.H * R4.L (m)
+  2022d7d6: LOAD R7 = [FP + -0x1c]
+  2022d7d8: NOP
+  2022d7da: ASH A1 = A1 >>> 0xf
+  2022d7de: MOVE R3 = R1.L (X)
+  2022d7e0: MOVE R1 = A1.W
+  2022d7e2: LSHIFT R2 <<= 0x1
+  2022d7e4: ROT|| R1 = rot R3 by 0
+  2022d7e8: _STORE W [P3 + 0x8] = R1
+  2022d7ea: _NOP
+  2022d7ec: ADD R0 = R7 + R2
+  2022d7ee: LOAD P1.L = 0x33f8
+  2022d7f2: LOAD P1.H = 0xffa0

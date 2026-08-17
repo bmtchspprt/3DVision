@@ -1,0 +1,78 @@
+ffa12c3c: LOAD R2 = [P5 + 0x44]
+hitcount=1
+======== @ffa12c3c
+ffa12bfc: MOVE P5 = R7
+ffa12bfe: ADD SP += -0x10
+ffa12c00: LOAD R1 = 0x1
+ffa12c02: LOAD P1 = [P5]
+ffa12c04: LOAD R6 = W [P1 + 0x14] (X)
+ffa12c06: CC = BITTST (R6,0x0)
+ffa12c08: IF !CC JUMP 0xffa12c48
+ffa12c0a: NOP
+ffa12c0c: NOP
+ffa12c0e: LOAD P1 = [P5]
+ffa12c10: LOAD R3 = W [P1] (X)
+ffa12c12: LOAD P0 = [P5 + 0x48]
+ffa12c16: LOAD R1 = [P5 + 0x48]
+ffa12c1a: CC = R1 == 0x0
+ffa12c1c: IF CC JUMP 0xffa12c46
+ffa12c1e: NOP
+ffa12c20: NOP
+ffa12c22: NOP
+ffa12c24: LOAD P1 = [P0 + 0x4]
+ffa12c26: STORE B [P1++] = R3
+ffa12c28: STORE [P0 + 0x4] = P1
+ffa12c2a: LOAD R2 = [P0 + 0x8]
+ffa12c2c: ADD R2 += -0x1
+ffa12c2e: STORE [P0 + 0x8] = R2
+ffa12c30: CC = R2 == 0x0
+ffa12c32: IF CC JUMP 0xffa12d68
+ffa12c34: LOAD R2 = [P5 + 0x40]
+ffa12c38: CC = R2 == 0x0
+ffa12c3a: IF CC JUMP 0xffa12c46
+ffa12c3c: LOAD R2 = [P5 + 0x44]
+ffa12c40: MOVE R3 = R3.B (Z)
+ffa12c42: CC = R2 == R3
+ffa12c44: IF CC JUMP 0xffa12d68
+ffa12c46: LOAD R1 = 0x0
+ffa12c48: CC = BITTST (R6,0x5)
+ffa12c4a: IF !CC JUMP 0xffa12c98
+ffa12c4c: NOP
+ffa12c4e: LOAD P1 = [P5]
+ffa12c50: LOAD R2 = 0x50
+ffa12c54: ADD|| R2 = R7 + R2 (ns)
+ffa12c58: _LOAD R0 = W [P1 + 0x4] (X)
+ffa12c5a: _NOP
+ffa12c5c: CC = BITTST (R0,0x1)
+ffa12c5e: IF !CC JUMP 0xffa12c98
+ffa12c60: LOAD P1 = [P5 + 0x50]
+ffa12c64: LOAD R1 = [P5 + 0x50]
+ffa12c68: CC = R1 == 0x0
+ffa12c6a: IF CC JUMP 0xffa12d5c
+ffa12c6c: NOP
+ffa12c6e: NOP
+ffa12c70: NOP
+ffa12c72: LOAD R0 = [P1 + 0x8]
+ffa12c74: CC = R0 == 0x0
+ffa12c76: IF CC JUMP 0xffa12d44
+ffa12c78: CC = R1 == 0x0
+ffa12c7a: LOAD P0 = [P5]
+ffa12c7c: IF CC JUMP 0xffa12d3c
+ffa12c7e: NOP
+ffa12c80: NOP
+ffa12c82: NOP
+ffa12c84: LOAD P2 = [P1 + 0x4]
+ffa12c86: LOAD R0 = B [P2] (Z)
+ffa12c88: STORE W [P0] = R0.L
+ffa12c8a: LOAD R0 = [P1 + 0x4]
+ffa12c8c: ADD R0 += 0x1
+ffa12c8e: STORE [P1 + 0x4] = R0
+ffa12c90: LOAD R0 = [P1 + 0x8]
+ffa12c92: ADD R0 += -0x1
+ffa12c94: STORE [P1 + 0x8] = R0
+ffa12c96: LOAD R1 = 0x0
+ffa12c98: ROT|| R0 = rot R1 by 0
+ffa12c9c: _LOAD R2 = [P5 + 0x20]
+
+##### bank2 CALL (P1) FFA0 targets
+bank2 call targets top:

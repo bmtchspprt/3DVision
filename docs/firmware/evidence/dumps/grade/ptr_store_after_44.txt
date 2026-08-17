@@ -1,0 +1,282 @@
+imm44 sites=18
+
+===== 202004ec : LOAD R3 = 0x44 =====
+  2020051c: MOVE P1 = R0
+  2020051e: MOVE P0 = R1
+  20200566: ADD P1 += 0x7
+
+===== 2020108c : LOAD R0 = 0x44 =====
+  2020109a: ADD R4 += 0x3
+  202010a0: CALL 0x20206986
+  202010a8: CALL 0x202068a4
+  202010b8: ADD R0 += 0x2
+  202010bc: CALL 0x2020685a
+  202010ca: ADD R4 += 0x3
+  202010d8: CALL (P1)
+  202010ea: CALL (P1)
+  202010fa: CALL (P1)
+
+===== 2020119c : LOAD R3 = 0x44 =====
+  202011a0: MOVE P5 = R7
+  202011a2: ADD R1 = R4 + R3
+  202011a4: ADD R0 = R7 + R2
+  202011ae: CALL (P1)
+  202011b6: ADD R0 = R7 + R6
+  202011b8: ADD R1 = R4 + R5
+  202011c4: CALL (P1)
+  202011d2: ADD SP += 0xc
+  202011e2: ADD R3 += 0x6
+  202011e6: MOVE P5 = R3
+  202011e8: ADD SP += -0xc
+  20201204: ADD R7 += -0x4
+
+===== 20201338 : LOAD R0 = 0x44 =====
+  2020133c: ADD R4 = R5 + R0
+  20201340: ADD R6 += 0xc
+  20201348: CALL 0x202b4b02
+  2020135e: CALL (P1)
+  20201364: ADD R7 += 0x18
+  2020136a: ADD R6 = R5 + R0
+  20201372: CALL 0x202b4b02
+  20201388: CALL (P1)
+  2020139a: ADD SP += 0xc
+
+===== 2020842e : LOAD R4 = 0x44 =====
+  2020846a: ADD P1 = P1 + P0
+  2020847c: CALL (P1)
+  20208482: ADD R1 += 0xc
+  2020848e: CALL (P1)
+  2020849e: ADD SP += -0xc
+
+===== 2020bb32 : LOAD P1 = 0x44 =====
+  2020bb38: ADD P1 = P2 + P1
+  2020bb48: ADD P1 = P2 + P1
+  2020bb6e: STORE [P1 + 0x8] = R7
+  2020bb7e: STORE [P1] = R7
+  2020bb80: STORE [P1 + 0x4] = R7
+  2020bb86: STORE [P0 + 0x4] = R7
+  2020bb88: STORE [P0 + 0x8] = R7
+  2020bb96: STORE [P2 + 0x4] = R7
+
+===== 2020df74 : LOAD R2 = 0x44 =====
+  2020df78: ADD R7 = R4 + R2
+  2020df7e: CALL 0x202b4b54
+  2020df8c: CALL 0x202b4b54
+  2020df94: CALL 0x202b4b54
+  2020df9c: CALL 0x2020caa4
+  2020dfae: CALL 0x202005f6
+  2020dfb8: CALL 0x202005f6
+  2020dfc2: CALL 0x2020caa4
+  2020dfcc: CALL 0x2020caa4
+  2020dfd8: ADD R1 += 0x1
+
+===== 2021112a : LOAD R4 = 0x44 =====
+  20211130: STORE [P2 + 0x579c] = R4
+  20211134: STORE [P2 + 0x57a0] = R0
+  2021113c: STORE [P2 + 0x5794] = R4
+  20211140: STORE [P2 + 0x578c] = R3
+  20211144: STORE [P2 + 0x5798] = R5
+  20211148: STORE [P2 + 0x5790] = R0
+  2021114e: STORE [P0 + 0x5794] = R4
+  20211156: STORE [P0 + 0x5790] = R4
+  2021115e: STORE [P0 + 0x57a0] = R4
+  20211166: STORE [P0 + 0x579c] = R4
+  2021116a: STORE [P0 + 0x578c] = R3
+  2021116e: STORE [P0 + 0x5798] = R5
+  20211174: STORE [P1 + 0x5794] = R4
+  2021117c: STORE [P1 + 0x5790] = R4
+  20211184: STORE [P1 + 0x57a0] = R4
+  20211194: STORE [P1 + 0x578c] = R3
+  20211198: STORE [P1 + 0x5798] = R5
+  2021119c: STORE [P1 + 0x579c] = R4
+  202111a8: STORE [P0 + 0x64] = R2
+  202111ac: STORE [P0 + 0x68] = R1
+
+===== 20211d5c : LOAD R3 = 0x44 =====
+  20211d60: ADD R0 = R0 + R3
+  20211d70: CALL (P1)
+  20211d78: ADD R0 = R5 + R0
+  20211d7e: ADD R0 = R0 + R3
+  20211d8e: CALL (P1)
+  20211d96: ADD R0 = R5 + R0
+  20211d9c: ADD R0 = R0 + R3
+  20211dac: CALL (P1)
+  20211db4: ADD R0 = R5 + R0
+  20211dba: ADD R0 = R0 + R3
+  20211dca: CALL (P1)
+  20211dd2: ADD R0 = R5 + R0
+
+===== 20211e52 : LOAD R1 = 0x44 =====
+  20211e5a: ADD R0 = R0 + R1
+  20211e6e: CALL (P1)
+  20211e7c: ADD R1 += -0x1
+  20211e8a: ADD R0 = R5 + R0
+  20211e90: ADD R0 = R0 + R2
+  20211ea4: CALL (P1)
+  20211eac: ADD R0 = R5 + R0
+  20211eb6: ADD R0 = R0 + R3
+  20211ec4: CALL (P1)
+  20211ecc: ADD R0 = R5 + R0
+
+===== 20211f22 : LOAD R1 = 0x44 =====
+  20211f2a: ADD R0 = R0 + R1
+  20211f32: ADD R0 = R0 + R1
+  20211f44: CALL (P1)
+  20211f5e: ADD R0 = R5 + R0
+  20211f64: ADD R0 = R0 + R2
+  20211f6c: ADD R0 = R0 + R1
+  20211f7e: CALL (P1)
+  20211f8a: ADD R0 = R5 + R0
+  20211f92: ADD R0 = R0 + R1
+  20211f96: ADD R0 = R0 + R3
+
+===== 20212c86 : LOAD R3 = 0x44 =====
+  20212c92: ADD R0 = R2 + R0
+  20212c94: ADD R0 = R0 + R3
+  20212c96: ADD R0 = R0 + R4
+  20212c98: MOVE P1 = R0
+  20212c9a: ADD R6 += 0x1
+  20212c9e: STORE [FP + -0x34] = R2
+  20212ca0: ADD R4 += 0x2
+  20212cac: CALL (P1)
+  20212cb8: CALL (P1)
+  20212cbc: STORE [P5++] = R0
+  20212cc4: ADD R0 += 0x1
+  20212cd2: ADD P1 = P4 + P1
+  20212cd4: STORE [FP + -0x50] = P1
+  20212cda: ADD R0 += 0x1
+  20212ce2: STORE [FP + -0x38] = P1
+
+===== 2022d128 : LOAD R1 = 0x44 =====
+  2022d12c: ADD R0 = R0 + R1
+  2022d12e: ADD R0 = R0 + R4
+  2022d130: MOVE P1 = R0
+  2022d132: ADD R7 += 0x1
+  2022d134: ADD R4 += 0x2
+  2022d140: CALL (P1)
+  2022d14c: CALL (P1)
+  2022d150: STORE [P3++] = R0
+  2022d158: ADD R0 += 0x1
+  2022d166: ADD R0 += 0x1
+  2022d17e: ADD P3 = P5 + P0
+  2022d180: ADD P1 = P5 + P1
+  2022d182: ADD R4 = R1 + R0
+  2022d184: ADD P5 = P5 + P2
+  2022d188: MOVE I1 = P1
+
+===== 2022d78a : LOAD R1 = 0x44 =====
+  2022d78e: ADD R1 = R0 + R1
+  2022d798: STORE [FP + -0x1c] = R1
+  2022d7a2: _STORE [P3 + 0x18] = R7
+  2022d7a8: ADD R7 += 0x1
+  2022d7b2: _STORE [P3 + 0xc] = R0
+  2022d7ce: STORE [P3 + 0x14] = R2
+  2022d7ec: ADD R0 = R7 + R2
+  2022d7f6: CALL (P1)
+
+===== 2022da52 : LOAD R2 = 0x44 =====
+  2022da60: ADD R0 = R5 + R0
+  2022da62: ADD R0 = R0 + R2
+  2022da66: ADD R0 = R0 + R1
+  2022da68: MOVE P1 = R0
+  2022da74: CALL (P1)
+  2022da78: MOVE P1 = R3
+  2022da82: ADD R1 = R5 + R2
+  2022da88: MOVE P0 = R1
+  2022da8a: ADD P1 = P2 + (P1 << 1)
+  2022da8c: ADD|| R5 = R6 + R5 (ns)
+  2022da98: ADD|| R2 = R5 + R2 (ns)
+  2022daa0: MOVE P4 = R2
+  2022daae: CALL (P1)
+  2022dab0: STORE [SP + 0x1c] = R5
+  2022dab4: STORE [P4 + 0x4c] = R0
+
+===== ffa0391c : LOAD P3 = 0x44 =====
+  ffa03920: ADD P2 = P2 + P0
+  ffa0392a: ADD P0 = P2 + P3
+  ffa03930: STORE [P5] = R3
+  ffa03932: ADD P1 = P0 + (P1 << 1)
+  ffa03934: ADD P4 = P2 + P4
+  ffa0393e: STORE [P5 + 0x8] = P0
+  ffa03940: STORE [P5 + 0x14] = R3
+  ffa03942: STORE [P5 + 0xc] = P4
+  ffa03944: STORE [P5 + 0x4] = R4
+  ffa03946: STORE [P5 + 0x10] = R1
+  ffa0394a: CALL 0xffa02948
+  ffa03954: CALL 0xffa018f0
+  ffa03960: CALL 0xffa018f0
+  ffa03964: ADD P1 = P4 + (P3 << 1)
+  ffa03966: STORE [SP + 0x38] = R0
+  ffa0396a: CALL 0xffa02948
+  ffa03974: CALL 0xffa018f0
+  ffa0397a: ADD P1 = P4 + (P3 << 1)
+  ffa0397e: CALL 0xffa02948
+  ffa03984: CALL 0xffa018f0
+
+===== ffa04b90 : LOAD P2 = 0x44 =====
+  ffa04b96: MOVE I0 = P1
+  ffa04ba6: CALL 0xffa01814
+  ffa04baa: CALL 0xffa0290c
+  ffa04bbc: MOVE P1 = R1
+  ffa04bbe: ADD R6 += 0x1
+  ffa04bc2: ADD P1 = P3 + P1
+  ffa04bc6: ADD P1 = P1 + P2
+  ffa04bc8: ADD P1 = P1 + P0
+  ffa04bd0: ADD R0 += 0x1
+  ffa04bd4: ADD P0 += 0x2
+  ffa04bd8: MOVE P1 = I0
+
+===== ffa077ee : LOAD P3 = 0x44 =====
+  ffa077f4: CALL 0xffa08cea
+  ffa07800: ADD P0 = P5 + P3
+  ffa0781a: ADD P1 = P5 + P2
+  ffa0781e: ADD P0 = P0 + P2
+  ffa07820: MOVE P5 = P1
+  ffa07828: CALL 0xffa08d0c
+  ffa07832: ADD SP += 0x10
+  ffa07844: MOVE P1 = R2
+  ffa07854: _STORE [SP + 0x3c] = P5
+
+===== series offset imms =====
+20204166: LOAD R3 = 0x4d5c
+2020421e: LOAD R2 = 0x5a26
+202043fc: LOAD R7 = 0x4d5c
+20204422: LOAD R3 = 0x4d5c
+20204634: LOAD R7 = 0x5a26
+2020465a: LOAD R3 = 0x5a26
+2020b6e0: LOAD R5 = 0x4d5c
+20211d7a: LOAD R3 = 0x3374
+20211d98: LOAD R3 = 0x3892
+20211db6: LOAD R3 = 0x3db0
+20211e8c: LOAD R2 = 0x3374
+20211eb2: LOAD R3 = 0x3892
+20211ed2: LOAD R3 = 0x3db0
+20211f60: LOAD R2 = 0x3374
+20211f8c: LOAD R1 = 0x3892
+20211fb2: LOAD R1 = 0x3db0
+20212cf6: LOAD R2 = 0x2938
+20212de6: LOAD R3 = 0x4d5c
+2021320c: LOAD R3 = 0x3db0
+20213a1c: LOAD P1 = 0x2938
+2021436a: LOAD R3 = 0x2938
+202143ba: LOAD R4 = 0x4d5c
+20214426: LOAD R3 = 0x4d5c
+2021446c: LOAD R3 = 0x2938
+20220264: LOAD P1 = 0x2938
+20220272: LOAD R3 = 0x4ad6
+20220294: LOAD P2 = 0x5b8
+20224492: LOAD R1 = 0x4d5c
+202246f0: LOAD P0 = 0x5a26
+2022d198: LOAD R2 = 0x3374
+2022d1c6: LOAD R2 = 0x3892
+2022d1f2: LOAD R2 = 0x3db0
+2022db88: LOAD P2 = 0x3db0
+2022fc98: LOAD R3 = 0x3db0
+20230b70: LOAD R3 = 0x2938
+202b5378: LOAD R2 = 0x4ad6
+ffa0392c: LOAD P4 = 0x2938
+ffa04788: LOAD R2 = 0x5a26
+ffa04c32: LOAD P3 = 0x3374
+ffa04c74: LOAD P2 = 0x3892
+ffa04ce8: LOAD P2 = 0x3db0
+ffa04dec: LOAD R3 = 0x5a26

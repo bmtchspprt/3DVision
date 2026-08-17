@@ -1,0 +1,400 @@
+===== after LOAD=0x44: within 40, STORE [P+small]=Preg (ptr-sized) =====
+--- hit ---
+  2020bb32: LOAD P1 = 0x44
+  2020bb36: LOAD P0 = 0x4
+  2020bb38: ADD P1 = P2 + P1
+  2020bb3a: LSETUP (0x2020bb3e,0x2020bb42) LC0 = P0
+  2020bb3e: STORE B [P1++] = R0
+  2020bb40: STORE B [P1++] = R1
+  2020bb42: STORE B [P1++] = R2
+  2020bb44: LOAD P1 = 0x50
+  2020bb48: ADD P1 = P2 + P1
+  2020bb4a: STORE B [P1++] = R7
+  2020bb4c: STORE B [P1++] = R7
+  2020bb4e: LOAD P0 = 0x8
+  2020bb50: STORE B [P1++] = R7
+  2020bb52: LSETUP (0x2020bb56,0x2020bb5a) LC0 = P0
+  2020bb56: STORE B [P1++] = R0
+  2020bb58: STORE B [P1++] = R1
+  2020bb5a: STORE B [P1++] = R2
+  2020bb5c: LOAD P1 = [FP + -0x4]
+  2020bb5e: LOAD R1 = 0x4
+  2020bb60: LOAD P0 = [FP + -0x1c]
+  2020bb62: STORE B [P2 + 0x37] = R6
+  2020bb66: STORE B [P1 + 0xd] = R1
+  2020bb6a: STORE B [P1 + 0x1] = R6
+  2020bb6e: STORE [P1 + 0x8] = R7
+  2020bb70: STORE B [P1 + 0xe] = R6
+  2020bb74: LOAD P1 = [FP + -0x2c]
+  2020bb76: STORE B [P2 + 0x38] = R6
+  2020bb7a: LOAD R2 = [P2 + 0x3c]
+  2020bb7c: LOAD P2 = [FP + -0x18]
+  2020bb7e: STORE [P1] = R7
+  2020bb80: STORE [P1 + 0x4] = R7
+  2020bb82: LOAD P1 = [FP + -0x4]
+  2020bb84: LOAD R4 = 0x2
+  2020bb86: STORE [P0 + 0x4] = R7
+  2020bb88: STORE [P0 + 0x8] = R7
+  2020bb8a: STORE B [P1 + 0x2] = R4
+  2020bb8e: LOAD P1 = [FP + -0x18]
+  2020bb90: LOAD P0 = [FP + -0x20]
+  2020bb92: STORE B [P2 + 0x1] = R6
+  2020bb96: STORE [P2 + 0x4] = R7
+  2020bb98: LOAD P2 = [FP + -0x1c]
+--- hit ---
+  2021112a: LOAD R4 = 0x44
+  2021112e: LOAD R0 = 0x22
+  20211130: STORE [P2 + 0x579c] = R4
+  20211134: STORE [P2 + 0x57a0] = R0
+  20211138: LOAD R4 = 0x3
+  2021113a: LOAD R0 = 0x6
+  2021113c: STORE [P2 + 0x5794] = R4
+  20211140: STORE [P2 + 0x578c] = R3
+  20211144: STORE [P2 + 0x5798] = R5
+  20211148: STORE [P2 + 0x5790] = R0
+  2021114c: LOAD R4 = 0x10
+  2021114e: STORE [P0 + 0x5794] = R4
+  20211152: LOAD R4 = 0x20
+  20211154: LOAD P1 = [P4 + 0x10]
+  20211156: STORE [P0 + 0x5790] = R4
+  2021115a: LOAD R4 = 0x50
+  2021115e: STORE [P0 + 0x57a0] = R4
+  20211162: LOAD R4 = 0xa0
+  20211166: STORE [P0 + 0x579c] = R4
+  2021116a: STORE [P0 + 0x578c] = R3
+  2021116e: STORE [P0 + 0x5798] = R5
+  20211172: LOAD R4 = 0x1b
+  20211174: STORE [P1 + 0x5794] = R4
+  20211178: LOAD R4 = 0x36
+  2021117a: LOAD P0 = [FP + -0x10]
+  2021117c: STORE [P1 + 0x5790] = R4
+  20211180: LOAD R4 = 0x88
+  20211184: STORE [P1 + 0x57a0] = R4
+  20211188: LOAD R2 = -0x45a2
+  2021118c: LOAD R1 = 0x410b
+  20211190: LOAD R4 = 0x110
+  20211194: STORE [P1 + 0x578c] = R3
+  20211198: STORE [P1 + 0x5798] = R5
+  2021119c: STORE [P1 + 0x579c] = R4
+  202111a0: LOAD R2.H = 0x49
+  202111a4: LOAD R1.H = 0xe
+  202111a8: STORE [P0 + 0x64] = R2
+  202111ac: STORE [P0 + 0x68] = R1
+  202111b0: LOAD R7 = 0x1b58
+  202111b4: LOAD R6 = 0x8
+  202111b6: JUMP.S 0x20210db2
+--- hit ---
+  2022d78a: LOAD R1 = 0x44
+  2022d78e: ADD R1 = R0 + R1
+  2022d790: ASH|| R0 = R6 >>> 0xf
+  2022d794: _LOAD R2 = [P1 + 0x14]
+  2022d796: _NOP
+  2022d798: STORE [FP + -0x1c] = R1
+  2022d79a: SUB R1 = R0 - R3
+  2022d79c: ASHIFT R2 >>>= 0xf
+  2022d79e: MAX|| R2 = max(R1,R2)
+  2022d7a2: _STORE [P3 + 0x18] = R7
+  2022d7a4: _NOP
+  2022d7a6: SUB R7 = R7 - R2
+  2022d7a8: ADD R7 += 0x1
+  2022d7aa: LOAD R1 = 0x1100
+  2022d7ae: MIN|| R1 = min(R7,R1)
+  2022d7b2: _STORE [P3 + 0xc] = R0
+  2022d7b4: _NOP
+  2022d7b6: LOAD R0 = W [SP + 0x46] (Z)
+  2022d7ba: LSH|| R1.H = R0.L << 0x0
+  2022d7be: LOAD R3 = [FP + -0x3c]
+  2022d7c0: NOP
+  2022d7c2: MAC|| A1 = R4.L * R3.L (fu)
+  2022d7c6: STORE W [P3 + 0x1c] = R1
+  2022d7c8: NOP
+  2022d7ca: LSH|| A1 = A1 >> 0x10
+  2022d7ce: STORE [P3 + 0x14] = R2
+  2022d7d0: NOP
+  2022d7d2: MAC|| A1 += R1.H * R4.L (m)
+  2022d7d6: LOAD R7 = [FP + -0x1c]
+  2022d7d8: NOP
+  2022d7da: ASH A1 = A1 >>> 0xf
+  2022d7de: MOVE R3 = R1.L (X)
+  2022d7e0: MOVE R1 = A1.W
+  2022d7e2: LSHIFT R2 <<= 0x1
+  2022d7e4: ROT|| R1 = rot R3 by 0
+  2022d7e8: _STORE W [P3 + 0x8] = R1
+  2022d7ea: _NOP
+  2022d7ec: ADD R0 = R7 + R2
+  2022d7ee: LOAD P1.L = 0x33f8
+  2022d7f2: LOAD P1.H = 0xffa0
+  2022d7f6: CALL (P1)
+--- hit ---
+  2022da52: LOAD R2 = 0x44
+  2022da56: LOAD R0 = W [P5] (X)
+  2022da58: MULT|| R0 = R0.L * R4.H (is)
+  2022da5c: LOAD R1 = W [P2] (X)
+  2022da5e: NOP
+  2022da60: ADD R0 = R5 + R0
+  2022da62: ADD R0 = R0 + R2
+  2022da64: LSHIFT R1 <<= 0x1
+  2022da66: ADD R0 = R0 + R1
+  2022da68: MOVE P1 = R0
+  2022da6a: LOAD R0 = W [P1] (X)
+  2022da6c: LOAD P1.L = 0x2948
+  2022da70: LOAD P1.H = 0xffa0
+  2022da74: CALL (P1)
+  2022da76: LOAD R3 = W [P5] (X)
+  2022da78: MOVE P1 = R3
+  2022da7a: MULT|| R2 = R3.L * R4.H (is)
+  2022da7e: LOAD P2 = [FP + 0x10]
+  2022da80: NOP
+  2022da82: ADD R1 = R5 + R2
+  2022da84: MULT R5 = R3.L * R7.H (is)
+  2022da88: MOVE P0 = R1
+  2022da8a: ADD P1 = P2 + (P1 << 1)
+  2022da8c: ADD|| R5 = R6 + R5 (ns)
+  2022da90: _LOAD R2 = W [P1] (X)
+  2022da92: _NOP
+  2022da94: MULT R2 = R2.L * R7.L (is)
+  2022da98: ADD|| R2 = R5 + R2 (ns)
+  2022da9c: _LOAD R5 = [FP + 0x20]
+  2022da9e: _NOP
+  2022daa0: MOVE P4 = R2
+  2022daa2: LOAD R1 = [P0 + 0x5cd4]
+  2022daa6: LOAD P1.L = 0x18f0
+  2022daaa: LOAD P1.H = 0xffa0
+  2022daae: CALL (P1)
+  2022dab0: STORE [SP + 0x1c] = R5
+  2022dab2: LOAD R3 = [FP + 0x24]
+  2022dab4: STORE [P4 + 0x4c] = R0
+  2022dab8: LOAD R0 = W [P5] (X)
+  2022daba: MULT|| R1 = R0.L * R7.H (is)
+  2022dabe: LOAD P4 = [FP + 0x1c]
+--- hit ---
+  ffa0391c: LOAD P3 = 0x44
+  ffa03920: ADD P2 = P2 + P0
+  ffa03922: LOAD P5.L = 0x5d04
+  ffa03926: LOAD P5.H = 0x2022
+  ffa0392a: ADD P0 = P2 + P3
+  ffa0392c: LOAD P4 = 0x2938
+  ffa03930: STORE [P5] = R3
+  ffa03932: ADD P1 = P0 + (P1 << 1)
+  ffa03934: ADD P4 = P2 + P4
+  ffa03936: LOAD R1 = [P2 + 0x5cd4]
+  ffa0393a: LOAD R3 = [P2 + 0x5cd8]
+  ffa0393e: STORE [P5 + 0x8] = P0
+  ffa03940: STORE [P5 + 0x14] = R3
+  ffa03942: STORE [P5 + 0xc] = P4
+  ffa03944: STORE [P5 + 0x4] = R4
+  ffa03946: STORE [P5 + 0x10] = R1
+  ffa03948: LOAD R0 = W [P1] (X)
+  ffa0394a: CALL 0xffa02948
+  ffa0394e: LOAD P4 = [P5 + 0x8]
+  ffa03950: LOAD P3 = [P5]
+  ffa03952: LOAD R1 = [P5 + 0x10]
+  ffa03954: CALL 0xffa018f0
+  ffa03958: LOAD R1 = 0x47ae
+  ffa0395c: LOAD R1.H = 0x3f81
+  ffa03960: CALL 0xffa018f0
+  ffa03964: ADD P1 = P4 + (P3 << 1)
+  ffa03966: STORE [SP + 0x38] = R0
+  ffa03968: LOAD R0 = W [P1] (X)
+  ffa0396a: CALL 0xffa02948
+  ffa0396e: LOAD P4 = [P5 + 0xc]
+  ffa03970: LOAD P3 = [P5 + 0x4]
+  ffa03972: LOAD R1 = [P5 + 0x10]
+  ffa03974: CALL 0xffa018f0
+  ffa03978: MOVE R7 = R0
+  ffa0397a: ADD P1 = P4 + (P3 << 1)
+  ffa0397c: LOAD R0 = W [P1] (X)
+  ffa0397e: CALL 0xffa02948
+  ffa03982: LOAD R1 = [P5 + 0x14]
+  ffa03984: CALL 0xffa018f0
+  ffa03988: MOVE R1 = R0
+  ffa0398a: MOVE R0 = R7
+ptrHits=5
+
+===== 20238200..20238450 CALL/STORE marked =====
+20238204: CALL 0x20204280
+20238208: CALL 0x202ec3c0
+20238248: CALL 0x202111b8
+20238264: CALL 0x202b5066
+2023826e: CALL 0x202058da
+20238284: CALL 0x20210b88
+202382ae: CALL 0x2020f40e
+202382c8: CALL (P1) => 0xffa06008
+202382ce: CALL 0x2020caa4
+202382f2: CALL 0x20220636
+20238304: CALL 0x2020d858
+2023831a: CALL 0x202005c8
+20238346: CALL 0x202b5066
+2023835e: CALL 0x202111b8
+20238382: CALL 0x20220636
+2023839c: CALL 0x2022496e
+202383b6: CALL 0x20221936
+202383f6: CALL 0x2021276a
+2023841a: CALL 0x2021276a
+2023843c: CALL 0x2021276a
+
+===== 202B5400..202B5550 =====
+202b5416: STORE W [P0 + 0x4c8] = R2
+202b5460: LOAD P1.L = 0x5f2e
+202b5468: CALL (P1) => 0xffa05f2e
+202b5492: CALL 0x20220636
+202b54c0: CALL 0x202243ec
+202b54f6: CALL 0x20214716
+202b5538: CALL 0x20223fb2
+
+===== around all 0x3690 refs: STORE of pointers =====
+##### ffa0774c: LOAD R2.L = 0x3690 #####
+  ffa0773e: IF !CC JUMP 0xffa07648 (bp)
+  ffa07740: LOAD R0 = 0x0
+  ffa07742: STORE [P0 + 0x54] = R0
+  ffa07746: POP (R7:6,P5:5) = [SP++]
+  ffa07748: RTS
+  ffa0774a: LSHIFT R0 <<= 0x4
+  ffa0774c: LOAD R2.L = 0x3690
+  ffa07750: LOAD R2.H = 0xff80
+  ffa07754: ADD R0 = R2 + R0
+  ffa07756: MOVE P1 = R0
+  ffa07758: MOVE P0 = R1
+  ffa0775a: LOAD R0 = 0x0
+  ffa0775c: LOAD R1 = [P1 + 0x8]
+  ffa0775e: STORE [P0] = R1
+  ffa07760: RTS
+  ffa07762: LSHIFT R1 <<= 0x4
+  ffa07764: LOAD R2.L = 0x3690
+  ffa07768: LOAD R2.H = 0xff80
+  ffa0776c: ADD R1 = R2 + R1
+  ffa0776e: MOVE P1 = R1
+  ffa07770: LOAD R2 = 0xfff
+  ffa07774: LSH R1.L = R0.H << 0xc
+  ffa07778: LOAD R0 = 0x0
+  ffa0777a: LOAD P1 = [P1]
+  ffa0777c: LOAD R3 = W [P1 + 0x2c] (X)
+  ffa07780: AND R2 = R3 & R2
+  ffa07782: OR R1 = R2 | R1
+  ffa07784: STORE W [P1 + 0x2c] = R1
+  ffa07788: RTS
+  ffa0778a: NOP
+##### ffa07764: LOAD R2.L = 0x3690 #####
+  ffa07758: MOVE P0 = R1
+  ffa0775a: LOAD R0 = 0x0
+  ffa0775c: LOAD R1 = [P1 + 0x8]
+  ffa0775e: STORE [P0] = R1
+  ffa07760: RTS
+  ffa07762: LSHIFT R1 <<= 0x4
+  ffa07764: LOAD R2.L = 0x3690
+  ffa07768: LOAD R2.H = 0xff80
+  ffa0776c: ADD R1 = R2 + R1
+  ffa0776e: MOVE P1 = R1
+  ffa07770: LOAD R2 = 0xfff
+  ffa07774: LSH R1.L = R0.H << 0xc
+  ffa07778: LOAD R0 = 0x0
+  ffa0777a: LOAD P1 = [P1]
+  ffa0777c: LOAD R3 = W [P1 + 0x2c] (X)
+  ffa07780: AND R2 = R3 & R2
+  ffa07782: OR R1 = R2 | R1
+  ffa07784: STORE W [P1 + 0x2c] = R1
+  ffa07788: RTS
+  ffa0778a: NOP
+  ffa0778c: LOAD P1.L = 0x3690
+  ffa07790: LOAD P1.H = 0xff80
+  ffa07794: LOAD P2 = 0x10
+  ffa07796: PUSH [--SP] = (R7:4)
+  ffa07798: LSH R5 = R0 >> 0x10
+  ffa0779c: MOVE R6 = R0.B (Z)
+  ffa0779e: ADD P1 += 0x4
+  ffa077a0: LOAD R2 = 0x0
+  ffa077a2: LOAD R7 = 0xf000
+  ffa077a6: LOAD R0 = 0x0
+##### ffa0778c: LOAD P1.L = 0x3690 #####
+  ffa0777c: LOAD R3 = W [P1 + 0x2c] (X)
+  ffa07780: AND R2 = R3 & R2
+  ffa07782: OR R1 = R2 | R1
+  ffa07784: STORE W [P1 + 0x2c] = R1
+  ffa07788: RTS
+  ffa0778a: NOP
+  ffa0778c: LOAD P1.L = 0x3690
+  ffa07790: LOAD P1.H = 0xff80
+  ffa07794: LOAD P2 = 0x10
+  ffa07796: PUSH [--SP] = (R7:4)
+  ffa07798: LSH R5 = R0 >> 0x10
+  ffa0779c: MOVE R6 = R0.B (Z)
+  ffa0779e: ADD P1 += 0x4
+  ffa077a0: LOAD R2 = 0x0
+  ffa077a2: LOAD R7 = 0xf000
+  ffa077a6: LOAD R0 = 0x0
+  ffa077a8: LSETUP (0xffa077ac,0xffa077ba) LC0 = P2
+  ffa077ac: ROT|| R3 = rot R2 by 0
+  ffa077b0: _LOAD R4 = [P1 ++ P2]
+  ffa077b2: _NOP
+  ffa077b4: CC = R6 == R4
+  ffa077b6: ADD R3 += 0x1
+  ffa077b8: IF CC JUMP 0xffa077c8
+  ffa077ba: MOVE R2 = R3
+  ffa077bc: POP (R7:4) = [SP++]
+  ffa077be: LOAD R0 = 0x4
+  ffa077c0: LOAD R0.H = 0x3
+  ffa077c4: RTS
+  ffa077c6: NOP
+  ffa077c8: LOAD P0 = [P1 + -0x14]
+##### ffa07846: LOAD P0.L = 0x3690 #####
+  ffa07836: POP (R7:4,P5:3) = [SP++]
+  ffa07838: UNLINK
+  ffa0783c: JUMP (P0)
+  ffa0783e: NOP
+  ffa07840: LSH R2 = R5 << 0x4
+  ffa07844: MOVE P1 = R2
+  ffa07846: LOAD P0.L = 0x3690
+  ffa0784a: LOAD P0.H = 0xff80
+  ffa0784e: LOAD R3 = 0x11
+  ffa07850: PACK|| R7 = pack(R7.H,R3.L)
+  ffa07854: _STORE [SP + 0x3c] = P5
+  ffa07856: _NOP
+  ffa07858: MOVE R1 = R5
+  ffa0785a: ADD P3 = P0 + P1
+  ffa0785c: LOAD R3 = [P3]
+  ffa0785e: ROT|| R2 = rot R3 by 0
+  ffa07862: _STORE [P5 + 0x34] = R5
+  ffa07864: _NOP
+  ffa07866: LOAD R5 = [FP + 0x18]
+  ffa07868: ROT|| R5 = rot R3 by 0
+  ffa0786c: _STORE [P5 + 0x3c] = R5
+  ffa0786e: _NOP
+  ffa07870: ADD R2 += 0x8
+  ffa07872: ADD R5 += 0x10
+  ffa07874: ROT|| R2 = rot R3 by 0
+  ffa07878: _STORE [P5] = R2
+  ffa0787a: _NOP
+  ffa0787c: ROT|| R5 = rot R3 by 0
+  ffa07880: _STORE [P5 + 0xc] = R5
+  ffa07882: _NOP
+##### ffa079c6: LOAD P4.L = 0x3690 #####
+  ffa079b8: STORE [SP + 0x2c] = R1
+  ffa079ba: MOVE R1 = FP
+  ffa079bc: ADD R1 += 0x8
+  ffa079be: LOAD P3 = [P5 + 0x34]
+  ffa079c0: LOAD R0 = [P5 + 0x38]
+  ffa079c2: CALL 0xffa08be8
+  ffa079c6: LOAD P4.L = 0x3690
+  ffa079ca: LOAD P4.H = 0xff80
+  ffa079ce: ADD P1 = P3 + P3
+  ffa079d0: ADD P1 = (P1 + P1) << 2
+  ffa079d2: ADD P1 = P4 + P1
+  ffa079d4: MOVE R1 = FP
+  ffa079d6: LOAD R0 = [P1 + 0xc]
+  ffa079d8: ADD R1 += 0x10
+  ffa079da: CALL 0xffa08be8
+  ffa079de: LOAD R0 = [SP + 0x2c]
+  ffa079e0: CC = R0 == 0x0
+  ffa079e2: IF CC JUMP 0xffa079fc
+  ffa079e4: LOAD R6 = 0x8
+  ffa079e6: LOAD R6.H = 0x3
+  ffa079ea: MOVE R2 = FP
+  ffa079ec: ADD R2 += 0xc
+  ffa079ee: MOVE R1 = R6
+  ffa079f0: MOVE R0 = R7
+  ffa079f2: CALL 0xffa07cd0
+  ffa079f6: LOAD R0 = [SP + 0x2c]
+  ffa079f8: CC = R0 == 0x0
+  ffa079fa: IF !CC JUMP 0xffa079ea (bp)
+  ffa079fc: SUB|| R6 = R6 - R6 (ns)
+  ffa07a00: _LOAD P1 = [P5]

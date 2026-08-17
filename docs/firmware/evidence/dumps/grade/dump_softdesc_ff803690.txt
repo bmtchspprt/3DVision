@@ -1,0 +1,73 @@
+===== soft-desc table @ 0xFF803690 (16-byte slots, field+8 = ptr) =====
+Looking for ptr fields near arena/beam (0x202xxxxx) or L1 (0xff8xxxxx)
+slot[00] @0xff803690: ffc00c00 00000000 PTR=08000004 02000001
+slot[01] @0xff8036a0: ffc00c40 00000000 PTR=02200011 02000001
+slot[02] @0xff8036b0: ffc00c80 00000000 PTR=04200012 02000001
+slot[03] @0xff8036c0: ffc00cc0 00000000 PTR=0a000005 02000001
+slot[04] @0xff8036d0: ffc00d00 00000000 PTR=0c000006 02000001
+slot[05] @0xff8036e0: ffc00d40 00000000 PTR=0e000007 02000001
+slot[06] @0xff8036f0: ffc00d80 00000000 PTR=00100008 02000001
+slot[07] @0xff803700: ffc00dc0 00000000 PTR=0410000a 02000001
+slot[08] @0xff803710: ffc00e00 00000000 PTR=0610000b 02000001
+slot[09] @0xff803720: ffc00e40 00000000 PTR=0810000c 02000001
+slot[10] @0xff803730: ffc00e80 00000000 PTR=0a10000d 02000001
+slot[11] @0xff803740: ffc00ec0 00000000 PTR=0c10000e 02000001
+slot[12] @0xff803750: ffc00f00 00000000 PTR=0a30001d 02000001
+slot[13] @0xff803760: ffc00f40 00000000 PTR=0a30001d 02000001
+slot[14] @0xff803770: ffc00f80 00000000 PTR=0c30001e 02000001
+slot[15] @0xff803780: ffc00fc0 00000000 PTR=0c30001e 02000001
+slot[16] @0xff803790: 0000000d 0000000c PTR=0000000f 0000000e
+slot[17] @0xff8037a0: ffa07bde ffa07bde PTR=ffa07bde ffa07bec
+slot[18] @0xff8037b0: ffa07bec ffa07d20 PTR=ffa07d2e ffa07d34
+slot[19] @0xff8037c0: ffa07d70 ffa07d9c PTR=ffa07dc8 ffa07dda
+slot[20] @0xff8037d0: ffa07e20 ffa07e58 PTR=ffa07e90 ffa07ec8
+slot[21] @0xff8037e0: ffa07ee6 ffa07f02 PTR=ffa07f22 ffa07f42
+slot[22] @0xff8037f0: ffa07f62 ffa07f78 PTR=ffa07f92 ffa07fac
+slot[23] @0xff803800: ffa0807e ffa080e6 PTR=ffa08096 ffa0810c
+slot[24] @0xff803810: ffa081d0 ffc00700 PTR=ffc00704 ffc00708
+slot[25] @0xff803820: ffc0070c ffc00710 PTR=ffc00714 ffc00718
+slot[26] @0xff803830: ffc00720 ffc00724 PTR=ffc00728 ffc00730
+slot[27] @0xff803840: ffc00734 ffc00738 PTR=ffc0073c ffc00740
+slot[28] @0xff803850: ffc01500 ffc01504 PTR=ffc01508 ffc0150c
+slot[29] @0xff803860: ffc01510 ffc01514 PTR=ffc01518 ffc01520
+slot[30] @0xff803870: ffc01524 ffc01528 PTR=ffc01530 ffc01534
+slot[31] @0xff803880: ffc01538 ffc0153c PTR=ffc01540 ffc01700
+slot[32] @0xff803890: ffc01704 ffc01708 PTR=ffc0170c ffc01710
+slot[33] @0xff8038a0: ffc01714 ffc01718 PTR=ffc01720 ffc01724
+slot[34] @0xff8038b0: ffc01728 ffc01730 PTR=ffc01734 ffc01738
+slot[35] @0xff8038c0: ffc0173c ffc01740 PTR=ffa088e8 ffa088ee
+slot[36] @0xff8038d0: ffa08910 ffa08918 PTR=ffa08920 ffa088ee
+slot[37] @0xff8038e0: ffa08928 00000000 PTR=00000000 00000000
+slot[39] @0xff803900: 00000000 00000f00 PTR=00000000 00000000
+slot[40] @0xff803910: ffa0a298 ffa0a2a2 PTR=ffa0a2b2 ffa0a2c2
+slot[41] @0xff803920: ffa0a150 ffa0a148 PTR=ffa0a186 ffa0a110
+slot[42] @0xff803930: ffa0a110 ffa0a110 PTR=ffa0a110 ffa0a110
+slot[43] @0xff803940: ffa0a110 ffa0a110 PTR=ffa0a110 ffa0a110
+slot[44] @0xff803950: ffa0a110 ffa0a110 PTR=ffa0a1b4 ffa0a1d0
+slot[45] @0xff803960: ffa0a1ea ffa0a110 PTR=ffa0a110 ffa0a1f2
+slot[46] @0xff803970: ffa0a1fa ffa0a20a PTR=ffa0a216 ffa0a226
+slot[47] @0xff803980: ffa0a236 ffa0a110 PTR=ffa0a23e ffa0a260
+slot[48] @0xff803990: ffa0a790 ffa0a7a8 PTR=ffa0a7c0 ffa0a7d8
+slot[49] @0xff8039a0: ffa0a6b4 ffa0a6aa PTR=ffa0a6ec ffa0a664
+slot[50] @0xff8039b0: ffa0a664 ffa0a664 PTR=ffa0a664 ffa0a664
+slot[51] @0xff8039c0: ffa0a664 ffa0a708 PTR=ffa0a720 ffa0a760
+slot[52] @0xff8039d0: ffa0a778 ffa0a86e PTR=ffa0a922 ffa0a930
+slot[53] @0xff8039e0: ffa0a940 ffa0a94c PTR=ffa0a95c ffa0abc4
+slot[54] @0xff8039f0: ffa0abce ffa0abd8 PTR=ffa0abe2 ffa0abec
+slot[55] @0xff803a00: ffa0ac18 ffa0aaaa PTR=ffa0aaaa ffa0aaaa
+slot[56] @0xff803a10: ffa0aaaa ffa0ac22 PTR=ffa0ac2c ffa0ac48
+slot[57] @0xff803a20: ffa0ac60 ffa0aab8 PTR=ffa0ac76 ffa0aaaa
+slot[58] @0xff803a30: ffa0aaaa ffa0aaaa PTR=ffa0aaaa ffa0aaaa
+slot[59] @0xff803a40: ffa0aaaa ffa0aaaa PTR=ffa0ac98 ffa0aaaa
+slot[60] @0xff803a50: ffa0aaaa ffa0aca2 PTR=ffa0ae26 ffa0ae38
+slot[61] @0xff803a60: ffa0ae3e ffa0ae74 PTR=ffa0aec6 ffa0aec8
+slot[62] @0xff803a70: ffa0aed0 ffa0aef0 PTR=ffa0af08 ffa0af20
+slot[63] @0xff803a80: ffa0af34 ffa0af4c PTR=ffa0afb6 ffa0afc8
+
+===== L1D/SDRAM words == 0x5BC / 0x44 as standalone u32 =====
+region 0xff800000 hits=0
+region 0xff900000 hits=0
+region 0x20200000 hits=0
+
+===== code STOREs targeting 0xff803xxx (from LOAD H=0xff80 L near 3690) already dumped =====
+(see hunt_desc_ptr / FFA077* )

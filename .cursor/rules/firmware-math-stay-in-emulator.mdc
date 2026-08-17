@@ -11,6 +11,8 @@ Scanner math notes (Grade, Threshold, AFE, false echo, Orange, pick, mix, dampin
 
 Start: `docs/firmware/RESEARCH-CLOSED.md`
 
+Layout: `README.md` (index) · `notes/` (logs) · `evidence/dumps/` · `evidence/traces/`
+
 ## Do not
 
 - Edit `Documents\3D Emulator` for this work.

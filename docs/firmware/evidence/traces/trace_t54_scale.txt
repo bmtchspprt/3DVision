@@ -1,0 +1,19 @@
+Connected to the simulator.
+Loading section .text, size 0x4 lma 20200000
+Start address ffa00000
+Transfer rate: 32 bits in <1 sec.
+Temporary breakpoint 1 at 0xffa00000
+
+Temporary breakpoint 1, 0xffa00000 in ?? ()
+Temporary breakpoint 2 at 0x2020fb72
+0x2020fade in ?? ()
+
+Temporary breakpoint 2, 0x2020fb72 in ?? ()
+
+=== regs at breakpoint ===
+$1 = 0x20288000
+$2 = 0x2a6809c0
+$3 = 711461312
+
+=== done ===
+GDB-EXIT:0

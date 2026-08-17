@@ -1,0 +1,335 @@
+===== FFA10000..FFA1FFFF interesting =====
+ffa10010: CALL 0xffa10684
+ffa10048: CALL 0xffa079ac
+ffa1007e: CALL 0xffa079ac
+ffa100a4: CALL (P1) =>0x58
+ffa100ae: CALL 0xffa08cea
+ffa100b6: CALL 0xffa08d0c
+ffa100fa: STORE W [SP + 0x44] = R4
+ffa1017e: CALL 0xffa07cd0
+ffa10196: CALL 0xffa07cd0
+ffa101e2: CALL 0xffa0b8c0
+ffa10246: CALL 0xffa0b8c0
+ffa1025e: CALL 0xffa07cd0
+ffa10276: CALL 0xffa07cd0
+ffa10296: CALL 0xffa07cd0
+ffa102ea: CALL 0xffa0b8c0
+ffa1030e: CALL (P1)
+ffa10316: CALL (P1)
+ffa103f6: CALL 0xffa083e4
+ffa10402: CALL 0xffa083e4
+ffa10424: CALL 0xffa07a84
+ffa10446: CALL 0xffa08304
+ffa1046e: CALL 0xffa08304
+ffa104bc: CALL 0xffa07394
+ffa104cc: CALL (P0)
+ffa1052a: CALL 0xffa07cd0
+ffa10564: CALL 0xffa07cd0
+ffa10598: CALL (P1)
+ffa105ce: CALL (P1)
+ffa105fc: CALL 0xffa07cd0
+ffa10634: CALL 0xffa07cd0
+ffa106ea: CALL (P1)
+ffa10702: CALL 0xffa10684
+ffa1071e: CALL 0xffa10684
+ffa1074e: CALL 0xffa104dc
+ffa107d6: CALL 0xffa10684
+ffa10810: CALL 0xffa10684
+ffa10874: CALL 0xffa07cd0
+ffa108b2: CALL 0xffa07cd0
+ffa1090e: CALL 0xffa07762
+ffa1093c: CALL 0xffa07762
+ffa1096a: CALL 0xffa0778c
+ffa10998: CALL 0xffa0778c
+ffa10a38: CALL 0xffa07cd0
+ffa10a9c: CALL 0xffa0778c
+ffa10acc: CALL 0xffa077e0
+ffa10ae2: CALL 0xffa07cd0
+ffa10afa: CALL 0xffa07cd0
+ffa10b20: CALL 0xffa079ac
+ffa10b82: CALL 0xffa07762
+ffa10bf2: CALL 0xffa0778c
+ffa10c78: CALL 0xffa07cd0
+ffa10d0c: CALL (P0)
+ffa10e9c: CALL (P1)
+ffa10ec4: CALL (P1)
+ffa10edc: CALL (P1)
+ffa10ef4: CALL (P1)
+ffa10f12: CALL 0xffa08cea
+ffa10f24: CALL 0xffa08d0c
+ffa10f72: CALL 0xffa08cea
+ffa10faa: CALL 0xffa10d94
+ffa10fc6: CALL 0xffa08d0c
+ffa10ff8: CALL 0xffa10d94
+ffa11010: CALL 0xffa10dd4
+ffa1102e: CALL 0xffa10f00
+ffa11034: CALL 0xffa10f64
+ffa1105c: CALL 0xffa10dd4
+ffa1107a: CALL 0xffa10f00
+ffa11080: CALL 0xffa10f64
+ffa110a8: CALL 0xffa10dd4
+ffa110c6: CALL 0xffa10f00
+ffa110cc: CALL 0xffa10f64
+ffa110f6: CALL 0xffa08b3c
+ffa11146: CALL 0xffa10d4e
+ffa11186: CALL 0xffa10cd0
+ffa111a4: CALL 0xffa10cd0
+ffa111cc: CALL 0xffa10d94
+ffa11214: CALL 0xffa10e0c
+ffa11272: CALL 0xffa10cd0
+ffa11326: CALL 0xffa097a0
+ffa11360: CALL 0xffa09f18
+ffa11398: CALL 0xffa08cea
+ffa113ae: CALL 0xffa08d0c
+ffa1145c: CALL 0xffa08be8
+ffa11470: CALL 0xffa08dd0
+ffa11492: CALL 0xffa08ba4
+ffa1149a: CALL 0xffa08c4c
+ffa114a2: CALL 0xffa112a4
+ffa115b0: CALL 0xffa10f64
+ffa115d0: CALL 0xffa08cea
+ffa115de: CALL 0xffa08d0c
+ffa11602: CALL 0xffa01038
+ffa1161a: CALL 0xffa08cea
+ffa11622: CALL 0xffa08d0c
+ffa1162a: CALL 0xffa112a4
+ffa11668: CALL 0xffa08cea
+ffa11678: CALL 0xffa08d0c
+ffa11680: CALL 0xffa112a4
+ffa11698: CALL 0xffa08cea
+ffa116aa: CALL 0xffa08d0c
+ffa116c2: CALL 0xffa08cea
+ffa116f4: CALL 0xffa08d0c
+ffa1170c: CALL 0xffa08cea
+ffa11728: CALL 0xffa08d0c
+ffa11744: CALL 0xffa08cea
+ffa11758: CALL 0xffa08d0c
+ffa11798: CALL 0xffa08cea
+ffa117c6: CALL 0xffa08d0c
+ffa117e8: CALL 0xffa112a4
+ffa11810: CALL 0xffa08cea
+ffa11866: CALL 0xffa08d0c
+ffa1187e: CALL 0xffa08cea
+ffa1189c: CALL 0xffa08d0c
+ffa118d4: CALL 0xffa114b8
+ffa118f0: CALL 0xffa08c20
+ffa118fa: CALL 0xffa08ba4
+ffa1190c: CALL 0xffa08eb8
+ffa1192c: CALL 0xffa114b8
+ffa11b4c: CALL 0xffa08cea
+ffa11b5c: CALL 0xffa08d0c
+ffa11bb8: CALL 0xffa07280
+ffa11bf8: CALL 0xffa07394
+ffa11c0e: CALL (P0)
+ffa11c36: CALL 0xffa11bce
+ffa11c60: CALL 0xffa11c20
+ffa11c88: CALL 0xffa11c20
+ffa11e12: CALL 0xffa11a26
+ffa11e2a: CALL 0xffa11b02
+ffa11e38: CALL 0xffa11c54
+ffa11e46: CALL 0xffa11c54
+ffa11e54: CALL 0xffa11c54
+ffa11e62: CALL 0xffa11c54
+ffa11e6e: CALL 0xffa11c54
+ffa11e80: CALL 0xffa11a26
+ffa11e88: CALL 0xffa11940
+ffa11e90: CALL 0xffa11940
+ffa11e9a: CALL 0xffa11c20
+ffa11ee2: CALL 0xffa08cea
+ffa11f14: CALL 0xffa08d0c
+ffa11f32: CALL 0xffa11ca8
+ffa11f7a: CALL 0xffa11bce
+ffa11fb0: CALL 0xffa11bce
+ffa11ff4: CALL 0xffa11940
+ffa1200a: CALL 0xffa11f4c
+ffa12010: CALL 0xffa11f88
+ffa12018: CALL 0xffa11f88
+ffa12030: CALL 0xffa08cea
+ffa12068: CALL 0xffa08d0c
+ffa1208a: CALL 0xffa11fc8
+ffa120aa: CALL 0xffa11bce
+ffa120e0: CALL 0xffa11bce
+ffa1213c: CALL 0xffa12090
+ffa12142: CALL 0xffa120b8
+ffa12148: CALL 0xffa11a26
+ffa12160: CALL 0xffa120b8
+ffa12178: CALL 0xffa08cea
+ffa121b0: CALL 0xffa08d0c
+ffa121d2: CALL 0xffa120f8
+ffa1221c: CALL 0xffa11b02
+ffa12222: CALL 0xffa12090
+ffa12260: CALL 0xffa120b8
+ffa12268: CALL 0xffa11f88
+ffa12282: CALL 0xffa120f8
+ffa12294: CALL 0xffa11fc8
+ffa122ae: CALL 0xffa11f4c
+ffa122b6: CALL 0xffa11fc8
+ffa1230c: CALL 0xffa11b02
+ffa12312: CALL 0xffa08c20
+ffa1232e: CALL 0xffa08ba4
+ffa12358: CALL 0xffa08eb8
+ffa123cc: CALL 0xffa121d8
+ffa123ee: CALL 0xffa122bc
+ffa1243e: CALL 0xffa09f18
+ffa12444: CALL 0xffa11b02
+ffa124bc: CALL 0xffa01038
+ffa1254c: CALL 0xffa08be8
+ffa12562: CALL 0xffa08dd0
+ffa1256a: CALL 0xffa08ba4
+ffa12570: CALL 0xffa08c4c
+ffa125a4: CALL 0xffa122bc
+ffa125e8: CALL 0xffa122bc
+ffa12662: CALL 0xffa122bc
+ffa1268a: CALL 0xffa12408
+ffa126ca: CALL 0xffa12408
+ffa126dc: CALL 0xffa122bc
+ffa126f0: CALL 0xffa122bc
+ffa12728: CALL 0xffa12408
+ffa12760: CALL 0xffa122bc
+ffa127b8: CALL 0xffa12408
+ffa1292e: CALL 0xffa11ca8
+ffa12940: CALL 0xffa121d8
+ffa129b6: CALL 0xffa1291a
+ffa12a02: CALL 0xffa016d4
+ffa12a0a: CALL 0xffa016d4
+ffa12a14: CALL 0xffa018f0
+ffa12a1c: CALL 0xffa01814
+ffa12a26: CALL 0xffa01716
+ffa12a2a: CALL 0xffa01520
+ffa12aa2: CALL 0xffa08cea
+ffa12ab8: CALL 0xffa08d0c
+ffa12b16: CALL 0xffa08cea
+ffa12b2c: CALL 0xffa08d0c
+ffa12b72: CALL 0xffa08cea
+ffa12b7e: CALL 0xffa08d0c
+ffa12b94: CALL (P1) =>0x50
+ffa12bc2: CALL 0xffa08cea
+ffa12bd6: CALL 0xffa08d0c
+ffa12c3c: LOAD R2 = [P5 + 0x44]
+ffa12cec: CALL (P1)
+ffa12d10: CALL (P1)
+ffa12d24: CALL (P1)
+ffa12d38: CALL (P1)
+ffa12d4e: CALL 0xffa12b54
+ffa12d7a: CALL 0xffa12b54
+ffa12dea: CALL 0xffa0acc0
+ffa12e26: CALL 0xffa0b198
+ffa12e4c: CALL 0xffa0b610
+ffa12ee4: CALL 0xffa08be8
+ffa12efc: CALL 0xffa08dd0
+ffa12f18: CALL 0xffa08ba4
+ffa12f1e: CALL 0xffa08c4c
+ffa12f50: CALL 0xffa08ba4
+ffa12f56: CALL 0xffa08c20
+ffa12f6a: CALL 0xffa08eb8
+ffa12fec: CALL 0xffa08cea
+ffa13070: CALL 0xffa08d0c
+ffa13162: CALL 0xffa129f0
+ffa131ac: CALL 0xffa12d80
+ffa13246: STORE [P5 + 0x44] = R0
+ffa13280: CALL 0xffa08cea
+ffa132b8: CALL 0xffa08d0c
+ffa132de: CALL 0xffa08cea
+ffa1330e: CALL 0xffa12b54
+ffa13316: CALL 0xffa08d0c
+ffa13348: CALL 0xffa12b54
+ffa1337c: CALL 0xffa08cea
+ffa133b8: CALL 0xffa08d0c
+ffa133e0: CALL 0xffa12e68
+ffa1341c: CALL 0xffa12e68
+ffa13444: CALL 0xffa0778c
+ffa13458: CALL 0xffa0774a
+ffa13468: CALL 0xffa08be8
+ffa13476: CALL 0xffa08c20
+ffa13482: CALL 0xffa08ba4
+ffa13496: CALL 0xffa08eb8
+ffa134a8: CALL 0xffa0778c
+ffa134bc: CALL 0xffa0774a
+ffa134cc: CALL 0xffa08be8
+ffa134da: CALL 0xffa08c20
+ffa134e2: CALL 0xffa08ba4
+ffa134f6: CALL 0xffa08eb8
+ffa13520: CALL 0xffa0b610
+ffa13526: CALL 0xffa0b29c
+ffa1352c: CALL 0xffa129f0
+ffa13540: CALL (P1)
+ffa13592: CALL 0xffa13508
+ffa135ac: CALL 0xffa0b610
+ffa135b8: CALL 0xffa01038
+ffa135cc: CALL 0xffa0b610
+ffa135dc: CALL 0xffa0b610
+ffa1363a: CALL 0xffa09944
+ffa13664: CALL 0xffa09f18
+ffa13688: CALL 0xffa08cea
+ffa136a2: CALL 0xffa08d0c
+ffa13706: CALL 0xffa135ec
+ffa13770: CALL 0xffa0778c
+ffa13784: CALL 0xffa0774a
+ffa13798: CALL 0xffa08be8
+ffa137b4: CALL 0xffa08dd0
+ffa137c4: CALL 0xffa08ba4
+ffa137ca: CALL 0xffa08c4c
+ffa137d8: CALL 0xffa0778c
+ffa137ec: CALL 0xffa0774a
+ffa13800: CALL 0xffa08be8
+ffa1381c: CALL 0xffa08dd0
+ffa1382c: CALL 0xffa08ba4
+ffa13832: CALL 0xffa08c4c
+ffa13856: CALL (P1) =>0x1
+ffa13868: CALL 0xffa0bfac
+
+===== SDRAM CALL into FFA1xxxx =====
+20205672: => 0xffa10684
+2020585c: => 0xffa10684
+20205870: => 0xffa10000
+20205d38: => 0xffa10000
+202061e8: => 0xffa10000
+20206322: => 0xffa10684
+202075ce: => 0xffa10684
+2020762c: => 0xffa10684
+202076d6: => 0xffa10684
+2020af64: => 0xffa10684
+2020af9a: => 0xffa10684
+caller_count_capped=11
+
+===== around 202ece00 =====
+202ecdf0: _NOP
+202ecdf2: STORE [SP + 0x18] = P2
+202ecdf4: LOAD R1 = W [P4 + 0x5772] (Z)
+202ecdf8: ADD P1 = P0 + P1
+202ecdfa: LOAD P0 = [P1]
+202ecdfc: LOAD R3 = [P1 + 0x4]
+202ecdfe: STORE [SP + 0x10] = R3
+202ece00: LOAD R2 = [P0 + 0x8]
+202ece02: LOAD R3 = W [P0 + 0x4] (X)
+202ece04: STORE [SP + 0xc] = R2
+202ece06: STORE [SP + 0x14] = R3
+202ece08: LOAD R2 = [P0]
+202ece0a: LOAD P1.L = 0x6cfc
+202ece0e: LOAD P1.H = 0xffa0
+202ece12: CALL (P1) =>0xffa06cfc
+202ece14: LOAD R1.L = W [P5]
+202ece16: ADD R0 = R1 + R6
+202ece18: LOAD R2 = [P4 + 0x57bc]
+202ece1c: MOVE R1 = R0.L (X)
+202ece1e: CC = R1 < R2
+202ece20: STORE W [P5] = R0.L
+202ece22: IF CC JUMP 0x202ecdde (bp)
+202ece24: LOAD R1 = W [P4 + 0x5772] (X)
+202ece28: MOVE R0 = R4
+202ece2a: MOVE R6 = R1.L (Z)
+202ece2c: LOAD P1.L = 0x705c
+202ece30: LOAD P1.H = 0xffa0
+202ece34: CALL (P1) =>0xffa0705c
+202ece36: STORE W [P5] = R5.L
+202ece38: MOVE R7 = R0
+202ece3a: LOAD P1.L = 0x1688
+202ece3e: LOAD P1.H = 0xffa0
+202ece42: CALL (P1) =>0xffa01688
+202ece44: MOVE R1 = R0
+202ece46: LOAD R0 = -0x200
+202ece4a: LOAD R0.H = 0x46ff
+202ece4e: LOAD P1.L = 0x1814
+202ece52: LOAD P1.H = 0xffa0
+202ece56: CALL (P1) =>0xffa01814
+202ece58: LOAD R1 = [P4 + 0x5788]

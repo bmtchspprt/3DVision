@@ -1,0 +1,43 @@
+202b5a56: LOAD R0 = 0x1194
+202b5a5a: JUMP.S 0x202b5a60
+202b5a5c: LOAD R0 = 0x8fc
+202b5a60: LOAD P2 = [FP + -0x5c]
+202b5a62: STORE [P0 + 0x4] = R0
+202b5a64: LOAD R7 = 0x49e6
+202b5a68: LOAD R5.L = 0x3fdd
+202b5a6c: LOAD R0 = [P2 + 0x538]
+202b5a70: LOAD P1.L = 0x2894
+202b5a74: LOAD P1.H = 0xffa0
+202b5a78: CALL (P1)
+202b5a7a: ROT|| R6 = rot R0 by 0
+202b5a7e: _LOAD P0 = [FP + -0x5c]
+202b5a80: _NOP
+202b5a82: LOAD R0 = [P0 + 0x4ec]
+202b5a86: LOAD P1.L = 0x2894
+202b5a8a: LOAD P1.H = 0xffa0
+202b5a8e: CALL (P1)
+202b5a90: ROT|| R1 = rot R0 by 0
+202b5a94: _LOAD P1 = [FP + -0x58]
+202b5a96: _NOP
+202b5a98: MOVE R0 = R6
+202b5a9a: LOAD R6 = 0x0
+202b5a9c: LOAD R2 = W [P1] (X)
+202b5a9e: MULT R2 = R2.L * R5.H (is)
+202b5aa2: MOVE P0 = R2
+202b5aa4: LOAD P1.L = 0x1814
+202b5aa8: LOAD P1.H = 0xffa0
+202b5aac: CALL (P1)
+202b5aae: LOAD P1 = [FP + -0x58]
+202b5ab0: LOAD R3 = -0x62ea
+202b5ab4: STORE [FP + -0x2c] = R3
+202b5ab6: ADD P0 = P3 + P0
+202b5ab8: STORE [P0 + 0x5cc4] = R0
+202b5abc: LOAD R0 = W [P1] (X)
+202b5abe: MULT R1 = R0.L * R5.H (is)
+202b5ac2: MOVE P1 = R1
+202b5ac4: LOAD R2 = 0xfdb
+202b5ac8: LOAD R3 = -0x4c29
+202b5acc: STORE [FP + 0x10] = R2
+202b5ace: STORE [SP + 0x90] = R3
+202b5ad2: ADD P1 = P3 + P1
+202b5ad4: STORE [SP + 0x9c] = P1

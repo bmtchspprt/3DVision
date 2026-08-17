@@ -1,0 +1,37 @@
+ffa00c00 -> FUN_ffa00c00 ffa00c00..ffa00c4d
+  xrefs:
+ffa00d00 -> FUN_ffa00d00 ffa00d00..ffa00da3
+  xrefs:
+ffa00d18 -> FUN_ffa00d18 ffa00d18..ffa00d85
+  xrefs:
+ffa04b00 -> none
+ffa04b9a -> FUN_ffa04b9a ffa04b9a..ffa04edf
+  xrefs:
+ffa04c08 -> FUN_ffa04c08 ffa04c08..ffa04edf
+  xrefs:
+ffa05b00 -> FUN_ffa05b00 ffa05b00..ffa05bb3
+  xrefs:
+    ffa05a80
+    ffa05bb8
+    ffa05c36
+ffa05b28 -> FUN_ffa05b28 ffa05b28..ffa05b79
+  xrefs:
+ffa06688 -> FUN_ffa06688 ffa06688..ffa068e7
+  xrefs:
+    202ecb14
+    202ecc44
+    202ecc60
+    202106a6
+    20210726
+    20210842
+    202108c2
+    202109d6
+    20210a56
+    20214c9c
+20210600 -> none
+202106a6 -> FUN_202106a6 202106a6..20210b87
+  xrefs:
+20214c9c -> FUN_20214c9c 20214c9c..20214ff1
+  xrefs:
+202ecb14 -> FUN_202ecb14 202ecb14..202ecc2b
+  xrefs:

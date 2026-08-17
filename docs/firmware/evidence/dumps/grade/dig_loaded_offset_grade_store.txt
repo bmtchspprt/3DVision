@@ -1,0 +1,113 @@
+Hunt: LOAD offset from mem (not imm 0x44), ADD to beam/arena, STORE W loop
+Motif: near 0x578/0x5cfc, LOAD from [P+disp] into Rx, ADD beam+Rx, STORE W
+
+===== 2022d87e STORE W [P1] = R7.L =====
+loadedOff hint: LOAD R0 = [P2 + 0x5cb8]
+2022d82a: ADD P1 += -0x1
+2022d82c: CC = P1 == 0x0
+2022d82e: IF CC JUMP 0x2022d83e
+2022d830: LSETUP (0x2022d834,0x2022d83c) LC0 = P1
+2022d834: ADD|| R1 = R3 +|+ R0
+2022d838: _LOAD R0 = [P2++]
+2022d83a: _NOP
+2022d83c: STORE [P0++] = R1
+2022d83e: ADD R0 = R3 +|+ R0
+2022d842: STORE [P0++] = R0
+2022d844: CC = BITTST (R2,0x0)
+2022d846: MOVE P2 = P0
+2022d848: IF !CC JUMP 0x2022d84c (bp)
+2022d84a: JUMP.S 0x2022e0f2
+2022d84c: STORE W [P3 + 0x0] = R2
+2022d84e: LOAD R0 = W [P4] (X)
+2022d850: MULT|| R0 = R0.L * R4.H (is)
+2022d854: LOAD P2 = [FP + 0x1c]
+2022d856: NOP
+2022d858: MOVE P1 = R0
+2022d85a: LOAD P0 = 0x578
+2022d85e: ADD P0 = P2 + P0
+2022d860: ADD P2 = P0 + P1
+2022d862: LOAD R0 = [P2 + 0x5cb8]
+2022d866: CC = R5 <= R0
+2022d868: IF !CC JUMP 0x2022d884
+2022d86a: LOAD P5 = [FP + 0x1c]
+2022d86c: LOAD R0 = W [P4] (X)
+2022d86e: LOAD P1 = -0x1d10
+2022d872: LOAD P1.H = 0x4
+2022d876: STORE [FP + -0x3c] = R0
+2022d878: ADD P1 = P5 + P1
+2022d87a: LOAD P5 = [FP + -0x3c]
+2022d87c: ADD P1 = P1 + (P5 << 1)
+2022d87e: STORE W [P1] = R7.L
+2022d880: STORE [P2 + 0x5cb4] = R6
+2022d884: ROT|| R0 = rot R6 by 0
+2022d888: _LOAD P5 = [FP + 0x1c]
+2022d88a: _NOP
+2022d88c: LOAD P1 = [FP + 0x14]
+2022d88e: LOAD P2 = -0x4c08
+2022d892: LOAD P2.H = 0xfffc
+2022d896: STORE [FP + -0x14] = P0
+2022d898: SUB P2 -= P5
+2022d89a: ADD P2 = P2 + P1
+2022d89c: LOAD P1 = -0x4690
+2022d8a0: LOAD P1.H = 0xfffc
+2022d8a4: MOVE P5 = P4
+2022d8a6: LOAD R2.L = W [P4 ++ P1]
+2022d8a8: MULT|| R2 = R2.L * R4.H (is)
+
+===== 202eceac STORE W [P5 + 0x0] = R5 =====
+loadedOff hint: LOAD R1 = [P4 + 0x5788]
+202ece52: LOAD P1.H = 0xffa0
+202ece56: CALL (P1)
+202ece58: LOAD R1 = [P4 + 0x5788]
+202ece5c: LOAD P1.L = 0x18f0
+202ece60: LOAD P1.H = 0xffa0
+202ece64: CALL (P1)
+202ece66: STORE [P4 + 0x5788] = R0
+202ece6a: MOVE R1 = R7
+202ece6c: LOAD R0 = -0x1
+202ece6e: LSHIFT R0 >>= 0x1
+202ece70: LOAD P1.L = 0xfb4
+202ece74: LOAD P1.H = 0xffa0
+202ece78: CALL (P1)
+202ece7a: CC = R6 <= 0x0
+202ece7c: STORE [P5 + 0x4] = R0
+202ece7e: IF CC JUMP 0x202eceae
+202ece80: LOAD P3.L = 0x64f4
+202ece84: LOAD P3.H = 0x2020
+202ece88: MOVE P1 = R4
+202ece8a: LOAD P2 = -0x1
+202ece8c: LOAD R2 = B [P3] (Z)
+202ece8e: LOAD P0 = [FP + 0x18]
+202ece90: LSETUP (0x202ece94,0x202ecea8) LC0 = P2
+202ece94: ADD R5 += 0x1
+202ece96: LOAD R1 = W [P1++] (X)
+202ece98: MULT R1 *= R0
+202ece9a: ASHIFT R1 >>>= 0x18
+202ece9c: ADD R1 = R2 + R1
+202ece9e: STORE B [P0++] = R1
+202ecea0: LOAD R1 = W [P4 + 0x5772] (Z)
+202ecea4: MOVE R3 = R5.L (X)
+202ecea6: CC = R3 < R1
+202ecea8: IF !CC JUMP 0x202eceac
+202eceaa: JUMP.S 0x202ece90
+202eceac: STORE W [P5 + 0x0] = R5
+202eceae: LOAD R0 = 0x1
+202eceb0: LOAD R2 = 0x1
+202eceb2: LOAD R1 = 0x0
+202eceb4: LOAD P1.L = 0x6008
+202eceb8: LOAD P1.H = 0xffa0
+202ecebc: CALL (P1)
+202ecebe: ADD SP += 0x20
+202ecec0: POP (R7:4,P5:3) = [SP++]
+202ecec2: UNLINK
+202ecec6: RTS
+202ecec8: LINK 0x14
+202ececc: PUSH [--SP] = (R7:4,P5:3)
+202ecece: ADD SP += -0x20
+202eced0: STORE [FP + -0xc] = R1
+202eced2: LOAD P0 = [FP + -0xc]
+%n===== Any LOAD involving 5798/579c/57a0 as source =====
+20212e50: LOAD R6 = 0x5798
+20224556: LOAD R1 = 0x5798
+ffa047ac: LOAD R2 = 0x5798
+ffa04e9e: LOAD R6 = 0x5798

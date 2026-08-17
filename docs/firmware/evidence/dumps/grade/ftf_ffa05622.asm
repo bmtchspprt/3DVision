@@ -1,0 +1,51 @@
+ffa055f4: JUMP (P0)
+ffa055f6: STORE W [P2] = R3.L
+ffa055f8: STORE W [P5] = R7.L
+ffa055fa: LOAD P0 = [FP + 0x4]
+ffa055fc: POP (R7:6,P5:4) = [SP++]
+ffa055fe: UNLINK
+ffa05602: JUMP (P0)
+ffa05604: LINK 0x8
+ffa05608: PUSH [--SP] = (R7:4,P5:3)
+ffa0560a: MOVE P5 = R0
+ffa0560c: ADD SP += -0xc
+ffa0560e: MOVE P4 = R1
+ffa05610: CC = R2 == 0x0
+ffa05612: LOAD P3.L = 0x5db0
+ffa05616: LOAD P3.H = 0x2022
+ffa0561a: LOAD R0 = [P5]
+ffa0561c: LOAD R6 = [FP + 0x14]
+ffa0561e: IF !CC JUMP 0xffa05622 (bp)
+ffa05620: JUMP.S 0xffa05860
+ffa05622: CALL 0xffa02894
+ffa05626: STORE [P3 + 0xc] = R0
+ffa05628: LOAD R0 = [P4]
+ffa0562a: CALL 0xffa02894
+ffa0562e: CC = R6 == 0x0
+ffa05630: STORE [P3 + 0x10] = R0
+ffa05632: STORE [SP + 0x2c] = R0
+ffa05634: LOAD R7 = [P5 + 0x4]
+ffa05636: MOVE R5 = R0
+ffa05638: IF CC JUMP 0xffa05788
+ffa0563a: MOVE R0 = R7
+ffa0563c: CALL 0xffa00da4
+ffa05640: MOVE R6 = R0
+ffa05642: LOAD R5 = [P4 + 0x4]
+ffa05644: MOVE R0 = R5
+ffa05646: CALL 0xffa00da4
+ffa0564a: MOVE R1 = R0
+ffa0564c: MOVE R0 = R6
+ffa0564e: CALL 0xffa01714
+ffa05652: MOVE R1 = R0
+ffa05654: CALL 0xffa018f0
+ffa05658: STORE [SP + 0x2c] = R0
+ffa0565a: MOVE R0 = R7
+ffa0565c: CALL 0xffa020d4
+ffa05660: LOAD R4 = [P5 + 0x8]
+ffa05662: STORE [SP + 0x38] = R0
+ffa05664: MOVE R0 = R4
+ffa05666: CALL 0xffa00da4
+ffa0566a: MOVE R7 = R0
+ffa0566c: MOVE R0 = R5
+ffa0566e: CALL 0xffa020d4
+ffa05672: LOAD R6 = [P4 + 0x8]

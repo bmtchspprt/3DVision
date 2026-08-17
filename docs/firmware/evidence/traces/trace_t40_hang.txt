@@ -1,0 +1,25 @@
+Connected to the simulator.
+Loading section .text, size 0x4 lma 20200000
+Start address ffa00000
+Transfer rate: 32 bits in <1 sec.
+Temporary breakpoint 1 at 0xffa00000
+
+Temporary breakpoint 1, 0xffa00000 in ?? ()
+Breakpoint 2 at 0x20210dfc
+Breakpoint 3 at 0x202ecc64
+Breakpoint 4 at 0x202ec5de
+Breakpoint 5 at 0x202eca00
+Breakpoint 6 at 0x202ec1dc
+Breakpoint 7 at 0x202ec914
+Breakpoint 8 at 0x202eccf2
+Breakpoint 9 at 0x202eceb4
+Breakpoint 10 at 0xffa06008
+Breakpoint 11 at 0x20211024
+Breakpoint 12 at 0x20210be6
+Breakpoint 13 at 0x20210c8e
+Breakpoint 14 at 0x20210cdc
+Breakpoint 15 at 0x20210db2
+pc             0x20210be6          0x20210be6
+
+Program received signal SIGINT, Interrupt.
+GDB-EXIT:0

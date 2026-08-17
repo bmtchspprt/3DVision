@@ -1,0 +1,203 @@
+--- MMR32 store with beam/addr ctx
+======== @ffa000a0
+ffa00078: LOAD R0.L = 0x8181
+ffa0007c: LOAD R0.H = 0x8181
+ffa00080: PUSH [--SP] = R0
+ffa00082: PUSH [--SP] = R0
+ffa00084: MOVE FP = SP
+ffa00086: ADD SP += -0xc
+ffa00088: CALL 0xffa0727c
+ffa0008c: CALL 0xffa07324
+ffa00090: CALL 0xffa03338
+ffa00094: CALL 0xffa1383c
+ffa00098: LINK 0x14
+ffa0009c: PUSH [--SP] = (R7:4,P5:3)
+ffa0009e: MOVE P0 = R1
+ffa000a0: LOAD P1.H = 0xffc0
+ffa000a4: LOAD P1.L = 0xa14
+ffa000a8: LOAD P2.H = 0xffc0
+ffa000ac: LOAD P2.L = 0xa18
+ffa000b0: LOAD P3.H = 0xffc0
+ffa000b4: LOAD P3.L = 0xa1c
+ffa000b8: LOAD R1 = W [P0] (Z)
+ffa000ba: LOAD P0.H = 0xffc0
+ffa000be: LOAD P0.L = 0xa10
+ffa000c2: LOAD R5 = W [P1] (Z)
+ffa000c4: CC = BITTST (R5,0x0)
+ffa000c6: IF !CC JUMP 0xffa000e2
+ffa000c8: LOAD P4.H = 0x0
+ffa000cc: LOAD P4.L = 0x0
+ffa000d0: NOP
+ffa000d2: LOAD R5 = [P4]
+
+--- MMR32 store with beam/addr ctx
+======== @ffa000a8
+ffa00080: PUSH [--SP] = R0
+ffa00082: PUSH [--SP] = R0
+ffa00084: MOVE FP = SP
+ffa00086: ADD SP += -0xc
+ffa00088: CALL 0xffa0727c
+ffa0008c: CALL 0xffa07324
+ffa00090: CALL 0xffa03338
+ffa00094: CALL 0xffa1383c
+ffa00098: LINK 0x14
+ffa0009c: PUSH [--SP] = (R7:4,P5:3)
+ffa0009e: MOVE P0 = R1
+ffa000a0: LOAD P1.H = 0xffc0
+ffa000a4: LOAD P1.L = 0xa14
+ffa000a8: LOAD P2.H = 0xffc0
+ffa000ac: LOAD P2.L = 0xa18
+ffa000b0: LOAD P3.H = 0xffc0
+ffa000b4: LOAD P3.L = 0xa1c
+ffa000b8: LOAD R1 = W [P0] (Z)
+ffa000ba: LOAD P0.H = 0xffc0
+ffa000be: LOAD P0.L = 0xa10
+ffa000c2: LOAD R5 = W [P1] (Z)
+ffa000c4: CC = BITTST (R5,0x0)
+ffa000c6: IF !CC JUMP 0xffa000e2
+ffa000c8: LOAD P4.H = 0x0
+ffa000cc: LOAD P4.L = 0x0
+ffa000d0: NOP
+ffa000d2: LOAD R5 = [P4]
+ffa000d4: LOAD R5 = [P0]
+ffa000d6: BITCLR (R5,0x17)
+ffa000d8: BITSET (R5,0x18)
+ffa000da: STORE [P0] = R5
+
+--- MMR32 store with beam/addr ctx
+======== @ffa000b0
+ffa00088: CALL 0xffa0727c
+ffa0008c: CALL 0xffa07324
+ffa00090: CALL 0xffa03338
+ffa00094: CALL 0xffa1383c
+ffa00098: LINK 0x14
+ffa0009c: PUSH [--SP] = (R7:4,P5:3)
+ffa0009e: MOVE P0 = R1
+ffa000a0: LOAD P1.H = 0xffc0
+ffa000a4: LOAD P1.L = 0xa14
+ffa000a8: LOAD P2.H = 0xffc0
+ffa000ac: LOAD P2.L = 0xa18
+ffa000b0: LOAD P3.H = 0xffc0
+ffa000b4: LOAD P3.L = 0xa1c
+ffa000b8: LOAD R1 = W [P0] (Z)
+ffa000ba: LOAD P0.H = 0xffc0
+ffa000be: LOAD P0.L = 0xa10
+ffa000c2: LOAD R5 = W [P1] (Z)
+ffa000c4: CC = BITTST (R5,0x0)
+ffa000c6: IF !CC JUMP 0xffa000e2
+ffa000c8: LOAD P4.H = 0x0
+ffa000cc: LOAD P4.L = 0x0
+ffa000d0: NOP
+ffa000d2: LOAD R5 = [P4]
+ffa000d4: LOAD R5 = [P0]
+ffa000d6: BITCLR (R5,0x17)
+ffa000d8: BITSET (R5,0x18)
+ffa000da: STORE [P0] = R5
+ffa000dc: LOAD R5 = W [P3] (Z)
+ffa000de: CC = BITTST (R5,0x1)
+ffa000e0: IF !CC JUMP 0xffa000dc
+ffa000e2: LOAD R4 = [P0]
+
+--- MMR32 store with beam/addr ctx
+======== @ffa000ba
+ffa00094: CALL 0xffa1383c
+ffa00098: LINK 0x14
+ffa0009c: PUSH [--SP] = (R7:4,P5:3)
+ffa0009e: MOVE P0 = R1
+ffa000a0: LOAD P1.H = 0xffc0
+ffa000a4: LOAD P1.L = 0xa14
+ffa000a8: LOAD P2.H = 0xffc0
+ffa000ac: LOAD P2.L = 0xa18
+ffa000b0: LOAD P3.H = 0xffc0
+ffa000b4: LOAD P3.L = 0xa1c
+ffa000b8: LOAD R1 = W [P0] (Z)
+ffa000ba: LOAD P0.H = 0xffc0
+ffa000be: LOAD P0.L = 0xa10
+ffa000c2: LOAD R5 = W [P1] (Z)
+ffa000c4: CC = BITTST (R5,0x0)
+ffa000c6: IF !CC JUMP 0xffa000e2
+ffa000c8: LOAD P4.H = 0x0
+ffa000cc: LOAD P4.L = 0x0
+ffa000d0: NOP
+ffa000d2: LOAD R5 = [P4]
+ffa000d4: LOAD R5 = [P0]
+ffa000d6: BITCLR (R5,0x17)
+ffa000d8: BITSET (R5,0x18)
+ffa000da: STORE [P0] = R5
+ffa000dc: LOAD R5 = W [P3] (Z)
+ffa000de: CC = BITTST (R5,0x1)
+ffa000e0: IF !CC JUMP 0xffa000dc
+ffa000e2: LOAD R4 = [P0]
+ffa000e4: LOAD R5.L = 0x202
+ffa000e8: NOP
+ffa000ea: EXTRACT R4 = extract(R4,R5.L) (z)
+
+--- MMR32 store with beam/addr ctx
+======== @ffa0712e
+ffa07108: LOAD R0.H = 0xff80
+ffa0710c: CALL 0xffa08c78
+ffa07110: LOAD R7 = 0xfe
+ffa07114: LOAD P1 = 0xa00
+ffa07118: LOAD P1.H = 0xffc0
+ffa0711c: LOAD R0 = -0x40
+ffa0711e: PACK|| R7 = pack(R7.H,R0.L)
+ffa07122: _STORE W [P1] = R7.L
+ffa07124: _NOP
+ffa07126: LOAD R7.H = 0x3314
+ffa0712a: LOAD P1 = 0xa04
+ffa0712e: LOAD P1.H = 0xffc0
+ffa07132: LOAD R0 = 0x3314
+ffa07136: PACK|| R7 = pack(R7.H,R0.L)
+ffa0713a: _STORE [P1] = R7
+ffa0713c: _NOP
+ffa0713e: LOAD R1 = 0x14
+ffa07140: LOAD P1 = 0xa08
+ffa07144: LOAD P1.H = 0xffc0
+ffa07148: MOVE R0 = SP
+ffa0714a: STORE [P1] = R7
+ffa0714c: ADD R0 = R0 + R1
+ffa0714e: CALL 0xffa0a9a4
+ffa07152: CC = R0 == 0x0
+ffa07154: LOAD R0 = 0x3
+ffa07156: IF !CC JUMP 0xffa0718c (bp)
+ffa07158: LOAD R0 = 0x0
+ffa0715a: CALL 0xffa0a7f0
+ffa0715e: MOVE R1 = FP
+ffa07160: ADD R1 += -0x28
+
+--- MMR32 store with beam/addr ctx
+======== @ffa07144
+ffa0711c: LOAD R0 = -0x40
+ffa0711e: PACK|| R7 = pack(R7.H,R0.L)
+ffa07122: _STORE W [P1] = R7.L
+ffa07124: _NOP
+ffa07126: LOAD R7.H = 0x3314
+ffa0712a: LOAD P1 = 0xa04
+ffa0712e: LOAD P1.H = 0xffc0
+ffa07132: LOAD R0 = 0x3314
+ffa07136: PACK|| R7 = pack(R7.H,R0.L)
+ffa0713a: _STORE [P1] = R7
+ffa0713c: _NOP
+ffa0713e: LOAD R1 = 0x14
+ffa07140: LOAD P1 = 0xa08
+ffa07144: LOAD P1.H = 0xffc0
+ffa07148: MOVE R0 = SP
+ffa0714a: STORE [P1] = R7
+ffa0714c: ADD R0 = R0 + R1
+ffa0714e: CALL 0xffa0a9a4
+ffa07152: CC = R0 == 0x0
+ffa07154: LOAD R0 = 0x3
+ffa07156: IF !CC JUMP 0xffa0718c (bp)
+ffa07158: LOAD R0 = 0x0
+ffa0715a: CALL 0xffa0a7f0
+ffa0715e: MOVE R1 = FP
+ffa07160: ADD R1 += -0x28
+ffa07162: LOAD R0 = 0x3
+ffa07164: LOAD R0.H = 0x6
+ffa07168: CALL 0xffa0a5f8
+ffa0716c: LOAD R2 = 0x1
+ffa0716e: LOAD R1 = 0x76f0
+ffa07172: LOAD R1.H = 0x2dc
+ffa07176: LOAD R0 = -0x3660
+
+##### FFC00C / FFC00D DMA base programming

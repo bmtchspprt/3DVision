@@ -1,0 +1,42 @@
+--- @2020cab2 LOAD P5.L = 0xc844
+  2020ca90: ADD P1 += 0x4
+  2020ca92: STORE [P2] = P1
+  2020ca94: STORE [P1] = R0
+  2020ca96: UNLINK
+  2020ca9a: RTS
+  2020ca9c: LOAD R1 = [P1]
+  2020ca9e: CC = R1 == 0x0
+  2020caa0: IF CC JUMP 0x2020ca94
+  2020caa2: JUMP.S 0x2020ca8e
+  2020caa4: LINK 0x30
+  2020caa8: PUSH [--SP] = (R7:4,P5:3)
+  2020caaa: ADD SP += -0x20
+  2020caac: STORE [FP + -0x1c] = R1
+  2020caae: MOVE R7 = R0
+  2020cab0: LOAD P3 = [FP + -0x1c]
+  2020cab2: LOAD P5.L = 0xc844
+  2020cab6: LOAD P5.H = 0x2020
+  2020caba: LOAD R3.L = 0xc9bc
+  2020cabe: LOAD R3.H = 0x2020
+  2020cac2: LOAD P1 = [P3 + 0x8]
+  2020cac4: STORE [P5++] = P1
+  2020cac6: LOAD P0 = [P3 + 0x38]
+  2020cac8: STORE [FP + -0x18] = P0
+  2020caca: LOAD P0 = [P3 + 0x14]
+  2020cacc: LOAD R5 = [P3 + 0x20]
+  2020cace: STORE [P5++] = P0
+  2020cad0: LOAD P4 = [P3 + 0x2c]
+  2020cad2: LOAD R0 = [P3 + 0x2c]
+  2020cad4: STORE [FP + -0x24] = P4
+  2020cad6: LOAD P4 = [FP + -0x18]
+  2020cad8: STORE [P5++] = R5
+  2020cada: STORE [P5++] = R0
+  2020cadc: STORE [P5++] = P4
+  2020cade: LOAD R4 = [P3 + 0x44]
+  2020cae2: STORE [FP + 0x10] = P0
+  2020cae4: LOAD P0 = [P3 + 0x50]
+  2020cae8: LOAD P2 = [P3 + 0xa4]
+  2020caec: STORE [P5++] = R4
+  2020caee: STORE [P5++] = P0
+  2020caf0: STORE [SP + 0x3c] = P2
+

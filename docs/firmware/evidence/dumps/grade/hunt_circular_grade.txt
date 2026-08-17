@@ -1,0 +1,271 @@
+===== LSETUP/B/I/M setup near 0x44 or 0x578 =====
+
+--- 202004ec: LOAD R3 = 0x44 ---
+
+--- 2020108c: LOAD R0 = 0x44 ---
+
+--- 2020119c: LOAD R3 = 0x44 ---
+
+--- 20201338: LOAD R0 = 0x44 ---
+  202013ca: LSETUP (0x202013ce,0x202013ce) LC0 = P4
+
+--- 202040e8: LOAD R5 = 0x578 ---
+
+--- 20204358: LOAD R5 = 0x578 ---
+
+--- 202044b2: LOAD R5 = 0x578 ---
+
+--- 2020842e: LOAD R4 = 0x44 ---
+
+--- 2020b6d2: LOAD R6 = 0x578 ---
+
+--- 2020b704: LOAD P0 = 0x578 ---
+
+--- 2020bb32: LOAD P1 = 0x44 ---
+  2020bb3a: LSETUP (0x2020bb3e,0x2020bb42) LC0 = P0
+  2020bb52: LSETUP (0x2020bb56,0x2020bb5a) LC0 = P0
+
+--- 2020df74: LOAD R2 = 0x44 ---
+
+--- 2021112a: LOAD R4 = 0x44 ---
+
+--- 20211d50: LOAD R2 = 0x578 ---
+  20211d62: LOAD R2 = 0x28f4
+
+--- 20211d5c: LOAD R3 = 0x44 ---
+  20211d62: LOAD R2 = 0x28f4
+
+--- 20211e52: LOAD R1 = 0x44 ---
+  20211f14: LOAD R3 = 0x147a
+  20211f26: LOAD R2 = 0x147a
+
+--- 20211f22: LOAD R1 = 0x44 ---
+  20211f26: LOAD R2 = 0x147a
+
+--- 20212bd2: LOAD P0 = 0x578 ---
+  20212c7c: LSETUP (0x20212c80,0x20212cc8) LC0 = P1
+
+--- 20212c86: LOAD R3 = 0x44 ---
+  20212cec: LSETUP (0x20212cf0,0x20212d38) LC0 = P1
+
+--- 20212e36: LOAD R0 = 0x578 ---
+  20212e4e: MOVE I0 = P1
+  20212e58: LSETUP (0x20212e5c,0x20212e8e) LC0 = P0
+
+--- 2021475a: LOAD P2 = 0x578 ---
+
+--- 2021fb5e: LOAD P0 = 0x578 ---
+
+--- 2021fb84: LOAD P0 = 0x578 ---
+
+--- 2021fc68: LOAD P2 = 0x578 ---
+  2021fc86: MOVE I0 = R2
+  2021fcb8: LSETUP (0x2021fcbc,0x2021fd04) LC0 = P0
+
+--- 20220186: LOAD P0 = 0x578 ---
+
+--- 20220b48: LOAD P0 = 0x578 ---
+
+--- 20220e30: LOAD P0 = 0x578 ---
+
+--- 2022109e: LOAD P1 = 0x578 ---
+
+--- 20221352: LOAD P0 = 0x578 ---
+  202213e8: LSETUP (0x202213ec,0x202213ee) LC0 = P2
+
+--- 202219e6: LOAD P2 = 0x578 ---
+
+--- 20224470: LOAD R3 = 0x578 ---
+
+--- 2022451e: LOAD R3 = 0x578 ---
+
+--- 20224666: LOAD R1 = 0x578 ---
+  20224700: LSETUP (0x20224704,0x20224726) LC0 = P2
+
+--- 202246c0: LOAD R1 = 0x578 ---
+  20224700: LSETUP (0x20224704,0x20224726) LC0 = P2
+
+--- 20224738: LOAD R2 = 0x578 ---
+
+--- 202255f2: LOAD P5 = 0x578 ---
+  20225628: MOVE I1 = P1
+  20225642: MOVE I0 = P2
+  20225662: LSETUP (0x20225666,0x20225690) LC1 = P2
+
+--- 2022d076: LOAD P1 = 0x578 ---
+  2022d0dc: LOAD I0.L = 0x485c
+  2022d0e0: LOAD I0.H = 0xff80
+  2022d0f8: STORE W [I0] = R6.L
+  2022d118: LSETUP (0x2022d11c,0x2022d15c) LC0 = P1
+
+--- 2022d106: LOAD R0 = 0x578 ---
+  2022d118: LSETUP (0x2022d11c,0x2022d15c) LC0 = P1
+  2022d188: MOVE I1 = P1
+  2022d18c: LSETUP (0x2022d190,0x2022d224) LC0 = P1
+
+--- 2022d128: LOAD R1 = 0x44 ---
+  2022d188: MOVE I1 = P1
+  2022d18c: LSETUP (0x2022d190,0x2022d224) LC0 = P1
+
+--- 2022d174: LOAD R0 = 0x578 ---
+  2022d188: MOVE I1 = P1
+  2022d18c: LSETUP (0x2022d190,0x2022d224) LC0 = P1
+  2022d1e8: STORE [I1++] = R0
+  2022d22a: STORE W [I0] = R6.L
+
+--- 2022d24e: LOAD P0 = 0x578 ---
+  2022d2ce: MOVE I1 = P1
+  2022d2f0: LSETUP (0x2022d2f4,0x2022d404) LC0 = P1
+  2022d300: MOVE I0 = I1
+
+--- 2022d706: LOAD R3 = 0x578 ---
+
+--- 2022d78a: LOAD R1 = 0x44 ---
+  2022d830: LSETUP (0x2022d834,0x2022d83c) LC0 = P1
+
+--- 2022d85a: LOAD P0 = 0x578 ---
+
+--- 2022da52: LOAD R2 = 0x44 ---
+
+--- 2022fa68: LOAD R3 = 0x578 ---
+
+--- 2022fb30: LOAD P1 = 0x578 ---
+
+--- 20230a60: LOAD P0 = 0x578 ---
+
+--- 20230b08: LOAD R5 = 0x578 ---
+
+--- 20230e46: LOAD P1 = 0x578 ---
+
+--- 202312c0: LOAD P1 = 0x578 ---
+
+--- 2023141c: LOAD P2 = 0x578 ---
+  2023148e: LSETUP (0x20231492,0x202314b8) LC0 = P1
+
+--- 20231502: LOAD P1 = 0x578 ---
+
+--- 2023183e: LOAD P2 = 0x578 ---
+  202318ee: LSETUP (0x202318f2,0x20231902) LC0 = P5
+
+--- 20231a22: LOAD P0 = 0x578 ---
+
+--- 20231b22: LOAD P1 = 0x578 ---
+
+--- 20231d94: LOAD P0 = 0x578 ---
+  20231e08: LSETUP (0x20231e0c,0x20231e30) LC0 = P1
+
+--- 20231ffc: LOAD P1 = 0x578 ---
+
+--- 202b59a4: LOAD P2 = 0x578 ---
+
+--- 202b5ec2: LOAD R2 = 0x578 ---
+  202b5efa: LSETUP (0x202b5efe,0x202b5f22) LC0 = P0
+
+--- ffa03736: LOAD P0 = 0x578 ---
+  ffa037d8: LSETUP (0xffa037dc,0xffa037f6) LC1 = P1
+
+--- ffa03916: LOAD P2 = 0x578 ---
+
+--- ffa0391c: LOAD P3 = 0x44 ---
+
+--- ffa03cac: LOAD P0 = 0x578 ---
+  ffa03d1e: LSETUP (0xffa03d22,0xffa03d3c) LC0 = P1
+
+--- ffa043d8: LOAD P2 = 0x578 ---
+
+--- ffa046c6: LOAD P0 = 0x578 ---
+  ffa04772: MOVE I0 = P4
+  ffa04778: LSETUP (0xffa0477c,0xffa047c4) LC0 = P1
+
+--- ffa04766: LOAD R0 = 0x578 ---
+  ffa04772: MOVE I0 = P4
+  ffa04778: LSETUP (0xffa0477c,0xffa047c4) LC0 = P1
+  ffa0479e: STORE [I0++] = R0
+
+--- ffa04b90: LOAD P2 = 0x44 ---
+  ffa04b96: MOVE I0 = P1
+  ffa04b9a: LSETUP (0xffa04b9e,0xffa04bd6) LC1 = P1
+  ffa04baa: CALL 0xffa0290c
+  ffa04c08: LSETUP (0xffa04c0c,0xffa04c4a) LC1 = P1
+  ffa04c24: CALL 0xffa0290c
+
+--- ffa04dc8: LOAD R0 = 0x578 ---
+  ffa04dd0: MOVE I0 = P0
+  ffa04dd6: LSETUP (0xffa04dda,0xffa04e02) LC1 = P1
+  ffa04dfc: CALL 0xffa0290c
+  ffa04e1e: LSETUP (0xffa04e22,0xffa04e6a) LC0 = P2
+
+--- ffa04e9a: LOAD R0 = 0x578 ---
+  ffa04ea4: MOVE I0 = P1
+  ffa04eaa: LSETUP (0xffa04eae,0xffa04ed2) LC1 = P2
+  ffa04ecc: CALL 0xffa0290c
+
+--- ffa05d88: LOAD P0 = 0x578 ---
+  ffa05e12: LSETUP (0xffa05e16,0xffa05e30) LC1 = P1
+
+--- ffa077ee: LOAD P3 = 0x44 ---
+  ffa0780a: LSETUP (0xffa0780e,0xffa07820) LC0 = P1
+
+===== STORE W [I*] with 0x578 in prior 60 =====
+--- 2022d0f8: STORE W [I0] = R6.L 578=true 44=false ---
+  2022d04e: LOAD R3 = [P1 + 0x30]
+  2022d050: MOVE R1 = R2
+  2022d052: LOAD R1.H = 0x41
+  2022d056: CC = R1 < R3
+  2022d058: LOAD R1 = 0x0
+  2022d05a: IF CC R0 = R1
+  2022d05c: JUMP.S 0x2022d00c
+  2022d05e: LINK 0x28
+  2022d062: PUSH [--SP] = (R7:4,P5:3)
+  2022d064: ADD SP += -0xc
+  2022d066: STORE [SP + 0x28] = R1
+  2022d068: LOAD P0 = [SP + 0x28]
+  2022d06a: LOAD P2 = 0x4c08
+  2022d06e: LOAD P2.H = 0x3
+  2022d072: LOAD R5.H = 0x5cfc
+  2022d076: LOAD P1 = 0x578
+  2022d07a: ADD P4 = P0 + P2
+  2022d07c: LOAD R2 = W [P4] (X)
+  2022d07e: MULT|| R2 = R2.L * R5.H (is)
+  2022d082: STORE [FP + 0x8] = R0
+  2022d084: NOP
+  2022d086: MOVE P2 = R2
+  2022d088: ADD P1 = P0 + P1
+  2022d08a: LOAD R7 = 0x0
+  2022d08c: LOAD R7.H = 0x4700
+  2022d090: ADD P0 = P1 + P2
+  2022d092: MOVE R1 = R7
+  2022d094: LOAD R0 = [P0 + 0x5cd4]
+  2022d098: LOAD P1.L = 0x1814
+  2022d09c: LOAD P1.H = 0xffa0
+  2022d0a0: CALL (P1)
+  2022d0a2: ROT|| R1 = rot R7 by 0
+  2022d0a6: _STORE [SP + 0x30] = R0
+  2022d0a8: _NOP
+  2022d0aa: LOAD R0 = [P0 + 0x5cdc]
+  2022d0ae: LOAD P1.L = 0x1814
+  2022d0b2: LOAD P1.H = 0xffa0
+  2022d0b6: CALL (P1)
+  2022d0b8: ROT|| R1 = rot R7 by 0
+  2022d0bc: _STORE [SP + 0x34] = R0
+  2022d0be: _NOP
+  2022d0c0: LOAD R0 = [P0 + 0x5ce0]
+  2022d0c4: LOAD P1.L = 0x1814
+  2022d0c8: LOAD P1.H = 0xffa0
+  2022d0cc: CALL (P1)
+  2022d0ce: ROT|| R1 = rot R7 by 0
+  2022d0d2: _LOAD P1 = [FP + 0x8]
+  2022d0d4: _NOP
+  2022d0d6: STORE [FP + 0x10] = R0
+  2022d0d8: LOAD R0 = [P0 + 0x5ce4]
+  2022d0dc: LOAD I0.L = 0x485c
+  2022d0e0: LOAD I0.H = 0xff80
+  2022d0e4: LOAD R4 = [P1 + 0xc]
+  2022d0e6: ASHIFT R4 >>>= 0xf
+  2022d0e8: LOAD P1.L = 0x1814
+  2022d0ec: LOAD P1.H = 0xffa0
+  2022d0f0: CALL (P1)
+  2022d0f2: ADD R4 += 0x1
+  2022d0f4: LOAD R6 = 0x0
+  2022d0f6: CC = R4 <= 0x0
+  2022d0f8: STORE W [I0] = R6.L

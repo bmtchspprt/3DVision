@@ -1,0 +1,136 @@
+===== CALLERS of DMA START program helpers =====
+
+--- caller ffa10424 => 0xffa07a84 ---
+  ffa103e0: JUMP (P0)
+  ffa103e2: ADD SP += 0x1c
+  ffa103e4: SUB|| R0 = R0 - R0 (ns)
+* ffa103e8: _LOAD P0 = [FP + 0x4]
+  ffa103ea: _NOP
+  ffa103ec: POP (R7:4,P5:3) = [SP++]
+  ffa103ee: UNLINK
+  ffa103f2: JUMP (P0)
+  ffa103f4: LOAD R0 = [P4 + 0x4]
+* ffa103f6: CALL 0xffa083e4
+  ffa103fa: LOAD R7 = 0x1
+  ffa103fc: JUMP.S 0xffa10318
+  ffa103fe: LOAD R0 = [P4 + 0x4]
+* ffa10400: MOVE R1 = P5
+* ffa10402: CALL 0xffa083e4
+  ffa10406: LOAD R7 = 0x2
+  ffa10408: JUMP.S 0xffa10318
+* ffa1040a: LOAD P1 = 0x0
+* ffa1040c: STORE [SP + 0x18] = P1
+* ffa1040e: LOAD P1 = [FP + 0xc]
+  ffa10410: LOAD R3 = [P5 + 0x20]
+  ffa10412: LOAD R2 = W [P5 + 0x18] (Z)
+  ffa10414: LOAD R7 = W [P5 + 0x1c] (Z)
+  ffa10416: MOVE R3 = R3.L (X)
+* ffa10418: STORE [SP + 0x14] = R2
+* ffa1041a: STORE [SP + 0xc] = R7
+* ffa1041c: STORE [SP + 0x10] = R3
+  ffa1041e: LOAD R0 = [P4 + 0x4]
+* ffa10420: LOAD R1 = [P5 + 0x14]
+  ffa10422: LOAD R2 = W [P1 + 0x1c] (X)
+* ffa10424: CALL 0xffa07a84
+  ffa10428: LOAD R7 = 0x3
+  ffa1042a: JUMP.S 0xffa10318
+  ffa1042c: LOAD R7 = 0x4
+  ffa1042e: JUMP.S 0xffa10318
+  ffa10430: LOAD R7 = 0x5
+  ffa10432: JUMP.S 0xffa10318
+  ffa10434: LOAD R7 = [P5]
+callerHits=1
+
+===== 2021FC40 beam+STORE+4 =====
+  2021fc40: ADD P2 = P2 + (P4 << 2)
+  2021fc42: LOAD R4 = [FP + -0x14]
+* 2021fc44: STORE [SP + 0x10] = R5
+* 2021fc46: STORE [SP + 0x18] = R7
+* 2021fc48: STORE [SP + 0xc] = P2
+* 2021fc4a: STORE [SP + 0x14] = R4
+  2021fc4c: MOVE R2 = P0
+  2021fc4e: LOAD R1 = [FP + 0xc]
+  2021fc50: LOAD P1.L = 0x5ca0
+  2021fc54: LOAD P1.H = 0xffa0
+* 2021fc58: CALL (P1) => 0xffa05ca0
+  2021fc5a: JUMP.S 0x2021fb30
+  2021fc5c: LOAD R0 = W [P3] (X)
+* 2021fc5e: LOAD R0.H = 0x5cfc
+  2021fc62: MULT R0 = R0.L * R0.H (is)
+  2021fc66: MOVE P1 = R0
+* 2021fc68: LOAD P2 = 0x578
+  2021fc6c: ADD P2 = P4 + P2
+  2021fc6e: ADD P1 = P2 + P1
+  2021fc70: LOAD R0 = B [P1 + 0x1] (Z)
+  2021fc74: CC = R0 == 0x0
+  2021fc76: IF CC JUMP 0x2021fc80
+  2021fc78: LOAD R0 = -0x14
+  2021fc7a: SUB R0 = R0 - R2
+* 2021fc7c: STORE [P5 + 0x4] = R0
+  2021fc7e: JUMP.S 0x2021f9ce
+  2021fc80: LOAD R0 = 0x0
+* 2021fc82: STORE [P5 + 0x4] = R0
+  2021fc84: JUMP.S 0x2021f9ce
+  2021fc86: MOVE I0 = R2
+  2021fc88: LINK 0x20
+  2021fc8c: PUSH [--SP] = (R7:4,P5:3)
+  2021fc8e: ADD SP += -0xc
+* 2021fc90: STORE [SP + 0x28] = R1
+  2021fc92: LOAD R4 = 0x0
+  2021fc94: LOAD P4.L = 0xea00
+  2021fc98: LOAD P4.H = 0x2021
+  2021fc9c: LOAD R7 = 0xff
+  2021fca0: LOAD R1 = 0x2f9
+  2021fca4: LOAD P0 = 0x9
+  2021fca6: LSH|| R0.L = R1.L << 0x0
+* 2021fcaa: STORE W [P4] = R4.L
+  2021fcac: NOP
+  2021fcae: MOVE P1 = I0
+  2021fcb0: LSHIFT R7 <<= 0x17
+  2021fcb2: LOAD R0.H = 0x5015
+  2021fcb6: LOAD P3 = [FP + 0x14]
+  2021fcb8: LSETUP (0x2021fcbc,0x2021fd04) LC0 = P0
+  2021fcbc: ROT|| R6 = rot R0 by 0
+  2021fcc0: _LOAD R2 = [P1++]
+  2021fcc2: _NOP
+  2021fcc4: MOVE R1 = R2
+  2021fcc6: AND R5 = R6 & R1
+  2021fcc8: LSHIFT R5 >>= 0x1f
+  2021fcca: BITCLR (R0,0x1f)
+* 2021fccc: STORE [FP + 0x8] = R5
+  2021fcce: CC = R7 < R0
+  2021fcd0: BITCLR (R2,0x1f)
+  2021fcd2: MOVE R5 = CC
+  2021fcd4: CC = R7 < R2
+  2021fcd6: LOAD R3 = 0x1
+  2021fcd8: IF !CC R3 = R5
+  2021fcda: CC = R1 < R6
+  2021fcdc: OR R0 = R0 | R2
+  2021fcde: MOVE R2 = CC
+  2021fce0: LOAD R5 = [FP + 0x8]
+  2021fce2: CC = R6 == R1
+  2021fce4: XOR R5 = R5 ^ R2
+  2021fce6: IF !CC R2 = R5
+  2021fce8: CC = R0 == 0x0
+  2021fcea: IF CC R2 = R0
+  2021fcec: CC = BITTST (R3,0x0)
+  2021fcee: IF CC R2 = R4
+  2021fcf0: CC = BITTST (R2,0x0)
+  2021fcf2: IF !CC JUMP 0x2021fd04
+  2021fcf4: CC = !BITTST (R1,0x1f)
+  2021fcf6: MOVE R0 = CC
+  2021fcf8: CC = R1 <= R7
+  2021fcfa: IF !CC R0 = R4
+  2021fcfc: CC = R1 == 0x0
+  2021fcfe: IF CC R0 = R1
+  2021fd00: CC = BITTST (R0,0x0)
+  2021fd02: IF CC R6 = R1
+  2021fd04: MOVE R0 = R6
+  2021fd06: LOAD R0 = 0x46ff
+  2021fd0a: LOAD R1 = 0x0
+  2021fd0c: LOAD R2 = -0x200
+  2021fd10: LOAD P5.L = 0xf140
+  2021fd14: LOAD P5.H = 0x2021
+  2021fd18: PACK|| R5 = pack(R5.H,R1.L)
+* 2021fd1c: _STORE [P4 + 0x4] = R6
+  2021fd1e: _NOP

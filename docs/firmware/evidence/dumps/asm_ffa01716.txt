@@ -1,0 +1,120 @@
+ffa01716: LSH R3 = R1 << 0x1
+ffa0171a: CC = R3 == 0x0
+ffa0171c: IF CC JUMP 0xffa017be
+ffa0171e: LSH R2 = R0 << 0x1
+ffa01722: CC = R2 == 0x0
+ffa01724: IF CC JUMP 0xffa017c4
+ffa01726: PUSH [--SP] = R0
+ffa01728: CC = R2 < R3 (IU)
+ffa0172a: MOVE R2 = R0
+ffa0172c: IF CC R0 = R1
+ffa0172e: IF CC R1 = R2
+ffa01730: LOAD R3.L = 0x1708
+ffa01734: EXTRACT|| R2 = extract(R0,R3.L) (z)
+ffa01738: STORE [SP--] = R6
+ffa0173a: NOP
+ffa0173c: EXTRACT|| R3 = extract(R1,R3.L) (z)
+ffa01740: STORE [SP] = R7
+ffa01742: NOP
+ffa01744: LOAD R7 = 0xff
+ffa01748: MOVE CC = R3
+ffa0174a: IF !CC JUMP 0xffa017c8
+ffa0174c: CC = R2 == R7
+ffa0174e: IF CC JUMP 0xffa017e4
+ffa01750: LSH R7 = R1 << 0x9
+ffa01754: LSHIFT R7 >>= 0x4
+ffa01756: BITSET (R7,0x1c)
+ffa01758: LSH R6 = R0 << 0x9
+ffa0175c: LSHIFT R6 >>= 0x4
+ffa0175e: BITSET (R6,0x1c)
+ffa01760: XOR R1 = R0 ^ R1
+ffa01762: CC = R1 < 0x0
+ffa01764: NEG R1 = -R7
+ffa01766: IF CC R7 = R1
+ffa01768: SUB R3 = R2 - R3
+ffa0176a: MOVE R1 = R7
+ffa0176c: ASHIFT R1 >>>= R3
+ffa0176e: ADD R6 = R6 + R1
+ffa01770: MOVE CC = R6
+ffa01772: IF !CC JUMP 0xffa017f8
+ffa01774: LSHIFT R1 <<= R3
+ffa01776: CC = R1 < R7 (IU)
+ffa01778: ROT R6 = rot R6 by 0x1
+ffa0177c: LOAD R7 = 0xff
+ffa01780: SIGN R3.L = signbits R6
+ffa01784: CC = R2 < R3
+ffa01786: IF CC JUMP 0xffa017f0
+ffa01788: SUB R2 = R2 - R3
+ffa0178a: LSH R3 = lshift R6 by R3.L
+ffa0178e: ADD R2 += 0x1
+ffa01790: CC = R7 <= R2
+ffa01792: IF CC JUMP 0xffa017fe
+ffa01794: BITCLR (R3,0x1e)
+ffa01796: LOAD R7 = 0x40
+ffa0179a: ADD R1 = R3 + R7
+ffa0179c: LSH R6 = R3 << 0x18
+ffa017a0: LSHIFT R6 >>= 0x18
+ffa017a2: CC = R6 == R7
+ffa017a4: IF !CC R3 = R1
+ffa017a6: LSHIFT R3 >>= 0x6
+ffa017a8: ROT|| R0 = rot R0 by 0x1
+ffa017ac: LOAD R7 = [SP++]
+ffa017ae: NOP
+ffa017b0: ROT|| R3 = rot R3 by -0x1
+ffa017b4: LOAD R6 = [SP++]
+ffa017b6: NOP
+ffa017b8: LSHIFT R2 <<= 0x17
+ffa017ba: ADD R0 = R3 + R2
+ffa017bc: RTS
+ffa017be: LOAD R3 = 0x1
+ffa017c0: LSHIFT R3 <<= 0x1f
+ffa017c2: CC = R0 == R3
+ffa017c4: IF CC R0 = R1
+ffa017c6: RTS
+ffa017c8: LSH R3 = R1 << 0x9
+ffa017cc: CC = R2 == R7
+ffa017ce: IF CC JUMP 0xffa017e4
+ffa017d0: LSH R7 = R3 >> 0x4
+ffa017d4: LOAD R3 = 0x1
+ffa017d6: MOVE CC = R2
+ffa017d8: IF CC JUMP 0xffa01758
+ffa017da: LSH R6 = R0 << 0x9
+ffa017de: LSHIFT R6 >>= 0x4
+ffa017e0: LOAD R2 = 0x1
+ffa017e2: JUMP.S 0xffa01760
+ffa017e4: LOAD R2 = -0x1
+ffa017e6: BITTGL (R1,0x1f)
+ffa017e8: CC = R0 == R1
+ffa017ea: IF CC R0 = R2
+ffa017ec: POP (R7:6) = [SP++]
+ffa017ee: RTS
+ffa017f0: LSH R3 = lshift R6 by R2.L
+ffa017f4: LOAD R2 = 0x0
+ffa017f6: JUMP.S 0xffa01796
+ffa017f8: LOAD R0 = 0x0
+ffa017fa: POP (R7:6) = [SP++]
+ffa017fc: RTS
+ffa017fe: LSH R1 = R7 << 0x18
+ffa01802: ROT|| R0 = rot R0 by 0x1
+ffa01806: LOAD R7 = [SP++]
+ffa01808: NOP
+ffa0180a: ROT|| R0 = rot R1 by -0x1
+ffa0180e: LOAD R6 = [SP++]
+ffa01810: NOP
+ffa01812: RTS
+ffa01814: XOR R3 = R0 ^ R1
+ffa01816: LSHIFT R3 >>= 0x1f
+ffa01818: LSHIFT R3 <<= 0x1f
+ffa0181a: PUSH [--SP] = (R7:4)
+ffa0181c: BITCLR (R0,0x1f)
+ffa0181e: BITCLR (R1,0x1f)
+ffa01820: LSH R6 = R0 >> 0x17
+ffa01824: LSH R5 = R1 >> 0x17
+ffa01828: LOAD R7 = 0xff
+ffa0182c: CC = R6 == R7
+ffa0182e: IF CC JUMP 0xffa018ba
+ffa01830: CC = R5 == R7
+ffa01832: IF CC JUMP 0xffa018ca
+ffa01834: CC = R1 == 0x0
+ffa01836: IF CC JUMP 0xffa018d8
+ffa01838: CC = R0 == 0x0

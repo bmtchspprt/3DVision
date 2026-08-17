@@ -1,0 +1,43 @@
+Scan acquire direct callees for Grade-shaped STORE W
+site 2022068a -> 202b5024
+site 20220748 -> 2020f47c
+site 202209bc -> 202b5024
+site 20220a12 -> 202b5024
+site 20220a5c -> 20210be6
+site 20220b2e -> 2020f330
+site 20220ba4 -> 2021f97a
+site 20220ef0 -> 202b5066
+site 20220f9a -> 202122fa
+site 20220fc2 -> 202b5024
+site 20220ff8 -> 202b5024
+site 20221050 -> 2022e118
+site 202210c2 -> 202b5024
+
+===== SCAN EACH SDRAM TARGET =====
+
+==== callee 2020f330 ====
+grade_shaped_store=false
+
+==== callee 2020f47c ====
+grade_shaped_store=false
+
+==== callee 20210be6 ====
+grade_shaped_store=false
+
+==== callee 202122fa ====
+grade_shaped_store=false
+
+==== callee 2021f97a ====
+grade_shaped_store=false
+
+==== callee 2022e118 ====
+grade_shaped_store=false
+
+==== callee 202b5024 ====
+grade_shaped_store=false
+
+==== callee 202b5066 ====
+grade_shaped_store=false
+
+===== FFA043C4 STORE W with Grade-ish -30 =====
+ffa043c4_hits=0

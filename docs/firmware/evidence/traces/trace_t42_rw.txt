@@ -1,0 +1,23 @@
+Connected to the simulator.
+Loading section .text, size 0x4 lma 20200000
+Start address ffa00000
+Transfer rate: 32 bits in <1 sec.
+Temporary breakpoint 1 at 0xffa00000
+
+Temporary breakpoint 1, 0xffa00000 in ?? ()
+
+=== write test file-backed 0x202F0000 ===
+0x202f0000:	0x12345678
+
+=== write test fresh region 0x20380000 ===
+0x20380000:	0xabcdef01
+
+=== try LINK with SP in fresh region ===
+=> 0x20210be6:	LINK 0x1c;		/* (28) */
+0xffa00002 in ?? ()
+=> 0xffa00002:	LC0 = R7;
+pc             0xffa00002          0xffa00002
+sp             0x20381000          0x20381000
+
+=== done ===
+GDB-EXIT:0

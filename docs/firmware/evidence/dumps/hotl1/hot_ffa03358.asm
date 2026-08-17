@@ -1,0 +1,64 @@
+ffa03358: LINK 0x0
+ffa0335c: PUSH [--SP] = (R7:4)
+ffa0335e: MOVE R7 = R1
+ffa03360: MOVE R4 = R2
+ffa03362: MOVE R5 = R0
+ffa03364: MOVE R6 = R0
+ffa03366: ADD SP += -0xc
+ffa03368: MOVE R1 = R4
+ffa0336a: MOVE R0 = R7
+ffa0336c: CALL 0xffa0165c
+ffa03370: IF !CC JUMP 0xffa033b2
+ffa03372: MOVE R1 = R5
+ffa03374: MOVE R0 = R7
+ffa03376: CALL 0xffa01630
+ffa0337a: LOAD R0 = 0x0
+ffa0337c: IF CC JUMP 0xffa033a8
+ffa0337e: MOVE R0 = R6
+ffa03380: MOVE R1 = R4
+ffa03382: CALL 0xffa01630
+ffa03386: LOAD R0 = 0x0
+ffa03388: LOAD R0.H = 0x3f80
+ffa0338c: IF CC JUMP 0xffa033a8
+ffa0338e: MOVE R1 = R7
+ffa03390: MOVE R0 = R6
+ffa03392: CALL 0xffa01714
+ffa03396: MOVE R6 = R0
+ffa03398: MOVE R1 = R7
+ffa0339a: MOVE R0 = R4
+ffa0339c: CALL 0xffa01714
+ffa033a0: MOVE R1 = R0
+ffa033a2: MOVE R0 = R6
+ffa033a4: CALL 0xffa01814
+ffa033a8: ADD SP += 0xc
+ffa033aa: POP (R7:4) = [SP++]
+ffa033ac: UNLINK
+ffa033b0: RTS
+ffa033b2: MOVE R1 = R7
+ffa033b4: MOVE R0 = R4
+ffa033b6: LOAD R6 = 0x0
+ffa033b8: CALL 0xffa0165c
+ffa033bc: LOAD R6.H = 0x3f80
+ffa033c0: MOVE R0 = R6
+ffa033c2: IF !CC JUMP 0xffa033a8
+ffa033c4: MOVE R1 = R7
+ffa033c6: MOVE R0 = R5
+ffa033c8: CALL 0xffa01630
+ffa033cc: LOAD R0 = 0x0
+ffa033ce: IF CC JUMP 0xffa033a8
+ffa033d0: MOVE R1 = R5
+ffa033d2: MOVE R0 = R4
+ffa033d4: CALL 0xffa01630
+ffa033d8: MOVE R0 = R6
+ffa033da: IF CC JUMP 0xffa033a8
+ffa033dc: MOVE R1 = R5
+ffa033de: MOVE R0 = R7
+ffa033e0: CALL 0xffa01714
+ffa033e4: MOVE R6 = R0
+ffa033e6: MOVE R1 = R4
+ffa033e8: MOVE R0 = R7
+ffa033ea: CALL 0xffa01714
+ffa033ee: MOVE R1 = R0
+ffa033f0: MOVE R0 = R6
+ffa033f2: CALL 0xffa01814
+ffa033f6: JUMP.S 0xffa033a8

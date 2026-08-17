@@ -1,0 +1,231 @@
+===== 2020CAA4 first 250 =====
+2020caa4: LINK 0x30
+2020caa8: PUSH [--SP] = (R7:4,P5:3)
+2020caaa: ADD SP += -0x20
+2020caac: STORE [FP + -0x1c] = R1
+2020caae: MOVE R7 = R0
+2020cab0: LOAD P3 = [FP + -0x1c]
+2020cab2: LOAD P5.L = 0xc844
+2020cab6: LOAD P5.H = 0x2020
+2020caba: LOAD R3.L = 0xc9bc
+2020cabe: LOAD R3.H = 0x2020
+2020cac2: LOAD P1 = [P3 + 0x8]
+2020cac4: STORE [P5++] = P1
+2020cac6: LOAD P0 = [P3 + 0x38]
+2020cac8: STORE [FP + -0x18] = P0
+2020caca: LOAD P0 = [P3 + 0x14]
+2020cacc: LOAD R5 = [P3 + 0x20]
+2020cace: STORE [P5++] = P0
+2020cad0: LOAD P4 = [P3 + 0x2c]
+2020cad2: LOAD R0 = [P3 + 0x2c]
+2020cad4: STORE [FP + -0x24] = P4
+2020cad6: LOAD P4 = [FP + -0x18]
+2020cad8: STORE [P5++] = R5
+2020cada: STORE [P5++] = R0
+2020cadc: STORE [P5++] = P4
+2020cade: LOAD R4 = [P3 + 0x44]
+2020cae2: STORE [FP + 0x10] = P0
+2020cae4: LOAD P0 = [P3 + 0x50]
+2020cae8: LOAD P2 = [P3 + 0xa4]
+2020caec: STORE [P5++] = R4
+2020caee: STORE [P5++] = P0
+2020caf0: STORE [SP + 0x3c] = P2
+2020caf2: LOAD P2 = [P3 + 0x5c]
+2020caf6: LOAD P4 = [P3 + 0x68]
+2020cafa: STORE [FP + -0x4] = P0
+2020cafc: STORE [P5++] = P2
+2020cafe: LOAD P0 = [P3 + 0x74]
+2020cb02: STORE [FP + -0x14] = P4
+2020cb04: LOAD R5 = B [P2 + 0x8] (Z)
+2020cb08: STORE [FP + -0x10] = R5
+2020cb0a: STORE [P5++] = P4
+2020cb0c: LOAD P4 = [P3 + 0x80]
+2020cb10: LOAD R5 = [P3 + 0x8c]
+2020cb14: LOAD R4 = [P3 + 0x98]
+2020cb18: LOAD P2 = [SP + 0x3c]
+2020cb1a: STORE [P5++] = P0
+2020cb1c: STORE [FP + -0xc] = P0
+2020cb1e: LOAD P0 = [P3 + 0xd8]
+2020cb22: LOAD R1 = [P3 + 0xdc]
+2020cb26: STORE [FP + -0x2c] = P4
+2020cb28: STORE [P5++] = P4
+2020cb2a: LOAD P4.L = 0xc978
+2020cb2e: LOAD P4.H = 0x2020
+2020cb32: LOAD R6 = B [P1 + 0x37] (Z)
+2020cb36: LOAD R2 = B [P1 + 0x38] (Z)
+2020cb3a: ADD R0 += 0x4
+2020cb3c: STORE [P5++] = R5
+2020cb3e: STORE [P5++] = R4
+2020cb40: STORE [P5++] = P2
+2020cb42: LOAD R5 = [P3 + 0xb0]
+2020cb46: LOAD P2 = [P3 + 0xe0]
+2020cb4a: LOAD R4 = 0x37
+2020cb4c: CC = R7 < R4 (IU)
+2020cb4e: STORE [P5++] = R5
+2020cb50: STORE [P5++] = P0
+2020cb52: LOAD R5 = [P0 + 0x4]
+2020cb54: STORE [FP + -0x8] = R5
+2020cb56: LOAD R4.L = 0xc9ec
+2020cb5a: LOAD R4.H = 0x2020
+2020cb5e: LOAD R5.L = 0xca04
+2020cb62: LOAD R5.H = 0x2020
+2020cb66: STORE [P5++] = P2
+2020cb68: STORE [P4 + 0xc] = R4
+2020cb6a: LOAD R4.L = 0xc9d4
+2020cb6e: LOAD R4.H = 0x2020
+2020cb72: STORE [P4 + 0x10] = R5
+2020cb74: LOAD R5 = [P3 + 0xec]
+2020cb78: STORE [P5++] = R1
+2020cb7a: STORE [P5++] = P2
+2020cb7c: STORE [P4 + 0x8] = R4
+2020cb7e: LOAD R4 = [P3 + 0xe8]
+2020cb82: LOAD P0 = -0x5c
+2020cb86: STORE [P4 + 0x4] = R3
+2020cb88: STORE [P5++] = R5
+2020cb8a: STORE [P5] = R4
+2020cb8c: ADD P5 += 0x8
+2020cb8e: LOAD R4 = [FP + -0x10]
+2020cb90: STORE B [P5 + -0x2] = R2
+2020cb94: STORE B [P5 + -0x3] = R6
+2020cb98: STORE B [P5 + -0x4] = R4
+2020cb9c: STORE [P5++] = R0
+2020cb9e: LOAD R5 = [FP + -0x8]
+2020cba0: STORE B [P4] = R7
+2020cba2: STORE [P5 ++ P0] = R5
+2020cba4: STORE [FP + 0x8] = P2
+2020cba6: IF !CC JUMP 0x2020cc52
+2020cba8: LOAD P0.L = 0x2298
+2020cbac: LOAD P0.H = 0xff80
+2020cbb0: STORE [FP + -0x20] = R7
+2020cbb2: STORE [FP + -0x28] = P0
+2020cbb4: LOAD P0 = [FP + -0x20]
+2020cbb6: LOAD P2.L = 0x23ac
+2020cbba: LOAD P2.H = 0xff80
+2020cbbe: ADD P2 = P2 + (P0 << 2)
+2020cbc0: LOAD P0 = [P2]
+2020cbc2: JUMP (P0)
+2020cbc4: LOAD R1 = 0x86a0
+2020cbc8: BITSET (R1,0x10)
+2020cbca: CC = R5 == R1
+2020cbcc: STORE B [P4 + 0x1] = R7
+2020cbd0: IF !CC JUMP 0x2020ccae
+2020cbd2: NOP
+2020cbd4: NOP
+2020cbd6: MOVE P1 = R0
+2020cbd8: LOAD R0 = [P1]
+2020cbda: STORE [P5 + 0x60] = R0
+2020cbde: LOAD P1.L = 0x50
+2020cbe2: LOAD P1.H = 0xff80
+2020cbe6: LOAD R0 = B [P1] (Z)
+2020cbe8: CC = R0 == 0x1
+2020cbea: IF !CC JUMP 0x2020cbfa
+2020cbec: LOAD P0 = [P5 + 0xc]
+2020cbee: LOAD R0 = 0x1
+2020cbf0: STORE B [P1] = R7
+2020cbf2: STORE B [P0 + 0x1] = R0
+2020cbf6: STORE B [P5 + -0xe] = R7
+2020cbfa: LOAD P1 = [P3 + 0x8]
+2020cbfc: LOAD R0 = 0x10
+2020cbfe: LOAD R1 = [P1 + 0x3c]
+2020cc00: CC = R1 == R0
+2020cc02: IF !CC JUMP 0x2020cc32
+2020cc04: LOAD R0 = B [P5 + 0x55] (Z)
+2020cc08: CC = R0 == 0x2
+2020cc0a: IF CC JUMP 0x2020cc10
+2020cc0c: CC = R0 == 0x3
+2020cc0e: IF !CC JUMP 0x2020cc1c
+2020cc10: LOAD P1 = [P5]
+2020cc12: LOAD R0 = 0x1
+2020cc14: STORE B [P5 + 0x55] = R0
+2020cc18: STORE B [P1 + 0x37] = R0
+2020cc1c: LOAD R0 = B [P5 + 0x55] (Z)
+2020cc20: LOAD R1 = 0x5
+2020cc22: CC = R0 == R1
+2020cc24: IF !CC JUMP 0x2020cc32
+2020cc26: LOAD P1 = [P5]
+2020cc28: LOAD R0 = 0x4
+2020cc2a: STORE B [P5 + 0x55] = R0
+2020cc2e: STORE B [P1 + 0x37] = R0
+2020cc32: LOAD P1 = [P5 + 0x50]
+2020cc36: LOAD R0 = B [P1] (Z)
+2020cc38: CC = R0 == 0x1
+2020cc3a: IF !CC JUMP 0x2020cc68
+2020cc3c: LOAD R0 = B [P1 + 0x1] (Z)
+2020cc40: CC = R0 == 0x0
+2020cc42: IF !CC JUMP 0x2020cc68
+2020cc44: LOAD R0 = [P4 + 0x4]
+2020cc46: LOAD R1.L = 0x2378
+2020cc4a: LOAD R1.H = 0xff80
+2020cc4e: CALL 0x202b4b54
+2020cc52: LOAD R0.L = 0xc944
+2020cc56: LOAD R0.H = 0x2020
+2020cc5a: CALL 0x20236b20
+2020cc5e: ADD SP += 0x20
+2020cc60: POP (R7:4,P5:3) = [SP++]
+2020cc62: UNLINK
+2020cc66: RTS
+===== uses of 0xC844 / 0x2020C844 =====
+2020cab2: LOAD P5.L = 0xc844
+  2020ca90: ADD P1 += 0x4
+  2020ca92: STORE [P2] = P1
+  2020ca94: STORE [P1] = R0
+  2020ca96: UNLINK
+  2020ca9a: RTS
+  2020ca9c: LOAD R1 = [P1]
+  2020ca9e: CC = R1 == 0x0
+  2020caa0: IF CC JUMP 0x2020ca94
+  2020caa2: JUMP.S 0x2020ca8e
+  2020caa4: LINK 0x30
+  2020caa8: PUSH [--SP] = (R7:4,P5:3)
+  2020caaa: ADD SP += -0x20
+  2020caac: STORE [FP + -0x1c] = R1
+  2020caae: MOVE R7 = R0
+  2020cab0: LOAD P3 = [FP + -0x1c]
+  2020cab2: LOAD P5.L = 0xc844
+  2020cab6: LOAD P5.H = 0x2020
+  2020caba: LOAD R3.L = 0xc9bc
+  2020cabe: LOAD R3.H = 0x2020
+  2020cac2: LOAD P1 = [P3 + 0x8]
+  2020cac4: STORE [P5++] = P1
+  2020cac6: LOAD P0 = [P3 + 0x38]
+  2020cac8: STORE [FP + -0x18] = P0
+  2020caca: LOAD P0 = [P3 + 0x14]
+  2020cacc: LOAD R5 = [P3 + 0x20]
+  2020cace: STORE [P5++] = P0
+  2020cad0: LOAD P4 = [P3 + 0x2c]
+  2020cad2: LOAD R0 = [P3 + 0x2c]
+  2020cad4: STORE [FP + -0x24] = P4
+  2020cad6: LOAD P4 = [FP + -0x18]
+  2020cad8: STORE [P5++] = R5
+  2020cada: STORE [P5++] = R0
+  2020cadc: STORE [P5++] = P4
+  2020cade: LOAD R4 = [P3 + 0x44]
+  2020cae2: STORE [FP + 0x10] = P0
+  2020cae4: LOAD P0 = [P3 + 0x50]
+  2020cae8: LOAD P2 = [P3 + 0xa4]
+  2020caec: STORE [P5++] = R4
+  2020caee: STORE [P5++] = P0
+  2020caf0: STORE [SP + 0x3c] = P2
+  2020caf2: LOAD P2 = [P3 + 0x5c]
+  2020caf6: LOAD P4 = [P3 + 0x68]
+  2020cafa: STORE [FP + -0x4] = P0
+  2020cafc: STORE [P5++] = P2
+  2020cafe: LOAD P0 = [P3 + 0x74]
+  2020cb02: STORE [FP + -0x14] = P4
+  2020cb04: LOAD R5 = B [P2 + 0x8] (Z)
+  2020cb08: STORE [FP + -0x10] = R5
+  2020cb0a: STORE [P5++] = P4
+  2020cb0c: LOAD P4 = [P3 + 0x80]
+  2020cb10: LOAD R5 = [P3 + 0x8c]
+  2020cb14: LOAD R4 = [P3 + 0x98]
+  2020cb18: LOAD P2 = [SP + 0x3c]
+  2020cb1a: STORE [P5++] = P0
+  2020cb1c: STORE [FP + -0xc] = P0
+  2020cb1e: LOAD P0 = [P3 + 0xd8]
+  2020cb22: LOAD R1 = [P3 + 0xdc]
+  2020cb26: STORE [FP + -0x2c] = P4
+  2020cb28: STORE [P5++] = P4
+  2020cb2a: LOAD P4.L = 0xc978
+
+===== LOAD W [P* + 0x58] then memcpy nearby =====
+===== note: check L1 Data B separately =====

@@ -1,0 +1,51 @@
+Connected to the simulator.
+Loading section .text, size 0x4 lma 20200000
+Start address ffa00000
+Transfer rate: 32 bits in <1 sec.
+Temporary breakpoint 1 at 0xffa00000
+
+Temporary breakpoint 1, 0xffa00000 in ?? ()
+0xffa00002 in ?? ()
+
+=== stepping 14 insns ===
+0x2020fade in ?? ()
+$1 = 0x2020fade
+$2 = 0x0
+$3 = 0x0
+0x2020fae0 in ?? ()
+$4 = 0x2020fae0
+0x2020fae4 in ?? ()
+$5 = 0x2020fae4
+0x2020fae8 in ?? ()
+$6 = 0x2020fae8
+0x2020faec in ?? ()
+$7 = 0x2020faec
+$8 = 0x447a0000
+0xffa018f0 in ?? ()
+$9 = 0xffa018f0
+0xffa018f2 in ?? ()
+$10 = 0xffa018f2
+0xffa018f6 in ?? ()
+$11 = 0xffa018f6
+$12 = 0x447a0000
+0xffa018fa in ?? ()
+$13 = 0xffa018fa
+0xffa018fe in ?? ()
+$14 = 0xffa018fe
+0xffa01902 in ?? ()
+$15 = 0xffa01902
+$16 = 0x447a0000
+0xffa01904 in ?? ()
+$17 = 0xffa01904
+0xffa01906 in ?? ()
+$18 = 0xffa01906
+0xffa01908 in ?? ()
+$19 = 0xffa01908
+$20 = 0x447a0000
+
+=== scratch after ===
+0x202884dc:	0x00000000	0x00000000	0x00000000	0x00000000
+0x202884ec:	0x2a6809c0	0x00000000	0x00000000	0x00000000
+
+=== done ===
+GDB-EXIT:0

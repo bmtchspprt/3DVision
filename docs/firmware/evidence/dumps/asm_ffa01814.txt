@@ -1,0 +1,120 @@
+ffa01814: XOR R3 = R0 ^ R1
+ffa01816: LSHIFT R3 >>= 0x1f
+ffa01818: LSHIFT R3 <<= 0x1f
+ffa0181a: PUSH [--SP] = (R7:4)
+ffa0181c: BITCLR (R0,0x1f)
+ffa0181e: BITCLR (R1,0x1f)
+ffa01820: LSH R6 = R0 >> 0x17
+ffa01824: LSH R5 = R1 >> 0x17
+ffa01828: LOAD R7 = 0xff
+ffa0182c: CC = R6 == R7
+ffa0182e: IF CC JUMP 0xffa018ba
+ffa01830: CC = R5 == R7
+ffa01832: IF CC JUMP 0xffa018ca
+ffa01834: CC = R1 == 0x0
+ffa01836: IF CC JUMP 0xffa018d8
+ffa01838: CC = R0 == 0x0
+ffa0183a: IF CC JUMP 0xffa018e2
+ffa0183c: LOAD R2 = 0x3f8
+ffa01840: LSHIFT R2 <<= 0x14
+ffa01842: CC = R1 == R2
+ffa01844: IF CC JUMP 0xffa018e2
+ffa01846: CC = R0 == R1
+ffa01848: IF CC R0 = R2
+ffa0184a: IF CC JUMP 0xffa018e2
+ffa0184c: LOAD R4 = 0x7f
+ffa01850: SUB R6 = R6 - R5
+ffa01852: ADD R6 = R6 + R4
+ffa01854: CC = R6 <= R7
+ffa01856: IF !CC JUMP 0xffa018dc
+ffa01858: LOAD R2.L = 0x17
+ffa0185c: EXTRACT R0 = extract(R0,R2.L) (z)
+ffa01860: EXTRACT R1 = extract(R1,R2.L) (z)
+ffa01864: LOAD R2 = 0x0
+ffa01866: MOVE R7 = R2
+ffa01868: BITSET (R0,0x17)
+ffa0186a: BITSET (R1,0x17)
+ffa0186c: CC = R1 < R0
+ffa0186e: MOVE R5 = CC
+ffa01870: SUB R4 = R0 - R1
+ffa01872: IF CC R0 = R4
+ffa01874: LOAD R4 = 0x20
+ffa01876: SUB R4 = R4 - R5
+ffa01878: MOVE P1 = R4
+ffa0187a: LSETUP (0xffa0187e,0xffa01888) LC0 = P1
+ffa0187e: CC = R1 < R0
+ffa01880: SUB R4 = R0 - R1
+ffa01882: IF CC R0 = R4
+ffa01884: ROT R2 = rot R2 by 0x1
+ffa01888: LSHIFT R0 <<= 0x1
+ffa0188a: LSH R4 = R2 << 0x19
+ffa0188e: LSHIFT R2 >>= 0x7
+ffa01890: LSH R5 = R2 << 0x8
+ffa01894: ASHIFT R5 >>>= 0x1f
+ffa01896: ADD R6 = R6 + R5
+ffa01898: BITCLR (R2,0x17)
+ffa0189a: CC = R6 <= 0x0
+ffa0189c: IF CC JUMP 0xffa018e8
+ffa0189e: LSHIFT R4 >>= 0x1f
+ffa018a0: ADD R5 = R2 + R4
+ffa018a2: CC = R5 == 0x0
+ffa018a4: IF CC R6 = R5
+ffa018a6: LOAD R5 = 0xff
+ffa018aa: CC = R6 < R5
+ffa018ac: IF !CC JUMP 0xffa018dc
+ffa018ae: LSHIFT R6 <<= 0x17
+ffa018b0: OR R0 = R2 | R6
+ffa018b2: ADD R0 = R0 + R4
+ffa018b4: OR R0 = R3 | R0
+ffa018b6: POP (R7:4) = [SP++]
+ffa018b8: RTS
+ffa018ba: CC = R5 < R7
+ffa018bc: LSH R6 = R0 << 0x9
+ffa018c0: MOVE CC &= az
+ffa018c2: IF CC JUMP 0xffa018dc (bp)
+ffa018c4: LOAD R0 = -0x1
+ffa018c6: POP (R7:4) = [SP++]
+ffa018c8: RTS
+ffa018ca: CC = R0 == 0x0
+ffa018cc: LSH R7 = R1 << 0x9
+ffa018d0: MOVE CC &= az
+ffa018d2: IF !CC JUMP 0xffa018c4
+ffa018d4: LOAD R0 = 0x0
+ffa018d6: JUMP.S 0xffa018e2
+ffa018d8: CC = R0 == 0x0
+ffa018da: IF CC JUMP 0xffa018c4
+ffa018dc: LOAD R0 = 0x7f8
+ffa018e0: LSHIFT R0 <<= 0x14
+ffa018e2: OR R0 = R0 | R3
+ffa018e4: POP (R7:4) = [SP++]
+ffa018e6: RTS
+ffa018e8: MOVE R0 = R3
+ffa018ea: POP (R7:4) = [SP++]
+ffa018ec: RTS
+ffa018ee: <no insn>
+ffa018f0: PUSH [--SP] = R7
+ffa018f2: LOAD R3.L = 0x1708
+ffa018f6: EXTRACT R2 = extract(R0,R3.L) (z)
+ffa018fa: EXTRACT R3 = extract(R1,R3.L) (z)
+ffa018fe: LOAD R7 = 0xff
+ffa01902: CC = R2 == R7
+ffa01904: IF CC JUMP 0xffa01990
+ffa01906: CC = R3 == R7
+ffa01908: IF CC JUMP 0xffa0198a
+ffa0190a: XOR R7 = R0 ^ R1
+ffa0190c: MOVE CC = R2
+ffa0190e: IF !CC JUMP 0xffa019b0
+ffa01910: LSH R0 = R0 << 0x8
+ffa01914: BITSET (R0,0x1f)
+ffa01916: MOVE CC = R3
+ffa01918: IF !CC JUMP 0xffa019d8
+ffa0191a: LSH R1 = R1 << 0x8
+ffa0191e: BITSET (R1,0x1f)
+ffa01920: ADD R2 = R2 + R3
+ffa01922: ADD R2 += -0x40
+ffa01924: ADD R2 += -0x3f
+ffa01926: MAC A1 = R0.H * R1.L ,A0 = R0.L * R1.L (fu)
+ffa0192a: LSH A0 = A0 >> 0x10
+ffa0192e: ADD A0 += A1
+ffa01932: MAC A1 = R0.H * R1.H ,A0 += R0.L * R1.H (fu)
+ffa01936: MOVE R0 = A0.W

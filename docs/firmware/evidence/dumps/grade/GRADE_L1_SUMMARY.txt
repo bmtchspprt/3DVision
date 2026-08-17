@@ -1,0 +1,56 @@
+===== seed ffa03900 =====
+fn=none
+===== seed ffa0392e =====
+fn=none
+===== seed ffa03b00 =====
+fn=FUN_ffa03b00 ffa03b00..ffa03c6b
+===== seed ffa03b02 =====
+fn=none
+===== seed ffa04fe0 =====
+fn=FUN_ffa04fe0 ffa04fe0..ffa0549d
+===== seed ffa04fe2 =====
+fn=none
+===== seed ffa04780 =====
+fn=none
+===== seed ffa00da4 =====
+fn=FUN_ffa00da4 ffa00da4..ffa00f91
+===== seed 20212cf0 =====
+fn=FUN_20212cf0 20212cf0..20212fff
+===== seed 20213a00 =====
+fn=FUN_20213a00 20213a00..20213dff
+===== seed 20220260 =====
+fn=FUN_20220260 20220260..20220635
+===== seed 20230b70 =====
+fn=FUN_20230b70 20230b70..20234245
+===== seed 2022d190 =====
+fn=FUN_2022d190 2022d190..2022d235
+=== scan L1 instructions containing 0x44 and 0x5cfc ===
+ffa02c70: LOAD P4.L = 0x44
+ffa0391c: LOAD P3 = 0x44
+ffa03b00: LOAD R7 = 0x147a
+ffa03d0a: STORE [SP + 0x44] = R0
+ffa03dd6: STORE [FP + -0x44] = R1
+ffa0427a: LOAD R5 = [FP + -0x44]
+ffa04282: LOAD R2 = [FP + -0x44]
+ffa042a2: STORE [FP + -0x44] = R2
+ffa042b2: LOAD R3 = [SP + 0x44]
+ffa04360: LOAD R5 = [FP + -0x44]
+ffa0469a: STORE [FP + -0x44] = P1
+ffa04800: LOAD P3 = [FP + -0x44]
+ffa0480e: LOAD P1 = [FP + -0x44]
+ffa04966: LOAD P0 = [FP + -0x44]
+ffa04b90: LOAD P2 = 0x44
+ffa04b94: LOAD P1 = [FP + -0x44]
+ffa04fe0: LOAD R1 = 0x147a
+ffa05266: LOAD P3 = [FP + -0x44]
+ffa0529c: LOAD P1 = [FP + -0x44]
+ffa052c6: LOAD P2 = [FP + -0x44]
+ffa06028: STORE [FP + -0x44] = R0
+ffa077ee: LOAD P3 = 0x44
+ffa0794a: STORE B [P5 + 0x44] = R6
+ffa079a6: STORE B [P5 + 0x44] = R1
+ffa07a60: STORE B [P5 + 0x44] = R6
+ffa084c2: LOAD R1.H = 0x447a
+ffa100fa: STORE W [SP + 0x44] = R4
+ffa12c3c: LOAD R2 = [P5 + 0x44]
+ffa13246: STORE [P5 + 0x44] = R0

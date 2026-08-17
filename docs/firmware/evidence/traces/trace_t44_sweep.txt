@@ -1,0 +1,31 @@
+Connected to the simulator.
+Loading section .text, size 0x4 lma 20200000
+Start address ffa00000
+Transfer rate: 32 bits in <1 sec.
+Temporary breakpoint 1 at 0xffa00000
+
+Temporary breakpoint 1, 0xffa00000 in ?? ()
+=> 0x20210be2:	NOP;
+0xffa00002 in ?? ()
+pc             0xffa00002          0xffa00002
+=> 0x20210c00:	[FP -0x4] = P1;
+0x20210c02 in ?? ()
+pc             0x20210c02          0x20210c02
+=> 0x20211000:	NOP;
+0x20211002 in ?? ()
+pc             0x20211002          0x20211002
+=> 0x20212000:	R0 = [P1 + 0x34];
+0x20212002 in ?? ()
+pc             0x20212002          0x20212002
+=> 0x2021f97a:	LINK 0x14;		/* (20) */
+0x2021f97e in ?? ()
+pc             0x2021f97e          0x2021f97e
+=> 0x20212a64:	LINK 0x0;		/* (0) */
+0x20212a68 in ?? ()
+pc             0x20212a68          0x20212a68
+=> 0x20215030:	NOP;
+0x20215032 in ?? ()
+pc             0x20215032          0x20215032
+
+=== done ===
+GDB-EXIT:0

@@ -1,0 +1,4 @@
+fn=FUN_ffa04b90 ffa04b90..ffa04b99
+xrefs to entry:
+=== search SDRAM for CALL targets into 0xFFA04Bxx ===
+20214a8e: LOAD R0 = 0x4800

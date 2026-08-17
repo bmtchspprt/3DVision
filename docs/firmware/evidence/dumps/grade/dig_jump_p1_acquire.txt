@@ -1,0 +1,42 @@
+JUMP (P1) / JUMP.L (P1) in pulse+acquire windows — resolve table targets
+
+===== 2020ec00..20221200 =====
+
+===== 20224000..20225000 =====
+2022402c: CALL (P1) -> ffa05c38
+2022406a: CALL (P1) -> ffa05ee4
+20224084: CALL (P1) -> ffa0586c
+202240ae: CALL (P1) -> ffa05ee4
+202240c8: CALL (P1) -> ffa0586c
+202240d8: CALL (P1) -> ffa05ee4
+202240e4: CALL (P1) -> ffa0586c
+202240f8: CALL (P1) -> ffa05ee4
+20224104: CALL (P1) -> ffa0586c
+20224162: CALL (P1) -> ffa05ee4
+20224174: CALL (P1) -> ffa05896
+20224194: CALL (P1) -> ffa05ee4
+202241ce: CALL (P1) -> ffa05896
+2022422c: CALL (P1) -> ffa00a78
+20224288: CALL (P1) -> ffa018f0
+202243e4: CALL (P1) -> ffa05ee4
+202244a6: CALL (P1) -> ffa05f2e
+2022456a: CALL (P1) -> ffa05f2e
+20224692: CALL (P1) -> ffa01814
+2022470e: CALL (P1) -> ffa01688
+2022471a: CALL (P1) -> ffa018f0
+20224724: CALL (P1) -> ffa014dc
+20224754: CALL (P1) -> ffa01814
+2022475e: CALL (P1) -> ffa014dc
+2022499a: CALL (P1) -> ffa01630
+202249c6: CALL (P1) -> ffa01714
+202249d4: CALL (P1) -> ffa01630
+202249f4: CALL (P1) -> ffa01630
+20224a1c: CALL (P1) -> ffa01630
+20224a46: CALL (P1) -> ffa0165c
+20224b14: CALL (P1) -> ffa01716
+20224b46: CALL (P1) -> ffa0165c
+20224b5e: CALL (P1) -> ffa0165c
+20224d5a: CALL (P1) -> ffa01688
+20224d6c: CALL (P1) -> ffa018f0
+20224d86: CALL (P1) -> ffa01688
+20224d9e: CALL (P1) -> ffa018f0

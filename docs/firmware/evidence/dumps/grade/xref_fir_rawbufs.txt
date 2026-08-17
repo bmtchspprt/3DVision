@@ -1,0 +1,88 @@
+##### refs to ffa00d00
+count=0
+  text scan:
+##### refs to ffa05b28
+count=0
+  text scan:
+##### refs to ffa06688
+  from 202ecb14 type=COMPUTED_CALL
+  from 202ecc44 type=COMPUTED_CALL
+  from 202ecc60 type=COMPUTED_CALL
+  from 202106a6 type=COMPUTED_CALL
+  from 20210726 type=COMPUTED_CALL
+  from 20210842 type=COMPUTED_CALL
+  from 202108c2 type=COMPUTED_CALL
+  from 202109d6 type=COMPUTED_CALL
+  from 20210a56 type=COMPUTED_CALL
+  from 20214c9c type=COMPUTED_CALL
+count=10
+  text scan:
+##### refs to ffa03c8a
+  from 202303ac type=COMPUTED_CALL
+count=1
+  text scan:
+##### refs to ffa0467e
+  from 2022e2de type=COMPUTED_CALL
+count=1
+  text scan:
+##### refs to ffa058ac
+  from 202105cc type=COMPUTED_CALL
+  from 202107c4 type=COMPUTED_CALL
+  from 2021095a type=COMPUTED_CALL
+  from 20210ae6 type=COMPUTED_CALL
+  from 20210b44 type=COMPUTED_CALL
+  from 2021062a type=COMPUTED_CALL
+  from 20214c66 type=COMPUTED_CALL
+count=7
+  text scan:
+
+##### brute CALL/LOAD to FIR/IQ/FFT
+2021069e: LOAD P1.L = 0x6688
+2021071e: LOAD P1.L = 0x6688
+2021083a: LOAD P1.L = 0x6688
+202108ba: LOAD P1.L = 0x6688
+202109ce: LOAD P1.L = 0x6688
+20210a4e: LOAD P1.L = 0x6688
+20214c94: LOAD P1.L = 0x6688
+ffa00cae: CALL 0xffa00da4
+ffa00cce: IF CC JUMP 0xffa00d7a
+ffa00cd2: IF CC JUMP 0xffa00d7a
+ffa00d10: IF CC JUMP 0xffa00d86
+ffa00d18: LSETUP (0xffa00d1c,0xffa00d48) LC0 = P0
+ffa00d24: LSETUP (0xffa00d28,0xffa00d28) LC1 = P1
+ffa00d32: LSETUP (0xffa00d36,0xffa00d36) LC1 = P0
+ffa00d56: LSETUP (0xffa00d5a,0xffa00d72) LC0 = P2
+ffa00d62: LSETUP (0xffa00d66,0xffa00d66) LC1 = P1
+ffa00d96: LSETUP (0xffa00d9a,0xffa00d9a) LC0 = P2
+ffa00da2: JUMP.S 0xffa00d7a
+ffa0563c: CALL 0xffa00da4
+ffa05646: CALL 0xffa00da4
+ffa05666: CALL 0xffa00da4
+ffa05678: CALL 0xffa00da4
+ffa0578e: CALL 0xffa00da4
+ffa0579c: CALL 0xffa00da4
+ffa057d2: CALL 0xffa00da4
+ffa057e2: CALL 0xffa00da4
+ffa05a7a: IF CC JUMP 0xffa05bb4
+ffa05a80: IF CC JUMP 0xffa05b00
+ffa05b04: IF CC JUMP 0xffa05b16
+ffa05b0e: IF CC JUMP 0xffa05b16 (bp)
+ffa05b1a: IF CC JUMP 0xffa05b7a
+ffa05b1e: IF CC JUMP 0xffa05b5a
+ffa05b28: LSETUP (0xffa05b2c,0xffa05b58) LC0 = P1
+ffa05b7c: IF CC JUMP 0xffa05b5a
+ffa05b86: LSETUP (0xffa05b8a,0xffa05bb0) LC0 = P1
+ffa05bb2: JUMP.S 0xffa05b5a
+ffa05bb8: IF CC JUMP 0xffa05b00
+ffa05bf2: LSETUP (0xffa05bf6,0xffa05c2a) LC0 = P1
+ffa05c36: JUMP.S 0xffa05b00
+ffa065f8: IF !CC JUMP 0xffa06600
+ffa0660e: IF CC JUMP 0xffa06636
+ffa06612: IF !CC JUMP 0xffa06636
+ffa06634: JUMP.S 0xffa06640
+ffa066c8: LSETUP (0xffa066cc,0xffa0670e) LC1 = P2
+ffa066ce: LSETUP (0xffa066d2,0xffa066de) LC0 = P5
+ffa066de: IF !CC JUMP 0xffa066e2
+ffa066e0: JUMP.S 0xffa066ce
+
+##### giant rawbuf 5b40/5640 region stores (2022FA10..20230000)

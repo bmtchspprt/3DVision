@@ -1,0 +1,27 @@
+202b4a98: MOVE R2 = R0
+202b4a9a: LINK 0x0
+202b4a9e: CC = R2 < 0x3
+202b4aa0: PUSH [--SP] = R7
+202b4aa2: IF !CC JUMP 0x202b4ab6
+202b4aa4: MOVE P1 = R1
+202b4aa6: LOAD R3 = 0x1
+202b4aa8: LSHIFT R3 <<= R2
+202b4aaa: LOAD R0 = 0x1
+202b4aac: LOAD R7 = B [P1 + 0x32] (Z)
+202b4ab0: AND R3 = R7 & R3
+202b4ab2: CC = R3 == 0x0
+202b4ab4: IF !CC JUMP 0x202b4ace
+202b4ab6: CC = R2 < 0x3
+202b4ab8: LOAD R0 = 0x0
+202b4aba: IF CC JUMP 0x202b4ace
+202b4abc: MOVE P1 = R1
+202b4abe: ADD R2 += -0x3
+202b4ac0: LOAD R0 = 0x1
+202b4ac2: LSHIFT R0 <<= R2
+202b4ac4: LOAD R1 = B [P1 + 0x2f] (Z)
+202b4ac8: AND R0 = R1 & R0
+202b4aca: MOVE CC = R0
+202b4acc: MOVE R0 = CC
+202b4ace: LOAD R7 = [SP++]
+202b4ad0: UNLINK
+202b4ad4: RTS

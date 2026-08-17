@@ -1,0 +1,100 @@
+ffa05f92: CC = R2 <= 0x0
+ffa05f94: LINK 0x0
+ffa05f98: MOVE P0 = R1
+ffa05f9a: MOVE P2 = R0
+ffa05f9c: IF CC JUMP 0xffa05faa
+ffa05f9e: NOP
+ffa05fa0: MOVE P1 = R2
+ffa05fa2: LSETUP (0xffa05fa6,0xffa05fa8) LC0 = P1
+ffa05fa6: LOAD R0 = B [P0++] (Z)
+ffa05fa8: STORE B [P2++] = R0
+ffa05faa: UNLINK
+ffa05fae: RTS
+ffa05fb0: LOAD R1 = 0xa028
+ffa05fb4: MULT R1 *= R0
+ffa05fb6: LOAD R0 = 0x6999
+ffa05fba: MAC R3 = (A1 = R1.L * R0.L) (fu)
+ffa05fbe: LSH A1 = A1 >> 0x10
+ffa05fc2: LOAD R2 = 0x3326
+ffa05fc6: MAC A1 += R2.L * R1.L (m,is)
+ffa05fca: LINK 0x0
+ffa05fce: MAC A1 += R1.H * R0.L (m,is)
+ffa05fd2: UNLINK
+ffa05fd6: ASH A1 = A1 >>> 0x10
+ffa05fda: MAC R3 = (A1 += R1.H * R2.L) (is)
+ffa05fde: ASHIFT R1 >>>= 0x1f
+ffa05fe0: ASHIFT R3 >>>= 0xe
+ffa05fe2: SUB R0 = R3 - R1
+ffa05fe4: RTS
+ffa05fe6: LINK 0x10
+ffa05fea: STORE [SP + 0xc] = R7
+ffa05fec: STORE [SP + 0x18] = R0
+ffa05fee: MOVE R0 = R0.L (X)
+ffa05ff0: CALL 0xffa02948
+ffa05ff4: MOVE R7 = R0
+ffa05ff6: LOAD R0 = W [SP + 0x1a] (X)
+ffa05ff8: CALL 0xffa02948
+ffa05ffc: MOVE R1 = R0
+ffa05ffe: MOVE R0 = R7
+ffa06000: LOAD R7 = [SP + 0xc]
+ffa06002: UNLINK
+ffa06006: RTS
+ffa06008: LINK 0x5c
+ffa0600c: PUSH [--SP] = (R7:4,P5:3)
+ffa0600e: ADD SP += -0x10
+ffa06010: STORE B [FP + 0x10] = R2
+ffa06014: STORE [FP + 0xc] = R1
+ffa06016: STORE [FP + 0x8] = R0
+ffa06018: MOVE P1 = FP
+ffa0601a: ADD P1 += -0x3c
+ffa0601c: MOVE R2 = CYCLES
+ffa0601e: MOVE R1 = CYCLES2
+ffa06020: STORE [P1] = R2
+ffa06022: STORE [P1 + 0x4] = R1
+ffa06024: LOAD R0 = [FP + -0x3c]
+ffa06026: LOAD R1 = [FP + -0x38]
+ffa06028: STORE [FP + -0x44] = R0
+ffa0602a: STORE [FP + -0x40] = R1
+ffa0602c: STORE [FP + -0xc] = R0
+ffa0602e: STORE [FP + -0x8] = R0
+ffa06030: LOAD P1 = 0x208
+ffa06034: LOAD P1.H = 0xffc0
+ffa06038: LOAD R6 = 0x0
+ffa0603a: STORE [P1] = R6
+ffa0603c: LOAD R0 = [FP + 0xc]
+ffa0603e: CC = R0 == 0x0
+ffa06040: IF CC JUMP 0xffa0604e
+ffa06042: LOAD P1.L = 0x6eec
+ffa06046: LOAD P1.H = 0xff80
+ffa0604a: STORE [P1] = R0
+ffa0604c: JUMP.S 0xffa0604e
+ffa0604e: LOAD R0 = [FP + 0x8]
+ffa06050: CC = R0 == 0x0
+ffa06052: IF !CC JUMP 0xffa0608e
+ffa06054: NOP
+ffa06056: NOP
+ffa06058: LOAD P1.L = 0x6ee0
+ffa0605c: LOAD P1.H = 0xff80
+ffa06060: LOAD R0 = [P1]
+ffa06062: CC = !BITTST (R0,0x0)
+ffa06064: IF CC JUMP 0xffa06070 (bp)
+ffa06066: BITCLR (R0,0x0)
+ffa06068: STORE [P1] = R0
+ffa0606a: LOAD R1 = 0x1
+ffa0606c: STORE [FP + -0x4] = R1
+ffa0606e: JUMP.S 0xffa0645a
+ffa06070: CC = !BITTST (R0,0x1)
+ffa06072: IF CC JUMP 0xffa0607e (bp)
+ffa06074: BITCLR (R0,0x1)
+ffa06076: STORE [P1] = R0
+ffa06078: LOAD R1 = 0x2
+ffa0607a: STORE [FP + -0x4] = R1
+ffa0607c: JUMP.S 0xffa0645a
+ffa0607e: CC = !BITTST (R0,0x5)
+ffa06080: IF CC JUMP 0xffa0608c (bp)
+ffa06082: BITCLR (R0,0x5)
+ffa06084: STORE [P1] = R0
+ffa06086: LOAD R1 = 0x20
+ffa06088: STORE [FP + -0x4] = R1
+ffa0608a: JUMP.S 0xffa0645a
+ffa0608c: JUMP.S 0xffa06058

@@ -1,0 +1,296 @@
+CALL (P1)/JUMP (P1) resolution in key windows; unresolved flagged
+
+===== WINDOW acquire 20220636..20221200 =====
+202207b2: CALL (P1)  => ffa00fb4
+2022093e: CALL (P1)  => ffa00fb4
+20220a70: CALL (P1)  => ffa05c38
+20220a84: CALL (P1)  => ffa05c38
+20220bfa: CALL (P1)  => ffa016d4
+20220c1e: CALL (P1)  => ffa01814
+20220c4c: CALL (P1)  => ffa01814
+20220cee: CALL (P1)  => ffa043c4
+20220d0a: CALL (P1)  => ffa01716
+20220d24: CALL (P1)  => ffa01688
+20220d36: CALL (P1)  => ffa01814
+20220d42: CALL (P1)  => ffa0248c
+20220d74: CALL (P1)  => ffa018f0
+20220d84: CALL (P1)  => ffa01716
+20220d9c: CALL (P1)  => ffa01716
+20220db2: CALL (P1)  => ffa01814
+20220e10: CALL (P1)  => ffa018f0
+20220e20: CALL (P1)  => ffa01716
+20220ede: CALL (P1)  => ffa06008
+20221132: CALL (P1)  => ffa06008
+202211b2: CALL (P1)  => ffa01716
+202211c4: CALL (P1)  => ffa01814
+202211d0: CALL (P1)  => ffa014dc
+202211e6: CALL (P1)  => ffa01716
+202211f6: CALL (P1)  => ffa01716
+-- acquire calls=25 jumps=0 unresolved=0
+
+===== WINDOW outer_wrapper 20224000..20225000 =====
+2022402c: CALL (P1)  => ffa05c38
+2022406a: CALL (P1)  => ffa05ee4
+20224084: CALL (P1)  => ffa0586c
+202240ae: CALL (P1)  => ffa05ee4
+202240c8: CALL (P1)  => ffa0586c
+202240d8: CALL (P1)  => ffa05ee4
+202240e4: CALL (P1)  => ffa0586c
+202240f8: CALL (P1)  => ffa05ee4
+20224104: CALL (P1)  => ffa0586c
+20224162: CALL (P1)  => ffa05ee4
+20224174: CALL (P1)  => ffa05896
+20224194: CALL (P1)  => ffa05ee4
+202241ce: CALL (P1)  => ffa05896
+2022422c: CALL (P1)  => ffa00a78
+20224288: CALL (P1)  => ffa018f0
+202243e4: CALL (P1)  => ffa05ee4
+202244a6: CALL (P1)  => ffa05f2e
+2022456a: CALL (P1)  => ffa05f2e
+20224692: CALL (P1)  => ffa01814
+2022470e: CALL (P1)  => ffa01688
+2022471a: CALL (P1)  => ffa018f0
+20224724: CALL (P1)  => ffa014dc
+20224754: CALL (P1)  => ffa01814
+2022475e: CALL (P1)  => ffa014dc
+2022499a: CALL (P1)  => ffa01630
+202249c6: CALL (P1)  => ffa01714
+202249d4: CALL (P1)  => ffa01630
+202249f4: CALL (P1)  => ffa01630
+20224a1c: CALL (P1)  => ffa01630
+20224a46: CALL (P1)  => ffa0165c
+20224b14: CALL (P1)  => ffa01716
+20224b46: CALL (P1)  => ffa0165c
+20224b5e: CALL (P1)  => ffa0165c
+20224d5a: CALL (P1)  => ffa01688
+20224d6c: CALL (P1)  => ffa018f0
+20224d86: CALL (P1)  => ffa01688
+20224d9e: CALL (P1)  => ffa018f0
+-- outer_wrapper calls=37 jumps=0 unresolved=0
+
+===== WINDOW pre_acquire_383 20238000..20238800 =====
+20238156: CALL (P1)  => ffa0af5c
+20238168: CALL (P1)  => ffa0af5c
+202381a8: CALL (P1)  => ffa06008
+202382c8: CALL (P1)  => ffa06008
+202385be: CALL (P1)  => ffa01c38
+202385ea: CALL (P1)  => ffa01c38
+2023865a: CALL (P1)  => ffa01c38
+2023866e: CALL (P1)  => ffa01c38
+202386ba: CALL (P1)  => ffa06008
+-- pre_acquire_383 calls=9 jumps=0 unresolved=0
+
+===== WINDOW pulse_ec 202ec000..202ed200 =====
+202ec212: CALL (P1)  => ffa01688
+202ec21e: CALL (P1)  => ffa01716
+202ec22c: CALL (P1)  => ffa016d4
+202ec238: CALL (P1)  => ffa01716
+202ec24e: CALL (P1)  => ffa018f0
+202ec25c: CALL (P1)  => ffa016d4
+202ec26a: CALL (P1)  => ffa01814
+202ec27c: CALL (P1)  => ffa01714
+202ec2f8: CALL (P1)  => ffa00fb4
+202ec34e: CALL (P1)  => ffa00cc8
+202ec4a8: CALL (P1)  => ffa06008
+202ec4c8: CALL (P1)  => ffa06edc
+202ec4dc: CALL (P1)  => ffa01814
+202ec4ec: CALL (P1)  => ffa01688
+202ec4fa: CALL (P1)  => ffa01814
+202ec540: CALL (P1)  => ffa01688
+202ec54e: CALL (P1)  => ffa018f0
+202ec55a: CALL (P1)  => ffa018f0
+202ec568: CALL (P1)  => ffa01714
+202ec572: CALL (P1)  => ffa0248c
+202ec57e: CALL (P1)  => ffa018f0
+202ec588: CALL (P1)  => ffa06edc
+202ec594: CALL (P1)  => ffa018f0
+202ec5a0: CALL (P1)  => ffa018f0
+202ec5aa: CALL (P1)  => ffa014dc
+202ec5f4: CALL (P1)  => ffa016d4
+202ec604: CALL (P1)  => ffa016d4
+202ec62a: CALL (P1)  => ffa01814
+202ec63a: CALL (P1)  => ffa01688
+202ec650: CALL (P1)  => ffa01814
+202ec664: CALL (P1)  => ffa018f0
+202ec670: CALL (P1)  => ffa01716
+202ec67a: CALL (P1)  => ffa01520
+202ec6d2: CALL (P1)  => ffa018f0
+202ec6ee: CALL (P1)  => ffa018f0
+202ec6fa: CALL (P1)  => ffa020d4
+202ec70a: CALL (P1)  => ffa00da4
+202ec722: CALL (P1)  => ffa01716
+202ec746: CALL (P1)  => ffa016d4
+202ec756: CALL (P1)  => ffa016d4
+202ec762: CALL (P1)  => ffa018f0
+202ec76e: CALL (P1)  => ffa01814
+202ec77c: CALL (P1)  => ffa01714
+202ec78a: CALL (P1)  => ffa01814
+202ec794: CALL (P1)  => ffa01520
+202ec7a4: CALL (P1)  => ffa016d4
+202ec842: CALL (P1)  => ffa06008
+202ec87a: CALL (P1)  => ffa01688
+202ec886: CALL (P1)  => ffa018f0
+202ec892: CALL (P1)  => ffa01814
+202ec89c: CALL (P1)  => ffa0290c
+202ec8aa: CALL (P1)  => ffa01688
+202ec8b6: CALL (P1)  => ffa018f0
+202ec8c2: CALL (P1)  => ffa01814
+202ec8cc: CALL (P1)  => ffa0290c
+202ec8e0: CALL (P1)  => ffa06008
+202ec904: CALL (P1)  => ffa016d4
+202ec97a: CALL (P1)  => ffa06008
+202ec98c: CALL (P1)  => ffa00fb4
+202ec9d6: CALL (P1)  => ffa06008
+202ec9e2: CALL (P1)  => ffa01688
+202ec9f4: CALL (P1)  => ffa01814
+202ecaac: CALL (P1)  => ffa05f2e
+202ecac0: CALL (P1)  => ffa05f2e
+202ecad0: CALL (P1)  => ffa06008
+202ecb14: CALL (P1)  => ffa06688
+202ecb26: CALL (P1)  => ffa06008
+202ecb8a: CALL (P1)  => ffa05ee4
+202ecba6: CALL (P1)  => ffa05ee4
+202ecbd4: CALL (P1)  => ffa06008
+202ecbe0: CALL (P1)  => ffa016d4
+202ecbf0: CALL (P1)  => ffa01688
+202ecbfe: CALL (P1)  => ffa01814
+202ecc14: CALL (P1)  => ffa01688
+202ecc22: CALL (P1)  => ffa01814
+202ecc44: CALL (P1)  => ffa06688
+202ecc60: CALL (P1)  => ffa06688
+202ecccc: CALL (P1)  => ffa018f0
+202ecce2: CALL (P1)  => ffa018f0
+202ecd4e: CALL (P1)  => ffa05f92
+202ecd86: CALL (P1)  => ffa018f0
+202ecda2: CALL (P1)  => ffa018f0
+202ece12: CALL (P1)  => ffa06cfc
+202ece34: CALL (P1)  => ffa0705c
+202ece42: CALL (P1)  => ffa01688
+202ece56: CALL (P1)  => ffa01814
+202ece64: CALL (P1)  => ffa018f0
+202ece78: CALL (P1)  => ffa00fb4
+202ecebc: CALL (P1)  => ffa06008
+202ecf56: CALL (P1)  => ffa0705c
+202ecf74: CALL (P1)  => ffa01038
+202ecf8a: CALL (P1)  => ffa01688
+202ecfa8: CALL (P1)  => ffa01814
+202ecfb4: CALL (P1)  => ffa018f0
+202ecfc2: CALL (P1)  => ffa01688
+202ecfd6: CALL (P1)  => ffa01814
+202ed000: CALL (P1)  => ffa06cfc
+202ed038: CALL (P1)  => ffa05f92
+202ed052: CALL (P1)  => ffa06008
+-- pulse_ec calls=99 jumps=0 unresolved=0
+
+===== WINDOW beam_init 20211c00..20212200 =====
+20211c52: CALL (P1)  => ffa02894
+20211c66: CALL (P1)  => ffa020d4
+20211c74: CALL (P1)  => ffa01814
+20211c7e: CALL (P1)  => ffa028c8
+20211c9a: CALL (P1)  => ffa02894
+20211caa: CALL (P1)  => ffa018f0
+20211cb8: CALL (P1)  => ffa01c74
+20211cd8: CALL (P1)  => ffa02894
+20211cea: CALL (P1)  => ffa02894
+20211cf8: CALL (P1)  => ffa01814
+20211d08: CALL (P1)  => ffa01c74
+20211d16: CALL (P1)  => ffa018f0
+20211d70: CALL (P1)  => ffa05f2e
+20211d8e: CALL (P1)  => ffa05f2e
+20211dac: CALL (P1)  => ffa05f2e
+20211dca: CALL (P1)  => ffa05f2e
+20211de8: CALL (P1)  => ffa05f2e
+20211e6e: CALL (P1)  => ffa05f2e
+20211ea4: CALL (P1)  => ffa05f2e
+20211ec4: CALL (P1)  => ffa05f2e
+20211ee4: CALL (P1)  => ffa05f2e
+20211f02: CALL (P1)  => ffa05f2e
+20211f44: CALL (P1)  => ffa05f2e
+20211f7e: CALL (P1)  => ffa05f2e
+20211fa4: CALL (P1)  => ffa05f2e
+20211fca: CALL (P1)  => ffa05f2e
+20211fec: CALL (P1)  => ffa05f2e
+20211ff8: CALL (P1)  => ffa02894
+2021200a: CALL (P1)  => ffa02894
+20212018: CALL (P1)  => ffa018f0
+20212028: CALL (P1)  => ffa018f0
+2021203e: CALL (P1)  => ffa01814
+20212048: CALL (P1)  => ffa0248c
+20212094: CALL (P1)  => ffa016d4
+202120a2: CALL (P1)  => ffa016d4
+202120b0: CALL (P1)  => ffa01814
+202120e0: CALL (P1)  => ffa016d4
+202120f0: CALL (P1)  => ffa018f0
+202120fe: CALL (P1)  => ffa016d4
+2021210c: CALL (P1)  => ffa01814
+2021211a: CALL (P1)  => ffa01716
+2021212a: CALL (P1)  => ffa01716
+2021213c: CALL (P1)  => ffa016d4
+2021214c: CALL (P1)  => ffa018f0
+2021215c: CALL (P1)  => ffa01688
+20212168: CALL (P1)  => ffa018f0
+20212178: CALL (P1)  => ffa01814
+20212184: CALL (P1)  => ffa0165c
+202121de: CALL (P1)  => ffa016d4
+202121ec: CALL (P1)  => ffa016d4
+202121fa: CALL (P1)  => ffa01814
+-- beam_init calls=51 jumps=0 unresolved=0
+
+===== WINDOW emit_wrap 2022e100..2022e300 =====
+2022e162: CALL (P1)  => ffa05fb0
+2022e176: CALL (P1)  => ffa0586c
+2022e1a0: CALL (P1)  => ffa05ee4
+2022e1ac: CALL (P1)  => ffa0586c
+2022e1e0: CALL (P1)  => ffa05ee4
+2022e1ec: CALL (P1)  => ffa0586c
+2022e240: CALL (P1)  => ffa05896
+2022e26e: CALL (P1)  => ffa05896
+2022e2b4: CALL (P1)  => ffa05ee4
+2022e2de: CALL (P1)  => ffa0467e
+-- emit_wrap calls=10 jumps=0 unresolved=0
+
+===== WINDOW helpers_210xxx 20210000..20212000 =====
+-- helpers_210xxx calls=0 jumps=0 unresolved=0
+
+===== UNIQUE RESOLVED TARGETS =====
+ffa00a78  first=ABS R0 = abs R0 (v)
+ffa00cc8  first=PUSH [--SP] = (R7:6)
+ffa00da4  first=LINK 0x8
+ffa00fb4  first=NEG R2 = -R0
+ffa01038  first=LSH R2 = R0 >> 0x1
+ffa014dc  first=LOAD R1.L = 0x1708
+ffa01520  first=LSH R2 = R0 << 0x1
+ffa01630  first=ROT R0 = rot R0 by 0x1
+ffa0165c  first=ROT R0 = rot R0 by 0x1
+ffa01688  first=LSH R1 = R0 << 0x1
+ffa016d4  first=CC = R0 == 0x0
+ffa01714  first=BITTGL (R1,0x1f)
+ffa01716  first=LSH R3 = R1 << 0x1
+ffa01814  first=XOR R3 = R0 ^ R1
+ffa018f0  first=PUSH [--SP] = R7
+ffa01c38  first=LOAD R3 = [SP + 0xc]
+ffa01c74  first=LINK 0x20
+ffa020d4  first=LINK 0x8
+ffa0248c  first=ASH R2 = R0 >>> 0x17
+ffa02894  first=LSH R1 = R0 << 0x1
+ffa028c8  first=LOAD R1.L = 0x1708
+ffa0290c  first=LOAD R1.L = 0x1708
+ffa043c4  first=LINK 0x40
+ffa0467e  first=LINK 0x60
+ffa0586c  first=MOVE P1 = R1
+ffa05896  first=MOVE P1 = R1
+ffa05c38  first=LINK 0x0
+ffa05ee4  first=NEG R2 = -R0
+ffa05f2e  first=LINK 0x0
+ffa05f92  first=CC = R2 <= 0x0
+ffa05fb0  first=LOAD R1 = 0xa028
+ffa06008  first=LINK 0x5c
+ffa06688  first=LINK 0x2c
+ffa06cfc  first=LINK 0x28
+ffa06edc  first=LOAD R1 = -0x1
+ffa0705c  first=MOVE P0 = R0
+ffa0af5c  first=LINK 0x0
+
+===== DUMP UNKNOWN SDRAM TARGETS (not FFA0 / known) =====
+
+SUMMARY uniqueTargets=37 unresolvedSites=0 unknownDumped=0

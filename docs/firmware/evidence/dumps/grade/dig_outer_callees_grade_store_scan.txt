@@ -1,0 +1,95 @@
+Outer-callee Grade STORE W scan (pre-acquire wrapper callees)
+
+===== NO_GRADE_SW entry=0xffa0af5c fn=FUN_ffa0af5c insns~158 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=2 gradeSW=0
+
+===== NO_GRADE_SW entry=0x2020ae98 fn=0x2020ae98 insns~83 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=0 gradeSW=0
+
+===== NO_GRADE_SW entry=0x2020b742 fn=0x2020b742 insns~800 =====
+flags 578=false 44=true 147a=false 5cfc=false ffc0=false storeW=0 gradeSW=0
+
+===== NO_GRADE_SW entry=0x20207420 fn=0x20207420 insns~319 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=6 gradeSW=0
+
+===== NO_GRADE_SW entry=0x2020ed30 fn=0x2020ed30 insns~329 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=0 gradeSW=0
+
+===== NO_GRADE_SW entry=0x2020b1a2 fn=0x2020b1a2 insns~173 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=0 gradeSW=0
+
+===== NO_GRADE_SW entry=0x20204280 fn=0x20204280 insns~800 =====
+flags 578=true 44=false 147a=false 5cfc=true ffc0=false storeW=0 gradeSW=0
+
+===== NO_GRADE_SW entry=0x202ec3c0 fn=FUN_202ec3c0 insns~62 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=6 gradeSW=0
+
+===== NO_GRADE_SW entry=0x202058da fn=0x202058da insns~332 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=0 gradeSW=0
+
+===== NO_GRADE_SW entry=0x20210b88 fn=0x20210b88 insns~33 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=0 gradeSW=0
+
+===== NO_GRADE_SW entry=0x2020f40e fn=0x2020f40e insns~40 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=1 gradeSW=0
+
+===== NO_GRADE_SW entry=0x2020caa4 fn=FUN_2020caa4 insns~1159 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=0 gradeSW=0
+
+===== NO_GRADE_SW entry=0x2020d858 fn=FUN_2020d858 insns~30 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=0 gradeSW=0
+
+===== NO_GRADE_SW entry=0x202005c8 fn=FUN_202005c8 insns~17 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=0 gradeSW=0
+
+===== NO_GRADE_SW entry=0x2022496e fn=0x2022496e insns~800 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=25 gradeSW=0
+
+===== KNOWN_RAW_CTRL44 entry=0x20221936 fn=0x20221936 insns~800 =====
+flags 578=true 44=false 147a=false 5cfc=true ffc0=false storeW=22 gradeSW=0
+
+===== NO_GRADE_SW entry=0x2021276a fn=0x2021276a insns~296 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=2 gradeSW=0
+
+===== NO_GRADE_SW entry=0x202ffa38 fn=0x202ffa38 insns~24 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=0 gradeSW=0
+
+===== NO_GRADE_SW entry=0x202ffbe6 fn=FUN_202ffbe6 insns~166 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=0 gradeSW=0
+
+===== NO_GRADE_SW entry=0x2020f158 fn=0x2020f158 insns~104 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=0 gradeSW=0
+
+===== NO_GRADE_SW entry=0x202005f6 fn=FUN_202005f6 insns~28 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=0 gradeSW=0
+
+===== NO_GRADE_SW entry=0xffa01c38 fn=FUN_ffa01c38 insns~22 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=0 gradeSW=0
+
+===== NO_GRADE_SW entry=0x2020d67a fn=0x2020d67a insns~31 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=0 gradeSW=0
+
+===== NO_GRADE_SW entry=0x20204044 fn=FUN_20204044 insns~210 =====
+flags 578=true 44=false 147a=false 5cfc=true ffc0=false storeW=0 gradeSW=0
+
+===== NO_GRADE_SW entry=0x202b4f9c fn=0x202b4f9c insns~34 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=0 gradeSW=0
+
+===== NO_GRADE_SW entry=0x202b4b7e fn=0x202b4b7e insns~12 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=0 gradeSW=0
+
+===== KNOWN_CLEAR entry=0x202111b8 fn=FUN_202111b8 insns~978 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=false storeW=6 gradeSW=0
+
+===== KNOWN_ACQUIRE entry=0x20220636 fn=FUN_20220636 insns~1895 =====
+flags 578=true 44=false 147a=false 5cfc=true ffc0=false storeW=55 gradeSW=0
+
+===== KNOWN_BM4 entry=0x202b5066 fn=FUN_202b5066 insns~2000 =====
+flags 578=true 44=false 147a=true 5cfc=true ffc0=false storeW=28 gradeSW=0
+
+===== KNOWN_WAIT entry=0xffa06008 fn=FUN_ffa06008 insns~448 =====
+flags 578=false 44=false 147a=false 5cfc=false ffc0=true storeW=2 gradeSW=0
+
+SUMMARY callees=30 with_new_GRADE_SW=0
+INTERPRET: GRADE_SW on non-KNOWN = first-fill candidate in outer's call tree.
+If 0 new → outer call tree has no Grade sample STORE W beyond known clear/acquire path.

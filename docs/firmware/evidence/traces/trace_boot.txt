@@ -1,0 +1,24 @@
+disasm:   0xffa00000                     -R7 = 0x0 (X);		/*		R7=0x0(  0) */
+insn:     0xffa00000                     -R7 = 0x0 (X);
+disasm:   0xffa00002                     -LC0 = R7;
+insn:     0xffa00002                     -LC0 = R7;
+disasm:   0xffa00004                     -LC1 = R7;
+insn:     0xffa00004                     -LC1 = R7;
+disasm:   0xffa00006                     -L0 = R7;
+insn:     0xffa00006                     -L0 = R7;
+disasm:   0xffa00008                     -L1 = R7;
+insn:     0xffa00008                     -L1 = R7;
+disasm:   0xffa0000a                     -L2 = R7;
+insn:     0xffa0000a                     -L2 = R7;
+disasm:   0xffa0000c                     -L3 = R7;
+insn:     0xffa0000c                     -L3 = R7;
+disasm:   0xffa0000e                     -I0.L = 0x1300;		/* (4864)	I0=0x1300(4864) */
+insn:     0xffa0000e                     -I0.L = 0x1300;
+disasm:   0xffa00012                     -I0.H = 0xffe0;		/* (-32)	I0=0xffe01300(-2092288) */
+insn:     0xffa00012                     -I0.H = 0xffe0;
+disasm:   0xffa00016                     -I1.L = 0x300;		/* (768)	I1=0x300(768) */
+insn:     0xffa00016                     -I1.L = 0x300;
+disasm:   0xffa0001a                     -I1.H = 0xffe0;		/* (-32)	I1=0xffe00300(-2096384) */
+insn:     0xffa0001a                     -I1.H = 0xffe0;
+disasm:   0xffa0001e                     -[I0] = R7;
+insn:     0xffa0001e                     -[I0] = R7;

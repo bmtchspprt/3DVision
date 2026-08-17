@@ -1,18 +1,25 @@
-# Firmware math notes (this repo)
+# Firmware math (this repo)
 
-These files are **notes only**. They are not loaded by the Install Guide, and they were never loaded by the emulator remake. They exist so support math/logic stays local.
+Notes only. Not used by the Install Guide. Do not put this into `js/` unless asked.
 
-**Start here:** `RESEARCH-CLOSED.md`
+```
+docs/firmware/
+  README.md                 <- you are here
+  RESEARCH-CLOSED.md        <- start here (finished answers)
+  notes/                    <- logs, fact table, Grade pipeline, .bm4 layout
+  evidence/
+    dumps/                  <- instruction listings
+    traces/                 <- sim disasm traces
+```
 
-| File | What it is |
+| Read | Path |
 |---|---|
-| `RESEARCH-CLOSED.md` | Finished support answers (why X, pick, T walk, mix `a`, damping, maps) |
-| `HANDOFF.md` | Full recovery log, sim quirks, param landings |
-| `CERTAINTY.md` | Fact table (what is proven vs not) |
-| `DSP-GRADE.md` | ADC → Grade pipeline |
-| `FULLMAP.md` | Memory map |
-| Session / archive `.md` | Older dump catalogs |
+| **Start** | `RESEARCH-CLOSED.md` |
+| Recovery log | `notes/HANDOFF.md` |
+| Fact table | `notes/CERTAINTY.md` |
+| ADC → Grade | `notes/DSP-GRADE.md` |
+| `.bm4` layout | `notes/BM4-FORMAT.md` |
+| Dump index | `evidence/dumps/INDEX.md` |
+| Key traces | `evidence/traces/trace_t55_disasm.txt`, `trace_t58_disasm.txt` |
 
-Instruction dumps (asm/bin/sim) were not copied. They are large and unused by any app. Paths inside `HANDOFF.md` that still mention another tree are evidence citations only.
-
-Do not put this math into `js/` unless you explicitly ask for that.
+Older session write-ups are in `notes/` (`DSP-FINDINGS-*`, `FULLMAP.md`, `LDR-RE.md`). Nothing was removed; files were moved into these folders.

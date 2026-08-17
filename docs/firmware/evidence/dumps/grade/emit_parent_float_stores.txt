@@ -1,0 +1,38 @@
+ffa04688: LOAD P1.L = 0x5060
+ffa046e4: CALL 0xffa01814
+ffa046f4: CALL 0xffa01814
+ffa04704: CALL 0xffa01814
+ffa04714: CALL 0xffa01814
+ffa0472e: CALL 0xffa01814
+ffa04740: CALL 0xffa01814
+ffa0475a: CALL (P1)
+ffa04778: LSETUP (0xffa0477c,0xffa047c4) LC0 = P1
+ffa04794: CALL 0xffa01688
+ffa0479a: CALL 0xffa018f0
+ffa0479e: STORE [I0++] = R0
+ffa047ba: CALL 0xffa01688
+ffa047c0: CALL 0xffa018f0
+ffa047c4: STORE [P3++] = R0
+ffa047d8: CALL 0xffa016d4
+ffa047de: STORE [P2 + 0x1c] = R0
+ffa047ee: CALL 0xffa01814
+ffa047f2: STORE [P2 + 0x1c] = R0
+ffa04838: CALL 0xffa05ee4
+ffa04844: CALL 0xffa0586c
+ffa04850: STORE [P1] = R0
+ffa04862: STORE [P0 + 0x4] = R0
+ffa04868: STORE [P0 + 0xc] = R1
+ffa0487a: CALL (P1)
+ffa04882: STORE [P0 + 0x14] = R0
+ffa048ce: STORE [P2 + 0x4] = R2
+ffa0491c: JUMP.L 0xffa072e0
+ffa04928: CALL 0xffa01814
+ffa0492e: STORE [P1] = R0
+ffa04946: CALL 0xffa06008
+ffa04970: LSETUP (0xffa04974,0xffa049b0) LC0 = P1
+ffa049d0: LSETUP (0xffa049d4,0xffa04ad8) LC0 = P2
+ffa04b04: STORE [P1 + 0x5cd4] = R1
+ffa04b20: STORE [P1 + 0x5cdc] = R5
+ffa04b42: STORE [P1 + 0x5ce0] = R2
+ffa04b5e: STORE [P1 + 0x5ce4] = R3
+ffa04b72: STORE [P2 + 0x5ce8] = R2

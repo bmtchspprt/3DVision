@@ -1,8 +1,8 @@
 # Firmware math — research closed
 
-Firmware `3DLevelScannerM_4_5_452`. This file is the finished answer. Detail dumps stay in `HANDOFF.md` / `CERTAINTY.md` / `DSP-GRADE.md`.
+Firmware `3DLevelScannerM_4_5_452`. This file is the finished answer. Detail lives in `notes/` (`HANDOFF.md`, `CERTAINTY.md`, `DSP-GRADE.md`). Instruction listings: `evidence/dumps/`. Traces: `evidence/traces/`.
 
-Do **not** implement this in the Install Guide.
+These are notes. Do **not** put them into Install Guide `js/` unless asked.
 
 ---
 
@@ -100,7 +100,7 @@ User False E (`+0x5798`, opcode 6 ManualScan) is a stored 327-pt series. Peak do
 
 ## 6. Threshold rewrite — closed as the firmware procedure
 
-There is no `T[i] = c·Grade[i]`. Sites: `g_20213a00.asm`, `fn_20213000.asm`, `trace_t58_disasm.txt`.
+There is no `T[i] = c·Grade[i]`. Sites: `evidence/dumps/grade/g_20213a00.asm`, `evidence/dumps/trace/fn_20213000.asm`, `evidence/traces/trace_t58_disasm.txt`.
 
 1. Zero T int16 at `beam+0x2938` (`0x20213A26`). Cap `min(range>>17, 0x51D)` (`0x51D` = 1309). T float base `[FP−0x50] = +0x51E8` (`0x20212CD4`).
 2. Grade windows: `P4 = 0x20215060`. If the float is finite (not Inf/NaN vs `0x7F800000`), `acc += rsqrt(G)` (`0xFFA0248C`) into `work+0x2C` / `+0x38`. Width uses `ctx+0x2B` and `work+0x10` (`(work+0x10)×byte / 2` at `0x20213C56`…`13C6A`).

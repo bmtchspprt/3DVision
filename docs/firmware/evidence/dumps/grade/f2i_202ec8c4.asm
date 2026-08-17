@@ -1,0 +1,35 @@
+202ec8a6: LOAD P1.H = 0xffa0
+202ec8aa: CALL (P1)
+202ec8ac: MOVE R1 = R6
+202ec8ae: LOAD P1.L = 0x18f0
+202ec8b2: LOAD P1.H = 0xffa0
+202ec8b6: CALL (P1)
+202ec8b8: MOVE R1 = R5
+202ec8ba: LOAD P1.L = 0x1814
+202ec8be: LOAD P1.H = 0xffa0
+202ec8c2: CALL (P1)
+202ec8c4: LOAD P1.L = 0x290c
+202ec8c8: LOAD P1.H = 0xffa0
+202ec8cc: CALL (P1)
+202ec8ce: STORE W [I1++] = R0.L
+202ec8d0: STORE W [P3 + 0x0] = R7
+202ec8d2: LOAD R2 = 0x1
+202ec8d4: LOAD R1 = 0x0
+202ec8d6: LOAD R0 = 0x1
+202ec8d8: LOAD P1.L = 0x6008
+202ec8dc: LOAD P1.H = 0xffa0
+202ec8e0: CALL (P1)
+202ec8e2: LOAD R0 = W [P3 + 0x10] (Z)
+202ec8e4: ADD SP += 0x10
+202ec8e6: POP (R7:4,P5:3) = [SP++]
+202ec8e8: UNLINK
+202ec8ec: RTS
+202ec8ee: STORE W [P0] = R0.L
+202ec8f0: JUMP.S 0x202ec832
+202ec8f2: LSETUP (0x202ec8f6,0x202ec8f6) LC0 = P2
+202ec8f6: STORE W [P0++] = R0
+202ec8f8: JUMP.S 0x202ec832
+202ec8fa: LOAD R0 = [FP + 0x18]
+202ec8fc: LOAD P1.L = 0x16d4
+202ec900: LOAD P1.H = 0xffa0
+202ec904: CALL (P1)

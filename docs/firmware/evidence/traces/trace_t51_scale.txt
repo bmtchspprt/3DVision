@@ -1,0 +1,61 @@
+Connected to the simulator.
+Loading section .text, size 0x4 lma 20200000
+Start address ffa00000
+Transfer rate: 32 bits in <1 sec.
+
+=== 0xffa014dc identity ===
+Dump of assembler code from 0xffa014dc to 0xffa01540:
+   0xffa014dc:	warning: Can not parse XML memory map; XML support was disabled at compile time
+R1.L = 0x1708;		/* (5896)	R1=0x1708(5896) */
+   0xffa014e0:	R3 = 0x9e (X);		/*		R3=0x9e(158) */
+   0xffa014e4:	R2 = EXTRACT (R0, R1.L) (Z);
+   0xffa014e8:	CC = R3 <= R2;
+   0xffa014ea:	IF CC JUMP 0x0xffa01512;
+   0xffa014ec:	CC = R2 == 0x0;
+   0xffa014ee:	IF CC JUMP 0x0xffa0151a;
+   0xffa014f0:	R1 = 0x96 (X);		/*		R1=0x96(150) */
+   0xffa014f4:	R2 = R2 - R1;
+   0xffa014f6:	R3.L = 0x17;		/* ( 23)	R3=0x17( 23) */
+   0xffa014fa:	R1 = -0x18 (X);		/*		R1=0xffffffe8(-24) */
+   0xffa014fc:	R2 = MAX (R2, R1);
+   0xffa01500:	R3 = EXTRACT (R0, R3.L) (Z);
+   0xffa01504:	BITSET (R3, 0x17);		/* bit 23 */
+   0xffa01506:	CC = R0 < 0x0;
+   0xffa01508:	R0 = ASHIFT R3 BY R2.L (S);
+   0xffa0150c:	R1 = -R0;
+   0xffa0150e:	IF CC R0 = R1;
+   0xffa01510:	RTS;
+   0xffa01512:	R0 >>>= 0x1f;
+   0xffa01514:	BITTGL (R0, 0x1f);		/* bit 31 */
+   0xffa01516:	R0 =~ R0;
+   0xffa01518:	RTS;
+   0xffa0151a:	R0 = 0x0 (X);		/*		R0=0x0(  0) */
+   0xffa0151c:	RTS;
+   0xffa0151e:	NOP;
+   0xffa01520:	R2 = R0 << 0x1;
+   0xffa01524:	CC = R2 == 0x0;
+   0xffa01526:	IF CC JUMP 0x0xffa0155e;
+   0xffa01528:	R3 = 0xff (Z);		/*		R3=0xff(255) */
+   0xffa0152c:	R3 <<= 0x18;
+   0xffa0152e:	CC = R3 <= R2 (IU);
+   0xffa01530:	IF CC JUMP 0x0xffa01552;
+   0xffa01532:	R2 = R2 >> 0x18;
+   0xffa01536:	R1 = 0x96 (X);		/*		R1=0x96(150) */
+   0xffa0153a:	R3 = R2 - R1;
+   0xffa0153c:	R2 = R0 << 0x9;
+End of assembler dump.
+Temporary breakpoint 1 at 0xffa00000
+
+Temporary breakpoint 1, 0xffa00000 in ?? ()
+Temporary breakpoint 2 at 0x2020fb72
+0x2020fade in ?? ()
+
+Temporary breakpoint 2, 0x2020fb72 in ?? ()
+
+=== n=70m result ===
+0x204084dc:	0x00000000	0x00000000	0x00000000	0x00000000
+$1 = 711461312
+$2 = 0x2a6809c0
+
+=== done ===
+GDB-EXIT:0

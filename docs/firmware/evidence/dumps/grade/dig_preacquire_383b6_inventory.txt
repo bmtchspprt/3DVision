@@ -1,0 +1,44 @@
+INVENTORY: function containing 0x202383B6 (pre-acquire outer)
+
+No Ghidra function; synthetic start@202383b6 from LINK hunt
+scanned_insns=2500 range 202383b6 .. 202397d2
+
+===== CALL / JUMP targets (unique) =====
+0x202005f6 @ 2023853a
+0x20204044 @ 202386c6
+0x202058da @ 2023852c
+0x2020b1a2 @ 20238532
+0x2020d67a @ 202386a6
+0x2020f158 @ 2023850e
+0x2021276a @ 202383f6
+0x2021276a @ 2023841a
+0x2021276a @ 2023843c
+0x20221936 @ 202383b6
+0x202b4b7e @ 202386ea
+0x202b4f9c @ 202386da
+0x202ffa38 @ 202384d0
+0x202ffbe6 @ 202384f4
+0xffa01c38 @ 202385be
+0xffa01c38 @ 202385ea
+0xffa01c38 @ 2023865a
+0xffa01c38 @ 2023866e
+0xffa06008 @ 202386ba
+call_sites=19
+
+===== FFC0 =====
+(none)
+
+===== STORE W (0) =====
+
+===== GRADE_SHAPED STORE W =====
+(none)
+
+===== Beam / clear / acquire markers =====
+
+SUMMARY storeW=0 grade_shaped_storeW=0 ffc0=0 call_targets=19
+INTERPRET: grade_shaped_storeW>0 = pre-acquire CPU Grade fill candidate.
+If 0 and no FFC0 Grade DEST: pre-acquire fn does not first-fill Grade samples.
+%n===== Callers / refs TO 0x202383B6 =====
+refCount=0
+%n===== CALL (P1) sites loading 0x202383B6 =====
+p1_or_direct_calls=0

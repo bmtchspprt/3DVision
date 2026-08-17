@@ -1,0 +1,69 @@
+KILLER: CALL FFA05F2E with Grade-clear setup (0x44 + 147A/578) → post-call touches until RTS
+
+===== CLEAR memset@20211d70 fn=FUN_20211c00 =====
+setup 44=true 147a=false 28f4=true 578=true
+call: CALL (P1)
+  20211d58: IF !CC JUMP 0x20211e40
+  20211d5a: ADD R0 = R5 + R3
+  20211d5c: LOAD R3 = 0x44
+  20211d60: ADD R0 = R0 + R3
+  20211d62: LOAD R2 = 0x28f4
+  20211d66: LOAD R1 = 0x0
+  20211d68: LOAD P1.L = 0x5f2e
+  20211d6c: LOAD P1.H = 0xffa0
+--- after ---
+20211d8e: [NEXT_MEMSET via P1]
+
+===== CLEAR memset@20211d8e fn=FUN_20211c00 =====
+setup 44=true 147a=false 28f4=true 578=true
+call: CALL (P1)
+  20211d74: MULT R0 = R0.L * R6.H (is)
+  20211d78: ADD R0 = R5 + R0
+  20211d7a: LOAD R3 = 0x3374
+  20211d7e: ADD R0 = R0 + R3
+  20211d80: LOAD R1 = 0x0
+  20211d82: LOAD R2 = 0x51e
+  20211d86: LOAD P1.L = 0x5f2e
+  20211d8a: LOAD P1.H = 0xffa0
+--- after ---
+20211dac: [NEXT_MEMSET via P1]
+
+===== CLEAR_THEN_TOUCH memset@20211e6e fn=FUN_20211e4e =====
+setup 44=true 147a=true 28f4=false 578=false
+call: CALL (P1)
+  20211e52: LOAD R1 = 0x44
+  20211e56: MIN R3 = min(R2,R3)
+  20211e5a: ADD R0 = R0 + R1
+  20211e5c: STORE W [P5 + 0x58] = R3
+  20211e60: LSH R2 = R3 << 0x1
+  20211e64: LOAD R1 = 0x0
+  20211e66: LOAD P1.L = 0x5f2e
+  20211e6a: LOAD P1.H = 0xffa0
+--- after ---
+20211e92: STORE W [P5 + 0x58] = R3 [STOREW]
+20211ea4: [NEXT_MEMSET via P1]
+
+===== CLEAR_THEN_TOUCH memset@20211f44 fn=FUN_20211f14 =====
+setup 44=true 147a=true 28f4=false 578=false
+call: CALL (P1)
+  20211f2c: LSH R1 = R3 << 0x1
+  20211f30: SUB R2 = R2 - R3
+  20211f32: ADD R0 = R0 + R1
+  20211f34: STORE W [P5 + 0x58] = R3
+  20211f38: LSHIFT R2 <<= 0x1
+  20211f3a: LOAD R1 = 0x0
+  20211f3c: LOAD P1.L = 0x5f2e
+  20211f40: LOAD P1.H = 0xffa0
+--- after ---
+20211f6e: STORE W [P5 + 0x58] = R3 [STOREW]
+20211f7e: [NEXT_MEMSET via P1]
+
+===== SUMMARY LINES =====
+CLEAR memset@20211d70 fn=FUN_20211c00 storeW=false memcpy=false ffc0=false soft14=false
+CLEAR memset@20211d8e fn=FUN_20211c00 storeW=false memcpy=false ffc0=false soft14=false
+CLEAR_THEN_TOUCH memset@20211e6e fn=FUN_20211e4e storeW=true memcpy=false ffc0=false soft14=false
+CLEAR_THEN_TOUCH memset@20211f44 fn=FUN_20211f14 storeW=true memcpy=false ffc0=false soft14=false
+
+SUMMARY memset_calls=36 grade_shaped_clears=4 clears_with_post_STOREW=2
+INTERPRET: CLEAR_THEN_TOUCH with STORE W to Grade = first-fill candidate after clear.
+If only length meta STORE W / more clears / no Grade dest → post-clear CPU fill CLOSED in clear fns.

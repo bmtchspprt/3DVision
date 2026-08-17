@@ -1,0 +1,100 @@
+ffa01520: LSH R2 = R0 << 0x1
+ffa01524: CC = R2 == 0x0
+ffa01526: IF CC JUMP 0xffa0155e
+ffa01528: LOAD R3 = 0xff
+ffa0152c: LSHIFT R3 <<= 0x18
+ffa0152e: CC = R3 <= R2 (IU)
+ffa01530: IF CC JUMP 0xffa01552
+ffa01532: LSH R2 = R2 >> 0x18
+ffa01536: LOAD R1 = 0x96
+ffa0153a: SUB R3 = R2 - R1
+ffa0153c: LSH R2 = R0 << 0x9
+ffa01540: LSH R2 = R2 >> 0x9
+ffa01544: BITSET (R2,0x17)
+ffa01546: LOAD R0 = -0x20
+ffa01548: MAX R3 = max(R3,R0)
+ffa0154c: ASH R0 = ashift R2 by R3.L
+ffa01550: RTS
+ffa01552: CC = R3 < R2 (IU)
+ffa01554: IF CC JUMP 0xffa0155e
+ffa01556: CC = BITTST (R0,0x1f)
+ffa01558: IF CC JUMP 0xffa0155e
+ffa0155a: LOAD R0 = -0x1
+ffa0155c: RTS
+ffa0155e: LOAD R0 = 0x0
+ffa01560: RTS
+ffa01562: <no insn>
+ffa01564: LOAD R3 = 0x1708
+ffa01568: MOVE P1 = R0
+ffa0156a: EXTRACT R2 = extract(R0,R3.L) (z)
+ffa0156e: LOAD R3 = 0xbe
+ffa01572: SUB R3 = R3 - R1
+ffa01574: CC = R3 <= R2
+ffa01576: IF CC JUMP 0xffa015aa
+ffa01578: SUB R3 = R3 - R2
+ffa0157a: LSH R2 = R0 << 0x8
+ffa0157e: BITSET (R2,0x1f)
+ffa01580: MOVE R1 = R2
+ffa01582: LSHIFT R1 >>= R3
+ffa01584: LOAD R0 = 0x20
+ffa01586: SUB R3 = R0 - R3
+ffa01588: LOAD R0 = -0x1f
+ffa0158a: CC = R3 < R0
+ffa0158c: IF CC JUMP 0xffa015a4
+ffa0158e: LSH R0 = lshift R2 by R3.L
+ffa01592: CC = P1 < 0x0
+ffa01594: IF CC JUMP 0xffa01598
+ffa01596: RTS
+ffa01598: NEG R0 = -R0
+ffa0159a: MOVE CC = ac0
+ffa0159c: NOT R1 = ~R1
+ffa0159e: MOVE R2 = CC
+ffa015a0: ADD R1 = R1 + R2
+ffa015a2: RTS
+ffa015a4: LOAD R0 = 0x0
+ffa015a6: LOAD R1 = 0x0
+ffa015a8: RTS
+ffa015aa: ASH R1 = R0 << 0x9 (s)
+ffa015ae: MOVE R0 = R1
+ffa015b0: BITTGL (R0,0x1f)
+ffa015b2: RTS
+ffa015b4: ASH R2 = R0 >>> 0x1f
+ffa015b8: CC = R2 == R1
+ffa015ba: IF CC JUMP 0xffa01614
+ffa015bc: CC = R1 == 0x0
+ffa015be: IF CC JUMP 0xffa01616
+ffa015c0: CC = R1 < 0x0
+ffa015c2: LOAD P1 = 0x9d
+ffa015c6: IF !CC JUMP 0xffa015d8
+ffa015c8: MOVE CC = R0
+ffa015ca: MOVE R2 = CC
+ffa015cc: NEG R0 = -R0
+ffa015ce: NEG R1 = -R1 (s)
+ffa015d2: SUB R1 = R1 - R2
+ffa015d4: LOAD P1 = 0x19d
+ffa015d8: SIGN R3.L = signbits R1
+ffa015dc: MOVE R3 = R3.L (X)
+ffa015de: LSH R2 = lshift R0 by R3.L
+ffa015e2: LSH R1 = lshift R1 by R3.L
+ffa015e6: ADD R3 += -0x20
+ffa015e8: LSH R0 = lshift R0 by R3.L
+ffa015ec: OR R1 = R1 | R0
+ffa015ee: LSH R0 = R1 << 0x18
+ffa015f2: BITCLR (R0,0x1e)
+ffa015f4: OR R0 = R0 | R2
+ffa015f6: MOVE CC = R0
+ffa015f8: MOVE R0 = CC
+ffa015fa: LSH R2 = R1 << 0x19
+ffa015fe: LSH R2 = R2 >> 0x1f
+ffa01602: AND R2 = R2 & R0
+ffa01604: MOVE R0 = P1
+ffa01606: SUB R3 = R0 - R3
+ffa01608: LSHIFT R3 <<= 0x17
+ffa0160a: LSHIFT R1 >>= 0x7
+ffa0160c: BITCLR (R1,0x17)
+ffa0160e: OR R0 = R1 | R3
+ffa01610: ADD R0 = R0 + R2
+ffa01612: RTS
+ffa01614: JUMP.S 0xffa01688
+ffa01616: JUMP.S 0xffa016d4
+ffa01618: LSH R2 = R0 << 0x1

@@ -1,0 +1,139 @@
+===== JUMP/CALL (P1) resolving to FFA07A84..07B40 =====
+hits=0
+
+===== FFA103C0..10500 =====
+  ffa103c0: CC = R6 <= R0 (IU)
+  ffa103c2: IF CC R6 = R0
+  ffa103c4: ADD P1 += 0x30
+  ffa103c6: IF CC P3 = P1
+* ffa103c8: JUMP.S 0xffa1035c
+  ffa103ca: ADD SP += 0x1c
+* ffa103cc: LOAD P0 = [FP + 0x4]
+  ffa103ce: POP (R7:4,P5:3) = [SP++]
+  ffa103d0: UNLINK
+* ffa103d4: JUMP (P0)
+  ffa103d6: ADD SP += 0x1c
+* ffa103d8: LOAD P0 = [FP + 0x4]
+  ffa103da: POP (R7:4,P5:3) = [SP++]
+  ffa103dc: UNLINK
+* ffa103e0: JUMP (P0)
+  ffa103e2: ADD SP += 0x1c
+  ffa103e4: SUB|| R0 = R0 - R0 (ns)
+* ffa103e8: _LOAD P0 = [FP + 0x4]
+  ffa103ea: _NOP
+  ffa103ec: POP (R7:4,P5:3) = [SP++]
+  ffa103ee: UNLINK
+* ffa103f2: JUMP (P0)
+  ffa103f4: LOAD R0 = [P4 + 0x4]
+* ffa103f6: CALL 0xffa083e4
+  ffa103fa: LOAD R7 = 0x1
+* ffa103fc: JUMP.S 0xffa10318
+  ffa103fe: LOAD R0 = [P4 + 0x4]
+* ffa10400: MOVE R1 = P5
+* ffa10402: CALL 0xffa083e4
+  ffa10406: LOAD R7 = 0x2
+* ffa10408: JUMP.S 0xffa10318
+* ffa1040a: LOAD P1 = 0x0
+* ffa1040c: STORE [SP + 0x18] = P1
+* ffa1040e: LOAD P1 = [FP + 0xc]
+  ffa10410: LOAD R3 = [P5 + 0x20]
+  ffa10412: LOAD R2 = W [P5 + 0x18] (Z)
+  ffa10414: LOAD R7 = W [P5 + 0x1c] (Z)
+  ffa10416: MOVE R3 = R3.L (X)
+* ffa10418: STORE [SP + 0x14] = R2
+* ffa1041a: STORE [SP + 0xc] = R7
+* ffa1041c: STORE [SP + 0x10] = R3
+  ffa1041e: LOAD R0 = [P4 + 0x4]
+* ffa10420: LOAD R1 = [P5 + 0x14]
+  ffa10422: LOAD R2 = W [P1 + 0x1c] (X)
+* ffa10424: CALL 0xffa07a84
+  ffa10428: LOAD R7 = 0x3
+* ffa1042a: JUMP.S 0xffa10318
+  ffa1042c: LOAD R7 = 0x4
+* ffa1042e: JUMP.S 0xffa10318
+  ffa10430: LOAD R7 = 0x5
+* ffa10432: JUMP.S 0xffa10318
+  ffa10434: LOAD R7 = [P5]
+  ffa10436: CC = R7 == 0x1
+* ffa10438: LOAD P5 = [P5 + 0x4]
+* ffa1043a: IF CC JUMP 0xffa10468
+  ffa1043c: CC = R7 == 0x2
+* ffa1043e: IF !CC JUMP 0xffa10318 (bp)
+* ffa10440: STORE [FP + -0xc] = P5
+  ffa10442: LOAD R0 = [P4 + 0x4]
+* ffa10444: LOAD R1 = [FP + -0xc]
+* ffa10446: CALL 0xffa08304
+  ffa1044a: CC = R0 == 0x0
+* ffa1044c: IF !CC JUMP 0xffa10318
+* ffa1044e: LOAD P1 = [FP + 0x8]
+  ffa10450: LOAD R3 = [P4 + 0xc]
+  ffa10452: LSH R2.L = R3.H << 0x0
+* ffa10456: LOAD R1 = W [SP + 0x4a] (Z)
+* ffa1045a: STORE W [P1 + 0x2] = R2
+* ffa1045c: STORE W [P1] = R3.L
+* ffa1045e: LOAD P1 = [P4 + 0x10]
+  ffa10460: LOAD R2 = [FP + -0xc]
+* ffa10462: STORE W [P1] = R2.L
+* ffa10464: STORE W [P1 + 0x2] = R1
+* ffa10466: JUMP.S 0xffa10318
+* ffa10468: STORE [FP + -0xc] = P5
+  ffa1046a: LOAD R0 = [P4 + 0x4]
+* ffa1046c: LOAD R1 = [FP + -0xc]
+* ffa1046e: CALL 0xffa08304
+  ffa10472: CC = R0 == 0x0
+* ffa10474: IF !CC JUMP 0xffa10318
+* ffa10476: LOAD P1 = [FP + 0x8]
+  ffa10478: LOAD R3 = [P4 + 0xc]
+  ffa1047a: LSH R2.L = R3.H << 0x0
+* ffa1047e: LOAD R1 = W [SP + 0x4a] (Z)
+* ffa10482: STORE W [P1 + 0x2] = R2
+* ffa10484: STORE W [P1] = R3.L
+* ffa10486: LOAD P1 = [P4 + 0x10]
+  ffa10488: LOAD R2 = [FP + -0xc]
+* ffa1048a: STORE W [P1] = R2.L
+* ffa1048c: STORE W [P1 + 0x2] = R1
+* ffa1048e: JUMP.S 0xffa10318
+  ffa10490: MOVE P1 = R0
+  ffa10492: LINK 0x1c
+* ffa10496: STORE [SP + 0x18] = R7
+  ffa10498: LOAD R0 = [P1 + 0x24]
+  ffa1049a: CC = R0 == 0x0
+* ffa1049c: LOAD P0 = [P1 + 0x64]
+  ffa104a0: LOAD R7 = [P1 + 0x64]
+  ffa104a4: LOAD R3 = [P1 + 0x60]
+* ffa104a8: IF CC JUMP 0xffa104ca
+  ffa104aa: ROT|| R2 = rot R7 by 0
+* ffa104ae: _STORE [SP + 0x14] = R2
+  ffa104b0: _NOP
+  ffa104b2: SUB|| R1 = R1 - R1 (ns)
+* ffa104b6: _STORE [SP + 0x10] = R1
+  ffa104b8: _NOP
+* ffa104ba: STORE [SP + 0xc] = R3
+* ffa104bc: CALL 0xffa07394
+* ffa104c0: LOAD P0 = [FP + 0x4]
+  ffa104c2: LOAD R7 = [SP + 0x18]
+  ffa104c4: UNLINK
+* ffa104c8: JUMP (P0)
+  ffa104ca: MOVE R0 = R3
+* ffa104cc: CALL (P0)
+* ffa104ce: LOAD P0 = [FP + 0x4]
+  ffa104d0: LOAD R7 = [SP + 0x18]
+  ffa104d2: UNLINK
+* ffa104d6: JUMP (P0)
+  ffa104d8: NOP
+  ffa104da: NOP
+  ffa104dc: LINK 0x0
+  ffa104e0: PUSH [--SP] = (R7:5,P5:4)
+  ffa104e2: MOVE P5 = R0
+  ffa104e4: ADD SP += -0xc
+  ffa104e6: MOVE R6 = R1
+  ffa104e8: LOAD R0 = B [P5 + 0x15] (Z)
+  ffa104ec: CC = R0 == 0x1
+* ffa104ee: IF CC JUMP 0xffa1066e
+  ffa104f0: OR R0 = R6 | R0
+  ffa104f2: CC = R0 == 0x0
+  ffa104f4: MOVE R0 = R6
+* ffa104f6: IF CC JUMP 0xffa1057a
+  ffa104f8: CC = R6 == 0x0
+* ffa104fa: IF CC JUMP 0xffa105c2
+  ffa104fc: SUB|| R7 = R7 - R7 (ns)

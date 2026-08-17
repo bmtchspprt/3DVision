@@ -1,0 +1,11 @@
+ffa04baa: CALL 0xffa0290c
+ffa04c24: CALL 0xffa0290c
+ffa04c8e: CALL 0xffa0290c
+ffa04d02: CALL 0xffa0290c
+ffa04dfc: CALL 0xffa0290c
+ffa04ecc: CALL 0xffa0290c
+2021437e: LOAD P1.L = 0x290c
+202143f2: LOAD P1.L = 0x290c
+20231e14: LOAD P1.L = 0x290c
+202ec894: LOAD P1.L = 0x290c
+202ec8c4: LOAD P1.L = 0x290c

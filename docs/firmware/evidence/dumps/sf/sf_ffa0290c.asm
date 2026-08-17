@@ -1,0 +1,24 @@
+ffa0290c: LOAD R1.L = 0x1708
+ffa02910: LOAD R2 = 0x7f
+ffa02914: EXTRACT R1 = extract(R0,R1.L) (z)
+ffa02918: CC = R2 <= R1
+ffa0291a: IF CC JUMP 0xffa02938
+ffa0291c: ADD R2 += -0xf
+ffa0291e: CC = R1 < R2
+ffa02920: IF CC JUMP 0xffa02942
+ffa02922: CC = R0 < 0x0
+ffa02924: BITSET (R0,0x17)
+ffa02926: LSHIFT R0 <<= 0x8
+ffa02928: LOAD R2 = 0x8f
+ffa0292c: SUB R1 = R1 - R2
+ffa0292e: LSH R0 = lshift R0 by R1.L
+ffa02932: NEG R1 = -R0
+ffa02934: IF CC R0 = R1
+ffa02936: RTS
+ffa02938: ASHIFT R0 >>>= 0x1f
+ffa0293a: BITTGL (R0,0x1f)
+ffa0293c: NOT R0 = ~R0
+ffa0293e: ASHIFT R0 >>>= 0x10
+ffa02940: RTS
+ffa02942: LOAD R0 = 0x0
+ffa02944: RTS

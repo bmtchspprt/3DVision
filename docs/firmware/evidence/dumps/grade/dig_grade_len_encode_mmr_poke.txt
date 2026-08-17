@@ -1,0 +1,8 @@
+KILLER: ASHIFT >>> 0xF within 40 insn of STORE to FFC0 MMR (HW arm from Grade-ish length)
+Classify: beam imms near; known wait/pulse sites.
+
+===== HIT LIST =====
+
+SUMMARY ashiftF_sites=109 ashiftF_near_FFC0_STORE=0
+INTERPRET: BEAMISH hits = HW arm from Grade/beam length → candidate fill trigger.
+If hits==0 or only non-beam: Grade-len encode never programs FFC0 in-file → arm path closed for this fingerprint.

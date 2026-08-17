@@ -1,0 +1,46 @@
+202b6d8c: MOVE R7 = R0
+202b6d8e: LOAD R1 = [FP + -0x34]
+202b6d90: LOAD R0 = [P0]
+202b6d92: LOAD P1.L = 0x1714
+202b6d96: LOAD P1.H = 0xffa0
+202b6d9a: CALL (P1)
+202b6d9c: MOVE R1 = R0
+202b6d9e: MOVE R0 = R7
+202b6da0: LOAD P1.L = 0x1714
+202b6da4: LOAD P1.H = 0xffa0
+202b6da8: CALL (P1)
+202b6daa: LOAD P1.L = 0x20d4
+202b6dae: LOAD P1.H = 0xffa0
+202b6db2: CALL (P1)
+202b6db4: LOAD P1 = [FP + -0x40]
+202b6db6: STORE [P1 + 0x4] = R0
+202b6db8: JUMP.S 0x202b6dea
+202b6dba: MOVE R0 = R7
+202b6dbc: LOAD P1.L = 0x2894
+202b6dc0: LOAD P1.H = 0xffa0
+202b6dc4: CALL (P1)
+202b6dc6: LOAD R1 = [FP + -0x2c]
+202b6dc8: LOAD P1.L = 0x18f0
+202b6dcc: LOAD P1.H = 0xffa0
+202b6dd0: CALL (P1)
+202b6dd2: LOAD P1.L = 0x20d4
+202b6dd6: LOAD P1.H = 0xffa0
+202b6dda: CALL (P1)
+202b6ddc: LOAD P0 = [FP + -0x64]
+202b6dde: LOAD P1 = -0x1448
+202b6de2: LOAD P1.H = 0x4
+202b6de6: ADD P1 = P0 + P1
+202b6de8: STORE [P1] = R0
+202b6dea: LOAD P1 = [FP + -0x40]
+202b6dec: LOAD R1 = [FP + -0x34]
+202b6dee: LOAD R6.H = 0x3586
+202b6df2: LOAD R7 = [P1]
+202b6df4: MOVE R0 = R7
+202b6df6: LOAD P1.L = 0x165c
+202b6dfa: LOAD P1.H = 0xffa0
+202b6dfe: CALL (P1)
+202b6e00: LOAD R0 = [FP + -0x34]
+202b6e02: IF CC R0 = R7
+202b6e04: LOAD P1.L = 0x20d4
+202b6e08: LOAD P1.H = 0xffa0
+202b6e0c: CALL (P1)

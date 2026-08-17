@@ -1,0 +1,215 @@
+2022d9e0: ADD R2 = R3 + R5
+2022d9e2: LOAD R5 = 0x5c
+2022d9e6: ADD|| R2 = R3 + R5 (ns)
+2022d9ea: _STORE [SP + 0xc] = R2
+2022d9ec: _NOP
+2022d9ee: LOAD P1.L = 0x557c
+2022d9f2: LOAD P1.H = 0xffa0
+2022d9f6: CALL (P1)
+2022d9f8: LOAD R0 = W [P3] (X)
+2022d9fa: MOVE P1 = R0
+2022d9fc: LOAD P0 = [P3 + 0x20]
+2022d9fe: LOAD R1 = [P3 + 0xc]
+2022da00: ADD R1 += -0x1
+2022da02: ADD P2 = P0 + (P1 << 1)
+2022da04: LOAD R3 = W [P2] (X)
+2022da06: CC = R1 <= R3
+2022da08: IF CC JUMP 0x2022da0c (bp)
+2022da0a: JUMP.S 0x2022df50
+2022da0c: LOAD R0 = [P3 + 0x10]
+2022da0e: ADD R0 += 0x1
+2022da10: CC = R3 <= R0
+2022da12: IF CC JUMP 0x2022da16 (bp)
+2022da14: JUMP.S 0x2022df50
+2022da16: LOAD R1 = W [P5] (X)
+2022da18: MOVE P1 = R1
+2022da1a: MULT R5 = R1.L * R7.H (is)
+2022da1e: MOVE P0 = R5
+2022da20: LOAD R2 = W [P3 + 0x6] (X)
+2022da22: ADD P1 = P4 + (P1 << 1)
+2022da24: LOAD R0 = W [P1] (X)
+2022da26: MULT|| R0 = R0.L * R7.L (is)
+2022da2a: LOAD P4 = [FP + -0x2c]
+2022da2c: NOP
+2022da2e: MOVE P1 = R0
+2022da30: LOAD R5 = [FP + -0xc]
+2022da32: ADD P0 = P4 + P0
+2022da34: ADD P1 = P0 + P1
+2022da36: LOAD R1 = W [P1 + 0x5c] (X)
+2022da3a: LOAD R0 = W [P1 + 0x5e] (X)
+2022da3e: NEG R1 = -R1
+2022da40: MIN R0 = min(R1,R0)
+2022da44: CC = R2 < R0
+2022da46: IF CC JUMP 0x2022da4c (bp)
+2022da48: JUMP.S 0x2022df50
+2022da4c: LSH R0 = R3 << 0xf
+2022da50: STORE [P1] = R0
+2022da52: LOAD R2 = 0x44
+2022da56: LOAD R0 = W [P5] (X)
+2022da58: MULT|| R0 = R0.L * R4.H (is)
+2022da5c: LOAD R1 = W [P2] (X)
+2022da5e: NOP
+2022da60: ADD R0 = R5 + R0
+2022da62: ADD R0 = R0 + R2
+2022da64: LSHIFT R1 <<= 0x1
+2022da66: ADD R0 = R0 + R1
+2022da68: MOVE P1 = R0
+2022da6a: LOAD R0 = W [P1] (X)
+2022da6c: LOAD P1.L = 0x2948
+2022da70: LOAD P1.H = 0xffa0
+2022da74: CALL (P1)
+2022da76: LOAD R3 = W [P5] (X)
+2022da78: MOVE P1 = R3
+2022da7a: MULT|| R2 = R3.L * R4.H (is)
+2022da7e: LOAD P2 = [FP + 0x10]
+2022da80: NOP
+2022da82: ADD R1 = R5 + R2
+2022da84: MULT R5 = R3.L * R7.H (is)
+2022da88: MOVE P0 = R1
+2022da8a: ADD P1 = P2 + (P1 << 1)
+2022da8c: ADD|| R5 = R6 + R5 (ns)
+2022da90: _LOAD R2 = W [P1] (X)
+2022da92: _NOP
+2022da94: MULT R2 = R2.L * R7.L (is)
+2022da98: ADD|| R2 = R5 + R2 (ns)
+2022da9c: _LOAD R5 = [FP + 0x20]
+2022da9e: _NOP
+2022daa0: MOVE P4 = R2
+2022daa2: LOAD R1 = [P0 + 0x5cd4]
+2022daa6: LOAD P1.L = 0x18f0
+2022daaa: LOAD P1.H = 0xffa0
+2022daae: CALL (P1)
+2022dab0: STORE [SP + 0x1c] = R5
+2022dab2: LOAD R3 = [FP + 0x24]
+2022dab4: STORE [P4 + 0x4c] = R0
+2022dab8: LOAD R0 = W [P5] (X)
+2022daba: MULT|| R1 = R0.L * R7.H (is)
+2022dabe: LOAD P4 = [FP + 0x1c]
+2022dac0: NOP
+2022dac2: MOVE P1 = R0
+2022dac4: STORE [SP + 0x18] = P4
+2022dac6: LOAD P4 = [FP + 0x10]
+2022dac8: ADD|| R3 = R6 + R1 (ns)
+2022dacc: _STORE [SP + 0x20] = R3
+2022dace: _NOP
+2022dad0: MOVE P0 = R3
+2022dad2: LOAD P2 = -0x3333
+2022dad6: LOAD P2.H = 0x3dcc
+2022dada: ADD P1 = P4 + (P1 << 1)
+2022dadc: LOAD R5 = W [P1] (X)
+2022dade: MULT|| R0 = R5.L * R7.L (is)
+2022dae2: STORE [SP + 0xc] = P2
+2022dae4: NOP
+2022dae6: MOVE P1 = R0
+2022dae8: LOAD P2 = [FP + 0x18]
+2022daea: STORE [SP + 0x14] = P2
+2022daec: LOAD R2 = 0x0
+2022daee: LOAD R1 = 0x0
+2022daf0: ADD P1 = P0 + P1
+2022daf2: LOAD R3 = W [P1 + 0x62] (X)
+2022daf6: STORE [SP + 0x10] = R3
+2022daf8: LOAD R0 = [P1]
+2022dafa: LOAD P1.L = 0x38e2
+2022dafe: LOAD P1.H = 0xffa0
+2022db02: CALL (P1)
+2022db04: LOAD R5 = W [P5] (X)
+2022db06: MOVE P1 = R5
+2022db08: MULT|| R3 = R5.L * R7.H (is)
+2022db0c: LOAD R1 = [FP + 0x28]
+2022db0e: NOP
+2022db10: LOAD R2 = 0x5
+2022db12: ADD|| R3 = R6 + R3 (ns)
+2022db16: _LOAD P2 = [P3 + 0x20]
+2022db18: _NOP
+2022db1a: CC = R1 == R2
+2022db1c: ADD P1 = P4 + (P1 << 1)
+2022db1e: LOAD R5 = W [P1] (X)
+2022db20: MULT|| R5 = R5.L * R7.L (is)
+2022db24: LOAD R2 = W [P3] (X)
+2022db26: NOP
+2022db28: ADD|| R1 = R3 + R5 (ns)
+2022db2c: _LOAD R5 = [FP + -0xc]
+2022db2e: _NOP
+2022db30: MOVE P1 = R1
+2022db32: MOVE P0 = R2
+2022db34: LOAD R1 = 0x42ce
+2022db38: STORE [P1 + 0x50] = R0
+2022db3c: LOAD R3 = W [P5] (X)
+2022db3e: MOVE P1 = R3
+2022db40: ADD P0 = P2 + (P0 << 1)
+2022db42: MULT|| R2 = R3.L * R4.H (is)
+2022db46: LOAD R0 = W [P0] (X)
+2022db48: NOP
+2022db4a: ADD R2 = R5 + R2
+2022db4c: ADD R1 = R2 + R1
+2022db4e: ADD P1 = P4 + (P1 << 1)
+2022db50: MULT|| R3 = R3.L * R7.H (is)
+2022db54: LOAD R5 = W [P1] (X)
+2022db56: NOP
+2022db58: ASHIFT R0 >>>= 0x3
+2022db5a: ADD R0 = R1 + R0
+2022db5c: ADD R3 = R6 + R3
+2022db5e: MULT R2 = R5.L * R7.L (is)
+2022db62: MOVE P2 = R0
+2022db64: ADD R1 = R3 + R2
+2022db66: MOVE P1 = R1
+2022db68: LOAD R0 = B [P2] (Z)
+2022db6a: STORE B [P1 + 0x64] = R0
+2022db6e: IF CC JUMP 0x2022db72 (bp)
+2022db70: JUMP.S 0x2022e0b2
+2022db72: LOAD R0 = W [P5] (X)
+2022db74: MULT|| R0 = R0.L * R4.H (is)
+2022db78: LOAD R1 = W [P0] (X)
+2022db7a: NOP
+2022db7c: MOVE P1 = R0
+2022db7e: ASH|| R1 = R1 >>> 0x3
+2022db82: _LOAD P4 = [FP + -0x14]
+2022db84: _NOP
+2022db86: MOVE P0 = R1
+2022db88: LOAD P2 = 0x3db0
+2022db8c: LOAD R5 = -0x1
+2022db8e: ADD P1 = P4 + P1
+2022db90: ADD P1 = P1 + P2
+2022db92: ADD P1 = P1 + (P0 << 1)
+2022db94: LOAD R0 = W [P1] (X)
+2022db96: LOAD P1.L = 0x2948
+2022db9a: LOAD P1.H = 0xffa0
+2022db9e: CALL (P1)
+2022dba0: LOAD R3 = W [P5] (X)
+2022dba2: MOVE P1 = R3
+2022dba4: MULT|| R2 = R3.L * R4.H (is)
+2022dba8: LOAD P2 = [FP + 0x10]
+2022dbaa: NOP
+2022dbac: MULT R1 = R3.L * R7.H (is)
+2022dbb0: MOVE P0 = R2
+2022dbb2: ADD R1 = R6 + R1
+2022dbb4: ADD P1 = P2 + (P1 << 1)
+2022dbb6: LOAD R3 = W [P1] (X)
+2022dbb8: MULT|| R3 = R3.L * R7.L (is)
+2022dbbc: LOAD P2 = [FP + -0x14]
+2022dbbe: NOP
+2022dbc0: ADD R3 = R1 + R3
+2022dbc2: MOVE P4 = R3
+2022dbc4: LSHIFT R5 <<= 0x17
+2022dbc6: ADD P0 = P2 + P0
+2022dbc8: LOAD R1 = [P0 + 0x5ce4]
+2022dbcc: LOAD P1.L = 0x18f0
+2022dbd0: LOAD P1.H = 0xffa0
+2022dbd4: CALL (P1)
+2022dbd6: STORE [P4 + 0x58] = R0
+2022dbda: LOAD R0 = W [P5] (X)
+2022dbdc: MOVE P1 = R0
+2022dbde: LOAD R2 = 0x30
+2022dbe0: LOAD P2 = [FP + 0x10]
+2022dbe2: MULT|| R1 = R0.L * R2.L (is)
+2022dbe6: LOAD P4 = [FP + -0x30]
+2022dbe8: NOP
+2022dbea: MOVE P0 = R1
+2022dbec: MULT|| R5 = R0.L * R7.H (is)
+2022dbf0: STORE [FP + 0x8] = R5
+2022dbf2: NOP
+2022dbf4: ADD P1 = P2 + (P1 << 1)
+2022dbf6: ADD|| R5 = R6 + R5 (ns)
+2022dbfa: _LOAD R3 = W [P1] (X)
+2022dbfc: _NOP
+2022dbfe: MULT|| R0 = R3.L * R7.L (is)

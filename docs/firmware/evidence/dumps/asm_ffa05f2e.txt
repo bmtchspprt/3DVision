@@ -1,0 +1,120 @@
+ffa05f2e: LINK 0x0
+ffa05f32: CC = R2 <= 0x0
+ffa05f34: PUSH [--SP] = R7
+ffa05f36: MOVE P0 = R0
+ffa05f38: IF CC JUMP 0xffa05f7a
+ffa05f3a: LSH R3 = R0 << 0x1f
+ffa05f3e: MOVE CC = az
+ffa05f40: MOVE P1 = R2
+ffa05f42: IF !CC JUMP 0xffa05f8a
+ffa05f44: CC = R2 == 0x1
+ffa05f46: IF CC JUMP 0xffa05f78
+ffa05f48: LSH R3 = R1 << 0x8
+ffa05f4c: OR R7 = R1 | R3
+ffa05f4e: ASH R3 = R2 >>> 0x1
+ffa05f52: LSHIFT R0 <<= 0x1e
+ffa05f54: MOVE CC = az
+ffa05f56: MOVE P1 = R3
+ffa05f58: IF !CC JUMP 0xffa05f82
+ffa05f5a: CC = R3 == 0x1
+ffa05f5c: IF CC JUMP 0xffa05f72
+ffa05f5e: ASH R0 = R3 >>> 0x1
+ffa05f62: MOVE P1 = R0
+ffa05f64: PACK R7 = pack(R7.L,R7.L)
+ffa05f68: LSETUP (0xffa05f6c,0xffa05f6c) LC0 = P1
+ffa05f6c: STORE [P0++] = R7
+ffa05f6e: CC = BITTST (R3,0x0)
+ffa05f70: IF !CC JUMP 0xffa05f74
+ffa05f72: STORE W [P0++] = R7
+ffa05f74: CC = BITTST (R2,0x0)
+ffa05f76: IF !CC JUMP 0xffa05f7a
+ffa05f78: STORE B [P0] = R1
+ffa05f7a: LOAD R7 = [SP++]
+ffa05f7c: UNLINK
+ffa05f80: RTS
+ffa05f82: LSETUP (0xffa05f86,0xffa05f86) LC0 = P1
+ffa05f86: STORE W [P0++] = R7
+ffa05f88: JUMP.S 0xffa05f74
+ffa05f8a: LSETUP (0xffa05f8e,0xffa05f8e) LC0 = P1
+ffa05f8e: STORE B [P0++] = R1
+ffa05f90: JUMP.S 0xffa05f7a
+ffa05f92: <no insn>
+ffa05f94: <no insn>
+ffa05f96: <no insn>
+ffa05f98: <no insn>
+ffa05f9a: <no insn>
+ffa05f9c: <no insn>
+ffa05f9e: <no insn>
+ffa05fa0: <no insn>
+ffa05fa2: <no insn>
+ffa05fa4: <no insn>
+ffa05fa6: <no insn>
+ffa05fa8: <no insn>
+ffa05faa: <no insn>
+ffa05fac: <no insn>
+ffa05fae: <no insn>
+ffa05fb0: <no insn>
+ffa05fb2: <no insn>
+ffa05fb4: <no insn>
+ffa05fb6: <no insn>
+ffa05fb8: <no insn>
+ffa05fba: <no insn>
+ffa05fbc: <no insn>
+ffa05fbe: <no insn>
+ffa05fc0: <no insn>
+ffa05fc2: <no insn>
+ffa05fc4: <no insn>
+ffa05fc6: <no insn>
+ffa05fc8: <no insn>
+ffa05fca: <no insn>
+ffa05fcc: <no insn>
+ffa05fce: <no insn>
+ffa05fd0: <no insn>
+ffa05fd2: <no insn>
+ffa05fd4: <no insn>
+ffa05fd6: <no insn>
+ffa05fd8: <no insn>
+ffa05fda: <no insn>
+ffa05fdc: <no insn>
+ffa05fde: <no insn>
+ffa05fe0: <no insn>
+ffa05fe2: <no insn>
+ffa05fe4: <no insn>
+ffa05fe6: <no insn>
+ffa05fe8: <no insn>
+ffa05fea: <no insn>
+ffa05fec: <no insn>
+ffa05fee: <no insn>
+ffa05ff0: <no insn>
+ffa05ff2: <no insn>
+ffa05ff4: <no insn>
+ffa05ff6: <no insn>
+ffa05ff8: <no insn>
+ffa05ffa: <no insn>
+ffa05ffc: <no insn>
+ffa05ffe: <no insn>
+ffa06000: <no insn>
+ffa06002: <no insn>
+ffa06004: <no insn>
+ffa06006: <no insn>
+ffa06008: <no insn>
+ffa0600a: <no insn>
+ffa0600c: <no insn>
+ffa0600e: <no insn>
+ffa06010: <no insn>
+ffa06012: <no insn>
+ffa06014: <no insn>
+ffa06016: <no insn>
+ffa06018: <no insn>
+ffa0601a: <no insn>
+ffa0601c: <no insn>
+ffa0601e: <no insn>
+ffa06020: <no insn>
+ffa06022: <no insn>
+ffa06024: <no insn>
+ffa06026: <no insn>
+ffa06028: <no insn>
+ffa0602a: <no insn>
+ffa0602c: <no insn>
+ffa0602e: <no insn>
+ffa06030: <no insn>

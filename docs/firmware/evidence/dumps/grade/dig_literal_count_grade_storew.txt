@@ -1,0 +1,84 @@
+KILLER: LSETUP + STORE W, window has 0x147A or 0x28F4 or 0xA3D, NO ASHIFT >>>= 0xf in +/-40
+Require beamish 0x44/0x578/0x5BC for GRADE tag.
+
+===== COUNT_ONLY lsetup@2020f2ec store@2020f322 fn=FUN_2020f2d8 =====
+count 147A=true 28F4=false A3D=false | beam 44=false 578=false 5bc=false 5cfc=false | ashiftF=false
+store: STORE W [P0++] = R0
+2020f2ca: ADD R0 = R2 + R0
+2020f2cc: LOAD R3 = [I0]
+2020f2ce: CC = R0 < R3
+2020f2d0: MOVE R0 = CC
+2020f2d2: UNLINK
+2020f2d6: RTS
+2020f2d8: MOVE P1 = R0
+2020f2da: LOAD P0 = 0x190
+2020f2de: LINK 0x0
+2020f2e2: LOAD R1 = -0x7530
+2020f2e6: LOAD R2 = 0x7530
+2020f2ea: LOAD R0 = 0x0
+2020f2ec: LSETUP (0x2020f2f0,0x2020f2fc) LC0 = P0
+2020f2f0: LOAD R3 = W [P1++] (X)
+2020f2f2: CC = R2 < R3
+2020f2f4: IF CC JUMP 0x2020f2fa
+2020f2f6: CC = R3 < R1
+2020f2f8: IF !CC JUMP 0x2020f2fc
+2020f2fa: ADD R0 += 0x1
+2020f2fc: NOP
+2020f2fe: UNLINK
+2020f302: MOVE R0 = R0.L (X)
+2020f304: RTS
+2020f306: LINK 0x0
+2020f30a: PUSH [--SP] = P5
+2020f30c: LOAD P5 = [SP + 0x18]
+2020f30e: MOVE P1 = R2
+2020f310: MOVE P0 = R0
+2020f312: MOVE P2 = R1
+2020f314: CC = P5 <= 0x0
+2020f316: IF CC JUMP 0x2020f328
+2020f318: NOP
+2020f31a: NOP
+
+===== COUNT_ONLY lsetup@2020f31c store@2020f322 fn=FUN_2020f31c =====
+count 147A=true 28F4=false A3D=false | beam 44=false 578=false 5bc=false 5cfc=false | ashiftF=false
+store: STORE W [P0++] = R0
+2020f302: MOVE R0 = R0.L (X)
+2020f304: RTS
+2020f306: LINK 0x0
+2020f30a: PUSH [--SP] = P5
+2020f30c: LOAD P5 = [SP + 0x18]
+2020f30e: MOVE P1 = R2
+2020f310: MOVE P0 = R0
+2020f312: MOVE P2 = R1
+2020f314: CC = P5 <= 0x0
+2020f316: IF CC JUMP 0x2020f328
+2020f318: NOP
+2020f31a: NOP
+2020f31c: LSETUP (0x2020f320,0x2020f326) LC0 = P5
+2020f320: LOAD R0 = W [P2++] (X)
+2020f322: STORE W [P0++] = R0
+2020f324: LOAD R0 = W [P1++] (X)
+2020f326: STORE W [P0++] = R0
+2020f328: LOAD P5 = [SP++]
+2020f32a: UNLINK
+2020f32e: RTS
+2020f330: LINK 0x0
+2020f334: PUSH [--SP] = (R7:5,P5:3)
+2020f336: ADD SP += -0xc
+2020f338: LOAD P1.L = 0xdc
+2020f33c: LOAD P1.H = 0xff80
+2020f340: ROT|| R7 = rot R0 by 0
+2020f344: _LOAD P5 = [P1]
+2020f346: _NOP
+2020f348: LOAD P2 = [SP + 0x38]
+2020f34a: MOVE P1 = R2
+2020f34c: MOVE P0 = R1
+2020f34e: LOAD P4.L = 0x5044
+2020f352: LOAD P4.H = 0x2021
+
+===== HIT LIST =====
+COUNT_ONLY lsetup@2020f2ec store@2020f322 fn=FUN_2020f2d8 147A=true 28F4=false A3D=false 44=false 578=false
+COUNT_ONLY lsetup@2020f31c store@2020f322 fn=FUN_2020f31c 147A=true 28F4=false A3D=false 44=false 578=false
+
+SUMMARY lsetups=364 with_literal_count_near_STOREW=2 skipped_has_ASHIFTf=0 hits_no_ASHIFTf=2
+INTERPRET: GRADE_SHAPED without ASHIFT = literal-count first-fill candidate.
+If 0 or only CLEAR/BM4/EMIT → literal-count Grade fill CLOSED.
