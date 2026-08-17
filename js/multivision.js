@@ -90,6 +90,63 @@
   var isViewLevel = true;
   // Overview / wizard center geometry default (meters) — matches mv-overview-3d DEMO_CENTER_H.
   var DEFAULT_VESSEL_HEIGHT = 16;
+  /** Wizard Distance/Temperature after upload. Internal geometry stays meters. */
+  var displayDistanceUnit = "m";
+  var displayTempUnit = "C";
+  var M_TO_FT = 3.2808399;
+
+  function distUnitLabel() {
+    return displayDistanceUnit === "ft" ? "ft" : "m";
+  }
+
+  function tempUnitLabel() {
+    return displayTempUnit === "F" ? "F" : "C";
+  }
+
+  function volUnitLabel() {
+    return displayDistanceUnit === "ft" ? "[ft*3]" : "[m*3]";
+  }
+
+  function formatDistFromM(meters) {
+    var n = Number(meters);
+    if (!isFinite(n)) return "-";
+    return (displayDistanceUnit === "ft" ? n * M_TO_FT : n).toFixed(2);
+  }
+
+  function formatTempFromC(celsius) {
+    var n = Number(celsius);
+    if (!isFinite(n)) return "-";
+    return (displayTempUnit === "F" ? n * 1.8 + 32 : n).toFixed(2);
+  }
+
+  function formatVolFromM3(m3) {
+    var n = Number(m3);
+    if (!isFinite(n)) return "-";
+    return (displayDistanceUnit === "ft" ? n * 35.3147 : n).toFixed(2);
+  }
+
+  function setOverviewFieldUnit(inputId, text) {
+    var el = document.getElementById(inputId);
+    if (!el || !el.parentElement) return;
+    var unit = el.parentElement.querySelector(".mv-ov-unit");
+    if (unit) unit.textContent = text;
+  }
+
+  function syncDisplayUnitChrome() {
+    var d = distUnitLabel();
+    var t = tempUnitLabel();
+    var v = volUnitLabel();
+    setOverviewFieldUnit("mvOvAvg", d);
+    setOverviewFieldUnit("mvOvMax", d);
+    setOverviewFieldUnit("mvOvMin", d);
+    setOverviewFieldUnit("mvOvVol", v);
+    setOverviewFieldUnit("mvOvVolCap", v);
+    setOverviewFieldUnit("mvOvTemp", t);
+    var siteDist = document.getElementById("mvSiteDistUnit");
+    if (siteDist) siteDist.value = displayDistanceUnit === "ft" ? "feet" : "meter";
+    var siteVol = document.getElementById("mvSiteVolUnit");
+    if (siteVol) siteVol.value = displayDistanceUnit === "ft" ? "feet^3" : "meter^3";
+  }
 
   function isVesselOffline(vessel) {
     return vessel && vessel.connectionStatus === VESSEL_CONNECTION.OFFLINE;
@@ -936,13 +993,25 @@
       var raw = offline ? null : def.value(metrics);
       var display = raw == null || raw === "" ? "-" : raw;
       var cardLabel = levelDistanceCardLabel(id) || def.cardLabel;
+      if (!offline && raw != null && raw !== "") {
+        if (id === "avg_level") display = formatDistFromM(metrics.avg);
+        else if (id === "max_level") display = formatDistFromM(metrics.max);
+        else if (id === "min_level") display = formatDistFromM(metrics.min);
+        else if (id === "temperature") display = formatTempFromC(metrics.temp);
+        else if (id === "volume_m3") display = formatVolFromM3(metrics.volM3);
+        else if (id === "max_scale_volume") display = formatVolFromM3(metrics.volCap);
+      }
+      var unit = def.unit || "";
+      if (id === "avg_level" || id === "max_level" || id === "min_level") unit = distUnitLabel();
+      else if (id === "temperature") unit = tempUnitLabel();
+      else if (id === "volume_m3" || id === "max_scale_volume") unit = displayDistanceUnit === "ft" ? "ft^3" : unit;
       rows +=
         "<dt>" +
         cardLabel +
         '</dt><dd class="mv-stat-val">' +
         display +
         '</dd><dd class="mv-stat-unit">' +
-        (def.unit || "") +
+        unit +
         "</dd>";
     });
     var dense = vessel.selectedParams.length > 6 ? " is-dense" : "";
@@ -1670,16 +1739,16 @@
       { label: "Hardware:", unit: "", value: offline ? nd : String(vessel.hardware != null ? vessel.hardware : "-") },
       { label: "Firmware:", unit: "", value: offline ? nd : vessel.firmware || "-" },
       { label: "Device Type:", unit: "", value: vessel.deviceType || "MV" },
-      { label: avgLbl, unit: "m", value: live(m.avg.toFixed(2)) },
-      { label: maxLbl, unit: "m", value: live(m.max.toFixed(2)) },
-      { label: minLbl, unit: "m", value: live(m.min.toFixed(2)) },
+      { label: avgLbl, unit: distUnitLabel(), value: live(formatDistFromM(m.avg)) },
+      { label: maxLbl, unit: distUnitLabel(), value: live(formatDistFromM(m.max)) },
+      { label: minLbl, unit: distUnitLabel(), value: live(formatDistFromM(m.min)) },
       { label: pctLbl, unit: "%", value: live((m.avgLevelPct != null ? m.avgLevelPct : 0).toFixed(2)) },
-      { label: "Volume:", unit: "[m*3]", value: live(m.volM3.toFixed(2)) },
+      { label: "Volume:", unit: volUnitLabel(), value: live(formatVolFromM3(m.volM3)) },
       { label: "Volume:", unit: "%", value: live(m.fill.toFixed(2)) },
       { label: "Mass:", unit: "ton", value: live(m.massT == null ? nd : m.massT.toFixed(2)) },
-      { label: "Max Volume Capacity:", unit: "[m*3]", value: live(m.volCap.toFixed(2)) },
+      { label: "Max Volume Capacity:", unit: volUnitLabel(), value: live(formatVolFromM3(m.volCap)) },
       { label: "Max Mass Capacity:", unit: "ton", value: live(m.massCap == null ? nd : m.massCap.toFixed(2)) },
-      { label: "Temperature:", unit: "C", value: live(m.temp.toFixed(2)) },
+      { label: "Temperature:", unit: tempUnitLabel(), value: live(formatTempFromC(m.temp)) },
       { label: "SNR:", unit: "dB", value: live(m.snr.toFixed(2)) },
       { label: "Output Current:", unit: "mA", value: live(m.output.toFixed(2)) },
     ];
@@ -1879,17 +1948,18 @@
       var wobble = (seededRand(i * 1.973 + kind.charCodeAt(0)) - 0.5) * 0.08;
       var drop = seededRand(i * 4.17 + 11) < 0.04;
       if (kind === "avg") {
-        points.push(7.5 + tri * 6.5 + wobble * 0.6);
+        var avgY = 7.5 + tri * 6.5 + wobble * 0.6;
+        points.push(displayDistanceUnit === "ft" ? avgY * M_TO_FT : avgY);
       } else if (kind === "vol") {
         points.push(45 + tri * 35 + wobble * 1.5);
       } else if (kind === "snr") {
         points.push(drop ? 8 : 38 + tri * 24 + wobble * 6);
       } else {
-        points.push(baseTemp);
+        points.push(displayTempUnit === "F" ? baseTemp * 1.8 + 32 : baseTemp);
       }
     }
     if (kind === "avg") {
-      points[count - 1] = baseAvg;
+      points[count - 1] = displayDistanceUnit === "ft" ? baseAvg * M_TO_FT : baseAvg;
     } else if (kind === "vol") {
       points[count - 1] = baseFill;
     } else if (kind === "snr") {
@@ -2024,12 +2094,12 @@
                   : "Temperature",
           yUnit:
             id === "mvLogChartAvg"
-              ? "[m]"
+              ? displayDistanceUnit === "ft" ? "[ft]" : "[m]"
               : id === "mvLogChartVol"
                 ? "[%]"
                 : id === "mvLogChartSnr"
                   ? "[dB]"
-                  : "[C]",
+                  : displayTempUnit === "F" ? "[F]" : "[C]",
           yMin: 0,
           yMax: id === "mvLogChartVol" ? 100 : id === "mvLogChartSnr" ? 40 : 20,
           color: "#2a6fbb",
@@ -2044,9 +2114,9 @@
     var xLabels = ["7/29/2026", "7/31/2026", "8/2/2026", "8/4/2026", "8/6/2026", "8/8/2026"];
     drawLogChart(document.getElementById("mvLogChartAvg"), {
       title: "Avg. Level",
-      yUnit: "[m]",
+      yUnit: displayDistanceUnit === "ft" ? "[ft]" : "[m]",
       yMin: 0,
-      yMax: 18,
+      yMax: displayDistanceUnit === "ft" ? 60 : 18,
       yTicks: 9,
       color: "#1a66c2",
       points: buildLogSeries("avg", vessel, count),
@@ -2074,7 +2144,7 @@
     });
     drawLogChart(document.getElementById("mvLogChartTemp"), {
       title: "Temperature",
-      yUnit: "[C]",
+      yUnit: displayTempUnit === "F" ? "[F]" : "[C]",
       yMin: -50,
       yMax: 200,
       yTicks: 5,
@@ -2124,7 +2194,9 @@
       var tri = phase < 0.5 ? phase * 2 : (1 - phase) * 2;
       var wobble = (seededRand(i * 2.11 + seedOffset * 9.3 + kind.charCodeAt(0)) - 0.5) * 0.35;
       if (kind === "avg") {
-        points.push(Math.max(0, baseAvg - 3.5 + tri * 5.5 + wobble));
+        var y = Math.max(0, baseAvg - 3.5 + tri * 5.5 + wobble);
+        if (displayDistanceUnit === "ft") y *= M_TO_FT;
+        points.push(y);
       } else {
         points.push(Math.max(0, Math.min(100, baseFill - 18 + tri * 28 + wobble * 4)));
       }
@@ -2288,8 +2360,9 @@
     var count = 90;
     var xLabels = formatSiteLogTimeLabels(6);
     var distUnit = document.getElementById("mvSiteDistUnit");
-    var yUnit = distUnit && distUnit.value === "feet" ? "[feet]" : "[meter]";
-    var yMax = distUnit && distUnit.value === "feet" ? 55 : 16;
+    var useFt = displayDistanceUnit === "ft" || (distUnit && distUnit.value === "feet");
+    var yUnit = useFt ? "[feet]" : "[meter]";
+    var yMax = useFt ? 55 : 16;
 
     var avgSeries = vessels.map(function (vessel, index) {
       return {
@@ -2469,6 +2542,7 @@
     ensureVesselParams(vessel);
     var metrics = vesselMetrics(vessel);
     var offline = isVesselOffline(vessel);
+    syncDisplayUnitChrome();
     // ModelWPFBase.NOT_DEFINED — shown when scanner.Connection.IsConnected is false
     var nd = "-";
     function setVal(id, text) {
@@ -2522,16 +2596,16 @@
       setVal("mvOvSnr", nd);
       setVal("mvOvOut", nd);
     } else {
-      setVal("mvOvAvg", metrics.avg.toFixed(2));
-      setVal("mvOvMax", metrics.max.toFixed(2));
-      setVal("mvOvMin", metrics.min.toFixed(2));
+      setVal("mvOvAvg", formatDistFromM(metrics.avg));
+      setVal("mvOvMax", formatDistFromM(metrics.max));
+      setVal("mvOvMin", formatDistFromM(metrics.min));
       setVal("mvOvAvgPct", (metrics.avgLevelPct != null ? metrics.avgLevelPct : 0).toFixed(2));
-      setVal("mvOvVol", metrics.volM3.toFixed(2));
+      setVal("mvOvVol", formatVolFromM3(metrics.volM3));
       setVal("mvOvVolPct", metrics.fill.toFixed(2));
       setVal("mvOvMass", metrics.massT == null ? nd : metrics.massT.toFixed(2));
-      setVal("mvOvVolCap", metrics.volCap.toFixed(2));
+      setVal("mvOvVolCap", formatVolFromM3(metrics.volCap));
       setVal("mvOvMassCap", metrics.massCap == null ? nd : metrics.massCap.toFixed(2));
-      setVal("mvOvTemp", metrics.temp.toFixed(2));
+      setVal("mvOvTemp", formatTempFromC(metrics.temp));
       setVal("mvOvSnr", metrics.snr.toFixed(2));
       setVal("mvOvOut", metrics.output.toFixed(2));
     }
@@ -4065,11 +4139,12 @@
     vessel.max = +Math.min(heightM, vessel.avg + Math.max(0.4, heightM * 0.05)).toFixed(2);
     vessel.min = +Math.max(0, vessel.avg - Math.max(0.4, heightM * 0.05)).toFixed(2);
     if (opts.distanceUnit === "ft" || opts.distanceUnit === "m") {
-      var siteUnit = document.getElementById("mvSiteDistUnit");
-      if (siteUnit) {
-        // Site combo uses display labels; overview field units sync via chrome helpers when present.
-      }
+      displayDistanceUnit = opts.distanceUnit === "ft" ? "ft" : "m";
     }
+    if (opts.temperatureUnit === "F" || opts.temperatureUnit === "C") {
+      displayTempUnit = opts.temperatureUnit === "F" ? "F" : "C";
+    }
+    syncDisplayUnitChrome();
     selectedVesselId = vessel.id;
     vesselDetailMode = true;
     setMvView("overview");

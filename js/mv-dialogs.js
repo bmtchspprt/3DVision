@@ -2949,6 +2949,8 @@
 
     function applyWizardGeometryToOverview() {
       var unit = ((root.querySelector("#mvWizDist") || {}).value || "m").toLowerCase();
+      var tempRaw = (root.querySelector("#mvWizTemp") || {}).value || "Celsius";
+      var tempUnit = /fahrenheit/i.test(tempRaw) ? "F" : "C";
       var toM = unit === "ft" ? function (v) {
         return v * 0.3048;
       } : function (v) {
@@ -2965,6 +2967,7 @@
           emptyLevelM: toM(emptyDisp),
           fullLevelM: toM(fullDisp),
           distanceUnit: unit,
+          temperatureUnit: tempUnit,
         });
       }
     }
