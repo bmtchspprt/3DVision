@@ -91,8 +91,8 @@
    *   BeamLines[beam]: Orange (measured) + Black (candidates) + optional Cyan
    *   beamsHasDataList, MaxHValue, ListBeamNoiseData
    *
-   * Sample amplitudes follow ArrayToFract * gain semantics (≈ 0..1).
-   * Geometry uses vessel measured distance (Orange) like parser num12 / MaxHValue.
+   * Sample amplitudes: ArrayToFract(raw) * gain (BeamDataParser).
+   * X window is vessel height so the hard-zero tail is visible (live Analyze).
    */
   function buildBeamData(opts) {
     opts = opts || {};
@@ -104,7 +104,7 @@
     var offset = 0;
     var resolution = math ? math.GRADE_DH_M : 0.04;
     var n = math ? math.GRADE_N : Math.floor((Math.max(20, heightM + 4) - offset) / resolution) + 1;
-    var maxH = n * resolution;
+    var maxH = heightM;
     var numBeams = 9;
     var useAfe = opts.autoFalseEchoes !== false;
     var useUser = opts.useFalseEchoes !== false;
@@ -370,7 +370,7 @@
           name: BEAM_NAMES[bi],
           color: BEAM_ALL_COLORS[bi],
           pts: echoPts,
-          width: 1.2,
+          width: 1,
         });
         noteF(echoPts);
       }
@@ -390,7 +390,7 @@
           name: def.meta.name,
           color: def.meta.color,
           pts: pts,
-          width: 1.25,
+          width: 1,
         });
         noteF(pts);
       }

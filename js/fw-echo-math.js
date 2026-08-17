@@ -16,6 +16,25 @@
   var CMP_1611 = 1611.0;
   var CMP_900 = 900.0;
 
+  /** BeamDataParser.ArrayToFract — uint16 sample → 0..1 before gain. */
+  function arrayToFract(outcome) {
+    var n = outcome & 0xffff;
+    if (n > 32768) return (65536 - n) / 32768;
+    return n / 32768;
+  }
+
+  /**
+   * PC chart Y: ArrayToFract(raw) * series gain (ViewBeam / BM4).
+   * unit01 is 0..1 before the file's IEEE754 gain.
+   */
+  function pcDisplayAmp(unit01, gain) {
+    var u = unit01 || 0;
+    if (u < 0) u = 0;
+    if (u > 1) u = 1;
+    var raw = Math.round(u * 32767);
+    return arrayToFract(raw) * (gain || 1);
+  }
+
   function gradeIndexToMeters(i, offsetM) {
     return (offsetM || 0) + i * GRADE_DH_M;
   }
@@ -299,6 +318,8 @@
     AFE_N: AFE_N,
     FALSE_N: FALSE_N,
     GRADE_DH_M: GRADE_DH_M,
+    arrayToFract: arrayToFract,
+    pcDisplayAmp: pcDisplayAmp,
     PEAK_GRADE_SCALE: PEAK_GRADE_SCALE,
     CMP_1611: CMP_1611,
     CMP_900: CMP_900,
