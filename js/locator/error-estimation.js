@@ -458,8 +458,13 @@
     heightFromFloor, index, distanceMaxMaterialPickToActialPick, fillingPoint, heightInShapeType
   ) {
     var sr = this.searchRadiusList[index];
+    var sym = this.listFuzzyLogicSymmetry[index];
+    var cone = this.listFuzzyLogicCone[index];
+    if (!sr || !sym || !cone) {
+      return ErrorEstimationCal.ErrorEstimForMaxErrorCalc(sr || {});
+    }
     this.CalculateSingleEstimation(
-      sr, this.listFuzzyLogicSymmetry[index].FuzzyLogicVal, this.listFuzzyLogicCone[index].FuzzyLogicVal,
+      sr, sym.FuzzyLogicVal, cone.FuzzyLogicVal,
       heightInShapeType, calculateConeTopShape, calculateConeBottomShape,
       RadiusTopX, RadiusTopY, RadiusBottomX, RadiusBottomY,
       heightFromFloor, distanceMaxMaterialPickToActialPick, fillingPoint
@@ -778,8 +783,8 @@
     var flag = false;
     try {
       var totalHeightMeter = this.deviceInWork.VesselInWork.TotalHeightMeter;
-      this.listFuzzyLogicSymmetry = this.fuzzyManager.FuzzyLogicValuesSymmetry.slice();
-      this.listFuzzyLogicCone = this.fuzzyManager.FuzzyLogicValuesCone.slice();
+      this.listFuzzyLogicSymmetry = (this.fuzzyManager.FuzzyLogicValuesSymmetry || []).slice();
+      this.listFuzzyLogicCone = (this.fuzzyManager.FuzzyLogicValuesCone || []).slice();
       var list = [];
       this.ReCreateGoodBalls();
       this.materialPickToActialPickFrom = totalHeightMeter - errorEstimationMaxHeigh;

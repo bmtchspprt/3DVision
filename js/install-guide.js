@@ -1511,13 +1511,22 @@
               }, 280);
             })
             .catch(function (err) {
-              showPlacementProgress(false);
               if (btn) {
                 btn.disabled = false;
                 btn.textContent = step.primary || "Calculate";
               }
-              if (err && err.cancelled) return;
+              if (err && err.cancelled) {
+                showPlacementProgress(false);
+                return;
+              }
               console.warn("Placement calculate failed", err);
+              var stageEl = document.getElementById("igPlaceStage");
+              var etaEl = document.getElementById("igPlaceEta");
+              if (stageEl) {
+                stageEl.textContent =
+                  "Locator search failed. Click Calculate to try again.";
+              }
+              if (etaEl) etaEl.textContent = (err && err.message) || "Error";
             });
         });
       });
@@ -1573,26 +1582,10 @@
     var fill = document.getElementById("igPlaceFill");
     var pct = document.getElementById("igPlacePct");
     var eta = document.getElementById("igPlaceEta");
-    if (stage) stage.textContent = "Starting search…";
+    if (stage) stage.textContent = "Locator error estimation…";
     if (fill) fill.style.width = "0%";
     if (pct) pct.textContent = "0%";
-    if (eta) eta.textContent = "Estimating time…";
-    // Soft clock so the bar never sits frozen at 0% while the worker starts.
-    placeProgressState.tickTimer = setInterval(function () {
-      if (!placeProgressState) return;
-      var elapsed = Date.now() - placeProgressState.start;
-      // Creep toward ~35% over ~40s only while real progress is silent.
-      var soft = Math.min(0.35, elapsed / 40000);
-      if (soft > placeProgressState.displayed) {
-        paintPlacementProgress(soft, {
-          stage: 1,
-          maxStages: 1,
-          current: 0,
-          total: 0,
-          soft: true,
-        });
-      }
-    }, 200);
+    if (eta) eta.textContent = "This can take a while for 2–3 scanners";
   }
 
   function finishPlacementProgress(pctVal) {
@@ -1645,7 +1638,7 @@
     var stagePct = p.total > 0 ? Math.min(100, Math.round((100 * (p.current || 0)) / p.total)) : pctVal;
     if (stageEl && !p.soft) {
       stageEl.textContent =
-        "Searching " +
+        "Locator error estimation — " +
         stageN +
         " scanner" +
         (stageN > 1 ? "s" : "") +
@@ -1653,8 +1646,6 @@
         " — " +
         stagePct +
         "%";
-    } else if (stageEl && p.soft && placeProgressState.displayed < 0.02) {
-      stageEl.textContent = "Starting search…";
     }
     if (fill) fill.style.width = pctVal + "%";
     if (pctEl) pctEl.textContent = pctVal + "%";

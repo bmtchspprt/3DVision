@@ -1,22 +1,20 @@
 /**
- * Main-thread facade for Locator recommended placement Calculate.
- * Always uses a Web Worker so the UI can paint a real progress bar.
- * Never runs exhaustive search on the main thread (that freezes the page).
- *
- * global.LocatorPlacement.calculateRecommendedPlacement(opts) → Promise
+ * Locator recommended placement — Web Worker only.
+ * Runs Fuzzy tables + error estimation + exhaustive search off the UI thread.
+ * Never guesses positions. Never runs the search on the main thread.
  */
 (function (global) {
   "use strict";
   var NS = (global.LocatorPlacement = global.LocatorPlacement || {});
   var nextId = 1;
   var worker = null;
-  var workerFailed = false;
+  var workerReady = false;
+  var readyWaiters = [];
+  var jobs = {};
 
   function scriptBaseUrl() {
-    var loc = global.location;
-    var origin = (loc && loc.href) || "";
     try {
-      return new URL("js/locator/", origin).href;
+      return new URL("js/locator/", global.location.href).href;
     } catch (e) {
       return "js/locator/";
     }
@@ -26,141 +24,123 @@
     return scriptBaseUrl() + "placement-worker.js";
   }
 
-  function geometricFallback(opts) {
-    var vessel = opts.vessel || {};
-    var n = opts.numScanners || 1;
-    var diam =
-      vessel.centerD ||
-      vessel.CenterShapeDiameterMeter ||
-      vessel.CenterShapeDiameter ||
-      9;
-    var zAt = function (x, y) {
-      if (NS.autoCalculateZFromVesselBottom) {
-        try {
-          var v = vessel.CenterShapeType ? vessel : NS.createVessel(vessel);
-          return NS.autoCalculateZFromVesselBottom(v, x, y);
-        } catch (e) {
-          return 0;
-        }
+  function failJob(id, err) {
+    var job = jobs[id];
+    if (!job) return;
+    delete jobs[id];
+    job.reject(err);
+  }
+
+  function bindWorker(w) {
+    w.onmessage = function (ev) {
+      var msg = ev.data || {};
+      if (msg.type === "ready") {
+        workerReady = true;
+        var wait = readyWaiters;
+        readyWaiters = [];
+        var i;
+        for (i = 0; i < wait.length; i++) wait[i](null, w);
+        return;
       }
-      return 0;
+      var job = jobs[msg.id];
+      if (!job) return;
+      if (msg.type === "progress") {
+        if (job.onProgress) job.onProgress(msg);
+        return;
+      }
+      delete jobs[msg.id];
+      if (msg.type === "done") {
+        job.resolve({
+          scanners: msg.scanners,
+          maxError: msg.maxError,
+          numScanners: msg.numScanners,
+          stages: msg.stages,
+        });
+        return;
+      }
+      if (msg.type === "cancelled") {
+        job.reject(Object.assign(new Error("cancelled"), { cancelled: true }));
+        return;
+      }
+      job.reject(new Error(msg.message || "Placement failed"));
     };
-    var scanners = NS.geometricRecommendedScanners
-      ? NS.geometricRecommendedScanners(n, diam, zAt)
-      : [{ x: diam / 3, y: 0, z: zAt(diam / 3, 0) }];
-    if (opts.onProgress) {
-      opts.onProgress({
-        stage: n,
-        maxStages: n,
-        current: 1,
-        total: 1,
-        overall: 1,
-      });
-    }
-    return {
-      scanners: scanners,
-      maxError: NaN,
-      numScanners: scanners.length,
-      stages: [],
-      fallback: true,
+    w.onerror = function (ev) {
+      workerReady = false;
+      try {
+        w.terminate();
+      } catch (e) {
+        /* ignore */
+      }
+      if (worker === w) worker = null;
+      var err = new Error((ev && ev.message) || "Placement worker failed");
+      var wait = readyWaiters;
+      readyWaiters = [];
+      var i;
+      for (i = 0; i < wait.length; i++) wait[i](err);
+      var id;
+      for (id in jobs) {
+        if (Object.prototype.hasOwnProperty.call(jobs, id)) failJob(id, err);
+      }
     };
   }
 
   function getWorker() {
-    if (workerFailed) return null;
-    if (worker) return worker;
-    if (typeof Worker === "undefined") {
-      workerFailed = true;
-      return null;
-    }
-    try {
-      worker = new Worker(workerUrl());
-      worker.onerror = function () {
-        workerFailed = true;
-        try {
-          worker.terminate();
-        } catch (e) {
-          /* ignore */
-        }
+    return new Promise(function (resolve, reject) {
+      if (worker && workerReady) {
+        resolve(worker);
+        return;
+      }
+      if (typeof Worker === "undefined") {
+        reject(new Error("Web Workers are required for Locator placement"));
+        return;
+      }
+      var timer = setTimeout(function () {
+        reject(new Error("Placement worker did not start"));
+      }, 8000);
+      readyWaiters.push(function (err, w) {
+        clearTimeout(timer);
+        if (err) reject(err);
+        else resolve(w);
+      });
+      if (worker && !workerReady) return;
+      try {
+        worker = new Worker(workerUrl());
+        workerReady = false;
+        bindWorker(worker);
+      } catch (e) {
         worker = null;
-      };
-      return worker;
-    } catch (e) {
-      workerFailed = true;
-      return null;
-    }
+        var wait = readyWaiters;
+        readyWaiters = [];
+        var i;
+        for (i = 0; i < wait.length; i++) wait[i](e);
+      }
+    });
   }
 
   function runWorker(opts) {
-    var w = getWorker();
-    if (!w) {
-      return Promise.resolve(geometricFallback(opts));
-    }
-    var id = nextId++;
-    return new Promise(function (resolve, reject) {
-      var settled = false;
-      var lastUi = 0;
-      function cleanup() {
-        w.removeEventListener("message", onMsg);
-        if (opts.signal) opts.signal.removeEventListener("abort", onAbort);
-      }
-      function finish(fn, arg) {
-        if (settled) return;
-        settled = true;
-        cleanup();
-        fn(arg);
-      }
-      function onAbort() {
-        try {
-          w.postMessage({ type: "cancel", id: id });
-        } catch (e) {
-          /* ignore */
-        }
-        finish(reject, Object.assign(new Error("cancelled"), { cancelled: true }));
-      }
-      function onMsg(ev) {
-        var msg = ev.data || {};
-        if (msg.id !== id) return;
-        if (msg.type === "progress") {
-          if (opts.onProgress) {
-            var now = Date.now();
-            if (now - lastUi < 80 && msg.overall < 0.99) return;
-            lastUi = now;
-            opts.onProgress({
-              stage: msg.stage,
-              maxStages: msg.maxStages,
-              current: msg.current,
-              total: msg.total,
-              maxError: msg.maxError,
-              overall: msg.overall,
-            });
+    return getWorker().then(function (w) {
+      var id = nextId++;
+      return new Promise(function (resolve, reject) {
+        jobs[id] = {
+          resolve: resolve,
+          reject: reject,
+          onProgress: opts.onProgress || null,
+        };
+        function onAbort() {
+          try {
+            w.postMessage({ type: "cancel", id: id });
+          } catch (e) {
+            /* ignore */
           }
-          return;
+          failJob(id, Object.assign(new Error("cancelled"), { cancelled: true }));
         }
-        if (msg.type === "done") {
-          finish(resolve, {
-            scanners: msg.scanners,
-            maxError: msg.maxError,
-            numScanners: msg.numScanners,
-            stages: msg.stages,
-          });
-          return;
+        if (opts.signal) {
+          if (opts.signal.aborted) {
+            onAbort();
+            return;
+          }
+          opts.signal.addEventListener("abort", onAbort);
         }
-        if (msg.type === "cancelled") {
-          finish(reject, Object.assign(new Error("cancelled"), { cancelled: true }));
-          return;
-        }
-        finish(reject, new Error(msg.message || "Placement failed"));
-      }
-      w.addEventListener("message", onMsg);
-      if (opts.signal) {
-        if (opts.signal.aborted) {
-          onAbort();
-          return;
-        }
-        opts.signal.addEventListener("abort", onAbort);
-      }
-      try {
         w.postMessage({
           id: id,
           type: "calculate",
@@ -171,27 +151,13 @@
           maxScanners: opts.maxScanners != null ? opts.maxScanners : opts.numScanners || 1,
           allSteps: opts.allSteps !== false,
         });
-      } catch (err) {
-        workerFailed = true;
-        cleanup();
-        resolve(geometricFallback(opts));
-      }
+      });
     });
   }
 
   function calculateRecommendedPlacement(opts) {
     opts = opts || {};
-    return runWorker(opts).catch(function (err) {
-      if (err && err.cancelled) throw err;
-      workerFailed = true;
-      try {
-        if (worker) worker.terminate();
-      } catch (e) {
-        /* ignore */
-      }
-      worker = null;
-      return geometricFallback(opts);
-    });
+    return runWorker(opts);
   }
 
   NS.calculateRecommendedPlacement = calculateRecommendedPlacement;

@@ -30,6 +30,8 @@
     importScripts(base + scripts[i]);
   }
 
+  self.postMessage({ type: "ready" });
+
   var cancelFlag = false;
   var lastProgressPost = 0;
 
@@ -45,9 +47,18 @@
     var id = msg.id;
     try {
       var NS = self.LocatorPlacement;
-      if (!NS || !NS.runPlacementFullFlow) {
+        if (!NS || !NS.runPlacementFullFlow) {
         throw new Error("Locator placement modules not loaded");
       }
+      self.postMessage({
+        id: id,
+        type: "progress",
+        stage: msg.numScanners || 1,
+        maxStages: msg.maxScanners != null ? msg.maxScanners : msg.numScanners || 1,
+        current: 0,
+        total: 1,
+        overall: 0,
+      });
       var result = NS.runPlacementFullFlow({
         vessel: msg.vessel,
         fillPoints: msg.fillPoints || [],
