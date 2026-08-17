@@ -197,6 +197,74 @@
     return parseFloat(String(s).replace(',', '.'));
   }
 
+  /**
+   * Tiny XML tree for Fuzzy_*.xml. Dedicated workers often have no DOMParser.
+   */
+  function parseFuzzyXmlString(xml) {
+    function Node(name, attrs, children) {
+      this.nodeName = name;
+      this.tagName = name;
+      this.attributes = attrs || [];
+      this.childNodes = children || [];
+    }
+    Node.prototype.getAttribute = function (n) {
+      var i;
+      for (i = 0; i < this.attributes.length; i++) {
+        if (this.attributes[i].name === n) return this.attributes[i].value;
+      }
+      return null;
+    };
+    Node.prototype.getElementsByTagName = function (tag) {
+      var out = [];
+      function walk(n) {
+        if (n.nodeName === tag) out.push(n);
+        var kids = n.childNodes || [];
+        var k;
+        for (k = 0; k < kids.length; k++) walk(kids[k]);
+      }
+      walk(this);
+      return out;
+    };
+    function parseAttrs(s) {
+      var attrs = [];
+      var re = /([A-Za-z0-9_]+)\s*=\s*"([^"]*)"/g;
+      var m;
+      while ((m = re.exec(s))) {
+        attrs.push({ name: m[1], nodeName: m[1], value: m[2] });
+      }
+      return attrs;
+    }
+    var tokens = [];
+    var re = /<\/?([A-Za-z0-9_]+)([^>]*)>/g;
+    var m;
+    while ((m = re.exec(xml))) {
+      var full = m[0];
+      var name = m[1];
+      var rest = m[2] || "";
+      if (full.charAt(1) === "/") tokens.push({ type: "close", name: name });
+      else if (/\s*\/\s*$/.test(rest) || full.slice(-2) === "/>") {
+        tokens.push({ type: "empty", name: name, attrs: parseAttrs(rest) });
+      } else tokens.push({ type: "open", name: name, attrs: parseAttrs(rest) });
+    }
+    var doc = new Node("#document", [], []);
+    var stack = [doc];
+    var t;
+    var i;
+    for (i = 0; i < tokens.length; i++) {
+      t = tokens[i];
+      if (t.type === "open") {
+        var n = new Node(t.name, t.attrs, []);
+        stack[stack.length - 1].childNodes.push(n);
+        stack.push(n);
+      } else if (t.type === "empty") {
+        stack[stack.length - 1].childNodes.push(new Node(t.name, t.attrs, []));
+      } else if (t.type === "close") {
+        if (stack.length > 1) stack.pop();
+      }
+    }
+    return doc;
+  }
+
   function loadGeneral(fuzzyData, xmlRoot) {
     var gen = xmlRoot.getElementsByTagName('General')[0];
     if (!gen) return;
@@ -231,20 +299,31 @@
     return list;
   }
 
+  function fuzzyXmlRoot(xmlString) {
+    var Parser = typeof DOMParser !== "undefined" ? DOMParser : root.DOMParser || null;
+    if (Parser) {
+      try {
+        var doc = new Parser().parseFromString(xmlString, "application/xml");
+        var fromDom = doc.getElementsByTagName("Fuzzy")[0];
+        if (fromDom) return fromDom;
+      } catch (err) {
+        /* Worker or incomplete DOM — fall through to the tiny parser. */
+      }
+    }
+    var parsed = parseFuzzyXmlString(xmlString);
+    var xmlRoot = parsed.getElementsByTagName("Fuzzy")[0];
+    if (!xmlRoot) throw new Error("Fuzzy root missing");
+    return xmlRoot;
+  }
+
   /* Parse Fuzzy XML string into this manager's coefficient tables */
   FuzzyManager.prototype.LoadFuzzyTableFileXml = function (fuzzyDataObj, xmlString) {
-    var Parser = (typeof DOMParser !== 'undefined') ? DOMParser : (root.DOMParser || null);
-    if (!Parser) {
-      throw new Error('DOMParser required to load Fuzzy XML');
-    }
-    var doc = new Parser().parseFromString(xmlString, 'application/xml');
-    var xmlRoot = doc.getElementsByTagName('Fuzzy')[0];
-    if (!xmlRoot) throw new Error('Fuzzy root missing');
+    var xmlRoot = fuzzyXmlRoot(xmlString);
     loadGeneral(fuzzyDataObj, xmlRoot);
-    var almostFull = xmlRoot.getElementsByTagName('FuzzyLogicParamsAlmostFull')[0];
-    var paramsSym = xmlRoot.getElementsByTagName('FuzzyLogicParams')[0];
-    var coneNodes = almostFull ? almostFull.getElementsByTagName('FuzzyLogicParam') : [];
-    var symNodes = paramsSym ? paramsSym.getElementsByTagName('FuzzyLogicParam') : [];
+    var almostFull = xmlRoot.getElementsByTagName("FuzzyLogicParamsAlmostFull")[0];
+    var paramsSym = xmlRoot.getElementsByTagName("FuzzyLogicParams")[0];
+    var coneNodes = almostFull ? almostFull.getElementsByTagName("FuzzyLogicParam") : [];
+    var symNodes = paramsSym ? paramsSym.getElementsByTagName("FuzzyLogicParam") : [];
     this.fuzzyLogicValuesCone = algorithmFuzzyParams(coneNodes);
     this.fuzzyLogicValuesSymmetry = algorithmFuzzyParams(symNodes);
     this.fuzzyData = fuzzyDataObj;
@@ -286,10 +365,7 @@
 
   FuzzyManager.GetFuzzyDataOnlyXml = function (xmlString) {
     var result = new FuzzyData();
-    var Parser = (typeof DOMParser !== 'undefined') ? DOMParser : (root.DOMParser || null);
-    var doc = new Parser().parseFromString(xmlString, 'application/xml');
-    var xmlRoot = doc.getElementsByTagName('Fuzzy')[0];
-    loadGeneral(result, xmlRoot);
+    loadGeneral(result, fuzzyXmlRoot(xmlString));
     return result;
   };
 
