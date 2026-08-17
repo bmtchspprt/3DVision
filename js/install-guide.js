@@ -1270,6 +1270,24 @@
     }
   }
 
+  function deviceWizardNavKind(el) {
+    if (!el || !el.closest) return null;
+    if (el.closest("#mvWizNext")) return "next";
+    if (el.closest("#mvWizBack")) return "back";
+    if (el.closest('#mv-dlg-device-wizard [data-mv-dlg-close]')) return "cancel";
+    return null;
+  }
+
+  function deviceWizardNavAllowed(kind) {
+    if (!kind) return false;
+    var step = currentStep();
+    if (!step) return false;
+    var t = stepTarget(step);
+    if (kind === "next") return t === "#mvWizNext";
+    if (kind === "back") return t === "#mvWizBack";
+    return false;
+  }
+
   function isClickAllowed(e) {
     // End screen is modal until Close (even after guiding stops)
     var end = document.getElementById("igEndScreen");
@@ -1286,6 +1304,10 @@
 
     var step = currentStep();
     if (!step) return false;
+
+    var wizNav = deviceWizardNavKind(e.target);
+    if (wizNav && !deviceWizardNavAllowed(wizNav)) return false;
+
     if (
       step.allowInside &&
       e.target.closest &&
@@ -1457,6 +1479,23 @@
     }
 
     return false;
+  }
+
+  function guideKeyGuard(e) {
+    if (!document.body.classList.contains("ig-guiding")) return;
+    if (e.key !== "Enter" && e.key !== " ") return;
+    var el = e.target;
+    var wizNav = deviceWizardNavKind(el) || deviceWizardNavKind(document.activeElement);
+    if (wizNav && !deviceWizardNavAllowed(wizNav)) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      if (card) {
+        card.classList.remove("ig-card--deny");
+        void card.offsetWidth;
+        card.classList.add("ig-card--deny");
+      }
+    }
   }
 
   function guideInteractionGuard(e) {
@@ -2670,6 +2709,7 @@
     document.addEventListener("click", guideInteractionGuard, true);
     document.addEventListener("mousedown", guideInteractionGuard, true);
     document.addEventListener("pointerdown", guideInteractionGuard, true);
+    document.addEventListener("keydown", guideKeyGuard, true);
     [
       "install-guide:browser-opened",
       "install-guide:downloads-page",
@@ -2784,4 +2824,5 @@
     },
     enterFreeMode: enterFreeMode,
   };
+  window.__igDeviceWizNavAllowed = deviceWizardNavAllowed;
 })();

@@ -126,6 +126,14 @@
     }
   }
 
+  function guideBlocksDeviceWizardNav(kind) {
+    if (!document.body.classList.contains("ig-guiding")) return false;
+    if (typeof window.__igDeviceWizNavAllowed === "function") {
+      return !window.__igDeviceWizNavAllowed(kind);
+    }
+    return true;
+  }
+
   function closeDialog(id) {
     var el = $(id);
     var wasOpen = !!(el && !el.hidden);
@@ -2974,11 +2982,13 @@
 
     if (backBtn) {
       backBtn.addEventListener("click", function () {
+        if (guideBlocksDeviceWizardNav("back")) return;
         goStep(step - 1);
       });
     }
     if (nextBtn) {
       nextBtn.addEventListener("click", function () {
+        if (guideBlocksDeviceWizardNav("next")) return;
         if (step >= totalSteps) {
           // WizardWindowDevice.NextNewSiteDefin online path:
           // SendCommandsToServer → BatchStartSetParameters → ProgressWindow, then CloseWizard.
@@ -4090,7 +4100,11 @@
     root.addEventListener("click", function (e) {
       var closeBtn = e.target.closest("[data-mv-dlg-close]");
       if (closeBtn) {
-        closeDialog(closeBtn.getAttribute("data-mv-dlg-close"));
+        var closeId = closeBtn.getAttribute("data-mv-dlg-close");
+        if (closeId === "mv-dlg-device-wizard" && guideBlocksDeviceWizardNav("cancel")) {
+          return;
+        }
+        closeDialog(closeId);
         return;
       }
       var okBtn = e.target.closest("[data-mv-dlg-ok]");
