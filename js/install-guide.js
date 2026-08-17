@@ -29,7 +29,7 @@
 
   var EXAMPLE_HOST_IP = "192.168.1.28";
   /** Guide placement: how many scanners to search for (1–3). */
-  var guideScannerPlan = { numScanners: 1, maxScanners: 1, label: "1 scanner" };
+  var guideHasSweeper = false;
   var apTypingActive = null;
   var apTypingTarget = "";
   var AP_RATE_TARGET = "8";
@@ -777,10 +777,25 @@
       pointer: "none",
     },
     {
+      id: "wiz-sweeper-ask",
+      phase: "setup",
+      title: "Sweeper",
+      body:
+        "Does this vessel have a sweeper?" +
+        '<div class="ig-scanner-count" id="igSweeperChoice">' +
+        '<button type="button" class="ig-btn" data-sweeper="yes">Yes</button>' +
+        '<button type="button" class="ig-btn" data-sweeper="no">No</button>' +
+        "</div>",
+      target: null,
+      advanceOn: "install-guide:sweeper-choice",
+      allowInside: "#igCard, #igSweeperChoice",
+      pointer: "none",
+    },
+    {
       id: "wiz-sweeper-note",
       phase: "setup",
-      title: "Sweepers and Empty",
-      body: "If a sweeper locks onto the scanner, raise the <strong>Empty</strong> point above the sweep path.",
+      title: "Empty point with a sweeper",
+      body: "If the scanner locks onto the sweeper, raise the <strong>Empty</strong> point above the sweep path.",
       target: "#mvWizEmptyLevel",
       blocking: true,
       primary: "Continue",
@@ -1172,6 +1187,16 @@
       };
       window.dispatchEvent(new CustomEvent("install-guide:scanner-count"));
     });
+    card.addEventListener("click", function (e) {
+      var swBtn = e.target.closest ? e.target.closest("[data-sweeper]") : null;
+      if (!swBtn || !card.contains(swBtn)) return;
+      var step = currentStep();
+      if (!step || step.id !== "wiz-sweeper-ask") return;
+      e.preventDefault();
+      e.stopPropagation();
+      guideHasSweeper = swBtn.getAttribute("data-sweeper") === "yes";
+      window.dispatchEvent(new CustomEvent("install-guide:sweeper-choice"));
+    });
     var replayBtn = document.getElementById("igEndReplay");
     if (replayBtn) {
       replayBtn.addEventListener("click", function (e) {
@@ -1428,9 +1453,9 @@
       return true;
     }
     if (
-      step.id === "wiz-scanner-count" &&
+      (step.id === "wiz-scanner-count" || step.id === "wiz-sweeper-ask") &&
       e.target.closest &&
-      e.target.closest("#igScannerCount, #igCard")
+      e.target.closest("#igScannerCount, #igSweeperChoice, #igCard")
     ) {
       return true;
     }
@@ -1875,6 +1900,7 @@
       card.classList.remove("ig-card--hidden");
     }
     stepIndex = 0;
+    guideHasSweeper = false;
     function startSteps() {
       wireResize();
       renderStep();
@@ -1939,6 +1965,7 @@
       card.classList.remove("ig-card--hidden");
     }
     stepIndex = 0;
+    guideHasSweeper = false;
     wireResize();
     renderStep();
   }
@@ -2152,6 +2179,10 @@
     var steps = getSteps();
     if (stepIndex < steps.length - 1) {
       stepIndex += 1;
+      var skip = currentStep();
+      if (skip && skip.id === "wiz-sweeper-note" && !guideHasSweeper) {
+        if (stepIndex < steps.length - 1) stepIndex += 1;
+      }
       renderStep();
     }
   }
@@ -2241,6 +2272,7 @@
       step.id === "devices-connection-type" ||
       step.id === "devices-polling-address" ||
       step.id === "wiz-scanner-count" ||
+      step.id === "wiz-sweeper-ask" ||
       step.id === "wiz-placement-explain"
     ) {
       return "none";
@@ -2440,7 +2472,7 @@
       primary.classList.remove("ig-btn--flash");
       root.classList.remove("ig-blocking");
     }
-    if (step.id === "wiz-scanner-count") {
+    if (step.id === "wiz-scanner-count" || step.id === "wiz-sweeper-ask") {
       primary.hidden = true;
       primary.classList.remove("ig-btn--flash");
       root.classList.remove("ig-blocking");
@@ -2764,6 +2796,7 @@
       "install-guide:ap-fill-rate-ok",
       "install-guide:ap-slope-ok",
       "install-guide:scanner-count",
+      "install-guide:sweeper-choice",
       "install-guide:ap-tab-adv",
       "install-guide:ap-tab-beams",
       "install-guide:ap-auto-false-off",
