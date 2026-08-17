@@ -15,7 +15,7 @@
   var THRESH_N = 1310;
   var AFE_N = 655;
   var FALSE_N = 327;
-  /** BM4 fract32→m: (x/2^31)*1000 with x=2^16 → 1000/65536 m per Grade sample. */
+  /** BM4 / FW window fract32: metres = (x / 2^31) * 1000. 0x0A3D70A3 ≈ 80 m. */
   var GRADE_DH_M = 1000 / 65536;
   var PEAK_GRADE_SCALE = 1.01;
   var RANGE_K = 0x20c49b;
@@ -275,7 +275,7 @@
     notes.push("Peak helper compares Grade×1.01 to Threshold[i>>2] and keeps the last passing bin. It does not read AFE or user maps.");
     notes.push("0x2020421e / 0x20204634 copy or clear the map twin (flash persist), they do not apply during pick.");
     notes.push("Threshold floats at 0x20215060+0x51E8 are filled from existing Threshold int16 (convert-twin), not from 0x2021F97A (magnitude). How T is first made from Grade is still open.");
-    notes.push("SNR, CRAF, max scan, UseFalseEchoes, and damping consumers are not traced — do not treat this as the unit's full decision tree.");
+    notes.push("Opcode 4/5 From–To use the same fract32 metres as Orange (80 m clamp). AFE envelope inside that window is still truncated in the image.");
     if (tapeM != null && pickM != null) {
       var dlt = tapeM - pickM;
       if (Math.abs(dlt) > 0.3) {
