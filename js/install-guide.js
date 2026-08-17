@@ -1518,7 +1518,6 @@
               }
               if (err && err.cancelled) return;
               console.warn("Placement calculate failed", err);
-              goNext();
             });
         });
       });
@@ -1582,8 +1581,8 @@
     placeProgressState.tickTimer = setInterval(function () {
       if (!placeProgressState) return;
       var elapsed = Date.now() - placeProgressState.start;
-      // Creep toward ~55% over ~25s if real progress is silent.
-      var soft = Math.min(0.55, elapsed / 25000);
+      // Creep toward ~35% over ~40s only while real progress is silent.
+      var soft = Math.min(0.35, elapsed / 40000);
       if (soft > placeProgressState.displayed) {
         paintPlacementProgress(soft, {
           stage: 1,

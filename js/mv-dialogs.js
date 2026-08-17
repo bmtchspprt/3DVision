@@ -2460,6 +2460,20 @@
       body.innerHTML = html;
       wireDeviceRowInputs();
       syncDeviceFromXY();
+      sizeDevicePositionBox(scanners.length);
+    }
+
+    function sizeDevicePositionBox(n) {
+      var box = root.querySelector(".mv-wiz-devpos-box");
+      if (!box) return;
+      var count = n != null ? n : root.querySelectorAll("#mvWizDeviceBody tr").length;
+      // Real app: 110 for a single scanner, 200 default (multi). Grow for 3 rows.
+      var h = count <= 1 ? 110 : count === 2 ? 200 : 248;
+      box.style.height = h + "px";
+      if (count > 1) box.classList.add("is-multi");
+      else box.classList.remove("is-multi");
+      var wrap = root.querySelector(".mv-wiz-grid-wrap");
+      if (wrap) wrap.style.overflow = "auto";
     }
 
     function wireDeviceRowInputs() {
@@ -2899,6 +2913,33 @@
           };
         });
         if (!rows.length) throw new Error("No scanner positions returned");
+        if (global.LocatorPlacement && global.LocatorPlacement.scannersAreStacked(rows)) {
+          var diamM = vessel.centerD || vessel.CenterShapeDiameterMeter || 9;
+          var spread = global.LocatorPlacement.geometricRecommendedScanners(
+            rows.length,
+            diamM,
+            function (x, y) {
+              return global.LocatorPlacement.autoCalculateZFromVesselBottom
+                ? global.LocatorPlacement.autoCalculateZFromVesselBottom(
+                    global.LocatorPlacement.createVessel(vessel),
+                    x,
+                    y
+                  )
+                : 0;
+            }
+          );
+          rows = spread.map(function (s) {
+            var x = fromM(s.x);
+            var y = fromM(s.y);
+            return {
+              x: x,
+              y: y,
+              z: fromM(s.z),
+              offset: 0,
+              angle: autoCalculateAngle(x, y),
+            };
+          });
+        }
         setDeviceRows(rows);
         refresh3dKeepView();
         return {

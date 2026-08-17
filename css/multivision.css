@@ -4006,6 +4006,17 @@
   display: flex;
   flex-direction: column;
 }
+.mv-wiz-devpos-box.is-multi {
+  height: 200px;
+}
+.mv-wiz-grid-wrap {
+  flex: 1;
+  min-height: 0;
+  border: 1px solid #d3d3d3;
+  background: #fff;
+  overflow: auto;
+  margin-top: 0;
+}
 .mv-wiz-devpos {
   margin: 0;
   flex: 1;
@@ -4030,14 +4041,6 @@
   height: 13px;
   margin: 0;
   flex-shrink: 0;
-}
-.mv-wiz-grid-wrap {
-  flex: 1;
-  min-height: 0;
-  border: 1px solid #d3d3d3;
-  background: #fff;
-  overflow: hidden;
-  margin-top: 0;
 }
 .mv-wiz-table {
   width: 100%;
