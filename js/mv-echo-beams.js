@@ -139,11 +139,7 @@
     var beamFixAdvice = [];
     var b;
     var i;
-
-    function gauss(h, c, w, a) {
-      var d = (h - c) / w;
-      return a * Math.exp(-(d * d));
-    }
+    var sim = global.FwEchoSim;
 
     for (b = 0; b < numBeams; b++) {
       var br = seededRand(seed + (b + 1) * 7919);
@@ -158,56 +154,25 @@
       var fixAdvice = null;
 
       if (hasData) {
-        var gradeAmp = [];
-        var threshAmp = [];
-        for (i = 0; i < n; i++) {
-          var h = offset + i * resolution;
-          var clutter = 0;
-          if (h < 0.55) {
-            clutter +=
-              0.55 *
-              Math.exp(-h / 0.08) *
-              (0.7 + 0.3 * Math.abs(Math.sin(h * 90)));
-          }
-          clutter += gauss(h, 0.42, 0.06, 0.12);
-          clutter += gauss(h, 1.05, 0.09, 0.07);
-          clutter += gauss(h, Math.max(1.2, heightM - 0.4), 0.22, 0.1);
-          clutter += 0.02 + br() * 0.025;
-          clutter += 0.012 * Math.sin(h * 7.3 + b) + 0.006 * Math.sin(h * 19.1);
-          var f = clutter;
-          f += gauss(h, distB, 0.1, 0.85);
-          f += gauss(h, distB + 0.4, 0.14, 0.18);
-          f = Math.max(0, Math.min(1, f));
-          clutter = Math.max(0, Math.min(1, clutter));
-          gradeAmp.push(f);
-          var th = h < 0.6 ? 0.22 : 0.07;
-          if (h > distB - 0.4 && h < distB + 0.6) {
-            th = 0.22 + 0.45 * Math.exp(-Math.pow((h - distB) / 0.25, 2));
-          }
-          threshAmp.push(Math.min(1, th));
-        }
-
-        var afeAmp =
-          useAfe && math
-            ? math.buildAfeFromGrade(gradeAmp)
-            : math
-              ? math.resetAfeMap()
-              : [];
-        var falseAmp = math ? math.resetUserMap() : [];
-        if (useUser && math && opts.falseEchoFrom != null && opts.falseEchoTo != null) {
-          falseAmp = math.applyManualScan(
-            falseAmp,
-            opts.falseEchoFrom,
-            opts.falseEchoTo,
-            opts.falseEchoThreshold || 0.2,
-            offset
-          );
-        }
-
-        var thCoarse = math ? math.downsampleAmp(threshAmp, math.THRESH_N) : threshAmp;
-        var pick = math
-          ? math.pickReported(gradeAmp, thCoarse, { offsetM: offset })
-          : { meters: distB };
+        var series =
+          sim && math
+            ? sim.simulateBeamSeries({
+                distanceM: distB,
+                heightM: heightM,
+                seed: seed + (b + 1) * 7919,
+                falseFrom: useUser ? opts.falseEchoFrom : null,
+                falseTo: useUser ? opts.falseEchoTo : null,
+                falseThreshold: opts.falseEchoThreshold || 0.2,
+                useUser: useUser,
+                useAfe: useAfe,
+              })
+            : null;
+        var gradeAmp = series ? series.gradeAmp : [];
+        var thCoarse = series ? series.threshAmp : [];
+        var afeAmp = series ? series.afeAmp : math ? math.resetAfeMap() : [];
+        if (!useAfe && math) afeAmp = math.resetAfeMap();
+        var falseAmp = series ? series.falseAmp : math ? math.resetUserMap() : [];
+        var pick = series ? series.pick : { meters: distB };
         var reported = pick.meters != null ? pick.meters : distB;
         var fixAdvice =
           math && math.recommendFalseEchoFix
@@ -228,7 +193,7 @@
         });
         var c1 = reported + 0.35 + br() * 0.2;
         var c2 = reported + 0.7 + br() * 0.25;
-        var c3 = Math.min(maxH * 0.55, heightM * 0.65 + br());
+        var c3 = Math.min(heightM * 0.92, reported + 2 + br());
         lines.push({
           color: "Black",
           val: c1,
@@ -291,7 +256,7 @@
       beamsAllTableList: beamsAllTableList,
       BeamLines: BeamLines,
       BeamAllLines: BeamAllLines,
-      MaxHValue: distanceM,
+      MaxHValue: heightM,
       ListBeamNoiseData: ListBeamNoiseData,
       resolution: resolution,
       maxRange: maxH,
@@ -382,11 +347,18 @@
     }
 
     var seriesList = [];
+    var xMaxM = beamData.heightM || beamData.MaxHValue || 16;
+    if (xMaxM < 1) xMaxM = 16;
     var maxF = 0;
-    var maxH = 0;
     var bi;
     var pi;
     var si;
+
+    function noteF(pts) {
+      for (pi = 0; pi < pts.length; pi++) {
+        if (pts[pi].h <= xMaxM) maxF = Math.max(maxF, pts[pi].f);
+      }
+    }
 
     if (beamIndex < 0) {
       for (bi = 0; bi < beamData.NumOfBeams; bi++) {
@@ -398,10 +370,7 @@
           pts: echoPts,
           width: 1.2,
         });
-        for (pi = 0; pi < echoPts.length; pi++) {
-          maxF = Math.max(maxF, echoPts[pi].f);
-          maxH = Math.max(maxH, echoPts[pi].h);
-        }
+        noteF(echoPts);
       }
     } else {
       var seriesDefs = [
@@ -421,16 +390,12 @@
           pts: pts,
           width: 1.25,
         });
-        for (pi = 0; pi < pts.length; pi++) {
-          maxF = Math.max(maxF, pts[pi].f);
-          maxH = Math.max(maxH, pts[pi].h);
-        }
+        noteF(pts);
       }
     }
     if (maxF <= 0) maxF = 1;
-    if (maxH <= 0) maxH = beamData.maxRange || 20;
     var yMax = maxF * 1.02;
-    var xMaxDisp = convertDistance(maxH, unit);
+    var xMaxDisp = convertDistance(xMaxM, unit);
 
     function xOf(meters) {
       return padL + (convertDistance(meters, unit) / (xMaxDisp || 1)) * plotW;
@@ -484,6 +449,7 @@
       ctx.beginPath();
       for (pi = 0; pi < ser.pts.length; pi++) {
         var pt = ser.pts[pi];
+        if (pt.h > xMaxM) break;
         var px = xOf(pt.h);
         var py = yOf(pt.f);
         if (pi === 0) ctx.moveTo(px, py);
