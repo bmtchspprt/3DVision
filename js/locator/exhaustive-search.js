@@ -714,23 +714,6 @@
         z: device.Scanners[si].ScannerPositionZ
       });
     }
-    if (NS.scannersAreStacked(scanners) && NS.geometricRecommendedScanners) {
-      var diam =
-        (device.VesselInWork &&
-          (device.VesselInWork.CenterShapeDiameterMeter ||
-            device.VesselInWork.CenterShapeDiameter)) ||
-        9;
-      scanners = NS.geometricRecommendedScanners(scanners.length, diam, function (x, y) {
-        return NS.autoCalculateZFromVesselBottom
-          ? NS.autoCalculateZFromVesselBottom(device.VesselInWork, x, y)
-          : 0;
-      });
-      for (si = 0; si < scanners.length; si++) {
-        device.Scanners[si].ScannerPositionX = scanners[si].x;
-        device.Scanners[si].ScannerPositionY = scanners[si].y;
-        device.Scanners[si].ScannerPositionZ = scanners[si].z;
-      }
-    }
     return { scanners: scanners, maxError: result.maxError, numCalc: result.numCalc };
   }
 
