@@ -5,8 +5,7 @@
  *   series lengths, ~80 m Grade axis, cmd 151 window, Grade vs Threshold pick loop,
  *   distance-power piecewise, damping field is a length in meters.
  * Reconstructed (wired because the user asked for working logic; not CERTAINTY-closed):
- *   AFE = max Grade in each i>>3 bin (Scan also rsqrt-blends on bin change — not in JS),
- *   apply = reject G<=map for pick, damping = track gate + slew.
+ *   AFE = block-max of Grade, apply = reject G<=map for pick, damping = track gate + slew.
  * recommendFalseEchoFix is a support heuristic (cmd 151 opcode 6), not the firmware apply path.
  */
 (function (global) {
@@ -115,23 +114,23 @@
   }
 
   /**
-   * Scan / AFE build (cmd 151 opcode 4) — reconstructed from FW index, not full algebra:
-   * AFE bin = i>>3 (655 bins). Each bin starts as max Grade in that block, times
-   * AutoFalseEchoesSensitivity. Firmware also maxes two 655-float planes and rsqrt-mixes
-   * when the bin changes; that blend is not applied here.
+   * Scan / AFE build (cmd 151 opcode 4) — reconstructed:
+   * each AFE bin = max Grade in that ÷8 block, scaled by AutoFalseEchoesSensitivity.
    */
   function buildAfeFromGrade(gradeAmp, sensitivity) {
     var afe = resetAfeMap();
     var s = sensitivity == null ? 1 : sensitivity;
+    var j;
     var i;
-    var n = gradeAmp ? gradeAmp.length : 0;
-    for (i = 0; i < n; i++) {
-      var j = i >> 3;
-      if (j >= AFE_N) break;
-      var g = gradeAmp[i] || 0;
-      if (g > afe[j]) afe[j] = g;
+    for (j = 0; j < AFE_N; j++) {
+      var i0 = Math.floor((j * GRADE_N) / AFE_N);
+      var i1 = Math.floor(((j + 1) * GRADE_N) / AFE_N);
+      var m = 0;
+      for (i = i0; i < i1; i++) {
+        if (gradeAmp[i] > m) m = gradeAmp[i];
+      }
+      afe[j] = m * s;
     }
-    for (i = 0; i < AFE_N; i++) afe[i] *= s;
     return afe;
   }
 
