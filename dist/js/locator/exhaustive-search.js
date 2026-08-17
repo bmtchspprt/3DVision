@@ -199,9 +199,16 @@
   };
 
   ExhaustiveSearchExe.prototype._reportProgress = function (current, total, maxError) {
-    if (this.onProgress) {
-      this.onProgress({ current: current, total: total, maxError: maxError });
-    }
+    if (!this.onProgress) return;
+    var now = Date.now();
+    var est = this._progressEstTotal || total || 1;
+    var cur = current;
+    if (total > est) est = total;
+    if (cur > est) est = cur;
+    // Tight loops can post thousands of times and freeze the page. Cap ~8/sec.
+    if (this._lastProgressAt && now - this._lastProgressAt < 120 && cur < est) return;
+    this._lastProgressAt = now;
+    this.onProgress({ current: cur, total: est, maxError: maxError });
   };
 
   ExhaustiveSearchExe.prototype.MatrixExhaustiveSearchSingleScanners = function (
@@ -227,6 +234,14 @@
         num2++;
         num7 = num6 + centerPointShiftY;
         num3 = this._autoZ(num5, num7);
+        if (
+          num < 0 ||
+          num2 < 0 ||
+          !matrixNodeForCalculation[num] ||
+          matrixNodeForCalculation[num][num2] == null
+        ) {
+          continue;
+        }
         if (!matrixNodeForCalculation[num][num2]) continue;
         if (this._cancelled()) return false;
         if (multiScanners) {
@@ -284,9 +299,12 @@
             state.maxErrorIndex = NS.ErrorEstimationCal.MaxErrorIndex(this.errorEstimationCal.SearchRadiusList);
           }
         }
-        // Keep the UI moving during multi-scanner nested loops (outer reports are sparse).
-        if (multiScanners && state.numCalc > 0 && state.numCumulativeCalc % 20 === 0) {
-          this._reportProgress(state.numCumulativeCalc, Math.max(state.numCalc, state.numCumulativeCalc), state.maxErrorTotal);
+        if (multiScanners) {
+          this._reportProgress(
+            state.numCumulativeCalc,
+            this._progressEstTotal || Math.max(state.numCalc, state.numCumulativeCalc),
+            state.maxErrorTotal
+          );
         }
       }
       if (!multiScanners) {
@@ -320,7 +338,12 @@
     var meshSizeYHalf = p.meshSizeYHalf;
     var num9 = (p.widthX / meshSizeXHalf) * (p.widthY / meshSizeYHalf);
     var count = listErrorEstimBestResult.length;
-    this._reportProgress(0, num9, state.maxErrorTotal);
+    var nDiv = Math.max(1, p.numDivX || 1);
+    if (count <= 1) this._progressEstTotal = nDiv * nDiv;
+    else if (count === 2) this._progressEstTotal = nDiv * nDiv * nDiv * nDiv;
+    else this._progressEstTotal = nDiv * nDiv * nDiv * nDiv * nDiv * nDiv;
+    this._lastProgressAt = 0;
+    this._reportProgress(0, this._progressEstTotal, state.maxErrorTotal);
     if (count === 2 || count === 3) {
       errorEstimBestResult2 = listErrorEstimBestResult[1];
       array = matrixNodeForCalculations[1];
@@ -354,7 +377,11 @@
           yScanner = num13 + num5;
           zScanner = this._autoZ(xScanner, yScanner);
           num8++;
-          if (array[num][num2]) {
+          if (
+            array &&
+            array[num] &&
+            array[num][num2]
+          ) {
             this.MatrixExhaustiveSearchFillCurrentScanner(errorEstimBestResult2, xScanner, yScanner);
             if (this.MatrixExhaustiveSearchSingleScanners(
               matrixNodeForCalculation, minDistanceBetweenScannersPower2, sbGeneralExceptionByAlgorithm,
@@ -370,7 +397,11 @@
             }
           }
         }
-        this._reportProgress(num8, num9, state.maxErrorTotal);
+        this._reportProgress(
+          state.numCumulativeCalc || num8,
+          this._progressEstTotal || num9,
+          state.maxErrorTotal
+        );
         if (this._cancelled()) return;
       }
     } else if (count === 3) {
@@ -387,7 +418,7 @@
           num = -1;
           num8++;
           state.maxErrorIndex = -1;
-          if (!array2[num3][iYScanner]) continue;
+          if (!array2 || !array2[num3] || !array2[num3][iYScanner]) continue;
           var flag = false;
           for (num12 = p.measXStart; num12 <= p.measXEnd; num12 += meshSizeXHalf) {
             if (flag) break;
@@ -400,7 +431,7 @@
               yScanner = num13 + num5;
               zScanner = this._autoZ(xScanner, yScanner);
               num8++;
-              if (!array[num][num2]) continue;
+              if (!array || !array[num] || !array[num][num2]) continue;
               this.MatrixExhaustiveSearchFillCurrentScanner(errorEstimBestResult2, xScanner, yScanner);
               var num14 = Math.pow(xScanner2 - xScanner, 2.0) + Math.pow(yScanner2 - yScanner, 2.0);
               if (num14 < minDistanceBetweenScannersPower2) {
@@ -427,7 +458,11 @@
                 }
               }
             }
-            this._reportProgress(num8, num9, state.maxErrorTotal);
+            this._reportProgress(
+              state.numCumulativeCalc || num8,
+              this._progressEstTotal || num9,
+              state.maxErrorTotal
+            );
           }
           if (this._cancelled()) return;
         }
@@ -678,6 +713,23 @@
         y: device.Scanners[si].ScannerPositionY,
         z: device.Scanners[si].ScannerPositionZ
       });
+    }
+    if (NS.scannersAreStacked(scanners) && NS.geometricRecommendedScanners) {
+      var diam =
+        (device.VesselInWork &&
+          (device.VesselInWork.CenterShapeDiameterMeter ||
+            device.VesselInWork.CenterShapeDiameter)) ||
+        9;
+      scanners = NS.geometricRecommendedScanners(scanners.length, diam, function (x, y) {
+        return NS.autoCalculateZFromVesselBottom
+          ? NS.autoCalculateZFromVesselBottom(device.VesselInWork, x, y)
+          : 0;
+      });
+      for (si = 0; si < scanners.length; si++) {
+        device.Scanners[si].ScannerPositionX = scanners[si].x;
+        device.Scanners[si].ScannerPositionY = scanners[si].y;
+        device.Scanners[si].ScannerPositionZ = scanners[si].z;
+      }
     }
     return { scanners: scanners, maxError: result.maxError, numCalc: result.numCalc };
   }
