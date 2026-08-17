@@ -31,6 +31,7 @@
   }
 
   var cancelFlag = false;
+  var lastProgressPost = 0;
 
   self.onmessage = function (ev) {
     var msg = ev.data || {};
@@ -40,6 +41,7 @@
     }
     if (msg.type !== "calculate") return;
     cancelFlag = false;
+    lastProgressPost = 0;
     var id = msg.id;
     try {
       var NS = self.LocatorPlacement;
@@ -57,6 +59,9 @@
           return cancelFlag;
         },
         onProgress: function (p) {
+          var now = Date.now();
+          if (now - lastProgressPost < 150 && p.overall < 0.99) return;
+          lastProgressPost = now;
           self.postMessage({
             id: id,
             type: "progress",
