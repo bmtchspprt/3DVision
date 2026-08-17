@@ -1,0 +1,28 @@
+---
+description: Firmware/echo math stays in the emulator docs — never touch this guide or GitHub Pages
+alwaysApply: true
+---
+
+# Firmware math is NOT this repo
+
+This workspace is the **Install Guide** (web UI). Scanner **firmware math** (Grade, Threshold, AFE, false echo, Orange, Advanced Params consumers, CERTAINTY) lives only in:
+
+`C:\Users\cody.krehnke\Documents\3D Emulator\docs\firmware\`
+
+(HANDOFF.md, CERTAINTY.md, DSP-GRADE.md, dumps, sim.)
+
+## Forbidden unless the user names the file in this turn
+
+- `js/`, `css/`, `html`, `dist/`, `locator/`, `data/`
+- `npm run build`
+- `git subtree` / push to `publish` / `bmtchspprt/3DVision` / GitHub Pages
+
+Do **not** “wire proven math” into `js/fw-echo-math.js` or Echo Curve. Proven math is written in emulator docs. Guide JS is a **separate** request.
+
+## This rule beats publish-on-commit
+
+`.cursor/rules/git-commit-every-change.mdc` must **not** be used as permission to edit the guide or publish during a math session. If you only updated emulator docs or `.cursor/rules`, do not rebuild or push Pages.
+
+## Allowed here
+
+Guide UI/chrome work the user asked for in **this** turn (menus, dialogs, layout) — still not firmware formulas unless they named a JS file.

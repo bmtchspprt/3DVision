@@ -33,12 +33,13 @@ User global commit-message preferences that ask for “why” or multi-sentence 
 1. **Commit locally** before ending your turn — do not leave modified/untracked work uncommitted unless the user explicitly said not to commit.
 2. Follow the repo's normal git commit protocol (status, diff, log, stage, short message, status verify).
 3. Prefer **one commit per completed request/change-set**.
-4. **Build + publish is required after every commit** that changes the guide (js/css/html/locator/source). Do not wait to be asked.
-   - `npm run build`
-   - Commit `dist/` (`Updated guide`)
-   - `git subtree push --prefix dist publish main`
-   - Live: `https://bmtchspprt.github.io/3DVision/`
-5. Skip rebuild/publish only for commits that cannot affect the site (e.g. `.cursor/rules` only).
+4. **Build + publish is required after every commit** that changes the guide (js/css/html/locator/source) **when the user asked for a guide change**. Do not wait to be asked in that case.
+ - `npm run build`
+ - Commit `dist/` (`Updated guide`)
+ - `git subtree push --prefix dist publish main`
+ - Live: `https://bmtchspprt.github.io/3DVision/`
+5. Skip rebuild/publish for commits that cannot affect the site (e.g. `.cursor/rules` only).
+6. **Firmware math does not use this publish step.** If the work is Grade/echo/false-echo/CERTAINTY/HANDOFF, follow `firmware-math-stay-in-emulator.mdc`: do not edit guide source, do not build, do not push Pages. That rule **wins** over item 4.
 
 ## When publishing
 
