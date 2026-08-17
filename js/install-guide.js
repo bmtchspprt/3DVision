@@ -701,13 +701,7 @@
       id: "wiz-scanner-count",
       phase: "setup",
       title: "How many scanners?",
-      body:
-        "Choose how many scanners you will mount on this vessel. The guide will run placement Calculate for that count:" +
-        '<div class="ig-scanner-count" id="igScannerCount">' +
-        '<button type="button" class="ig-btn" data-scanners="1">1 scanner</button>' +
-        '<button type="button" class="ig-btn" data-scanners="2">2 scanners</button>' +
-        '<button type="button" class="ig-btn" data-scanners="3">3 scanners</button>' +
-        "</div>",
+      body: "Choose how many scanners you will mount on this vessel.",
       // No external target — choices live in the coach card.
       target: null,
       advanceOn: "install-guide:scanner-count",
@@ -1168,6 +1162,8 @@
       var choice = scBtn.getAttribute("data-scanners");
       var n = parseInt(choice, 10) || 1;
       if (n < 1) n = 1;
+      var cap = maxSupportedScannersForGuide();
+      if (n > cap) n = cap;
       if (n > 3) n = 3;
       guideScannerPlan = {
         numScanners: n,
@@ -1671,6 +1667,39 @@
       overall = Math.min(0.9, placeProgressState.displayed + 0.01);
     }
     paintPlacementProgress(overall, p);
+  }
+
+  function maxSupportedScannersForGuide() {
+    var wiz = document.getElementById("mv-dlg-device-wizard");
+    if (wiz && typeof wiz.__mvWizMaxSupportedScanners === "function") {
+      var n = wiz.__mvWizMaxSupportedScanners();
+      if (n >= 3) return 3;
+      if (n >= 2) return 2;
+      return 1;
+    }
+    return 1;
+  }
+
+  function scannerCountStepBody() {
+    var maxN = maxSupportedScannersForGuide();
+    var html =
+      "Choose how many scanners you will mount on this vessel. The guide runs placement Calculate for that count.";
+    if (maxN <= 1) {
+      html +=
+        " This vessel only has a legal mount ring for <strong>1 scanner</strong> (keep off the fill point and walls, and keep units apart).";
+    } else {
+      html += " This vessel can host up to <strong>" + maxN + " scanners</strong>.";
+    }
+    html += '<div class="ig-scanner-count" id="igScannerCount">';
+    html += '<button type="button" class="ig-btn" data-scanners="1">1 scanner</button>';
+    if (maxN >= 2) {
+      html += '<button type="button" class="ig-btn" data-scanners="2">2 scanners</button>';
+    }
+    if (maxN >= 3) {
+      html += '<button type="button" class="ig-btn" data-scanners="3">3 scanners</button>';
+    }
+    html += "</div>";
+    return html;
   }
 
   function applyVesselRecommendedPlacement() {
@@ -2318,6 +2347,9 @@
         "°</strong> (atan of height ÷ radial run). Type the ghosted value: <code>" +
         slopeDeg +
         "</code>.";
+    }
+    if (step.id === "wiz-scanner-count") {
+      bodyHtml = scannerCountStepBody();
     }
     if (step.id === "wiz-placement-explain") {
       bodyHtml =

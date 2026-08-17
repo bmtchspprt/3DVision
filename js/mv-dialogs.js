@@ -2923,6 +2923,23 @@
       });
     }
 
+    root.__mvWizVesselNative = wizardVesselNative;
+    root.__mvWizMaxSupportedScanners = function () {
+      var LP = global.LocatorPlacement;
+      if (!LP || typeof LP.maxSupportedScanners !== "function") return 1;
+      var vessel = wizardVesselNative();
+      try {
+        var n = LP.maxSupportedScanners({
+          vessel: vessel,
+          fillPoints: vessel.fillPoints,
+        });
+        if (!(n >= 1)) return 1;
+        if (n > 3) return 3;
+        return n;
+      } catch (e) {
+        return 1;
+      }
+    };
     root.__mvWizApplyRecommendedPlacement = applyRecommendedPlacement;
     root.__mvWizCancelPlacement = function () {
       if (root.__mvWizPlaceAbort) root.__mvWizPlaceAbort.abort();
