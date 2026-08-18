@@ -2392,16 +2392,137 @@
 .mv-false-echo {
   position: relative;
   width: 440px;
+  height: 285px;
   max-width: 100%;
-  min-height: 300px;
+  background: #fff;
 }
+#mv-dlg-false-echo .mv-dialog {
+  width: 459px;
+  height: 375px;
+  max-height: 375px;
+}
+#mv-dlg-false-echo .mv-dialog-body {
+  padding: 0 10px 0 9px;
+  overflow: hidden;
+  background: #fff;
+}
+#mv-dlg-false-echo .mv-dialog-footer.mv-fe-footer {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  align-items: center;
+  height: 50px;
+  padding: 0 8px;
+  gap: 0;
+  border-top: none;
+  background: #fff;
+}
+#mv-dlg-false-echo .mv-fe-btn-close {
+  width: 72px;
+  margin: 2px 4px;
+}
+#mv-dlg-false-echo .mv-fe-btn-run {
+  width: 103px;
+  margin: 2px 50px 2px 4px;
+}
+.mv-fe-device {
+  position: relative;
+  height: 35px;
+}
+.mv-fe-device label {
+  position: absolute;
+  left: 6px;
+  top: 5px;
+  width: 131px;
+  height: 28px;
+  line-height: 28px;
+  min-width: 0;
+}
+.mv-fe-device select {
+  position: absolute;
+  left: 161px;
+  top: 5px;
+  width: 158px;
+  height: 23px;
+}
+.mv-fe-group {
+  position: relative;
+  height: 200px;
+  min-height: 200px;
+  margin: 0;
+  padding: 4px 6px 6px;
+  box-sizing: border-box;
+}
+.mv-fe-l-action,
+.mv-fe-l-from,
+.mv-fe-l-to,
+.mv-fe-l-th {
+  position: absolute;
+  left: 6px;
+  min-width: 0;
+  width: 75px;
+}
+.mv-fe-l-action { top: 4px; }
+.mv-fe-l-from { top: 34px; }
+.mv-fe-l-to { top: 62px; }
+.mv-fe-l-th {
+  top: 97px;
+  width: 69px;
+  height: 32px;
+}
+#mvFeActionType {
+  position: absolute;
+  left: 81px;
+  top: 3px;
+  width: 213px;
+  height: 23px;
+}
+#mvFeFrom,
+#mvFeTo,
+#mvFeThreshold {
+  position: absolute;
+  left: 81px;
+  width: 101px;
+  height: 23px;
+}
+#mvFeFrom { top: 38px; }
+#mvFeTo { top: 69px; }
+#mvFeThreshold { top: 101px; }
+.mv-fe-unit {
+  position: absolute;
+  left: 188px;
+  width: 43px;
+  height: 23px;
+  line-height: 23px;
+}
+.mv-fe-from-unit { top: 38px; }
+.mv-fe-to-unit { top: 67px; }
 .mv-false-echo .mv-fe-beams {
   position: absolute;
-  right: 8px;
-  top: 48px;
+  left: 300px;
+  top: 6px;
   width: 117px;
+  height: 172px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
-.mv-false-echo fieldset { min-height: 180px; position: relative; }
+.mv-false-echo .mv-fe-beams .mv-check {
+  height: 16px;
+  margin: 0;
+  color: #222;
+  white-space: nowrap;
+}
+.mv-fe-status {
+  min-height: 20px;
+  padding: 4px 6px 0;
+  font-size: 12px;
+  color: #000;
+}
+.mv-fe-status.is-run {
+  font-weight: 700;
+  color: #008000;
+}
 .mv-device-act {
   display: flex;
   min-height: 560px;

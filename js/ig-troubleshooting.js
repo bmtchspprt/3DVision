@@ -22,7 +22,7 @@
       id: "snr-zero",
       title: "SNR Reading is 0",
       explanation:
-        "Change Output Dampening Power to 420, MPN Rate to 7, Max Fill to 7, Max Empty to 8. Click Upload All. Then go to Device › False Echo Mapping, select Reset Mapping and click Execute. Finally click Load from Vessel and monitor SNR.",
+        "Change Output Dampening Power to 420, MPN Rate to 7, Max Fill to 7, Max Empty to 8. Click Upload All. Then go to Device › False Echo Mapping, confirm Action Type is Reset User and Auto False Echoes, click Reset Mapping, Close, then Load from Vessel and monitor SNR.",
     },
     {
       id: "sensor-full",
@@ -58,7 +58,7 @@
       id: "reset-mapping",
       title: "Reset Sensor Mapping",
       explanation:
-        "From the Action dropdown, select Reset User and Auto False Echoes, then click Execute. This clears all stored false echo maps from the sensor. After executing, click Load from Vessel in the toolbar to confirm the sensor is reading correctly.",
+        "From the Action Type list, select Reset User and Auto False Echoes, then click Reset Mapping. This clears all stored false echo maps from the sensor. Close the window, then click Load from Vessel to confirm the sensor is reading correctly.",
     },
     {
       id: "wizard-deadzone",
@@ -144,6 +144,40 @@
       "install-guide:ap-closed",
       { pointer: "bottom", allowInside: AP_INSIDE }
     );
+  }
+
+  function closeFeStep() {
+    return click(
+      "ts-fe-close",
+      "Close Mapping",
+      "Click <strong>Close</strong>.",
+      '#mv-dlg-false-echo [data-mv-dlg-close="mv-dlg-false-echo"], #mv-dlg-false-echo .title-btn.close',
+      "install-guide:false-echo-closed",
+      { pointer: "bottom", allowInside: FE_INSIDE }
+    );
+  }
+
+  function falseEchoResetSteps() {
+    return [
+      click(
+        "ts-fe-action",
+        "Action Type",
+        p("Leave Action Type on Reset User and Auto False Echoes. From, To, and Threshold stay “-” for a reset.") +
+          "<p>The other actions are Scan and Manual Scan.</p>",
+        "#mvFeActionType",
+        null,
+        { blocking: true, pointer: "right", allowInside: FE_INSIDE }
+      ),
+      click(
+        "ts-fe-reset",
+        "Reset Mapping",
+        "Click <strong>Reset Mapping</strong> to clear stored maps. The window stays open until you Close.",
+        "#mvFeResetBtn",
+        "install-guide:false-echo-reset",
+        { pointer: "bottom", allowInside: FE_INSIDE }
+      ),
+      closeFeStep(),
+    ];
   }
 
   function closeActStep() {
@@ -311,23 +345,8 @@
           "install-guide:false-echo-opened"
         )
       );
+      steps = steps.concat(falseEchoResetSteps());
       steps.push(
-        click(
-          "ts-snr-fe-action",
-          "Action Type",
-          "Set <strong>Action Type</strong> to <strong>Reset User and Auto False Echoes</strong>.",
-          "#mvFeActionType",
-          "install-guide:fe-action-ok",
-          { pointer: "right", allowInside: FE_INSIDE }
-        ),
-        click(
-          "ts-snr-reset-map",
-          "Reset Mapping",
-          "Click <strong>Reset Mapping</strong> to clear stored maps.",
-          '#mv-dlg-false-echo [data-mv-dlg-ok="mv-dlg-false-echo"]',
-          "install-guide:false-echo-reset",
-          { pointer: "bottom", allowInside: FE_INSIDE }
-        ),
         loadFromVesselStep(),
         click(
           "ts-snr-watch",
@@ -520,27 +539,11 @@
         "Click <strong>Device False Echo Mapping...</strong>.",
         "install-guide:false-echo-opened"
       );
+      steps = steps.concat(falseEchoResetSteps());
       steps.push(
-        click(
-          "ts-fe-action",
-          "Action Type",
-          p("From the Action dropdown, select Reset User and Auto False Echoes.") +
-            "<p>Set <strong>Action Type</strong> to that option.</p>",
-          "#mvFeActionType",
-          "install-guide:fe-action-ok",
-          { pointer: "right", allowInside: FE_INSIDE }
-        ),
-        click(
-          "ts-fe-exec",
-          "Reset Mapping",
-          "Click <strong>Reset Mapping</strong>.",
-          '#mv-dlg-false-echo [data-mv-dlg-ok="mv-dlg-false-echo"]',
-          "install-guide:false-echo-reset",
-          { pointer: "bottom", allowInside: FE_INSIDE }
-        ),
         loadFromVesselStep(),
         doneStep(
-          "This clears all stored false echo maps from the sensor. After executing, click Load from Vessel in the toolbar to confirm the sensor is reading correctly."
+          "This clears all stored false echo maps from the sensor. After Reset Mapping, click Load from Vessel in the toolbar to confirm the sensor is reading correctly."
         )
       );
     } else if (id === "wizard-deadzone") {

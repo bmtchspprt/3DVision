@@ -162,6 +162,9 @@
     if (id === "mv-dlg-devices-act" && wasOpen) {
       window.dispatchEvent(new CustomEvent("install-guide:devices-act-closed"));
     }
+    if (id === "mv-dlg-false-echo" && wasOpen) {
+      window.dispatchEvent(new CustomEvent("install-guide:false-echo-closed"));
+    }
     if (id === "mv-dlg-echo-curve" && wasOpen) {
       window.dispatchEvent(new CustomEvent("install-guide:echo-curve-closed"));
     }
@@ -208,6 +211,9 @@
       window.dispatchEvent(new CustomEvent("install-guide:echo-opened"));
     }
     if (id === "mv-dlg-false-echo") {
+      if (typeof el.__mvFePrepare === "function") {
+        el.__mvFePrepare();
+      }
       window.dispatchEvent(new CustomEvent("install-guide:false-echo-opened"));
     }
     if (id === "mv-dlg-devices-act") {
@@ -310,6 +316,21 @@
         );
       })
       .join("");
+  }
+
+  function falseEchoDistanceUnit() {
+    var siteDist = document.getElementById("mvSiteDistUnit");
+    var val = siteDist && siteDist.value ? String(siteDist.value).toLowerCase() : "";
+    if (val.indexOf("feet") === 0 || val === "ft") return "ft";
+    return "m";
+  }
+
+  function falseEchoWindowTitle() {
+    var list =
+      typeof global.mvGetVessels === "function" ? global.mvGetVessels() : [];
+    var v = list[0];
+    var name = v ? v.name || v.short || "Lime Stone (MV)" : "Lime Stone (MV)";
+    return "False Echoes Mapping Vessel:" + name;
   }
 
   /** GroupViewUC shell: caption + left radio nav + content panes (from WPFStuff.GroupView). */
@@ -1288,36 +1309,67 @@
     },
 
     "mv-dlg-false-echo": function () {
+      var unit = falseEchoDistanceUnit();
+      var beam = function (id, label, checked) {
+        return (
+          '<label class="mv-check mv-fe-beam"><input type="checkbox" id="' +
+          id +
+          '"' +
+          (checked ? " checked" : "") +
+          "> " +
+          label +
+          "</label>"
+        );
+      };
       var body =
         '<div class="mv-false-echo">' +
-        '<div class="mv-dialog-row"><label style="min-width:131px">Selection:</label><select style="width:158px">' +
-        vesselsOptionsHtml() +
+        '<div class="mv-fe-device">' +
+        '<label for="mvFeDevice">Device:</label>' +
+        '<select id="mvFeDevice">' +
+        deviceOptionsHtml() +
         "</select></div>" +
-        '<fieldset><legend>False Echoes Mapping</legend>' +
-        '<div class="mv-dialog-row"><label style="min-width:75px">Action Type:</label><select id="mvFeActionType" style="width:213px"><option>Learn</option><option>Delete</option><option>Show</option><option>Reset User and Auto False Echoes</option></select></div>' +
-        '<div class="mv-dialog-row"><label style="min-width:75px">From:</label><input type="text" value="0.50" style="width:101px"><span style="width:43px">m</span></div>' +
-        '<div class="mv-dialog-row"><label style="min-width:75px">To:</label><input type="text" value="2.00" style="width:101px"><span style="width:43px">m</span></div>' +
-        '<div class="mv-dialog-row"><label style="min-width:75px">Threshold:</label><input type="text" value="10" style="width:101px"></div>' +
+        '<fieldset class="mv-fe-group"><legend>False Echoes Mapping</legend>' +
+        '<label class="mv-fe-l-action" for="mvFeActionType">Action Type:</label>' +
+        '<select id="mvFeActionType">' +
+        '<option value="reset-all" selected>Reset User and Auto False Echoes</option>' +
+        '<option value="reset-user">Reset User False Echoes</option>' +
+        '<option value="reset-auto">Reset Auto False Echoes</option>' +
+        '<option value="scan">Scan</option>' +
+        '<option value="manual">Manual Scan</option>' +
+        "</select>" +
+        '<label class="mv-fe-l-from" for="mvFeFrom">From:</label>' +
+        '<input type="text" id="mvFeFrom" value="-" disabled>' +
+        '<span class="mv-fe-unit mv-fe-from-unit">' +
+        unit +
+        "</span>" +
+        '<label class="mv-fe-l-to" for="mvFeTo">To:</label>' +
+        '<input type="text" id="mvFeTo" value="-" disabled>' +
+        '<span class="mv-fe-unit mv-fe-to-unit">' +
+        unit +
+        "</span>" +
+        '<label class="mv-fe-l-th" for="mvFeThreshold">Threshold:</label>' +
+        '<input type="text" id="mvFeThreshold" value="-" disabled>' +
         '<div class="mv-fe-beams">' +
-        '<label class="mv-check"><input type="checkbox" checked> All</label>' +
-        '<label class="mv-check"><input type="checkbox" checked> High</label>' +
-        '<label class="mv-check"><input type="checkbox" checked> Medium</label>' +
-        '<label class="mv-check"><input type="checkbox"> Low</label>' +
-        '<label class="mv-check"><input type="checkbox"> 30</label>' +
-        '<label class="mv-check"><input type="checkbox"> 90</label>' +
-        '<label class="mv-check"><input type="checkbox"> 150</label>' +
-        '<label class="mv-check"><input type="checkbox"> 210</label>' +
-        '<label class="mv-check"><input type="checkbox"> 270</label>' +
-        '<label class="mv-check"><input type="checkbox"> 330</label>' +
-        "</div></fieldset></div>";
+        beam("mvFeBeamAll", "All", false) +
+        beam("mvFeBeamHigh", "High", true) +
+        beam("mvFeBeamMedium", "Medium", true) +
+        beam("mvFeBeamLow", "Low", true) +
+        beam("mvFeBeam30", "Dir 30", true) +
+        beam("mvFeBeam90", "Dir 90", true) +
+        beam("mvFeBeam150", "Dir 150", true) +
+        beam("mvFeBeam210", "Dir 210", true) +
+        beam("mvFeBeam270", "Dir 270", true) +
+        beam("mvFeBeam330", "Dir 330", true) +
+        "</div></fieldset>" +
+        '<div class="mv-fe-status" id="mvFeStatus"></div></div>';
       return wrapDialog(
         "mv-dlg-false-echo",
-        "False Echoes Mapping",
+        falseEchoWindowTitle(),
         459,
         body,
-        '<div class="mv-dialog-footer">' +
-          '<button class="btn mv-params-btn" type="button" data-mv-dlg-ok="mv-dlg-false-echo" style="width:150px">Reset Mapping</button>' +
-          '<button class="btn mv-params-btn" type="button" data-mv-dlg-close="mv-dlg-false-echo" style="width:72px">Close</button></div>'
+        '<div class="mv-dialog-footer mv-fe-footer">' +
+          '<button class="btn mv-params-btn mv-fe-btn-close" type="button" data-mv-dlg-close="mv-dlg-false-echo">Close</button>' +
+          '<button class="btn mv-params-btn mv-fe-btn-run" type="button" id="mvFeResetBtn">Reset Mapping</button></div>'
       );
     },
 
@@ -1735,7 +1787,8 @@
     var rebuildEcho =
       id === "mv-dlg-echo-curve" ||
       id === "mv-dlg-echo-activate" ||
-      id === "mv-dlg-echo-viewer";
+      id === "mv-dlg-echo-viewer" ||
+      id === "mv-dlg-false-echo";
     if (existing && rebuildEcho) {
       existing.remove();
       var oi = openIds.indexOf(id);
@@ -4106,16 +4159,142 @@
       closeDialog(id);
       return;
     }
-    if (id === "mv-dlg-false-echo") {
-      window.dispatchEvent(new CustomEvent("install-guide:false-echo-reset"));
-      status("False echo mapping reset.");
-      closeDialog(id);
-      return;
-    }
     if (id === "mv-dlg-echo-curve" || id.indexOf("mv-dlg-") === 0) {
       status("Operation completed.");
       closeDialog(id);
     }
+  }
+
+  function wireFalseEcho(root) {
+    if (!root || root.id !== "mv-dlg-false-echo") return;
+    var action = root.querySelector("#mvFeActionType");
+    var fromEl = root.querySelector("#mvFeFrom");
+    var toEl = root.querySelector("#mvFeTo");
+    var thEl = root.querySelector("#mvFeThreshold");
+    var runBtn = root.querySelector("#mvFeResetBtn");
+    var statusEl = root.querySelector("#mvFeStatus");
+    var allBox = root.querySelector("#mvFeBeamAll");
+    var beamBoxes = root.querySelectorAll(
+      "#mvFeBeamHigh, #mvFeBeamMedium, #mvFeBeamLow, #mvFeBeam30, #mvFeBeam90, #mvFeBeam150, #mvFeBeam210, #mvFeBeam270, #mvFeBeam330"
+    );
+    var M_TO_FT = 3.28084;
+    var nd = "-";
+
+    function isResetAction(val) {
+      return val === "reset-all" || val === "reset-user" || val === "reset-auto";
+    }
+
+    function distLabel() {
+      return falseEchoDistanceUnit();
+    }
+
+    function fmtMeters(m) {
+      var n = distLabel() === "ft" ? m * M_TO_FT : m;
+      return n.toFixed(2);
+    }
+
+    function setStatus(text, running) {
+      if (!statusEl) return;
+      statusEl.textContent = text || "";
+      statusEl.classList.toggle("is-run", !!running && !!text);
+    }
+
+    function anyBeamOn() {
+      var n = 0;
+      beamBoxes.forEach(function (box) {
+        if (box.checked) n += 1;
+      });
+      return n > 0;
+    }
+
+    function syncBeams() {
+      var allOn = !!(allBox && allBox.checked);
+      beamBoxes.forEach(function (box) {
+        box.disabled = allOn;
+        if (allOn) box.checked = true;
+      });
+      if (runBtn) {
+        runBtn.disabled = allOn ? false : !anyBeamOn();
+      }
+    }
+
+    function syncAction() {
+      var val = action ? action.value : "reset-all";
+      var reset = isResetAction(val);
+      var manual = val === "manual";
+      var unit = distLabel();
+      root.querySelectorAll(".mv-fe-unit").forEach(function (el) {
+        el.textContent = unit;
+      });
+      if (fromEl) {
+        fromEl.disabled = reset;
+        fromEl.value = reset ? nd : fmtMeters(0);
+      }
+      if (toEl) {
+        toEl.disabled = reset;
+        toEl.value = reset ? nd : fmtMeters(1);
+      }
+      if (thEl) {
+        thEl.disabled = !manual;
+        thEl.value = manual ? "0.00" : nd;
+      }
+      if (runBtn) {
+        runBtn.textContent = reset ? "Reset Mapping" : "Start Scanning";
+      }
+      syncBeams();
+    }
+
+    function prepare() {
+      if (action) action.value = "reset-all";
+      if (allBox) allBox.checked = false;
+      beamBoxes.forEach(function (box) {
+        box.checked = true;
+      });
+      setStatus("", false);
+      syncAction();
+    }
+
+    if (action) {
+      action.addEventListener("change", function () {
+        syncAction();
+        if (action.value === "reset-all") {
+          window.dispatchEvent(new CustomEvent("install-guide:fe-action-ok"));
+        }
+      });
+    }
+    if (allBox) {
+      allBox.addEventListener("click", function () {
+        if (allBox.checked) {
+          beamBoxes.forEach(function (box) {
+            box.checked = true;
+          });
+        }
+        syncBeams();
+      });
+    }
+    beamBoxes.forEach(function (box) {
+      box.addEventListener("click", syncBeams);
+    });
+    if (runBtn) {
+      runBtn.addEventListener("click", function () {
+        var val = action ? action.value : "reset-all";
+        var deviceSel = root.querySelector("#mvFeDevice");
+        var deviceName = deviceSel && deviceSel.value ? deviceSel.options[deviceSel.selectedIndex].text : "";
+        var prefix = deviceName ? "Scanner Name:" + deviceName.split(" (")[0] + " " : "";
+        if (isResetAction(val)) {
+          setStatus("Completed", true);
+          window.dispatchEvent(new CustomEvent("install-guide:false-echo-reset"));
+          status("False echo mapping reset.");
+          return;
+        }
+        setStatus(prefix + "Calculating...", true);
+        window.setTimeout(function () {
+          setStatus("Completed", true);
+        }, 700);
+      });
+    }
+    root.__mvFePrepare = prepare;
+    prepare();
   }
 
   function wireDialogChrome(root) {
@@ -4129,6 +4308,7 @@
     wireProjectWizard(root);
     wireEchoActivate(root);
     wireEchoCurve(root);
+    wireFalseEcho(root);
     root.addEventListener("click", function (e) {
       var closeBtn = e.target.closest("[data-mv-dlg-close]");
       if (closeBtn) {

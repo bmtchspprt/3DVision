@@ -3031,7 +3031,8 @@
     }
     if (step.advanceOn === "install-guide:fe-action-ok") {
       var feAct = document.getElementById("mvFeActionType");
-      if (feAct && /reset user/i.test(feAct.value || "")) {
+      var feVal = feAct && (feAct.value || (feAct.options[feAct.selectedIndex] && feAct.options[feAct.selectedIndex].text) || "");
+      if (feAct && (feVal === "reset-all" || /reset user and auto/i.test(feVal))) {
         window.dispatchEvent(new CustomEvent("install-guide:fe-action-ok"));
       }
     }
@@ -3070,6 +3071,12 @@
       var actDlg2 = document.getElementById("mv-dlg-devices-act");
       if (!actDlg2 || actDlg2.hidden) {
         window.dispatchEvent(new CustomEvent("install-guide:devices-act-closed"));
+      }
+    }
+    if (step.advanceOn === "install-guide:false-echo-closed") {
+      var feDlg2 = document.getElementById("mv-dlg-false-echo");
+      if (!feDlg2 || feDlg2.hidden) {
+        window.dispatchEvent(new CustomEvent("install-guide:false-echo-closed"));
       }
     }
   }
@@ -3168,6 +3175,7 @@
       "install-guide:echo-opened",
       "install-guide:false-echo-opened",
       "install-guide:false-echo-reset",
+      "install-guide:false-echo-closed",
       "install-guide:devices-act-opened",
       "install-guide:load-from-vessel",
       "install-guide:fe-action-ok",
