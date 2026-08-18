@@ -29,6 +29,7 @@
 
   var EXAMPLE_HOST_IP = "192.168.1.28";
   /** Guide placement: how many scanners to search for (1–3). */
+  var guideScannerPlan = { numScanners: 1, maxScanners: 1, label: "1 scanner" };
   var guideHasSweeper = false;
   var apTypingActive = null;
   var apTypingTarget = "";
@@ -1167,26 +1168,7 @@
     document.getElementById("igPrimary").addEventListener("click", onPrimary);
     document.getElementById("igEndClose").addEventListener("click", onEndClose);
     document.getElementById("igEndRecapBtn").addEventListener("click", onEndRecapToggle);
-    card.addEventListener("click", function (e) {
-      var scBtn = e.target.closest ? e.target.closest("[data-scanners]") : null;
-      if (!scBtn || !card.contains(scBtn)) return;
-      var step = currentStep();
-      if (!step || step.id !== "wiz-scanner-count") return;
-      e.preventDefault();
-      e.stopPropagation();
-      var choice = scBtn.getAttribute("data-scanners");
-      var n = parseInt(choice, 10) || 1;
-      if (n < 1) n = 1;
-      var cap = maxSupportedScannersForGuide();
-      if (n > cap) n = cap;
-      if (n > 3) n = 3;
-      guideScannerPlan = {
-        numScanners: n,
-        maxScanners: n,
-        label: n + " scanner" + (n > 1 ? "s" : ""),
-      };
-      window.dispatchEvent(new CustomEvent("install-guide:scanner-count"));
-    });
+    card.addEventListener("click", onScannerCountClick);
     card.addEventListener("click", function (e) {
       var swBtn = e.target.closest ? e.target.closest("[data-sweeper]") : null;
       if (!swBtn || !card.contains(swBtn)) return;
@@ -1232,6 +1214,24 @@
   function currentStep() {
     var steps = getSteps();
     return steps[stepIndex] || null;
+  }
+
+  function onScannerCountClick(e) {
+    var scBtn = e.target && e.target.closest ? e.target.closest("[data-scanners]") : null;
+    if (!scBtn) return;
+    var step = currentStep();
+    if (!step || step.id !== "wiz-scanner-count") return;
+    e.preventDefault();
+    e.stopPropagation();
+    var n = parseInt(scBtn.getAttribute("data-scanners"), 10) || 1;
+    if (n < 1) n = 1;
+    if (n > 3) n = 3;
+    guideScannerPlan = {
+      numScanners: n,
+      maxScanners: n,
+      label: n + " scanner" + (n > 1 ? "s" : ""),
+    };
+    window.dispatchEvent(new CustomEvent("install-guide:scanner-count"));
   }
 
   function openBlankBrowser() {
@@ -1325,6 +1325,9 @@
       return !!(e.target.closest && e.target.closest("#igModeMenu"));
     }
     if (e.target.closest && e.target.closest("#igCard, .ig-card, #igPrimary")) return true;
+    if (e.target.closest && e.target.closest("[data-scanners], [data-sweeper], #igScannerCount, #igSweeperChoice")) {
+      return true;
+    }
     if (e.target.closest && e.target.closest("#igBootCurtain")) return true;
 
     var step = currentStep();
@@ -2749,6 +2752,7 @@
     document.addEventListener("mousedown", guideInteractionGuard, true);
     document.addEventListener("pointerdown", guideInteractionGuard, true);
     document.addEventListener("keydown", guideKeyGuard, true);
+    document.addEventListener("click", onScannerCountClick);
     [
       "install-guide:browser-opened",
       "install-guide:downloads-page",
