@@ -16,6 +16,8 @@
   // WizardWindowDevice.Update3DDisplay → Show3DSiloNew(..., opacity: 0.5)
   var WIZARD_VESSEL_OPACITY = 0.5;
   var M_TO_FT = 0.3048;
+  /* Draw a bit smaller than FillScannerShape meters so the unit reads on the roof without dominating. */
+  var SCANNER_MESH_SCALE = 0.85;
 
   function displayToMeters(v, unit) {
     var u = String(unit || "m").toLowerCase();
@@ -189,8 +191,8 @@
    */
   function buildScanner(apexY, apexX, apexZ, sz, showAxis, angleDeg, shaftWorld) {
     var group = new THREE.Group();
-    var headW = sz.width;
-    var headH = sz.height;
+    var headW = sz.width * SCANNER_MESH_SCALE;
+    var headH = sz.height * SCANNER_MESH_SCALE;
     var hornH = headH * 1.5;
     var w = headW * SCALE;
     var hHead = headH * SCALE;
