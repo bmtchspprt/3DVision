@@ -2018,6 +2018,12 @@
     if (root) root.hidden = false;
   }
 
+  function applyTsSnrScene(id) {
+    if (typeof window.mvSetGuideLowSnr === "function") {
+      window.mvSetGuideLowSnr(id === "snr-zero");
+    }
+  }
+
   function finishTsWalkthrough() {
     setGuiding(false);
     if (card) {
@@ -2033,6 +2039,7 @@
       el.classList.remove("is-active");
     });
     tsActiveId = "";
+    applyTsSnrScene("");
     showTsPanel();
     if (typeof window.MvDialogs === "object" && window.MvDialogs.closeAll) {
       window.MvDialogs.closeAll();
@@ -2098,6 +2105,10 @@
       el.classList.toggle("is-active", el.getAttribute("data-ts-id") === id);
     });
     if (!tsSteps.length) return;
+    applyTsSnrScene(id);
+    if (id === "snr-zero") {
+      ensureOverviewVisible();
+    }
     guideTrack = "troubleshoot";
     setTrackClass();
     hideModeMenu();
@@ -3075,6 +3086,10 @@
       }
       if (name === "install-guide:ap-closed") {
         if (isAdvancedParamsOpen()) return;
+      }
+      if (name === "install-guide:load-from-vessel" && tsActiveId === "snr-zero") {
+        applyTsSnrScene("");
+        ensureOverviewVisible();
       }
       goNext();
     }

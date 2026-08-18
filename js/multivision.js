@@ -2572,10 +2572,11 @@
       ledEl.title = offline ? "Not connected" : "Connected";
       ledEl.alt = offline ? "Not connected" : "Connected";
     }
-    // Demo Mode clears alert/problem text (VesselDetailsOverL)
+    // Low SNR warning (scanner Overview) — SNR below Minimal SNR (13), including 0.
     if (problemsEl) {
-      problemsEl.textContent = "";
-      problemsEl.hidden = true;
+      var lowSnr = !offline && metrics && Number(metrics.snr) < 13;
+      problemsEl.textContent = lowSnr ? "Device in Low SNR" : "";
+      problemsEl.hidden = !lowSnr;
     }
     // Border_Frame: LightSteelBlue connected / LightGray notConnected
     if (siloBox) {
@@ -4008,6 +4009,22 @@
     if (mvStatusText) {
       mvStatusText.textContent = msg || formatStatusStamp();
     }
+  };
+
+  window.mvSetGuideLowSnr = function (on) {
+    VESSELS.forEach(function (v) {
+      if (on) {
+        if (v._guideSnrBackup == null) {
+          v._guideSnrBackup = v.snr != null ? v.snr : 38.89;
+        }
+        v.snr = 0;
+      } else if (v._guideSnrBackup != null) {
+        v.snr = v._guideSnrBackup;
+        v._guideSnrBackup = null;
+      }
+    });
+    renderVessels();
+    refreshDetailView(findVessel(selectedVesselId));
   };
   window.mvRequestClose = function () {
     var exitOverlay = document.getElementById("exit-confirm-overlay");

@@ -249,11 +249,23 @@
     var id = item.id;
 
     if (id === "snr-zero") {
-      steps = deviceMenuThen(
-        '[data-mv-menu-id="dev-advanced"]',
-        "Advanced Parameters",
-        "Click <strong>Advanced Parameters...</strong>.",
-        "install-guide:advanced-params-opened"
+      steps = [
+        click(
+          "ts-snr-see",
+          "SNR is 0",
+          p("Overview SNR is 0.00 and shows Device in Low SNR. Continue to recover the signal."),
+          "#mvOverviewProblems",
+          null,
+          { blocking: true, pointer: "right", allowInside: "#mvOverview" }
+        ),
+      ];
+      steps = steps.concat(
+        deviceMenuThen(
+          '[data-mv-menu-id="dev-advanced"]',
+          "Advanced Parameters",
+          "Click <strong>Advanced Parameters...</strong>.",
+          "install-guide:advanced-params-opened"
+        )
       );
       steps.push(
         typeStep(
