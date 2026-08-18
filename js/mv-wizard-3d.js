@@ -17,6 +17,15 @@
   var WIZARD_VESSEL_OPACITY = 0.5;
   var M_TO_FT = 0.3048;
 
+  function displayToMeters(v, unit) {
+    var u = String(unit || "m").toLowerCase();
+    if (u === "ft" || u === "feet") return v * M_TO_FT;
+    if (u === "in" || u === "inch") return v * 0.0254;
+    if (u === "cm") return v / 100;
+    if (u === "mm") return v / 1000;
+    return v;
+  }
+
   function metersToDisplay(meters, unit) {
     var u = String(unit || "m").toLowerCase();
     if (u === "ft" || u === "feet") return meters / M_TO_FT;
@@ -27,19 +36,22 @@
   }
 
   /**
-   * FillScannerShape sizes: 0.2 m head radius, 0.2/0.3 m height, then convert to Distance unit.
+   * Same FillScannerShape size for every scanner on the vessel (count does not shrink).
+   * width = 0.2 m; height = 0.2 m if totalH < 15 m else 0.3 m.
+   * Shrink only when that height > 5% of vessel height: height = 4% of H, width = height/2.
+   * Scene is in Distance unit, so convert the meter result (3D Vision stores the vessel in meters).
    */
-  function scannerSizeDisplay(totalHeight, unit) {
-    var heightM = totalHeight < 15 ? 0.2 : 0.3;
-    var widthM = 0.2;
-    if (heightM > totalHeight * 0.05) {
-      heightM = totalHeight * 0.04;
-      widthM = heightM / 2.0;
-      return { width: widthM, height: heightM };
+  function scannerSizeDisplay(totalHeightDisplay, unit) {
+    var totalH = displayToMeters(Number(totalHeightDisplay) || 0, unit);
+    var width = 0.2;
+    var height = totalH < 15.0 ? 0.2 : 0.3;
+    if (height > totalH * 0.05) {
+      height = totalH * 0.04;
+      width = height / 2.0;
     }
     return {
-      width: metersToDisplay(widthM, unit),
-      height: metersToDisplay(heightM, unit),
+      width: metersToDisplay(width, unit),
+      height: metersToDisplay(height, unit),
     };
   }
 
@@ -175,9 +187,8 @@
    *   CreateMaterialScannerHead → RGB(0,51,127) (head)
    * Opaque so the yellow vessel (opacity 0.5) does not wash them out.
    */
-  function buildScanner(apexY, apexX, apexZ, totalHeight, showAxis, angleDeg, shaftWorld, unit) {
+  function buildScanner(apexY, apexX, apexZ, sz, showAxis, angleDeg, shaftWorld) {
     var group = new THREE.Group();
-    var sz = scannerSizeDisplay(totalHeight, unit);
     var headW = sz.width;
     var headH = sz.height;
     var hornH = headH * 1.5;
@@ -256,8 +267,7 @@
   }
 
   /** FillPoint: Orange inverted cone (ConeRbottom=0, ConeRtop=0.3) at vessel-top XY. */
-  function buildFillPointMarker(x, yTop, z, totalHeight, unit) {
-    var sz = scannerSizeDisplay(totalHeight, unit);
+  function buildFillPointMarker(x, yTop, z, sz, unit) {
     var h = sz.height;
     var w = metersToDisplay(0.3, unit) * SCALE;
     var hh = h * SCALE;
@@ -440,6 +450,7 @@
     }
     // Shaft length ≈ Center.X/5 (ShowServerDeviceArrow).
     var shaftLen = (cDm / 5) * SCALE;
+    var scannerSz = scannerSizeDisplay(totalHm, params.distanceUnit);
     var di;
     for (di = 0; di < devices.length; di++) {
       var device = devices[di] || {};
@@ -449,7 +460,7 @@
       if (isNaN(devYm)) devYm = tipTopY / SCALE;
       var apexY = Math.max(0, Math.min(tipTopY, devYm * SCALE));
       group.add(
-        buildScanner(apexY, devX, devZ, Math.max(1, totalHm), showAxis, device.angle, shaftLen, params.distanceUnit)
+        buildScanner(apexY, devX, devZ, scannerSz, showAxis, device.angle, shaftLen)
       );
     }
 
@@ -463,7 +474,7 @@
         tipTopY !== joinTopY
           ? topSurfaceY(joinTopY, tipTopY, tTipR, cR, fx, fz)
           : tipTopY;
-      group.add(buildFillPointMarker(fx, fy, fz, Math.max(1, totalHm), params.distanceUnit));
+      group.add(buildFillPointMarker(fx, fy, fz, scannerSz, params.distanceUnit));
     }
 
     // Full/Empty rings — CreateCalibrationFeature (step 4 / ShowCalibration).
