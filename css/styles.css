@@ -584,6 +584,14 @@ body {
 
 .adv-field-wrap.is-typing .adv-field-ghost {
   display: block;
+  background: #fff8d0;
+  border-color: #e0b400;
+}
+
+.adv-field-wrap.is-typing {
+  outline: 2px solid #ffcc33;
+  outline-offset: 1px;
+  box-shadow: 0 0 0 3px rgba(255, 204, 51, 0.4);
 }
 
 .adv-field-wrap.is-typing .adv-input {
@@ -591,12 +599,13 @@ body {
   z-index: 1;
   background: transparent;
   color: transparent;
-  caret-color: #202124;
+  caret-color: #111;
   font-family: Consolas, "Courier New", monospace;
 }
 
 .adv-field-ghost .g-ok {
-  color: #188038;
+  color: #137333;
+  font-weight: 700;
 }
 
 .adv-field-ghost .g-bad {
@@ -605,14 +614,28 @@ body {
 }
 
 .adv-field-ghost .g-next {
-  color: #202124;
-  background: #e8f0fe;
+  color: #111;
+  background: #ffcc33;
+  font-weight: 700;
   border-radius: 2px;
-  box-shadow: 0 0 0 1px #aecbfa;
+  box-shadow: 0 0 0 1px #c9a000;
+  animation: mv-type-next 0.85s ease-in-out infinite;
 }
 
 .adv-field-ghost .g-rest {
-  color: #9aa0a6;
+  color: #8b9199;
+  opacity: 0.42;
+  border-bottom: 1px dotted #b0b6bd;
+}
+
+@keyframes mv-type-next {
+  0%,
+  100% {
+    background: #ffcc33;
+  }
+  50% {
+    background: #ffe680;
+  }
 }
 
 .select-wrapper.adv-select {
@@ -943,14 +966,18 @@ body {
 }
 
 .config-address-ghost .g-next {
-  color: #202124;
-  background: #e8f0fe;
+  color: #111;
+  background: #ffcc33;
+  font-weight: 700;
   border-radius: 2px;
-  box-shadow: 0 0 0 1px #aecbfa;
+  box-shadow: 0 0 0 1px #c9a000;
+  animation: mv-type-next 0.85s ease-in-out infinite;
 }
 
 .config-address-ghost .g-rest {
-  color: #9aa0a6;
+  color: #8b9199;
+  opacity: 0.42;
+  border-bottom: 1px dotted #b0b6bd;
 }
 
 .config-dialog-footer {

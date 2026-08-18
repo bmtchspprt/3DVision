@@ -125,7 +125,7 @@
   }
 
   function clearAllApTypingCoaches() {
-    ["mvApMaxCap", "mvApEmptyRate", "mvApFillRate", "mvApSlope"].forEach(function (id) {
+    ["mvApMaxCap", "mvApEmptyRate", "mvApFillRate", "mvApSlope", "mvApDamping", "mvWizFullDist"].forEach(function (id) {
       setApFieldTypingCoach(id, false);
     });
   }
@@ -2685,7 +2685,9 @@
         Math.max(0, Math.min(100, ((stepIndex + 1) / steps.length) * 100)) + "%";
     }
 
-    if (step.id === "ap-max-capacity") {
+    if (step.typeId && step.typeValue) {
+      setApFieldTypingCoach(step.typeId, true, step.typeValue);
+    } else if (step.id === "ap-max-capacity") {
       var capField = document.getElementById("mvApMaxCap");
       if (capField) capField.value = "";
       setApFieldTypingCoach("mvApMaxCap", true, AP_CAPACITY_TARGET);
@@ -2989,6 +2991,12 @@
         window.dispatchEvent(new CustomEvent("install-guide:ap-slope-ok"));
       }
     }
+    if (step.typeId && step.typeValue) {
+      var typedEl = document.getElementById(step.typeId);
+      if (typedEl && String(typedEl.value).trim() === String(step.typeValue)) {
+        window.dispatchEvent(new CustomEvent(step.advanceOn || "install-guide:typed-ok"));
+      }
+    }
     if (step.id === "ov-switch-distance") {
       var avgLab = document.getElementById("mvOvAvgLabel");
       var btnLab = document.getElementById("mvBtnLevelDistanceLabel");
@@ -3156,6 +3164,7 @@
       "install-guide:echo-curve-closed",
       "install-guide:echo-activate-closed",
       "install-guide:start-open",
+      "install-guide:typed-ok",
     ].forEach(function (name) {
       window.addEventListener(name, function () {
         if (name === "install-guide:level-distance-toggled") {

@@ -92,6 +92,8 @@
 
 .browser-url-wrap.is-typing .browser-url-ghost {
   display: block;
+  background: #fff8d0;
+  border-color: #e0b400;
 }
 
 .browser-url-wrap.is-typing .browser-url {
@@ -99,12 +101,13 @@
   z-index: 1;
   background: transparent;
   color: transparent;
-  caret-color: #202124;
+  caret-color: #111;
   font-family: Consolas, "Courier New", monospace;
 }
 
 .browser-url-ghost .g-ok {
-  color: #188038;
+  color: #137333;
+  font-weight: 700;
 }
 
 .browser-url-ghost .g-bad {
@@ -113,14 +116,28 @@
 }
 
 .browser-url-ghost .g-next {
-  color: #202124;
-  background: #e8f0fe;
+  color: #111;
+  background: #ffcc33;
+  font-weight: 700;
   border-radius: 2px;
-  box-shadow: 0 0 0 1px #aecbfa;
+  box-shadow: 0 0 0 1px #c9a000;
+  animation: mv-type-next 0.85s ease-in-out infinite;
 }
 
 .browser-url-ghost .g-rest {
-  color: #9aa0a6;
+  color: #8b9199;
+  opacity: 0.42;
+  border-bottom: 1px dotted #b0b6bd;
+}
+
+@keyframes mv-type-next {
+  0%,
+  100% {
+    background: #ffcc33;
+  }
+  50% {
+    background: #ffe680;
+  }
 }
 
 .browser-url {

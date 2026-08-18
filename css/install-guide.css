@@ -689,8 +689,27 @@
   text-align: center;
 }
 
-.ig-ts-home:hover {
-  color: #2c3340;
+.ig-type-hint {
+  margin: 10px 0 0;
+  padding: 8px 10px;
+  background: #fff8d0;
+  border: 1px solid #e0b400;
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #1a1f2a;
+}
+
+.ig-type-hint kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  margin: 0 2px;
+  background: #ffcc33;
+  border: 1px solid #c9a000;
+  border-radius: 3px;
+  font-family: Consolas, "Courier New", monospace;
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .ig-mode-kicker {

@@ -89,6 +89,8 @@
       if (extra.primary) step.primary = extra.primary;
       if (extra.allowInside) step.allowInside = extra.allowInside;
       if (extra.pointer === "none") step.pointer = "none";
+      if (extra.typeId) step.typeId = extra.typeId;
+      if (extra.typeValue) step.typeValue = extra.typeValue;
     }
     return step;
   }
@@ -155,6 +157,52 @@
     );
   }
 
+  function typeBody(lead, value) {
+    return (
+      lead +
+      '<p class="ig-type-hint">Type <kbd>' +
+      esc(value) +
+      "</kbd>. Yellow is the next key. Gray letters are not typed yet — the box starts empty.</p>"
+    );
+  }
+
+  function typeStep(id, title, lead, fieldId, value, allowInside) {
+    return click(
+      id,
+      title,
+      typeBody(lead, value),
+      "#" + fieldId,
+      "install-guide:typed-ok",
+      {
+        pointer: "right",
+        allowInside: allowInside,
+        typeId: fieldId,
+        typeValue: value,
+      }
+    );
+  }
+
+  function wizUnitSteps() {
+    return [
+      click(
+        "wiz-set-feet",
+        "Distance in feet",
+        "Change <strong>Distance</strong> from m to <strong>ft</strong>.",
+        "#mvWizDist",
+        "install-guide:wiz-feet",
+        { pointer: "right", allowInside: WIZ_INSIDE }
+      ),
+      click(
+        "wiz-set-fahrenheit",
+        "Temperature in Fahrenheit",
+        "Change <strong>Temperature</strong> to <strong>Fahrenheit</strong>.",
+        "#mvWizTemp",
+        "install-guide:wiz-fahrenheit",
+        { pointer: "right", allowInside: WIZ_INSIDE }
+      ),
+    ];
+  }
+
   function wizNextSteps() {
     return [
       click(
@@ -208,21 +256,30 @@
         "install-guide:advanced-params-opened"
       );
       steps.push(
-        click(
-          "ts-snr-fields",
-          "Damping, fill, and empty",
-          p(
-            "Change Output Dampening Power to 420, MPN Rate to 7, Max Fill to 7, Max Empty to 8."
-          ) +
-            "<p>In this window those values are <strong>Output Damping Time</strong>, <strong>Max. Filling Rate</strong> (7), and <strong>Max. Emptying Rate</strong> (8) on the Vessel tab.</p>",
-          "#mvApDamping, #mvApFillRate, #mvApEmptyRate",
-          null,
-          {
-            blocking: true,
-            primary: "Continue",
-            pointer: "right",
-            allowInside: AP_INSIDE,
-          }
+        typeStep(
+          "ts-snr-damp",
+          "Output Damping Time",
+          p("Change Output Dampening Power to 420.") +
+            "<p>In this window type <strong>Output Damping Time</strong>.</p>",
+          "mvApDamping",
+          "420",
+          AP_INSIDE
+        ),
+        typeStep(
+          "ts-snr-fill",
+          "Max Filling Rate",
+          p("Set Max Fill to 7.") + "<p>Type <strong>Max. Filling Rate</strong>.</p>",
+          "mvApFillRate",
+          "7",
+          AP_INSIDE
+        ),
+        typeStep(
+          "ts-snr-empty",
+          "Max Emptying Rate",
+          p("Set Max Empty to 8.") + "<p>Type <strong>Max. Emptying Rate</strong>.</p>",
+          "mvApEmptyRate",
+          "8",
+          AP_INSIDE
         ),
         click(
           "ts-snr-upload",
@@ -277,21 +334,17 @@
         "Click <strong>Device Configuration Wizard...</strong>.",
         "install-guide:device-wizard-opened"
       );
+      steps = steps.concat(wizUnitSteps());
       steps = steps.concat(wizNextSteps());
       steps.push(
-        click(
+        typeStep(
           "ts-full-dist",
           "Distance (Top)",
-          p("Change Distance (Top) to 1.64.") +
-            "<p>Use the Full Calib <strong>Distance (Top)</strong> field. The dead-zone minimum is 1.64 ft.</p>",
-          "#mvWizFullDist",
-          null,
-          {
-            blocking: true,
-            primary: "Continue",
-            pointer: "right",
-            allowInside: WIZ_INSIDE,
-          }
+          p("Change Distance (Top) to 1.64 ft. This is the sensor dead-zone minimum.") +
+            "<p>Type Full Calib <strong>Distance (Top)</strong>.</p>",
+          "mvWizFullDist",
+          "1.64",
+          WIZ_INSIDE
         ),
         click(
           "ts-full-finish",
@@ -485,20 +538,16 @@
         "Click <strong>Device Configuration Wizard...</strong>.",
         "install-guide:device-wizard-opened"
       );
+      steps = steps.concat(wizUnitSteps());
       steps = steps.concat(wizNextSteps());
       steps.push(
-        click(
+        typeStep(
           "ts-dz-dist",
           "Dead-zone (Distance Top)",
           p(item.explanation),
-          "#mvWizFullDist",
-          null,
-          {
-            blocking: true,
-            primary: "Continue",
-            pointer: "right",
-            allowInside: WIZ_INSIDE,
-          }
+          "mvWizFullDist",
+          "1.64",
+          WIZ_INSIDE
         ),
         click(
           "ts-dz-finish",

@@ -869,7 +869,9 @@
         "<th></th><th>Level (Bottom)</th><th></th><th>Distance (Top)</th><th></th><th>Vessel Height</th>" +
         "</tr></thead><tbody>" +
         '<tr><td>Full Calib</td><td><input id="mvWizFullLevel" value="17"></td><td>+</td>' +
-        '<td><input id="mvWizFullDist" value="1"></td><td>=</td><td><input id="mvWizFullH" value="18" readonly></td></tr>' +
+        '<td><span class="mv-ap-field-wrap mv-wiz-type-wrap" id="mvWizFullDistWrap">' +
+        '<span class="mv-ap-field-ghost" id="mvWizFullDistGhost" aria-hidden="true"></span>' +
+        '<input class="mv-ap-input" id="mvWizFullDist" value="1"></span></td><td>=</td><td><input id="mvWizFullH" value="18" readonly></td></tr>' +
         '<tr><td>Empty Calib</td><td><input id="mvWizEmptyLevel" value="0"></td><td>+</td>' +
         '<td><input id="mvWizEmptyDist" value="18"></td><td>=</td><td><input id="mvWizEmptyH" value="18" readonly></td></tr>' +
         "</tbody></table></div>" +
@@ -936,7 +938,8 @@
           id === "mvApMaxCap" ||
           id === "mvApEmptyRate" ||
           id === "mvApFillRate" ||
-          id === "mvApSlope"
+          id === "mvApSlope" ||
+          id === "mvApDamping"
         ) {
           return (
             '<span class="mv-ap-field-wrap" id="' +
