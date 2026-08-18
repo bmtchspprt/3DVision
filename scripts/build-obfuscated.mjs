@@ -65,6 +65,7 @@ const JS_APP = [
   "js/mv-dialogs.js",
   "js/mv-menus.js",
   "js/app.js",
+  "js/ig-troubleshooting.js",
   "js/install-guide.js",
 ];
 
@@ -287,6 +288,7 @@ async function main() {
     "assets/desktop/chromium-icon.svg",
     "assets/desktop/folder-icon.svg",
     "assets/desktop/network-tray-icon.svg",
+    "assets/ui/troubleshoot-alert.png",
   ];
   extras.forEach((p) => pathSet.add(p));
 

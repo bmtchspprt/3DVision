@@ -230,6 +230,9 @@
     if (trigger.id === "mv-menu-edit") {
       updateEditingMenuEnabling();
     }
+    if (trigger.id === "mv-menu-device") {
+      window.dispatchEvent(new CustomEvent("install-guide:device-menu-open"));
+    }
   }
 
   /** MainScreen.OnMenuEditOpened / EditingMenuEnabling */
@@ -443,6 +446,7 @@
         break;
       case "comm-load":
         dlg.status("Load from Vessel completed.");
+        window.dispatchEvent(new CustomEvent("install-guide:load-from-vessel"));
         break;
 
       case "edit-add-site":

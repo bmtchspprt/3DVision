@@ -195,6 +195,15 @@
     if (id === "mv-dlg-adv-summary") {
       populateAdvSummary(el);
     }
+    if (id === "mv-dlg-echo-curve") {
+      window.dispatchEvent(new CustomEvent("install-guide:echo-opened"));
+    }
+    if (id === "mv-dlg-false-echo") {
+      window.dispatchEvent(new CustomEvent("install-guide:false-echo-opened"));
+    }
+    if (id === "mv-dlg-devices-act") {
+      window.dispatchEvent(new CustomEvent("install-guide:devices-act-opened"));
+    }
   }
 
   function titleBar(title, closeId) {
@@ -1273,7 +1282,7 @@
         vesselsOptionsHtml() +
         "</select></div>" +
         '<fieldset><legend>False Echoes Mapping</legend>' +
-        '<div class="mv-dialog-row"><label style="min-width:75px">Action Type:</label><select style="width:213px"><option>Learn</option><option>Delete</option><option>Show</option></select></div>' +
+        '<div class="mv-dialog-row"><label style="min-width:75px">Action Type:</label><select id="mvFeActionType" style="width:213px"><option>Learn</option><option>Delete</option><option>Show</option><option>Reset User and Auto False Echoes</option></select></div>' +
         '<div class="mv-dialog-row"><label style="min-width:75px">From:</label><input type="text" value="0.50" style="width:101px"><span style="width:43px">m</span></div>' +
         '<div class="mv-dialog-row"><label style="min-width:75px">To:</label><input type="text" value="2.00" style="width:101px"><span style="width:43px">m</span></div>' +
         '<div class="mv-dialog-row"><label style="min-width:75px">Threshold:</label><input type="text" value="10" style="width:101px"></div>' +
@@ -1321,9 +1330,9 @@
         '<div class="mv-params-panels" style="flex:1;padding:12px">' +
         '<div data-panel="reset">' +
         '<label class="mv-check"><input type="radio" name="mvDevReset" checked> Reset (Restart) Device</label>' +
-        '<label class="mv-check"><input type="radio" name="mvDevReset"> Reset to Factory Defaults</label>' +
+        '<label class="mv-check" id="mvDevResetFactoryLabel"><input type="radio" name="mvDevReset"> Reset to Factory Defaults</label>' +
         '<label class="mv-check"><input type="radio" name="mvDevReset"> Reset Advanced Parameters and False Echoes</label>' +
-        '<div style="margin-top:16px"><button class="btn mv-params-btn" type="button" style="width:80px">Reset</button></div></div>' +
+        '<div style="margin-top:16px"><button class="btn mv-params-btn" type="button" id="mvDevResetBtn" style="width:80px">Reset</button></div></div>' +
         '<div data-panel="fw" hidden>' +
         '<p style="color:#c00;font-weight:700;margin:0 0 4px">Warning!</p>' +
         '<p style="color:#c00;margin:0 0 12px">Do not turn off the device or disconnect during firmware update.</p>' +
@@ -3368,6 +3377,7 @@
       return;
     }
     openDialog("mv-dlg-echo-activate");
+    window.dispatchEvent(new CustomEvent("install-guide:echo-opened"));
   }
 
   function wireEchoActivate(root) {
@@ -4078,6 +4088,12 @@
     }
     if (id === "mv-dlg-connect-server") {
       status("Connected to server.");
+      closeDialog(id);
+      return;
+    }
+    if (id === "mv-dlg-false-echo") {
+      window.dispatchEvent(new CustomEvent("install-guide:false-echo-reset"));
+      status("False echo mapping reset.");
       closeDialog(id);
       return;
     }

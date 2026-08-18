@@ -17,7 +17,9 @@
   var stepIndex = 0;
   var pollTimer = null;
   var resizeBound = null;
-  var guideTrack = "host"; // host | client | vessel
+  var guideTrack = "host"; // host | client | vessel | troubleshoot
+  var tsSteps = [];
+  var tsActiveId = "";
 
   var POINTER_SVG =
     '<svg viewBox="0 0 48 48" aria-hidden="true">' +
@@ -1078,6 +1080,7 @@
   function getSteps() {
     if (guideTrack === "client") return CLIENT_STEPS;
     if (guideTrack === "vessel") return VESSEL_STEPS;
+    if (guideTrack === "troubleshoot") return tsSteps;
     return HOST_STEPS;
   }
 
@@ -1089,6 +1092,10 @@
     root.innerHTML =
       '<div class="ig-mode-menu" id="igModeMenu">' +
       '<div class="ig-mode-panel ig-mode-panel--setup" id="igModeMain">' +
+      '<button type="button" class="ig-welcome-ts" id="igWelcomeTs" aria-label="Troubleshooting">' +
+      '<img class="ig-welcome-ts-icon" src="assets/ui/troubleshoot-alert.png" alt="" width="42" height="42" draggable="false">' +
+      '<span class="ig-welcome-ts-label">Troubleshooting</span>' +
+      "</button>" +
       '<p class="ig-mode-kicker">3D MultiVision</p>' +
       "<h1>Install &amp; Setup</h1>" +
       '<div class="ig-mode-list" role="list">' +
@@ -1107,6 +1114,15 @@
       "</div>" +
       '<button type="button" class="ig-mode-free" data-mode="free">Free mode (installed, Demo silos)</button>' +
       "</div></div>" +
+      '<div class="ig-ts-panel" id="igTsPanel" hidden>' +
+      '<div class="ig-ts-hdr">' +
+      '<img class="ig-ts-hdr-ico" src="assets/ui/troubleshoot-alert.png" alt="" width="22" height="22">' +
+      '<span class="ig-ts-hdr-title">Troubleshooting</span>' +
+      '<button type="button" class="ig-ts-hbtn" id="igTsMin" aria-label="Minimize">−</button>' +
+      "</div>" +
+      '<div class="ig-ts-body" id="igTsBody"></div>' +
+      '<button type="button" class="ig-ts-home" id="igTsHome">Back to setup menu</button>' +
+      "</div>" +
       '<div class="ig-dim" aria-hidden="true"></div>' +
       '<div class="ig-spotlight ig-pulse" id="igSpotlight" hidden></div>' +
       '<div class="ig-pointer" id="igPointer" hidden>' +
@@ -1189,6 +1205,13 @@
     }
     // Event delegation: reliable even when clicking the inner label span
     modeMenu.addEventListener("click", function (e) {
+      var tsHome = e.target.closest ? e.target.closest("#igWelcomeTs") : null;
+      if (tsHome && modeMenu.contains(tsHome)) {
+        e.preventDefault();
+        e.stopPropagation();
+        enterTroubleshootMode();
+        return;
+      }
       var modeBtn = e.target.closest ? e.target.closest("[data-mode]") : null;
       if (modeBtn && modeMenu.contains(modeBtn)) {
         e.preventDefault();
@@ -1196,6 +1219,33 @@
         onModeChosen(modeBtn.getAttribute("data-mode"));
       }
     });
+    var tsPanel = document.getElementById("igTsPanel");
+    var tsBody = document.getElementById("igTsBody");
+    if (tsBody && window.IgTroubleshooting && typeof window.IgTroubleshooting.listHtml === "function") {
+      tsBody.innerHTML = window.IgTroubleshooting.listHtml();
+    }
+    if (tsPanel) {
+      tsPanel.addEventListener("click", function (e) {
+        var minBtn = e.target.closest ? e.target.closest("#igTsMin") : null;
+        if (minBtn) {
+          e.preventDefault();
+          tsPanel.classList.toggle("is-mini");
+          minBtn.textContent = tsPanel.classList.contains("is-mini") ? "+" : "−";
+          return;
+        }
+        var homeBtn = e.target.closest ? e.target.closest("#igTsHome") : null;
+        if (homeBtn) {
+          e.preventDefault();
+          leaveTroubleshootMode();
+          return;
+        }
+        var itemBtn = e.target.closest ? e.target.closest("[data-ts-id]") : null;
+        if (itemBtn && tsPanel.contains(itemBtn)) {
+          e.preventDefault();
+          startTroubleshootItem(itemBtn.getAttribute("data-ts-id"));
+        }
+      });
+    }
   }
 
   function showModeMain() {
@@ -1285,11 +1335,13 @@
   }
 
   function setTrackClass() {
-    document.body.classList.remove("ig-track-host", "ig-track-client", "ig-track-vessel");
+    document.body.classList.remove("ig-track-host", "ig-track-client", "ig-track-vessel", "ig-track-troubleshoot");
     if (guideTrack === "client") {
       document.body.classList.add("ig-track-client");
     } else if (guideTrack === "vessel") {
       document.body.classList.add("ig-track-vessel");
+    } else if (guideTrack === "troubleshoot") {
+      document.body.classList.add("ig-track-troubleshoot");
     } else {
       document.body.classList.add("ig-track-host");
     }
@@ -1319,6 +1371,7 @@
     if (end && !end.hidden) {
       return !!(e.target.closest && e.target.closest("#igEndScreen"));
     }
+    if (e.target.closest && e.target.closest("#igTsPanel, #igWelcomeTs")) return true;
     if (!document.body.classList.contains("ig-guiding")) return true;
     // Install-type picker handles its own clicks
     if (modeMenu && !modeMenu.hidden && !modeMenu.classList.contains("ig-mode-menu--hidden")) {
@@ -1365,7 +1418,10 @@
 
     // Vessel: keep Device menu popup clickable while choosing Wizard / Advanced
     if (
-      (step.id === "open-device-wizard" || step.id === "ap-open") &&
+      (step.id === "open-device-wizard" ||
+        step.id === "ap-open" ||
+        step.id === "ts-device-menu" ||
+        step.id === "ts-device-item") &&
       e.target.closest &&
       e.target.closest("#mv-popup-device, #mv-menu-device")
     ) {
@@ -1499,7 +1555,13 @@
 
     // Allow progress dialog during wizard / AP upload
     if (
-      (step.id === "wiz-finish" || step.id === "ap-upload") &&
+      (step.id === "wiz-finish" ||
+        step.id === "ap-upload" ||
+        step.id === "ts-snr-upload" ||
+        step.id === "ts-beam-upload" ||
+        step.id === "ts-ap-upload" ||
+        step.id === "ts-full-finish" ||
+        step.id === "ts-dz-finish") &&
       e.target.closest &&
       e.target.closest("#mv-dlg-progress")
     ) {
@@ -1542,6 +1604,13 @@
   function onPrimary() {
     var step = currentStep();
     if (!step) return;
+    if (guideTrack === "troubleshoot") {
+      var tsList = getSteps();
+      if (step.id === "ts-done" || stepIndex >= tsList.length - 1) {
+        finishTsWalkthrough();
+        return;
+      }
+    }
     if (step.id === "welcome") {
       openBlankBrowser();
       goNext();
@@ -1865,6 +1934,7 @@
     document.body.classList.remove("ig-mode", "ig-tease");
     document.body.classList.add("ig-free-mode");
     markInstalledUi();
+    hideTsPanel();
     if (typeof window.openMultiVisionFromConnect === "function") {
       window.openMultiVisionFromConnect({
         userName: "demoUser",
@@ -1877,6 +1947,124 @@
       });
     }
     window.dispatchEvent(new CustomEvent("install-guide:free-mode"));
+  }
+
+  function hideTsPanel() {
+    var panel = document.getElementById("igTsPanel");
+    if (panel) {
+      panel.hidden = true;
+      panel.classList.remove("is-mini");
+      var minBtn = document.getElementById("igTsMin");
+      if (minBtn) minBtn.textContent = "−";
+    }
+    tsActiveId = "";
+    tsSteps = [];
+    document.body.classList.remove("ig-ts-mode");
+    var items = document.querySelectorAll(".ig-ts-item.is-active");
+    items.forEach(function (el) {
+      el.classList.remove("is-active");
+    });
+  }
+
+  function showTsPanel() {
+    var panel = document.getElementById("igTsPanel");
+    if (!panel) return;
+    var body = document.getElementById("igTsBody");
+    if (body && window.IgTroubleshooting && !body.childElementCount) {
+      body.innerHTML = window.IgTroubleshooting.listHtml();
+    }
+    panel.hidden = false;
+    document.body.classList.add("ig-ts-mode");
+    if (root) root.hidden = false;
+  }
+
+  function finishTsWalkthrough() {
+    setGuiding(false);
+    if (card) {
+      card.hidden = true;
+      card.classList.add("ig-card--hidden");
+    }
+    clearHighlight();
+    clearPoll();
+    tsSteps = [];
+    stepIndex = 0;
+    var items = document.querySelectorAll(".ig-ts-item.is-active");
+    items.forEach(function (el) {
+      el.classList.remove("is-active");
+    });
+    tsActiveId = "";
+    showTsPanel();
+  }
+
+  function enterTroubleshootMode() {
+    clearPoll();
+    if (resizeBound) {
+      window.removeEventListener("resize", resizeBound);
+      resizeBound = null;
+    }
+    hideModeMenu();
+    setGuiding(false);
+    if (card) {
+      card.hidden = true;
+      card.classList.add("ig-card--hidden");
+    }
+    clearHighlight();
+    guideTrack = "troubleshoot";
+    setTrackClass();
+    document.body.classList.remove("ig-mode", "ig-tease");
+    document.body.classList.add("ig-free-mode");
+    markInstalledUi();
+    showTsPanel();
+    if (typeof window.openMultiVisionFromConnect === "function") {
+      window.openMultiVisionFromConnect({
+        userName: "demoUser",
+        serverHost: "127.0.0.1:22222",
+        viewTitle: "Aggregates",
+        isDemo: true,
+        blankProject: false,
+        openOverviewId: "lime-stone",
+        instant: true,
+      });
+    }
+  }
+
+  function leaveTroubleshootMode() {
+    finishTsWalkthrough();
+    hideTsPanel();
+    if (typeof window.MvDialogs === "object" && window.MvDialogs.closeAll) {
+      window.MvDialogs.closeAll();
+    }
+    document.body.classList.remove("ig-free-mode");
+    document.body.classList.add("ig-mode");
+    guideTrack = "host";
+    setTrackClass();
+    showModeMenu();
+  }
+
+  function startTroubleshootItem(id) {
+    var api = window.IgTroubleshooting;
+    if (!api) return;
+    var item = api.find(id);
+    if (!item) return;
+    if (typeof window.MvDialogs === "object" && window.MvDialogs.closeAll) {
+      window.MvDialogs.closeAll();
+    }
+    tsActiveId = id;
+    tsSteps = api.buildSteps(item) || [];
+    document.querySelectorAll(".ig-ts-item").forEach(function (el) {
+      el.classList.toggle("is-active", el.getAttribute("data-ts-id") === id);
+    });
+    if (!tsSteps.length) return;
+    guideTrack = "troubleshoot";
+    setTrackClass();
+    hideModeMenu();
+    showTsPanel();
+    if (root) root.hidden = false;
+    setGuiding(true);
+    stepIndex = 0;
+    resetCardDock();
+    wireResize();
+    renderStep();
   }
 
   function hideModeMenu() {
@@ -1902,6 +2090,7 @@
     guideTrack = "vessel";
     setTrackClass();
     hideModeMenu();
+    hideTsPanel();
     document.body.classList.remove("ig-mode", "ig-tease");
     markInstalledUi();
     setGuiding(true);
@@ -2177,6 +2366,10 @@
       enterVesselMode();
       return;
     }
+    if (guideTrack === "troubleshoot") {
+      enterTroubleshootMode();
+      return;
+    }
     setGuiding(false);
     if (card) {
       card.hidden = true;
@@ -2408,6 +2601,8 @@
     if (kicker) {
       if (guideTrack === "client") {
         kicker.textContent = "Client Remote Viewer";
+      } else if (guideTrack === "troubleshoot") {
+        kicker.textContent = "Troubleshooting";
       } else if (
         guideTrack === "vessel" ||
         (step && step.phase === "setup")
@@ -2618,7 +2813,7 @@
         window.dispatchEvent(new CustomEvent("install-guide:vessel-opened"));
       }
     }
-    if (step.id === "open-device-menu" || step.id === "ap-device-menu") {
+    if (step.id === "open-device-menu" || step.id === "ap-device-menu" || step.id === "ts-device-menu") {
       var devicePopup = document.getElementById("mv-popup-device");
       if (devicePopup && !devicePopup.hidden) {
         window.dispatchEvent(new CustomEvent("install-guide:device-menu-open"));
@@ -2648,30 +2843,54 @@
         window.dispatchEvent(new CustomEvent("install-guide:wiz-fill-added"));
       }
     }
-    if (step.id === "ap-open") {
+    if (step.id === "ap-open" || step.advanceOn === "install-guide:advanced-params-opened") {
       if (isAdvancedParamsOpen()) {
         window.dispatchEvent(new CustomEvent("install-guide:advanced-params-opened"));
       }
     }
-    if (step.id === "ap-click-advanced-tab") {
+    if (step.advanceOn === "install-guide:device-wizard-opened") {
+      var wizOpen = document.getElementById("mv-dlg-device-wizard");
+      if (wizOpen && !wizOpen.hidden && wizOpen.offsetParent !== null) {
+        window.dispatchEvent(new CustomEvent("install-guide:device-wizard-opened"));
+      }
+    }
+    if (step.advanceOn === "install-guide:false-echo-opened") {
+      var feDlg = document.getElementById("mv-dlg-false-echo");
+      if (feDlg && !feDlg.hidden) {
+        window.dispatchEvent(new CustomEvent("install-guide:false-echo-opened"));
+      }
+    }
+    if (step.advanceOn === "install-guide:devices-act-opened") {
+      var actDlg = document.getElementById("mv-dlg-devices-act");
+      if (actDlg && !actDlg.hidden) {
+        window.dispatchEvent(new CustomEvent("install-guide:devices-act-opened"));
+      }
+    }
+    if (step.advanceOn === "install-guide:echo-opened") {
+      var echoDlg = document.getElementById("mv-dlg-echo-curve") || document.getElementById("mv-dlg-echo-activate");
+      if (echoDlg && !echoDlg.hidden) {
+        window.dispatchEvent(new CustomEvent("install-guide:echo-opened"));
+      }
+    }
+    if (step.id === "ap-click-advanced-tab" || step.id === "ts-ap-adv-tab") {
       var advTab = document.querySelector('.mv-ap-tab[data-tab="adv"].is-active');
       if (advTab) {
         window.dispatchEvent(new CustomEvent("install-guide:ap-tab-adv"));
       }
     }
-    if (step.id === "ap-click-beams-tab") {
+    if (step.id === "ap-click-beams-tab" || step.id === "ts-beam-tab" || step.id === "ts-ap-beams-tab") {
       var beamsTab = document.querySelector('.mv-ap-tab[data-tab="beams"].is-active');
       if (beamsTab) {
         window.dispatchEvent(new CustomEvent("install-guide:ap-tab-beams"));
       }
     }
-    if (step.id === "ap-false-echoes") {
+    if (step.id === "ap-false-echoes" || step.id === "ts-ap-auto-fe") {
       var autoFalse = document.getElementById("mvApAutoFalseEchoes");
       if (autoFalse && /disable/i.test(autoFalse.value)) {
         window.dispatchEvent(new CustomEvent("install-guide:ap-auto-false-off"));
       }
     }
-    if (step.id === "ap-uncheck-beam-sel") {
+    if (step.id === "ap-uncheck-beam-sel" || step.id === "ts-beam-uncheck" || step.id === "ts-ap-beam-sel") {
       var beamSel = document.getElementById("mvApAutoBeamSel");
       if (beamSel && !beamSel.checked) {
         window.dispatchEvent(new CustomEvent("install-guide:ap-beam-sel-off"));
@@ -2683,7 +2902,7 @@
         window.dispatchEvent(new CustomEvent("install-guide:ap-beam-range-off"));
       }
     }
-    if (step.id === "ap-close") {
+    if (step.id === "ap-close" || step.id === "ts-ap-close") {
       // Do not use offsetParent — the AP overlay is position:fixed, so
       // offsetParent is always null even while the window is still open.
       if (!isAdvancedParamsOpen()) {
@@ -2817,6 +3036,11 @@
       "install-guide:ap-closed",
       "install-guide:view-distance",
       "install-guide:level-distance-toggled",
+      "install-guide:echo-opened",
+      "install-guide:false-echo-opened",
+      "install-guide:false-echo-reset",
+      "install-guide:devices-act-opened",
+      "install-guide:load-from-vessel",
     ].forEach(function (name) {
       window.addEventListener(name, function () {
         if (name === "install-guide:level-distance-toggled") {
@@ -2845,6 +3069,7 @@
     resetCardDock();
     clearHighlight();
     clearPoll();
+    hideTsPanel();
     startTeaseBackground(finishBootReveal);
   }
 
