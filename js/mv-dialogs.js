@@ -2647,6 +2647,7 @@
           fullLevel: fullLevel,
           emptyLevel: emptyLevel,
         },
+        distanceUnit: ((root.querySelector("#mvWizDist") || {}).value || "m").toLowerCase(),
       };
     }
 

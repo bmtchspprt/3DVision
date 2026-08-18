@@ -5,7 +5,7 @@
  *   DiffuseMaterial Yellow @ wizard opacity 0.5 (no wireframe — facet seams are lighting only),
  *   Cylinder/Cone: ThetaDiv=20 unshared verts (flat); Dome: EllipsoidGeometry smooth hemi,
  *   3 DirectionalLights from SurfaceUCMain.xaml, TransformHelper model rotate,
- *   scanner Gray horn + Blue(0,51,127) head @ 0.8.
+ *   scanner Gray horn + Blue(0,51,127) head; size is 0.2 m radius / 0.2–0.3 m height converted to Distance.
  */
 (function (global) {
   "use strict";
@@ -15,6 +15,33 @@
   var SEGS = 20;
   // WizardWindowDevice.Update3DDisplay → Show3DSiloNew(..., opacity: 0.5)
   var WIZARD_VESSEL_OPACITY = 0.5;
+  var M_TO_FT = 0.3048;
+
+  function metersToDisplay(meters, unit) {
+    var u = String(unit || "m").toLowerCase();
+    if (u === "ft" || u === "feet") return meters / M_TO_FT;
+    if (u === "in" || u === "inch") return meters / 0.0254;
+    if (u === "cm") return meters * 100;
+    if (u === "mm") return meters * 1000;
+    return meters;
+  }
+
+  /**
+   * FillScannerShape sizes: 0.2 m head radius, 0.2/0.3 m height, then convert to Distance unit.
+   */
+  function scannerSizeDisplay(totalHeight, unit) {
+    var heightM = totalHeight < 15 ? 0.2 : 0.3;
+    var widthM = 0.2;
+    if (heightM > totalHeight * 0.05) {
+      heightM = totalHeight * 0.04;
+      widthM = heightM / 2.0;
+      return { width: widthM, height: heightM };
+    }
+    return {
+      width: metersToDisplay(widthM, unit),
+      height: metersToDisplay(heightM, unit),
+    };
+  }
 
   function disposeObject(obj) {
     if (!obj) return;
@@ -144,15 +171,15 @@
 
   /**
    * FillScannerShape materials:
-   *   CreateMaterialScannerBottom → Gray @ 0.8 (horn)
-   *   CreateMaterialScannerHead → RGB(0,51,127) @ 0.8 (head)
+   *   CreateMaterialScannerBottom → Gray (horn)
+   *   CreateMaterialScannerHead → RGB(0,51,127) (head)
+   * Opaque so the yellow vessel (opacity 0.5) does not wash them out.
    */
-  function buildScanner(apexY, apexX, apexZ, totalHeightM, showAxis, angleDeg, shaftWorld) {
+  function buildScanner(apexY, apexX, apexZ, totalHeight, showAxis, angleDeg, shaftWorld, unit) {
     var group = new THREE.Group();
-    var fillEmptyHeight = totalHeightM < 15 ? 0.2 : 0.3;
-    if (fillEmptyHeight > totalHeightM * 0.05) fillEmptyHeight = totalHeightM * 0.04;
-    var headW = Math.max(0.08, fillEmptyHeight / 2);
-    var headH = fillEmptyHeight;
+    var sz = scannerSizeDisplay(totalHeight, unit);
+    var headW = sz.width;
+    var headH = sz.height;
     var hornH = headH * 1.5;
     var w = headW * SCALE;
     var hHead = headH * SCALE;
@@ -160,28 +187,29 @@
 
     var hornMat = new THREE.MeshLambertMaterial({
       color: 0x808080,
-      transparent: true,
-      opacity: 0.8,
+      transparent: false,
+      opacity: 1,
       flatShading: true,
       side: THREE.DoubleSide,
-      depthWrite: false,
+      depthWrite: true,
     });
-    group.add(
-      makeAxisCone(w / 4, w, apexX, apexY, apexZ, apexX, apexY - hHorn, apexZ, hornMat, true, true, 16)
-    );
+    var horn = makeAxisCone(w / 4, w, apexX, apexY, apexZ, apexX, apexY - hHorn, apexZ, hornMat, true, true, 16);
+    horn.renderOrder = 10;
+    group.add(horn);
 
     var headMat = new THREE.MeshLambertMaterial({
       color: 0x00337f,
-      transparent: true,
-      opacity: 0.8,
+      transparent: false,
+      opacity: 1,
       flatShading: true,
       side: THREE.DoubleSide,
-      depthWrite: false,
+      depthWrite: true,
     });
     var headGeo = new THREE.CylinderGeometry(w, w, hHead, 16, 1, false).toNonIndexed();
     headGeo.computeVertexNormals();
     var head = new THREE.Mesh(headGeo, headMat);
     head.position.set(apexX, apexY + hHead / 2, apexZ);
+    head.renderOrder = 10;
     group.add(head);
 
     if (showAxis) {
@@ -228,10 +256,10 @@
   }
 
   /** FillPoint: Orange inverted cone (ConeRbottom=0, ConeRtop=0.3) at vessel-top XY. */
-  function buildFillPointMarker(x, yTop, z, totalHeightM) {
-    var h = totalHeightM < 15 ? 0.2 : 0.3;
-    if (h > totalHeightM * 0.05) h = totalHeightM * 0.04;
-    var w = 0.3 * SCALE;
+  function buildFillPointMarker(x, yTop, z, totalHeight, unit) {
+    var sz = scannerSizeDisplay(totalHeight, unit);
+    var h = sz.height;
+    var w = metersToDisplay(0.3, unit) * SCALE;
     var hh = h * SCALE;
     var mat = new THREE.MeshLambertMaterial({
       color: 0xffa500,
@@ -421,7 +449,7 @@
       if (isNaN(devYm)) devYm = tipTopY / SCALE;
       var apexY = Math.max(0, Math.min(tipTopY, devYm * SCALE));
       group.add(
-        buildScanner(apexY, devX, devZ, Math.max(1, totalHm), showAxis, device.angle, shaftLen)
+        buildScanner(apexY, devX, devZ, Math.max(1, totalHm), showAxis, device.angle, shaftLen, params.distanceUnit)
       );
     }
 
@@ -435,7 +463,7 @@
         tipTopY !== joinTopY
           ? topSurfaceY(joinTopY, tipTopY, tTipR, cR, fx, fz)
           : tipTopY;
-      group.add(buildFillPointMarker(fx, fy, fz, Math.max(1, totalHm)));
+      group.add(buildFillPointMarker(fx, fy, fz, Math.max(1, totalHm), params.distanceUnit));
     }
 
     // Full/Empty rings — CreateCalibrationFeature (step 4 / ShowCalibration).
