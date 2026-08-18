@@ -171,6 +171,11 @@
     backdrop.setAttribute("aria-hidden", "false");
     startMenu.hidden = false;
     startBtn.setAttribute("aria-expanded", "true");
+    try {
+      window.dispatchEvent(new CustomEvent("install-guide:start-open"));
+    } catch (err) {
+      /* ignore */
+    }
     syncStartSearchView();
     if (winStartSearch) {
       window.setTimeout(function () {

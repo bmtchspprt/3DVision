@@ -159,6 +159,15 @@
         /* ignore */
       }
     }
+    if (id === "mv-dlg-devices-act" && wasOpen) {
+      window.dispatchEvent(new CustomEvent("install-guide:devices-act-closed"));
+    }
+    if (id === "mv-dlg-echo-curve" && wasOpen) {
+      window.dispatchEvent(new CustomEvent("install-guide:echo-curve-closed"));
+    }
+    if (id === "mv-dlg-echo-activate" && wasOpen) {
+      window.dispatchEvent(new CustomEvent("install-guide:echo-activate-closed"));
+    }
   }
 
   function closeAllDialogs() {
@@ -1855,6 +1864,7 @@
     if (selectAll) {
       selectAll.addEventListener("click", function () {
         setManualChecks(true);
+        window.dispatchEvent(new CustomEvent("install-guide:ap-beams-select-all"));
       });
     }
     if (clearAll) {
@@ -3358,6 +3368,7 @@
     echoCurveState.unit = "m";
     echoCurveState.seriesVisible = api ? api.seriesVisibilityMap() : null;
     openDialog("mv-dlg-echo-curve");
+    window.dispatchEvent(new CustomEvent("install-guide:echo-curve-opened"));
     setTimeout(function () {
       refreshEchoCurveUi($("mv-dlg-echo-curve"));
     }, 40);
@@ -3420,6 +3431,7 @@
         }
         startBtn.disabled = true;
         if (stopBtn) stopBtn.disabled = false;
+        window.dispatchEvent(new CustomEvent("install-guide:echo-started"));
         // StringsApplic.Grades_ServerActive
         if (statusEl) {
           statusEl.textContent = "Server is performing Echo Curve analysis.";
@@ -4127,6 +4139,11 @@
       var okBtn = e.target.closest("[data-mv-dlg-ok]");
       if (okBtn) {
         onDialogOk(okBtn.getAttribute("data-mv-dlg-ok"));
+        return;
+      }
+      if (e.target.closest && e.target.closest("#mvDevResetBtn")) {
+        window.dispatchEvent(new CustomEvent("install-guide:device-reset"));
+        status("Device reset.");
         return;
       }
       var applyBtn = e.target.closest("[data-mv-dlg-apply]");

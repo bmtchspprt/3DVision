@@ -1365,6 +1365,57 @@
     return false;
   }
 
+  function queryGuideTarget(selector) {
+    if (!selector) return null;
+    var parts = String(selector).split(",");
+    var i;
+    var s;
+    var el;
+    for (i = 0; i < parts.length; i++) {
+      s = parts[i].trim();
+      if (!s) continue;
+      try {
+        el = document.querySelector(s);
+      } catch (err) {
+        el = null;
+      }
+      if (el) return el;
+    }
+    return null;
+  }
+
+  function clickHitsSelector(e, selector) {
+    if (!selector || !e.target || !e.target.closest) return false;
+    var parts = String(selector).split(",");
+    var i;
+    var s;
+    var nodes;
+    var j;
+    var el;
+    var label;
+    var forLab;
+    for (i = 0; i < parts.length; i++) {
+      s = parts[i].trim();
+      if (!s) continue;
+      try {
+        nodes = document.querySelectorAll(s);
+      } catch (err) {
+        continue;
+      }
+      for (j = 0; j < nodes.length; j++) {
+        el = nodes[j];
+        if (el === e.target || (el.contains && el.contains(e.target))) return true;
+        label = el.closest && el.closest("label");
+        if (label && label.contains(e.target)) return true;
+        if (el.id) {
+          forLab = document.querySelector('label[for="' + el.id + '"]');
+          if (forLab && forLab.contains(e.target)) return true;
+        }
+      }
+    }
+    return false;
+  }
+
   function isClickAllowed(e) {
     // End screen is modal until Close (even after guiding stops)
     var end = document.getElementById("igEndScreen");
@@ -1403,18 +1454,7 @@
     var sel = stepTarget(step);
     if (!sel) return false;
 
-    var target = document.querySelector(sel);
-    if (!target) return false;
-
-    if (target === e.target || target.contains(e.target)) return true;
-
-    var label = target.closest && target.closest("label");
-    if (label && label.contains(e.target)) return true;
-
-    if (target.id) {
-      var forLab = document.querySelector('label[for="' + target.id + '"]');
-      if (forLab && forLab.contains(e.target)) return true;
-    }
+    if (clickHitsSelector(e, sel)) return true;
 
     // Vessel: keep Device menu popup clickable while choosing Wizard / Advanced
     if (
@@ -1994,6 +2034,9 @@
     });
     tsActiveId = "";
     showTsPanel();
+    if (typeof window.MvDialogs === "object" && window.MvDialogs.closeAll) {
+      window.MvDialogs.closeAll();
+    }
   }
 
   function enterTroubleshootMode() {
@@ -2530,7 +2573,7 @@
       clearHighlight();
       return null;
     }
-    var el = document.querySelector(selector);
+    var el = queryGuideTarget(selector);
     if (el && el.matches && el.matches('input[type="radio"], input[type="checkbox"]')) {
       var label = el.closest("label");
       if (label) el = label;
@@ -2896,13 +2939,25 @@
         window.dispatchEvent(new CustomEvent("install-guide:ap-beam-sel-off"));
       }
     }
-    if (step.id === "ap-uncheck-beam-range") {
+    if (step.id === "ap-uncheck-beam-range" || step.id === "ts-beam-range" || step.id === "ts-ap-beam-range") {
       var beamRange = document.getElementById("mvApAutoBeamRange");
       if (beamRange && !beamRange.checked) {
         window.dispatchEvent(new CustomEvent("install-guide:ap-beam-range-off"));
       }
     }
-    if (step.id === "ap-close" || step.id === "ts-ap-close") {
+    if (step.id === "ts-beam-select-all" || step.id === "ts-ap-select-all") {
+      var manual = document.getElementById("mvApBeamManual");
+      var boxes = manual ? manual.querySelectorAll('input[type="checkbox"]') : [];
+      var allOn = boxes.length > 0;
+      var bi;
+      for (bi = 0; bi < boxes.length; bi++) {
+        if (!boxes[bi].checked) allOn = false;
+      }
+      if (allOn) {
+        window.dispatchEvent(new CustomEvent("install-guide:ap-beams-select-all"));
+      }
+    }
+    if (step.id === "ap-close" || step.id === "ts-ap-close" || step.id === "ts-snr-close" || step.id === "ts-beam-close") {
       // Do not use offsetParent — the AP overlay is position:fixed, so
       // offsetParent is always null even while the window is still open.
       if (!isAdvancedParamsOpen()) {
@@ -2946,6 +3001,57 @@
     }
     if (step.id === "ov-after-upload") {
       ensureOverviewVisible();
+    }
+    if (step.advanceOn && step.advanceOn.indexOf("install-guide:wiz-step-") === 0) {
+      var needWiz = parseInt(step.advanceOn.replace("install-guide:wiz-step-", ""), 10);
+      var wizEl = document.getElementById("mv-dlg-device-wizard");
+      var wizAt = wizEl && !wizEl.hidden ? Number(wizEl.__mvWizPrevStep || 0) : 0;
+      if (needWiz && wizAt >= needWiz) {
+        window.dispatchEvent(new CustomEvent(step.advanceOn));
+      }
+    }
+    if (step.advanceOn === "install-guide:fe-action-ok") {
+      var feAct = document.getElementById("mvFeActionType");
+      if (feAct && /reset user/i.test(feAct.value || "")) {
+        window.dispatchEvent(new CustomEvent("install-guide:fe-action-ok"));
+      }
+    }
+    if (step.advanceOn === "install-guide:start-open") {
+      var startBtn = document.getElementById("winStartBtn");
+      var startMenu = document.getElementById("winStartMenu");
+      if ((startBtn && startBtn.getAttribute("aria-expanded") === "true") || (startMenu && !startMenu.hidden)) {
+        window.dispatchEvent(new CustomEvent("install-guide:start-open"));
+      }
+    }
+    if (step.advanceOn === "install-guide:echo-curve-opened") {
+      var echoCurve = document.getElementById("mv-dlg-echo-curve");
+      if (echoCurve && !echoCurve.hidden) {
+        window.dispatchEvent(new CustomEvent("install-guide:echo-curve-opened"));
+      }
+    }
+    if (step.advanceOn === "install-guide:echo-started") {
+      var echoCurve2 = document.getElementById("mv-dlg-echo-curve");
+      if (echoCurve2 && !echoCurve2.hidden) {
+        window.dispatchEvent(new CustomEvent("install-guide:echo-started"));
+      }
+    }
+    if (step.advanceOn === "install-guide:echo-curve-closed") {
+      var echoCurve3 = document.getElementById("mv-dlg-echo-curve");
+      if (!echoCurve3 || echoCurve3.hidden) {
+        window.dispatchEvent(new CustomEvent("install-guide:echo-curve-closed"));
+      }
+    }
+    if (step.advanceOn === "install-guide:echo-activate-closed") {
+      var echoAct = document.getElementById("mv-dlg-echo-activate");
+      if (!echoAct || echoAct.hidden) {
+        window.dispatchEvent(new CustomEvent("install-guide:echo-activate-closed"));
+      }
+    }
+    if (step.advanceOn === "install-guide:devices-act-closed") {
+      var actDlg2 = document.getElementById("mv-dlg-devices-act");
+      if (!actDlg2 || actDlg2.hidden) {
+        window.dispatchEvent(new CustomEvent("install-guide:devices-act-closed"));
+      }
     }
   }
 
@@ -3041,6 +3147,15 @@
       "install-guide:false-echo-reset",
       "install-guide:devices-act-opened",
       "install-guide:load-from-vessel",
+      "install-guide:fe-action-ok",
+      "install-guide:device-reset",
+      "install-guide:devices-act-closed",
+      "install-guide:ap-beams-select-all",
+      "install-guide:echo-started",
+      "install-guide:echo-curve-opened",
+      "install-guide:echo-curve-closed",
+      "install-guide:echo-activate-closed",
+      "install-guide:start-open",
     ].forEach(function (name) {
       window.addEventListener(name, function () {
         if (name === "install-guide:level-distance-toggled") {

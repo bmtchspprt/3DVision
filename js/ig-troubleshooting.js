@@ -93,6 +93,14 @@
     return step;
   }
 
+  var AP_INSIDE =
+    "#mv-dlg-advanced-params, #mvApClose, #mv-dlg-advanced-params .title-btn.close, #mv-dlg-progress";
+  var WIZ_INSIDE = "#mv-dlg-device-wizard";
+  var FE_INSIDE = "#mv-dlg-false-echo";
+  var ACT_INSIDE = "#mv-dlg-devices-act";
+  var ECHO_INSIDE = "#mv-dlg-echo-curve, #mv-dlg-echo-activate";
+  var DEVICE_MENU = "#mv-popup-device, #mv-menu-device";
+
   function doneStep(explanation) {
     return click(
       "ts-done",
@@ -112,7 +120,7 @@
         "Click <strong>Device</strong> on the menu bar.",
         "#mv-menu-device",
         "install-guide:device-menu-open",
-        { pointer: "bottom" }
+        { pointer: "bottom", allowInside: DEVICE_MENU }
       ),
       click(
         "ts-device-item",
@@ -120,7 +128,58 @@
         itemBody,
         itemSel,
         openedEvent,
-        { pointer: "right", allowInside: "#mv-popup-device, #mv-menu-device" }
+        { pointer: "right", allowInside: DEVICE_MENU }
+      ),
+    ];
+  }
+
+  function closeApStep(id) {
+    return click(
+      id || "ts-ap-close",
+      "Close Advanced Parameters",
+      "Click <strong>Close</strong> on Advanced Parameters before the next step.",
+      "#mvApClose",
+      "install-guide:ap-closed",
+      { pointer: "bottom", allowInside: AP_INSIDE }
+    );
+  }
+
+  function closeActStep() {
+    return click(
+      "ts-act-close",
+      "Close Devices Activations",
+      "Click <strong>Close</strong>.",
+      '#mv-dlg-devices-act [data-mv-dlg-close="mv-dlg-devices-act"], #mv-dlg-devices-act .title-btn.close',
+      "install-guide:devices-act-closed",
+      { pointer: "bottom", allowInside: ACT_INSIDE }
+    );
+  }
+
+  function wizNextSteps() {
+    return [
+      click(
+        "ts-wiz-next-2",
+        "Device Position",
+        "Click <strong>Next</strong> to open Device Position.",
+        "#mvWizNext",
+        "install-guide:wiz-step-2",
+        { pointer: "bottom", allowInside: WIZ_INSIDE }
+      ),
+      click(
+        "ts-wiz-next-3",
+        "Filling Points",
+        "Click <strong>Next</strong> to open Filling Points.",
+        "#mvWizNext",
+        "install-guide:wiz-step-3",
+        { pointer: "bottom", allowInside: WIZ_INSIDE }
+      ),
+      click(
+        "ts-wiz-next-4",
+        "Full / Empty Calibration",
+        "Click <strong>Next</strong> to open Full / Empty Calibration.",
+        "#mvWizNext",
+        "install-guide:wiz-step-4",
+        { pointer: "bottom", allowInside: WIZ_INSIDE }
       ),
     ];
   }
@@ -129,7 +188,7 @@
     return click(
       "ts-load-vessel",
       "Load from Vessel",
-      "Click <strong>Load from Vessel</strong> on the toolbar, then confirm the reading.",
+      "Click <strong>Load from Vessel</strong> on the toolbar.",
       "#mvToolbarLoadVessel",
       "install-guide:load-from-vessel",
       { pointer: "bottom" }
@@ -162,7 +221,7 @@
             blocking: true,
             primary: "Continue",
             pointer: "right",
-            allowInside: "#mv-dlg-advanced-params",
+            allowInside: AP_INSIDE,
           }
         ),
         click(
@@ -171,8 +230,9 @@
           "Click <strong>Upload All</strong> to push the changes.",
           "#mvApUploadAll",
           "install-guide:ap-uploaded",
-          { pointer: "bottom", allowInside: "#mv-dlg-advanced-params" }
-        )
+          { pointer: "bottom", allowInside: AP_INSIDE }
+        ),
+        closeApStep("ts-snr-close")
       );
       steps = steps.concat(
         deviceMenuThen(
@@ -184,12 +244,20 @@
       );
       steps.push(
         click(
+          "ts-snr-fe-action",
+          "Action Type",
+          "Set <strong>Action Type</strong> to <strong>Reset User and Auto False Echoes</strong>.",
+          "#mvFeActionType",
+          "install-guide:fe-action-ok",
+          { pointer: "right", allowInside: FE_INSIDE }
+        ),
+        click(
           "ts-snr-reset-map",
           "Reset Mapping",
           "Click <strong>Reset Mapping</strong> to clear stored maps.",
           '#mv-dlg-false-echo [data-mv-dlg-ok="mv-dlg-false-echo"]',
           "install-guide:false-echo-reset",
-          { pointer: "bottom", allowInside: "#mv-dlg-false-echo" }
+          { pointer: "bottom", allowInside: FE_INSIDE }
         ),
         loadFromVesselStep(),
         click(
@@ -209,19 +277,12 @@
         "Click <strong>Device Configuration Wizard...</strong>.",
         "install-guide:device-wizard-opened"
       );
+      steps = steps.concat(wizNextSteps());
       steps.push(
-        click(
-          "ts-full-next",
-          "Full / Empty Calibration",
-          "Click <strong>Next</strong> until you reach Full / Empty Calibration.",
-          "#mvWizNext",
-          "install-guide:wiz-step-4",
-          { pointer: "bottom", allowInside: "#mv-dlg-device-wizard" }
-        ),
         click(
           "ts-full-dist",
           "Distance (Top)",
-          p("Change Distance (Top) to 1.64. Click Finish to save.") +
+          p("Change Distance (Top) to 1.64.") +
             "<p>Use the Full Calib <strong>Distance (Top)</strong> field. The dead-zone minimum is 1.64 ft.</p>",
           "#mvWizFullDist",
           null,
@@ -229,7 +290,7 @@
             blocking: true,
             primary: "Continue",
             pointer: "right",
-            allowInside: "#mv-dlg-device-wizard",
+            allowInside: WIZ_INSIDE,
           }
         ),
         click(
@@ -238,7 +299,7 @@
           "Click <strong>Finish</strong> to save the configuration.",
           "#mvWizNext",
           "install-guide:wiz-uploaded",
-          { pointer: "bottom", allowInside: "#mv-dlg-device-wizard" }
+          { pointer: "bottom", allowInside: WIZ_INSIDE }
         ),
         loadFromVesselStep(),
         doneStep("Then click Load from Vessel to confirm the level reads correctly.")
@@ -254,17 +315,13 @@
         click(
           "ts-reset-choice",
           "Reset — not Factory",
-          p("Click Reset — do NOT click Reset to Factory.") +
-            "<p>Leave <strong>Reset (Restart) Device</strong> selected. Do not choose Reset to Factory Defaults.</p>",
+          p("Leave <strong>Reset (Restart) Device</strong> selected. Do not choose Reset to Factory Defaults.") +
+            "<p>Click <strong>Reset</strong>.</p>",
           "#mvDevResetBtn",
-          null,
-          {
-            blocking: true,
-            primary: "Continue",
-            pointer: "right",
-            allowInside: "#mv-dlg-devices-act",
-          }
+          "install-guide:device-reset",
+          { pointer: "right", allowInside: ACT_INSIDE }
         ),
+        closeActStep(),
         loadFromVesselStep(),
         doneStep("Watch for a temperature alert confirming the reboot. Then click Load from Vessel to confirm ~20 mA output.")
       );
@@ -273,10 +330,10 @@
         click(
           "ts-sleep-start",
           "Windows Start",
-          "On the controller PC, open the Start menu (lower-left).",
+          "On the controller PC, click the Start button (lower-left).",
           "#winStartBtn",
-          null,
-          { blocking: true, primary: "Continue", pointer: "bottom", allowInside: "#winStartBtn, .win-taskbar" }
+          "install-guide:start-open",
+          { pointer: "bottom", allowInside: "#winStartBtn, .win-taskbar, #winStartMenu, #winStartBackdrop" }
         ),
         doneStep(
           "Expand Screen, sleep, and hibernation timeouts. Set “Make my device sleep after” to Never. Screen turning off is OK — only the sleep setting causes disconnects."
@@ -296,16 +353,31 @@
           "Click the <strong>Beams Activation</strong> tab.",
           '.mv-ap-tab[data-tab="beams"]',
           "install-guide:ap-tab-beams",
-          { pointer: "bottom", allowInside: "#mv-dlg-advanced-params" }
+          { pointer: "bottom", allowInside: AP_INSIDE }
         ),
         click(
           "ts-beam-uncheck",
           "Auto Beam Selection",
-          p("Verify all 6 beam checkboxes at the top are checked. Uncheck Auto Beam Selection at the bottom.") +
-            "<p>Use <strong>Select All</strong> if needed, then uncheck <strong>Auto Beam Selection</strong>.</p>",
+          "Uncheck <strong>Auto Beam Selection</strong> so you can pick beams by hand.",
           "#mvApAutoBeamSel",
           "install-guide:ap-beam-sel-off",
-          { pointer: "right", allowInside: "#mv-dlg-advanced-params" }
+          { pointer: "right", allowInside: AP_INSIDE }
+        ),
+        click(
+          "ts-beam-range",
+          "Automatic Beams Range",
+          "Uncheck <strong>Automatic Beams Range</strong>.",
+          "#mvApAutoBeamRange",
+          "install-guide:ap-beam-range-off",
+          { pointer: "right", allowInside: AP_INSIDE }
+        ),
+        click(
+          "ts-beam-select-all",
+          "Select All beams",
+          "Click <strong>Select All</strong> so every echo beam is checked.",
+          "#mvApBeamSelectAll",
+          "install-guide:ap-beams-select-all",
+          { pointer: "bottom", allowInside: AP_INSIDE }
         ),
         click(
           "ts-beam-upload",
@@ -313,8 +385,9 @@
           "Click <strong>Upload All</strong> to apply.",
           "#mvApUploadAll",
           "install-guide:ap-uploaded",
-          { pointer: "bottom", allowInside: "#mv-dlg-advanced-params" }
+          { pointer: "bottom", allowInside: AP_INSIDE }
         ),
+        closeApStep("ts-beam-close"),
         loadFromVesselStep(),
         doneStep("Then click Load from Vessel to confirm correct readings.")
       );
@@ -329,18 +402,51 @@
           { pointer: "bottom" }
         ),
         click(
+          "ts-echo-start",
+          "Start analysis",
+          "Click <strong>Start</strong> to run Echo Curve Analysis.",
+          "#mvEchoActStart",
+          "install-guide:echo-started",
+          { pointer: "bottom", allowInside: ECHO_INSIDE }
+        ),
+        click(
+          "ts-echo-curve",
+          "Echo Curve window",
+          "Wait for the Echo Curve window to open.",
+          "#mv-dlg-echo-curve",
+          "install-guide:echo-curve-opened",
+          { pointer: "none", allowInside: ECHO_INSIDE }
+        ),
+        click(
           "ts-echo-read",
           "How to read it",
           p(item.explanation),
-          "#mv-dlg-echo-activate",
+          "#mv-dlg-echo-curve",
           null,
           {
             blocking: true,
-            primary: "Done",
+            primary: "Continue",
             pointer: "none",
-            allowInside: "#mv-dlg-echo-curve, #mv-dlg-echo-activate",
+            allowInside: ECHO_INSIDE,
           }
         ),
+        click(
+          "ts-echo-close-curve",
+          "Close Echo Curve",
+          "Close the Echo Curve window.",
+          '#mv-dlg-echo-curve [data-mv-dlg-close="mv-dlg-echo-curve"], #mv-dlg-echo-curve .title-btn.close',
+          "install-guide:echo-curve-closed",
+          { pointer: "bottom", allowInside: ECHO_INSIDE }
+        ),
+        click(
+          "ts-echo-close-act",
+          "Close analysis",
+          "Close Activate Echo Curve Analysis.",
+          '#mv-dlg-echo-activate [data-mv-dlg-close="mv-dlg-echo-activate"], #mv-dlg-echo-activate .title-btn.close',
+          "install-guide:echo-activate-closed",
+          { pointer: "bottom", allowInside: ECHO_INSIDE }
+        ),
+        doneStep(item.explanation),
       ];
     } else if (id === "reset-mapping") {
       steps = deviceMenuThen(
@@ -353,18 +459,11 @@
         click(
           "ts-fe-action",
           "Action Type",
-          p(
-            "From the Action dropdown, select Reset User and Auto False Echoes, then click Execute."
-          ) +
-            "<p>In this window choose the action, then click <strong>Reset Mapping</strong>.</p>",
+          p("From the Action dropdown, select Reset User and Auto False Echoes.") +
+            "<p>Set <strong>Action Type</strong> to that option.</p>",
           "#mvFeActionType",
-          null,
-          {
-            blocking: true,
-            primary: "Continue",
-            pointer: "right",
-            allowInside: "#mv-dlg-false-echo",
-          }
+          "install-guide:fe-action-ok",
+          { pointer: "right", allowInside: FE_INSIDE }
         ),
         click(
           "ts-fe-exec",
@@ -372,7 +471,7 @@
           "Click <strong>Reset Mapping</strong>.",
           '#mv-dlg-false-echo [data-mv-dlg-ok="mv-dlg-false-echo"]',
           "install-guide:false-echo-reset",
-          { pointer: "bottom", allowInside: "#mv-dlg-false-echo" }
+          { pointer: "bottom", allowInside: FE_INSIDE }
         ),
         loadFromVesselStep(),
         doneStep(
@@ -386,15 +485,8 @@
         "Click <strong>Device Configuration Wizard...</strong>.",
         "install-guide:device-wizard-opened"
       );
+      steps = steps.concat(wizNextSteps());
       steps.push(
-        click(
-          "ts-dz-next",
-          "Work through the wizard",
-          "Confirm measurements on each screen. Click <strong>Next</strong> until Full / Empty Calibration.",
-          "#mvWizNext",
-          "install-guide:wiz-step-4",
-          { pointer: "bottom", allowInside: "#mv-dlg-device-wizard" }
-        ),
         click(
           "ts-dz-dist",
           "Dead-zone (Distance Top)",
@@ -405,7 +497,7 @@
             blocking: true,
             primary: "Continue",
             pointer: "right",
-            allowInside: "#mv-dlg-device-wizard",
+            allowInside: WIZ_INSIDE,
           }
         ),
         click(
@@ -414,7 +506,7 @@
           "Click <strong>Finish</strong> to save.",
           "#mvWizNext",
           "install-guide:wiz-uploaded",
-          { pointer: "bottom", allowInside: "#mv-dlg-device-wizard" }
+          { pointer: "bottom", allowInside: WIZ_INSIDE }
         ),
         doneStep("Click Finish to save.")
       );
@@ -438,7 +530,7 @@
             blocking: true,
             primary: "Continue",
             pointer: "bottom",
-            allowInside: "#mv-dlg-advanced-params",
+            allowInside: AP_INSIDE,
           }
         ),
         click(
@@ -447,7 +539,7 @@
           "Click the <strong>Advanced</strong> tab.",
           '.mv-ap-tab[data-tab="adv"]',
           "install-guide:ap-tab-adv",
-          { pointer: "bottom", allowInside: "#mv-dlg-advanced-params" }
+          { pointer: "bottom", allowInside: AP_INSIDE }
         ),
         click(
           "ts-ap-auto-fe",
@@ -455,7 +547,7 @@
           "Set <strong>Auto False Echoes</strong> to <strong>Disable</strong> (Deactivated).",
           "#mvApAutoFalseEchoes",
           "install-guide:ap-auto-false-off",
-          { pointer: "right", allowInside: "#mv-dlg-advanced-params" }
+          { pointer: "right", allowInside: AP_INSIDE }
         ),
         click(
           "ts-ap-beams-tab",
@@ -463,32 +555,41 @@
           "Click the <strong>Beams Activation</strong> tab.",
           '.mv-ap-tab[data-tab="beams"]',
           "install-guide:ap-tab-beams",
-          { pointer: "bottom", allowInside: "#mv-dlg-advanced-params" }
+          { pointer: "bottom", allowInside: AP_INSIDE }
         ),
         click(
           "ts-ap-beam-sel",
           "Auto Beam Selection",
-          "Uncheck <strong>Auto Beam Selection</strong> and <strong>Automatic Beams Range</strong>, then click <strong>Select All</strong>.",
-          "#mvApAutoBeamSel, #mvApAutoBeamRange, #mvApBeamSelectAll",
+          "Uncheck <strong>Auto Beam Selection</strong>.",
+          "#mvApAutoBeamSel",
           "install-guide:ap-beam-sel-off",
-          { pointer: "right", allowInside: "#mv-dlg-advanced-params" }
+          { pointer: "right", allowInside: AP_INSIDE }
+        ),
+        click(
+          "ts-ap-beam-range",
+          "Automatic Beams Range",
+          "Uncheck <strong>Automatic Beams Range</strong>.",
+          "#mvApAutoBeamRange",
+          "install-guide:ap-beam-range-off",
+          { pointer: "right", allowInside: AP_INSIDE }
+        ),
+        click(
+          "ts-ap-select-all",
+          "Select All beams",
+          "Click <strong>Select All</strong> above the beam list.",
+          "#mvApBeamSelectAll",
+          "install-guide:ap-beams-select-all",
+          { pointer: "bottom", allowInside: AP_INSIDE }
         ),
         click(
           "ts-ap-upload",
           "Upload All",
-          "Click <strong>Upload All</strong> to apply all changes, then Close.",
+          "Click <strong>Upload All</strong> to apply all changes.",
           "#mvApUploadAll",
           "install-guide:ap-uploaded",
-          { pointer: "bottom", allowInside: "#mv-dlg-advanced-params" }
+          { pointer: "bottom", allowInside: AP_INSIDE }
         ),
-        click(
-          "ts-ap-close",
-          "Close",
-          "Click <strong>Close</strong>.",
-          "#mvApClose",
-          "install-guide:ap-closed",
-          { pointer: "bottom", allowInside: "#mv-dlg-advanced-params" }
-        ),
+        closeApStep("ts-ap-close"),
         doneStep(item.explanation)
       );
     } else {
