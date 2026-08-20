@@ -5,76 +5,159 @@ Do not edit the original manuals file; keep that as the PDF extract. Use **this*
 
 Firmware math source of truth: `docs/firmware/RESEARCH-CLOSED.md` (firmware `3DLevelScannerM_4_5_452`). Do not invent formulas beyond that file.
 
-**How to read this file:** Formulas stay for the record. Under each one, **Do this in the software** is the version you actually click. You should not need a calculator for `X_m`.
+**How to read this file:** Theory stays in place. **Fix in 3D Vision** under a problem is the click path to change the scanner. Sign in as **stech** / **techS** (Senior Technician) or the site’s equivalent — Viewer cannot do these.
 
 ---
 
-## How much this can improve troubleshooting
+## Fix in 3D Vision (use these)
 
-**Honest range: a lot on diagnosis, some on “what to type,” little on inventing new magic numbers.**
+Every procedure ends the same way unless noted: **Close** extra windows → toolbar **Load from Vessel** → read Overview **SNR** and **Avg Distance**.
 
-| Layer | What we can add | What we still cannot claim |
-|---|---|---|
-| **Manuals** | Official UI names, defaults, published mapping walk | No TS chapter; 420/7/8/MPN not in the books |
-| **Software (live app)** | Exact Overview warning, dialog options, Demo Mode hiding problems, Load from Vessel, Grades vs Echo Curve series | Demo Mode is not the same as a live Host |
-| **Firmware (closed)** | Why a recording reported distance **X**; Grade vs Threshold pick; maps do **not** skip *this* shot; damping is **not** a metres slew; Echo Curve axis | Why field techs picked **420 / 7 / 8**; bit-identical ADC Grade paint without ADC; AFE mix replay |
+### Fix A — No connection (grey LED, “-”)
 
-**Where the gain is real**
+1. On the Host PC (not a Client), open the vessel.
+2. Toolbar or Parameters: **Connect**. LED must turn **green**.
+3. Parameters: **COM port** matches the USB/RS-485 converter; **Polling Address** unique **00–63**.
+4. **Load from Vessel**.
+5. If it greys out after a few minutes: on the **Host** Windows machine set sleep to **Never** (Start → Power → screen/sleep). Screen-off is OK; sleep is not.
 
-1. **“Why did it report this distance?”** — From a Grades / `.bm4` file: last bin where Grade > Threshold, axis `i × (1000/65536)` m. Tape vs file is now a defined check, not a guess.
+### Fix B — SNR is 0 or Overview says Device in Low SNR
 
-   **Do this in the software:** You never type that formula. Open **Device → Echo Curve Analysis…** (or **Echo Curve Analyze Viewer…** for a saved file). Bottom axis is already distance from the scanner. Find where the **blue Echo** line last sits **above** the **green Threshold**. Read that number on the bottom scale (switch the unit box to **ft** if the tape is in feet). That number **is** `X_m` (or feet). Compare it to the tape. Also click **Load from Vessel** and read **Avg Distance** on Overview — same idea, live.
+1. **Load from Vessel**. Confirm Overview **SNR** is **0.00** (or under 13) and **Device in Low SNR**.
+2. **Device → Advanced Parameters…** (or F3).
+3. Set **Output Damping Time** to **420**.
+4. Set **Max. Filling Rate** to **7**.
+5. Set **Max. Emptying Rate** to **8**.
+6. Click **Upload All**. Wait until upload finishes.
+7. Click **Close** (do not leave Advanced Parameters open).
+8. **Device → Device False Echo Mapping…**
+9. **Action Type:** **Reset User and Auto False Echoes**.
+10. Click **Reset Mapping**. Wait until the window shows **Completed**.
+11. Click **Close**.
+12. **Load from Vessel**. Wait up to **420** seconds, then **Load from Vessel** again. If SNR is still 0: clean the horns, then repeat this Load.
 
-2. **False-echo myths** — Mapping does **not** make the unit skip that peak on the shot that produced the orange/reported distance. Maps feed **later** Threshold. Wiping maps (Reset User and Auto) is a **reset**, not the book’s Manual Scan fix, and it will not “uncross” the pick that already happened.
+### Fix C — Level / 20 mA reads full but the silo is not full
 
-   **Do this in the software:** After mapping, run Echo Curve **again** (or wait and Load from Vessel). The **pink User False Echo** / **red Auto False Echo** lines should move; the old screenshot will not change. To wipe: **Device → Device False Echo Mapping…** → Action Type **Reset User and Auto False Echoes** → **Reset Mapping** → Close. To map a spike: Action Type **Manual Scan**, type **From** / **To** from the Echo Curve bottom axis (spike range only, not the tape distance), **Start Scanning**.
+1. **Device → Device Configuration Wizard…**
+2. Click **Next** until **Full / Empty Calibration**.
+3. On **Distance (Top)** type **1.64** (units must be **ft** on that wizard page).
+4. Click **Finish**. Wait for upload.
+5. **Load from Vessel**.
+6. If it is **still** full: **Device → Echo Curve Analysis…**, set units to **ft**. If a spike sits **before** your tape reading (example spike at 5 ft, tape 12 ft), do **Fix D**. If energy exists only in the first **1.6 ft**, the horn is in the dead zone or dirty — 1.64 is already the software minimum.
 
-3. **Damping myths** — Output Damping Time is **not** `new_metres = old + d·(new−old)`. Raising 300 → 420 can still help **stability / SNR in product behavior**, but do not explain a stuck metre as “damping hasn’t caught up” in that IIR sense. The software book’s “wait one damping time after mapping” is still the right **operational** wait (algorithm / history window), not firmware metres slew.
+### Fix D — False echo (tape says farther than the software)
 
-   **Do this in the software:** **Device → Advanced Parameters…** → **Output Damping Time**. Default **300**. Field SNR-0 path types **420**. **Upload All**, **Close**. After mapping, wait that many seconds (300 or 420), then **Load from Vessel** and check SNR / distance. Do not sit there expecting the metres field to crawl toward the tape like a slider.
+Tape example from the book: tape **12 ft**, extra echoes in the first **5 ft**.
 
-4. **Echo Curve vs Grades** — Same physics family. Echo Curve series: Echo (Grade), Threshold, Auto False Echo, User False Echo, Fuzzy. Grades Analysis is the **named** tool in the 2013 book. Teach both names; do not treat Echo Curve as a different product.
+1. **Device → Echo Curve Analysis…**. Set the unit box to **ft** (or **m** to match the tape).
+2. Drag a box around the extra spike (near the **left**). Read the bottom axis: note **From** (start of spike) and **To** (just past the spike, still **short of the tape**). Book example: From **0**, To **7**.
+3. Close Echo Curve.
+4. **Device → Device False Echo Mapping…**
+5. **Action Type:** **Manual Scan**.
+6. Type **From** and **To** from step 2.
+7. **Threshold:** book example **12000** (only used on Manual Scan).
+8. Click **Start Scanning**. Wait until **Completed**.
+9. Click **Close**.
+10. Wait one **Output Damping Time** (300 s default, or 420 if you set it).
+11. **Device → Echo Curve Analysis…** again. **Pink** User False Echo should cover that near band. The real material group should sit near the **tape** distance.
+12. **Load from Vessel**. Avg Distance should move toward the tape.
 
-   **Do this in the software:** **Device → Echo Curve Analysis…**. Legend: Echo (blue), Threshold (green), Auto False Echo (red), User False Echo (pink). Optional **Show Fuzzy**. Book name **Grades Analysis** is the same job if that menu is what the site PC has.
+Do **not** set To out to the tape distance — that maps the product and the reading gets worse.
 
-5. **SNR 0** — Firmware/software: below Minimal SNR (**13 dB** default) the reading **does not update**. Overview can show **Device in Low SNR**. SNR 0 is echo loss / no valid pick, not “damping field empty.” Field 420/7/8 is a **tech recipe** on top of that; keep it labeled as field, not factory.
+### Fix E — Clear all maps (reset mapping, no Manual Scan)
 
-   **Do this in the software:** **Load from Vessel**. Read Overview **SNR** (want above ~13). If **Device in Low SNR** or **0.00**: field path is AP **Output Damping Time 420**, **Max Filling Rate 7**, **Max Emptying Rate 8**, **Upload All**, **Close**, then False Echo **Reset User and Auto**, **Reset Mapping**, Close, Load from Vessel again, watch SNR. Do not lower **Minimal SNR** below 10 unless senior tech said so (Advanced Parameters, senior-only).
+1. **Device → Device False Echo Mapping…**
+2. **Action Type:** **Reset User and Auto False Echoes**.
+3. Click **Reset Mapping**. Wait for **Completed**.
+4. Click **Close**.
+5. Wait one damping time, then **Load from Vessel**.
 
-6. **Stuck full** — Dead band **0.5 m / 1.64 ft** plus Top Dead Band **Don’t Discard** presenting full-calibration distance when the echo is closer. That is stronger than “type 1.64” alone.
+### Fix F — Auto Beam Selection issues
 
-   **Do this in the software:** **Device → Device Configuration Wizard…** → Next to **Full / Empty Calibration**. Set **Distance (Top)** to at least **1.64** (ft). **Finish**. Then **Load from Vessel**. In Advanced Parameters, **Top Dead Band** = **Don’t Discard** means a too-close echo is shown as full — leave it unless support told you otherwise.
+1. **Device → Advanced Parameters…**
+2. Open the **Beams Activation** tab.
+3. Uncheck **Auto Beam Selection**.
+4. Uncheck **Automatic Beams Range**.
+5. Check **High**, **Medium**, **Low**, and **Dir 30, 90, 150, 210, 270, 330** (or **Select All** if the window has it).
+6. If you only enable some Dir beams, keep **at least three in a row** (example: 270, 330, 30).
+7. **Upload All** → **Close**.
+8. **Load from Vessel**.
 
-7. **Mounting / Locator** — Center and wall-adjacent installs create symmetric / wall echoes that look like false echoes. Axis points in the wizard are X, Y, Z from center, **feet**. 30° slope: measure **horizontal ÷ 0.866** down the slope.
+### Fix G — Sensor “dead” after mapping: restart (not factory)
 
-   **Do this in the software:** Wizard → **dimensions** → **Next** — the three axis numbers are X, Y, Z from center in **feet**. You type the tape values; you do not run cosine in the app. For a 30° hopper, convert on paper first (see slope action below), then type that longer slope distance into placement — not the horizontal-only number.
+1. **Device → Devices Activations…** (Device Activation).
+2. Leave **Reset (Restart) Device** selected. Do **not** choose **Reset to Factory Defaults**.
+3. Click **Reset**. Wait about **30** seconds.
+4. Close the window.
+5. **Load from Vessel**. SNR and distance will look odd until that 30 s init finishes. **20 mA** only means “output at 100%,” not that the reboot worked.
 
-8. **PC sleep** — Still not in the 3D books; still a real Host disconnect cause. Keep it.
+### Fix H — After mapping, reading still wrong
 
-   **Do this in the software:** Nothing in 3D Vision. On the **Host** PC: Start → power → **Make my device sleep after** = **Never**. Then reconnect / Load from Vessel.
+Maps do not change the old Echo Curve file. Take a new one.
 
-**Where we should not oversell**
+1. Wait one full **Output Damping Time**.
+2. **Load from Vessel**.
+3. **Device → Echo Curve Analysis…** (new run).
+4. If still wrong: **Fix E**, then **Fix G**, then **Load from Vessel**.
 
-- Do not rebuild Threshold from Grade (`T[i] = c·Grade[i]` is false).
+### Fix I — Wizard geometry / 30° slope (wrong XY)
 
-   **Do this in the software:** Leave **Threshold** on Echo Curve as the green line the scanner already sent. Do not try to “fix” it by typing a Grade multiplier. To change detection, use **CFAR Sensitivity** / **User or Auto False Echo Sensitivity** (default **1.2**) in Advanced Parameters, **Upload All** — or map From/To. Never invent `T = 1.2 × Echo` in a spreadsheet and expect the box to match.
-- Do not say “this AFE/False E bin made firmware skip that peak” for the orange/reported pick.
+1. **Device → Device Configuration Wizard…**
+2. Set **Distance** to **ft**.
+3. On dimensions, click **Next** until **axis points**. Type **X**, then **Y**, then **Z** from center, in **feet**.
+4. If the lid is a **30°** slope and the drawing says **10 ft from center** horizontally: measure **11.5 ft down the slope**, type **that** into placement — not 10.
+5. **Finish** → **Load from Vessel**.
 
-  **Do this in the software:** Red/pink explain **later** Threshold, not the orange mark on the file you already opened. Take a **new** Echo Curve after mapping.
+### Fix J — Filling/emptying cannot follow the process (level lags)
 
-- Do not replay AFE mix (uninitialized mix addend).
+1. **Device → Advanced Parameters…**
+2. **Max. Filling Rate** and **Max. Emptying Rate**: enter the **real** tons (or mass) per hour, not 7/8 if the process is faster.
+3. **Upload All** → **Close** → **Load from Vessel**.
+4. For the SNR-0 field recipe, use **7** and **8** (Fix B) even if default in the book is 10.
 
-  **Do this in the software:** Do not try to “rebuild” Auto False Echo by hand. **Reset Auto** or reset-all, then let the scanner rebuild. New Echo Curve to see red.
+### Fix K — Echo Curve: confirm what the scanner is using (then pick A–D)
 
-- Do not treat demo Echo Curve envelopes as ADC-true Grade.
+1. Toolbar **Load from Vessel**.
+2. Overview: use **Distance**, not volume %. Write down **Avg Distance** and **SNR**.
+3. **Device → Echo Curve Analysis…**
+4. Units **ft** or **m** = same as the tape.
+5. **Blue Echo** last staying above **green Threshold** should sit near Avg Distance.
+6. Spike **closer than the tape** → **Fix D**. No Echo above Threshold → **Fix B** and clean horns. Cluster only in the first 1.6 ft → **Fix C**.
 
-  **Do this in the software:** On a live Host, run **Echo Curve Analysis** after Load from Vessel. Demo trainer charts are for teaching the legend, not tape match.
+### Fix L — False echoes keep coming back (freeze auto map)
 
-- Do not replace field 420/7/8 with a firmware-derived substitute — there isn’t one in the closed notes.
+1. **Device → Advanced Parameters…** → **Advanced** tab.
+2. **Auto False Echoes** = **Disable**.
+3. **Upload All** → **Close**.
+4. If maps are already bad, **Fix E** first, then Disable Auto so it does not rebuild a bad map.
 
-  **Do this in the software:** Keep typing **420 / 7 / 8** when that is the site recipe. Firmware does not give a different box to fill.
+### Fix M — Mapped false echoes are hiding the real level
 
-**Practical effect on the install-guide TS list:** we can make the **stories and wait/conditions** correct (what the warning is, what Reset Mapping does, what Echo Curve lines mean, when to Load from Vessel). We should **not** pretend firmware proved the numeric recipe. Best improvement is a **decision tree** (below) plus honest labels on field numbers.
+1. **Device → Advanced Parameters…**
+2. **User False Echoes Sensitivity** and/or **Auto False Echoes Sensitivity**: default **1.2**. Lower slightly if the map is eating the true echo; raise slightly if false echoes are still used.
+3. **Upload All** → **Close** → **Load from Vessel**.
+4. If still wrong, **Fix E** and remap with **Fix D** (To **short of** the tape).
+
+---
+
+
+## Which fix (quick)
+
+| Problem | Go to |
+|---|---|
+| Grey LED, “-” | **Fix A** |
+| SNR 0 / Device in Low SNR | **Fix B** |
+| Reads full / 20 mA, silo not full | **Fix C**, then **Fix D** if Echo Curve has a near spike |
+| Tape farther than software | **Fix D** |
+| Wipe maps / start over | **Fix E** then **Fix G** |
+| Missing beams / no bottom | **Fix F** |
+| Dead after mapping | **Fix G** |
+| Mapped but still wrong | **Fix H** |
+| Wrong XY / 30° lid | **Fix I** |
+| Level lags the process | **Fix J** |
+| Confirm what the scanner is using | **Fix K** |
+| Auto map keeps coming back | **Fix L** |
+| Map hiding the real level | **Fix M** |
 
 ---
 
@@ -108,150 +191,68 @@ The current guide topics are **field procedures plus UI walkthroughs**. The manu
 | Reset Sensor Mapping | Reset All False Echoes / Reset Mapping | Opcode family: Scan / Manual Scan / resets. User map is a **327-pt** stored series. Wipe ≠ Manual Scan From/To. After wipe, auto map rebuilds (and Restart rebuilds too). | **Keep wipe as a topic; add Manual Scan as the book fix.** |
 | Advanced Parameters review | Close discards; Auto FE default Enable | First five AP values must match all scanners in a vessel. Upload All vs one device. Disable Auto FE **freezes last auto image**; wipe then sets auto map to 0. | **Partly.** Don’t say “always disable” without why. |
 
-**Numbers that are field practice, not manual or firmware values**
+**Field numbers (type these in the boxes)**
 
-- Output Damping Time **420** (manual default **300 s**, minimum **60 s**)
-
-  **Do this in the software:** Advanced Parameters → **Output Damping Time** → type **420** → **Upload All** → **Close**.
-
-- Max Filling Rate **7** / Max Emptying Rate **8** (manual default **10**; “set to actual process”)
-
-  **Do this in the software:** Same window: **Max. Filling Rate** **7**, **Max. Emptying Rate** **8** → **Upload All**. If the silo fills faster than that, the live level will lag — that is expected.
-
-- **MPN Rate** (not named in these manuals; not in closed firmware notes under that name)
-
-  **Do this in the software:** If the site sheet says MPN 7, it may be a field nickname — do not hunt a box labeled MPN. Use Filling/Emptying **7** / **8** as in the SNR-0 trainer unless a senior tech named a different field.
-
-- False-echo **threshold 12000** — book **example** only
-
-  **Do this in the software:** Only when Action Type is **Manual Scan**. Type **Threshold** in False Echo Mapping (example 12000). On **Reset** actions that box stays **-** and is disabled.
-
-- Windows sleep = **Never**
-
-  **Do this in the software:** Not in 3D Vision. Host PC power settings.
+| Site recipe | Where | What to type |
+|---|---|---|
+| Damping **420** | **Device → Advanced Parameters…** → **Output Damping Time** | **420** → **Upload All** → **Close** (book default is 300; min 60) |
+| Fill **7** / empty **8** | Same window → **Max. Filling Rate** / **Max. Emptying Rate** | **7** and **8** for SNR 0 (**Fix B**). If the process is faster, use the real rates (**Fix J**) or the level lags. |
+| “MPN 7” on a site sheet | There is no **MPN** box | Use Filling/Emptying **7** / **8** unless a senior tech named a different field |
+| Mapping threshold **12000** | **Device False Echo Mapping…** → Action Type **Manual Scan** only | **Threshold** **12000** (book example). On Reset actions the box stays **-** |
+| Sleep **Never** | Windows on the **Host** PC | Start → Power → sleep = **Never** (**Fix A** step 5) |
 
 ---
 
 ## Decision tree (enriched)
 
-Use this order on a live call. It is manuals + firmware + UI, not a new numeric recipe.
+Live call order. After each change: **Close** extra windows → **Load from Vessel**.
 
-1. **Grey / no values** — comms, poll 00–63 unique, Host not asleep, not Demo, Server on Host only. Load from Vessel does nothing useful if disconnected.
-
-   **Do this in the software:** Overview LED grey → **Connect**. Parameters tab: COM / poll. Toolbar **Load from Vessel** only after green.
-
-2. **Device in Low SNR / SNR 0 or “-”** — treat as **no valid pick** (Grade never beat Threshold, or SNR &lt; Minimal SNR 13 dB). Check horn/dust/dead zone **before** typing AP. Then field damping/rates if that is the site standard. Then maps.
-
-   **Do this in the software:** Load from Vessel. Overview **SNR** and **Device in Low SNR**. Echo Curve: if Echo **never** stays above Threshold, mapping/AP will not invent a peak — clean the horn first. Then the 420/7/8 + reset-maps path.
-3. **Reads full / 20 mA / tape much farther** — Distance (Top) ≥ 1.64 ft; Don’t Discard lock; material in blanking; **or** a **near false echo** that Grade&gt;T at a small `i` (pick is **last** G&gt;T — a far real echo can still win if it also exceeds T; a **only-near** spike with nothing past T reports near/full).
-
-   **Do this in the software:** Overview: note **Avg Distance** and **Output**. Open Echo Curve: if Echo only beats Threshold in the **first ~1.6 ft**, fix wizard Distance (Top). If Echo beats Threshold at a spike **before** the tape mark and **not** at the tape mark, use False Echo **Manual Scan** From/To on that spike. Toolbar **Load from Vessel** after either change.
-
-4. **Tape vs software distance disagree but SNR OK** — one-point tape ≠ 3D average/volume. Compare tape to **Echo/Grades distance axis**, not to volume %. From a `.bm4`: `X_m = last_i × (1000/65536)`.
-
-   **Do this in the software (this is how you “use” X_m):**  
-   1. On Overview, switch the view to **Distance** (not Volume %).  
-   2. **Load from Vessel**. Read **Avg Distance** — that is the live report.  
-   3. **Device → Echo Curve Analysis…**, set units to **ft** or **m** to match the tape.  
-   4. On the chart, the bottom number where **Echo last stays above Threshold** is `X_m` / `X_ft`. You read it; you do not calculate `last_i × 1000/65536`.  
-   5. If Avg Distance ≈ that chart number but both disagree with **volume %**, the 3D surface is doing its job — tape is one point.  
-   6. Saved file: **Device → Echo Curve Analyze Viewer…**, open the `.bm4`, same read of the axis.
-
-5. **False echo suspected** — Grades/Echo Curve: spike closer than tape. **Manual Scan** From/To per the book, **or** wipe maps if the site procedure is reset-all. Wait **one Output Damping Time** before judging. Do not tell the customer the map “deleted that peak on the shot already taken.”
-
-   **Do this in the software:** Echo Curve → zoom the near spike (drag a box; **Zoom Undo** if you go too far). Read From/To off the bottom axis. **Device False Echo Mapping…** → **Manual Scan** → type those two numbers → **Start Scanning**. Wait (see damping seconds on AP). New Echo Curve: **pink** line in that band. Then Load from Vessel.
-
-6. **After any upload/map/reset** — Close the dialog, **Load from Vessel**, wait damping window, then look at SNR and distance.
-
-   **Do this in the software:** Toolbar **Load from Vessel**. Then Overview **SNR** and **Avg Distance**. If Advanced Parameters is still open, **Close** it first so you are not looking at stale typed fields.
+1. **Grey / no values** → **Fix A**
+2. **Device in Low SNR / SNR 0** → clean horns, then **Fix B**. If Echo Curve never has blue above green, stop — software cannot invent an echo.
+3. **Reads full / 20 mA / tape much farther** → **Fix K**. Cluster only in first **1.6 ft** → **Fix C**. Spike before the tape → **Fix D**.
+4. **Tape ≠ software, SNR OK** → Overview **Distance** (not volume %) → **Fix K**. Avg Distance should match the Echo Curve bottom-axis pick. If both match each other but not volume %, the 3D surface is working; tape is one point. Saved file: **Device → Echo Curve Analyze Viewer…**
+5. **False echo** → **Fix D**. Site wipe-all instead → **Fix E**. Wait one damping time. Then **Fix K** again.
+6. **Still wrong after mapping** → **Fix H**
 
 ---
 
 ## Firmware — only the closed bits that change support talk
 
-Full math: `docs/firmware/RESEARCH-CLOSED.md`. Short version for troubleshooting:
-
-**Reported distance from a Grades file**
-
-You do **not** need to run this. The scanner and Echo Curve already did it. Plain English: walk the blue Echo line from **left (near horn) to right (farther)**; the **last place it is still above the green Threshold** is the reported distance `X_m`.
+Full math: `docs/firmware/RESEARCH-CLOSED.md`. For a call, use **Fix K**. Internal formula for a `.bm4` file:
 
 ```
-dh = 1000 / 65536          // metres per Grade index
+dh = 1000 / 65536
 G[i] = GradeAmp[i] × 1.01
 T[i] = ThresholdAmp[i >> 2]
 last_i = last index with G[i] > T[i]
 X_m  = last_i × dh
 ```
 
-**Do this in the software**
+**On Echo Curve (same pick the formula describes)**
 
-| Formula piece | What you click |
-|---|---|
-| `last_i` | Echo Curve: last crossing of **Echo** over **Threshold**, reading **right-to-left along the bottom axis** (farthest “still above green”) |
-| `dh` / `1000/65536` | Already built into that bottom axis. Set the unit dropdown to **m** or **ft**. |
-| `G[i] × 1.01` | Already inside the **Echo** line. Do not type 1.01 anywhere. |
-| `T[i >> 2]` | Already the **Threshold** line (green). Do not resample it by hand. |
-| `X_m` | That bottom-axis number, **or** Overview **Avg Distance** after **Load from Vessel** |
+1. **Device → Echo Curve Analysis…** (or **Echo Curve Analyze Viewer…** for a saved `.bm4`).
+2. Units = **ft** or **m** to match the tape.
+3. Walk **blue Echo** left (horn) to right (farther). The last place it stays **above green Threshold** is the reported distance — same as Overview **Avg Distance** after **Load from Vessel**.
+4. Orange marker (if shown) is that pick.
+5. **Red** Auto False Echo and **pink** User False Echo do not change this file. After **Fix D** or **Fix E**, wait one damping time, then run Echo Curve **again**.
+6. Left ~**1.64 ft** = dead zone (**Fix C** if that is all you have). Spike before the tape = **Fix D**. Blue never above green = **Fix B** and clean horns.
+7. Do not type **1.01** or a Grade×constant into Threshold. Change detection with **Fix M** or **Fix D**.
 
-- Orange / reported encoding uses that `last_i` when the gate writes it.
+**Lines on the chart**
 
-  **Do this in the software:** If the chart shows an orange/reported marker, that is the pick. If not, use Echo vs Threshold as above.
-
-- **This pick does not read Auto False Echo or User False Echo.**
-
-  **Do this in the software:** You can hide/show **red** and **pink** in the legend. Turning them off does not change Avg Distance. Mapping only matters on the **next** Load from Vessel / next Echo Curve.
-
-- AFE can change **later** Threshold, not this pick.
-
-  **Do this in the software:** After Auto False Echo runs, take a **new** Echo Curve. Green Threshold may have moved. Compare the new bottom-axis pick to the tape.
-
-- User False Echo is a stored series (Manual Scan fills it). Peak helper does not load it.
-
-  **Do this in the software:** **False Echo Mapping** → **Manual Scan** → From/To → **Start Scanning**. Then new Echo Curve: pink line in that From/To band. Then **Load from Vessel**.
-
-- **Do not** say damping slews reported metres.
-
-  **Do this in the software:** Change **Output Damping Time**, Upload All, wait that many seconds, Load from Vessel. Distance should **jump or hold**, not ease like a progress bar.
-
-- **Do not** rebuild T from Grade.
-
-  **Do this in the software:** Never type a Threshold from Echo×constant. Use **False Echo Sensitivity 1.2** fields or mapping From/To.
-
-**Echo Curve axis (support)**
-
-- Horizontal: distance from the **scanner** (m or ft), `h(i) = offset + i × resolution` (file header), same family as `i × dh` when offset is 0.
-
-  **Do this in the software:** Echo Curve toolbar unit **m** / **ft**. Zoom (drag). Read feet or metres off the **bottom**. That **is** `h(i)`. Offset/resolution are in the file header — the chart already applied them.
-
-- Lines start high energy on the **left** (near the sensor) and run toward farther range on the **right**. “Lower levels” in the current guide text is easy to misread as fill % — it is **farther from the horn**.
-
-  **Do this in the software:** Left of the chart ≈ **1.64 ft dead zone**. Right ≈ empty / far. Do not compare the right edge to Overview **volume %**.
-
-**Series lengths (so charts are not “wrong”)**
-
-| Series | Role on Echo Curve | Do this in the software |
+| Line | Color | What to do |
 |---|---|---|
-| Grade / Echo | Pulse-compressed amplitude (up to 5242 pts) | Look at **Echo** (blue). |
-| Threshold | Detection floor used by the pick | Look at **Threshold** (green). Pick = Echo last above it. |
-| Auto False Echo | Coarser map (655 pts); max-hold vs Grade in the proven path | **Red** line. Built by the scanner; **Reset Auto** / reset-all clears it. |
-| User False Echo | Manual map (327 pts) | **Pink** line. **Manual Scan** draws it. **Reset User** clears it. |
-| Fuzzy | Software overlay on selected echoes | Check **Show Fuzzy** on the Echo Curve toolbar. |
+| Echo | Blue | Reported distance = last stay above green |
+| Threshold | Green | Detection floor |
+| Auto False Echo | Red | Scanner map. Clear with **Fix E** (or Reset Auto only) |
+| User False Echo | Pink | **Fix D** draws this. Reset User / **Fix E** clears it |
+| Fuzzy | — | Check **Show Fuzzy** on the toolbar if needed |
 
-| Series | Role on Echo Curve |
-|---|---|
-| Grade / Echo | Pulse-compressed amplitude (up to 5242 pts) |
-| Threshold | Detection floor used by the pick |
-| Auto False Echo | Coarser map (655 pts); max-hold vs Grade in the proven path |
-| User False Echo | Manual map (327 pts) |
-| Fuzzy | Software overlay on selected echoes |
+**False Echo Mapping**
 
-**False Echo Mapping actions (live software, matches firmware command family)**
-
-- Reset User and Auto False Echoes / Reset User / Reset Auto
-- Scan (From/To automatic)
-- Manual Scan (From/To + threshold)
-
-Reset Mapping vs Start Scanning: button label follows whether the action is a reset.
+- **Reset User and Auto** / Reset User / Reset Auto → button **Reset Mapping** (**Fix E**)
+- **Scan** — From/To automatic
+- **Manual Scan** — From/To + Threshold → **Start Scanning** (**Fix D**)
 
 ---
 
@@ -354,9 +355,7 @@ That last line is the software explanation of a **stuck-full** reading when mate
 - **Max Emptying Rate** / **Max Filling Rate** default **10** (mass/hour).
 - Set these to the **actual process**. Too low → algorithm cannot follow real fill/empty. Too high → noisier / less stable tracking.
 
-**Enriched:** 7 and 8 are **slower than default 10**, i.e. more conservative tracking — typical field “quiet it down” with 420 damping. If the silo truly fills faster than 7, the live reading will lag; that can look like SNR/mapping failure.
-
-**Do this in the software:** Advanced Parameters → **Max. Filling Rate** / **Max. Emptying Rate**. Type **7** and **8** for the SNR-0 field path, or the real process rates. **Upload All**. Then Load from Vessel and watch whether level **lags** the process (rates too low) vs SNR still 0 (not a rate problem).
+**Enriched:** 7 and 8 are **slower than default 10**. SNR-0 path: **Fix B**. Fast process: **Fix J**. If level lags the process but SNR is healthy, raise the rates — it is not a mapping problem.
 
 ### False echoes — two different operations
 
@@ -375,9 +374,9 @@ Software p. 45–47 (parameters) and p. 57–59 (mapping window).
 
 - Decrease if mapped false echoes **block the true level**.
 - Increase if false echoes are **not ignored**.
-- Firmware T rewrite uses **× 1.2** in the closed Threshold walk — same 1.2 family as the sensitivity default. Do not invent other multipliers.
+- Firmware T rewrite uses **× 1.2** in the closed Threshold walk — same family as the sensitivity default.
 
-  **Do this in the software:** Advanced Parameters → **User False Echoes Sensitivity** and **Auto False Echoes Sensitivity**. Leave **1.2** unless a spike is eating the true level (lower a little) or maps are ignored (raise a little). **Upload All**. Do not type 1.2 into False Echo Mapping Threshold unless you are doing **Manual Scan** and the book example (~12000) — that Threshold field is a **map height**, not this 1.2.
+  **Fix:** **Fix M**. Mapping **Threshold 12000** is only on **Manual Scan** (**Fix D**) — that box is map height, not the 1.2 sensitivity.
 
 **False Echo Mapping window** (`Device → Device False Echo Mapping…`)
 
@@ -522,11 +521,7 @@ Software p. 63.
 - Bottom center can be offset from the body center.
 - Wizard Finish uploads to **all scanners in the vessel**.
 
-**Enriched — axis points (tech):** Wizard → dimensions → Next → axis points. Order: **X, Y, Z from center**, units **feet**.
-
-**Enriched — 30° slope:** slope distance = horizontal from center ÷ **0.866**. Example: 10 ft horizontal → ~**11.5 ft** down the slope.
-
-**Do this in the software:** The wizard will not divide by 0.866 for you. On the roof: if Locator / drawing says **10 ft from center** and the lid is a **30°** slope, measure **~11.5 ft along the slope**, then type that into the wizard **axis / placement** fields (feet). Typing 10 when you measured along the slope (or the reverse) puts the sensor in the wrong XY.
+**Enriched — axis points:** **Fix I**. Order **X, Y, Z from center**, **feet**. 30° lid and drawing **10 ft** horizontal: measure **11.5 ft down the slope**, type **11.5**.
 
 ---
 
@@ -539,7 +534,7 @@ Hardware p. 10.
 - Blanking zone **500 mm**.
 - Printed as “500mm (16")” — **16" is wrong**. 500 mm ≈ **19.7 in ≈ 1.64 ft**. Trust the **software** dead band: **0.5 m / 1.64 ft**.
 
-  **Do this in the software:** Ignore the hardware “16"”. In the wizard Full Calibration, **Distance (Top) = 1.64** (when units are ft). Echo Curve: ignore spikes in the first **~1.6 ft** as dead zone, not as a map-to-zero trick unless a tech said to.
+  **Fix:** **Fix C** — wizard **Distance (Top) = 1.64** ft. Echo Curve energy only in the first **~1.6 ft** is dead zone / horn, not a map-to-zero trick.
 
 If material reaches the **antenna**, buildup in the horn → errors or membrane damage.
 
@@ -611,24 +606,22 @@ Do not take beam/false-echo steps from this PDF.
 
 ## Symptom cheat sheet (manuals + firmware + UI)
 
-| What you see | First checks |
+| What you see | Do this |
 |---|---|
-| Grey / no connection | COM, poll 00–63 unique, RS-485 120 Ω, converter, Server on Host, firewall, HART one-per-COM, 4-wire power, **Host not asleep** |
-| SNR 0 / Device in Low SNR | Horn/moisture/dead zone; Minimal SNR 13; damping/rates (field); then Grades — **no G>T** |
-| Frozen old level, then jump | Echo loss hold + Exceeding Filling Rate After Echo Loss |
-| Reads 100% / 20 mA wrongly | Distance (Top) ≥ **1.64 ft**; Don’t Discard lock; horn; **or** near-only Grade>T |
-| Tape ≠ volume % | Expected. Compare tape to **Distance** / Grades axis `last_i × dh` |
-
-  **Do this in the software:** Overview → **Distance**. Load from Vessel. Echo Curve bottom axis vs tape. Ignore volume % for this check.
-| False echoes / too-high level | Tape vs Grades; Manual Scan From/To **short of the real surface**; wait **one damping time**; do not map the product |
-| After mapping, still wrong | Maps don’t change **that** shot; wait damping; Restart (not Factory); Load from Vessel |
-| Yellow text on Overview | Scanner wizard ≠ vessel (except position / horizontal angle) |
-| Red temperature | Outside −40…+85 °C — **not** a reboot banner |
-| Orange indicator | Configuration warning |
-| Beams missing / odd range | Auto Beam Selection; Automatic Beams Range (orange line); ≥3 consecutive dirs if manual |
-| Log empty after reboot | Historic log sampling resets |
-| Demo data / no Low SNR text | Stop Demo; Demo Overview may clear problems |
-| Center / wall install, “software broken” | Mounting, not AP |
+| Grey / no connection | **Fix A** (COM, poll 00–63, Host sleep Never) |
+| SNR 0 / Device in Low SNR | Clean horns, then **Fix B** |
+| Frozen old level, then jump | Echo loss hold. After SNR returns, wait; then **Fix K** |
+| Reads 100% / 20 mA wrongly | **Fix C**; if Echo Curve spike before tape, **Fix D** |
+| Tape ≠ volume % | Overview **Distance** + **Fix K**. Volume % will not match a one-point tape |
+| False echoes / too-high level | **Fix D** (To **short of** the tape). Or wipe: **Fix E** |
+| After mapping, still wrong | **Fix H** |
+| Yellow text on Overview | Wizard settings ≠ vessel (except position / horizontal angle) — re-run wizard **Finish** |
+| Red temperature | Outside −40…+85 °C — not a reboot banner. **Fix G** if you need a restart |
+| Orange indicator | Configuration warning — check Parameters / wizard |
+| Beams missing / odd range | **Fix F** |
+| Log empty after reboot | Historic log sampling resets — set it again in Advanced Parameters |
+| Demo data / no Low SNR text | Stop Demo, then **Fix B** / **Fix K** on a live Host |
+| Center / wall install, “software broken” | **Fix I** / remount (500 mm from wall, not center) |
 
 ---
 
@@ -643,9 +636,7 @@ Keep `Troubleshooting_Manuals.md` as the PDF-only extract. If the **guide** is u
 5. Restart: ~30 s + Load from Vessel — drop temperature/20 mA as success checks.
 6. Dead zone: **1.64 ft**; mention Don’t Discard lock-at-full.
 7. Host sleep: keep.
-8. Optional later: `.bm4` / tape vs `X_m = last_i × (1000/65536)` as a **support** tool — not inside the customer trainer unless asked.
-
-   **Do this in the software today:** **Echo Curve Analyze Viewer…** + tape vs bottom axis. No calculator. A dedicated `X_m` box is not in the app.
+8. Optional later: teach **Fix K** on a saved file — **Device → Echo Curve Analyze Viewer…**, tape vs bottom axis.
 
 ---
 
