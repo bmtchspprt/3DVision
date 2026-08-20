@@ -356,6 +356,8 @@ That last line is the software explanation of a **stuck-full** reading when mate
 
 **Enriched:** 7 and 8 are **slower than default 10**, i.e. more conservative tracking — typical field “quiet it down” with 420 damping. If the silo truly fills faster than 7, the live reading will lag; that can look like SNR/mapping failure.
 
+**Do this in the software:** Advanced Parameters → **Max. Filling Rate** / **Max. Emptying Rate**. Type **7** and **8** for the SNR-0 field path, or the real process rates. **Upload All**. Then Load from Vessel and watch whether level **lags** the process (rates too low) vs SNR still 0 (not a rate problem).
+
 ### False echoes — two different operations
 
 Software p. 45–47 (parameters) and p. 57–59 (mapping window).
