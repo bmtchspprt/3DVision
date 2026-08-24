@@ -658,17 +658,67 @@ Do not take beam/false-echo steps from this PDF.
 
 ## Damaged horn / tin-foil puncture (support)
 
-There is **no** “bad transducer” flag in 3D Vision, firmware, or Capture. The scanner keeps scanning. That face stops returning a usable chirp, so firmware writes **empty Grade** for the beams that needed it.
+A puncture does not trip a “bad transducer” flag. The scanner keeps scanning. That face simply stops returning an acoustic chirp, so firmware writes an empty Grade for the beams that needed it.
+
+On a ticket: list possibles and inspect the horn. Do **not** write “definitely punctured.”
 
 ### Point of failure
 
-The **foil / membrane in the horn** — the acoustic face that keeps water and debris out — not the DSP, not Threshold, not mapping.
+The **membrane in the horn** — the acoustic face, not the DSP, not Threshold, not mapping.
 
-Hardware manual: if material reaches the antenna, buildup in the horn causes errors or **membrane damage**. Three horns. Ridge **00** is antenna 1, aimed at vessel center.
+Hardware is explicit: if material reaches the antenna, buildup in the horn causes errors or **membrane damage**. That is the puncture path. Three horns. Ridge **00** is antenna 1, aimed at vessel center.
 
-Firmware still runs the same chain: ADC → FFT → matched filter against the chirp → magnitude. That magnitude **is Grade**. Pick is **last Grade > Threshold**. No Grade above Threshold → that beam contributes no distance and no mapping hit. Maps cannot create Grade. They only change Threshold / the dashed marker.
+Once that face is torn or packed:
 
-**High / Med / Low** fire **all three antennas at once**. One torn horn weakens those three; it does not always grey them out. **Dir 30 … 330** (Med, steered) are the tabs that go empty or grey when a face is dead. Software greys a beam tab when that beam’s Grade is all zeros. Auto Beam Selection can also drop dirs because of silo size — turn Auto off (**Fix N**) before you call hardware.
+1. That horn no longer launches or receives the chirp.
+2. Firmware still does the same chain: ADC → FFT → matched filter against the chirp → magnitude. That magnitude **is Grade**.
+3. With no real echo, Grade stays empty (all zeros / nothing above Threshold).
+4. Pick is **last Grade > Threshold**. No Grade above Threshold → that beam contributes no distance and no mapping hit.
+5. Overview SNR is a **scanner average**, not per horn. One dead face often will not zero SNR. You only get Device in Low SNR / a frozen reading when enough beams die that nothing valid remains.
+
+Mapping cannot fix this. Maps do not create Grade. They only change later Threshold / the dashed marker. Dragging a dashed line off a huge spike is a **false echo**. A punctured face has no spike to drag.
+
+Firmware is not the failure. It is reporting that the acoustic front end on that horn is gone.
+
+### How the nine Echo Curve tabs fit
+
+- **High / Med / Low** — three frequencies, **all three antennas at once**. One punctured horn weakens those three; it does not always grey them out, because the other two faces still fire.
+- **Dir 30 / 90 / 150 / 210 / 270 / 330** — steered at Med frequency. Those are the ones that go empty or grey when a face is dead. Auto Beam Selection can also drop dirs because of silo size — that is not puncture.
+- Software greys a beam tab when that beam’s Grade is all zeros.
+
+### How you identify it
+
+| What you see | What it is |
+|---|---|
+| One or two dir tabs grey / flat Grade; the other dirs still pick near the tape | Dead face |
+| That beam missing from mapping hits (command 179: beam ID + SNR) | Same |
+| Huge near spike + small dashed line you can drag to the map | False echo / too close — **not** puncture |
+| Energy only in the first ~1.64 ft on many beams | Dead zone / material in the horn — clean it; may already have damaged the membrane |
+| Noisy Grade on **all** beams, Threshold walked up, SNR 0 | Wet head / dirty horns — clean inside the antennas first |
+| All nine weak, or fill only on one side of the silo | Process / placement — do not call puncture |
+| Auto Range orange line, especially on Low | Wall range limit — not hardware |
+
+### Field check
+
+1. Clean inside the horns. Open the rear of the head: no wetness. If a membrane is torn, you will see it.
+2. Echo Curve, All Beams, units in feet. Walk High / Med / Low, then the six dirs.
+3. Puncture: siblings have a real surface pick; one dir is empty and grey. False echo: a massive graph with a small dashed line you can tune out.
+
+Use **Fix N** (maps off, all nine beams forced) so Auto Beam Selection is not hiding a dir.
+
+### Damaged beam vs material too close vs false echo
+
+You do not need extra tooling. The curve already tells them apart.
+
+**False echo.** A huge Grade spike toward the material, with a small dashed vertical line on it, is a mapped false echo / near-field junk pick. The dashed line is the stored pick (or the map marker). Drag that dashed line off the spike and the pick jumps to where false-echo mapping already put it. The beam still has energy. That is not a dead transducer.
+
+**Material too close.** Same family: a massive near-field pile-up, often on several or all nine beams, with the pick jammed in the first few feet. Mapping hits cluster under the sensor. Energy is there; it is just in the wrong place.
+
+**Damage / puncture.** The opposite picture. That one beam’s Grade is empty or flat, its tab greys out, and the other eight still look like real curves. That beam is missing from the mapping hits. Do not call that a puncture if all nine are weak, or if fill is only on one side of the silo.
+
+So: huge spike + small dashed line you can tune off = false echo or too close. Empty Grade on one beam while the others fire = hardware.
+
+A Capture report can add a one-line note when a single beam has no Grade and the others do. Do not name a puncture on that line.
 
 ### Field engineer excerpt — tin foil / water intrusion
 
@@ -676,19 +726,7 @@ Quoted as given (field hardware, not a firmware formula):
 
 > It effects the receiving frequency, not the actual sending frequency. The smoother the reflection is received the better the signal. Just like if there is a medium size piece of material inside the transducer on a single wall. The frequency will then get distributed on the way back to be collected, it wont be collected as it was emitted. Any disruption causing the frequency to "change shapes" is the problem. Ripped foil doesnt have the surface area to receive as it was sent. Also, it acts as a guard to debris inside the transducer. If powder let's say enters into the transducer and lands on one of the speakers, it then is causing a frequency disruption as well as collection because it is interfering with the way the speaker emits the frequency
 
-In short: ripped foil does not collect the return the way it was sent. Foil also keeps powder off the speaker. Powder on a speaker (or material on one wall of a horn) changes the return shape and can change how that speaker emits.
-
-Do **not** write “definitely punctured” on a ticket. List possibles and inspect the horn.
-
-### Damaged beam vs material too close vs false echo
-
-You do not need extra tooling. Echo Curve already tells them apart.
-
-**False echo.** A huge Grade spike toward the material, with a small dashed vertical line on it, is a mapped false echo / near-field junk pick. The beam still has energy. Dragging the dashed line off the spike is mapping work (**Fix D**), not a dead transducer.
-
-**Material too close.** Same family: a massive near-field pile-up, often on several or all nine beams, pick jammed in the first few feet. Mapping hits cluster under the sensor. Energy is there; it is in the wrong place (**Fix C** / clean horns).
-
-**Disrupted receive path (foil / debris / packed wall).** The opposite picture. That one beam’s Grade is empty or flat, its tab greys out, and the other eight still look like real curves. That beam is missing from mapping hits. Do not call that hardware if all nine are weak, or if fill is only on one side of the silo.
+Ripped foil does not collect the return the way it was sent. Foil also keeps powder off the speaker. Powder on a speaker (or material on one wall of a horn) changes the return shape and can change how that speaker emits.
 
 ### What is not a horn test
 
@@ -700,7 +738,7 @@ You do not need extra tooling. Echo Curve already tells them apart.
 | Debug / “QA” Echo Curve | Loads a `.bm4`. Not a puncture test. |
 | Capture **Sensor Recovery** | Factory reset, then writes settings back. No pause to inspect empty-head Grade. |
 
-Run **Fix N** (maps off, all nine beams forced) and read All Beams. Capture Scanner Check can list the same possibles from a `.bm4`; it must not name a puncture.
+Run **Fix N** and read All Beams. Capture Scanner Check can list the same possibles from a `.bm4`; it must not name a puncture.
 
 ---
 
