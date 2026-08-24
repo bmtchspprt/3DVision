@@ -138,6 +138,33 @@ Maps do not change the old Echo Curve file. Take a new one.
 3. **Upload All** → **Close** → **Load from Vessel**.
 4. If still wrong, **Fix E** and remap with **Fix D** (To **short of** the tape).
 
+### Fix N — Maps-off scanner check (one beam dead vs false echo vs too close)
+
+Do this **after** a Capture, so you can put the site back. This is not a factory “transducer QA.” Factory reset does not test horns. Grade **is** the hardware output.
+
+1. **Device → Device False Echo Mapping…** → **Reset User and Auto False Echoes** → **Reset Mapping**. Wait for **Completed**. Close.
+2. **Device → Advanced Parameters…**
+3. **Auto False Echoes** = **Disable** (so Restart does not rebuild the map).
+4. Beams tab: uncheck **Auto Beam Selection** and **Automatic Beams Range**. Force **High / Med / Low** and all **six consecutive dirs** (30 through 330).
+5. **Upload All** → **Close**. Do **not** run Manual Scan. Do not put mapping back yet.
+6. **Fix G** (Restart) if you just wiped maps.
+7. Wait one **Output Damping Time**. **Device → Echo Curve Analysis…** → **All Beams**. Walk High / Med / Low, then the six dirs.
+
+Read the curve (do **not** say “definitely punctured”):
+
+| Picture | Possible |
+|---|---|
+| One or two **dir** tabs grey / flat Grade; sibling dirs still pick near the tape | Receive path on that face disrupted (torn foil/membrane, powder on a speaker, material on one wall of a horn). Inspect that horn. |
+| Huge near spike + small dashed pick you can tune off | False echo or material too close — **not** a dead face. The beam still has energy. |
+| Energy only in the first **~1.64 ft** on many beams | Dead zone / material in the horn — clean first; the membrane may already be damaged. |
+| Noisy Grade on **all** beams, Threshold walked up, SNR 0 | Wet head / dirty horns — clean inside the antennas. |
+| All nine weak, or fill only on one side of the silo | Process / placement — do not treat as a dead horn. |
+| Auto Range orange line, especially on Low | Wall range limit — not hardware. |
+
+A mapping reset **does not always** restore a reading. If it still will not read, Restart (**Fix G**). Factory Defaults is a last resort: it wipes Wizard geometry (3D looks like a default empty silo until you put Wizard back). Sometimes more than one factory reset is needed. After factory: run this Echo Curve check **before** restoring old false-echo maps.
+
+Overview **SNR** is a scanner **average**. It will not fail one horn.
+
 ---
 
 
@@ -158,6 +185,7 @@ Maps do not change the old Echo Curve file. Take a new one.
 | Confirm what the scanner is using | **Fix K** |
 | Auto map keeps coming back | **Fix L** |
 | Map hiding the real level | **Fix M** |
+| Suspect dead horn / foil / puncture vs false echo | **Fix N** |
 
 ---
 
@@ -436,7 +464,7 @@ Software p. 47–48.
 - Uncheck Auto Beam Selection to choose manually.
 - **High / Med / Low** — three frequencies, all three antennas at once.
 - **Dir 30, 90, 150, 210, 270, 330** — six directionals, same frequency as Med.
-- Manual pick: **not fewer than three directional beams**, and they must be **consecutive** (example: 30, 330, and 270).
+- *Manual pick: **not fewer than three directional beams**, and they must be **consecutive* (example: 30, 330, and 270).
 - **Automatic Beams Range** on by default: range limited where the beam hits the wall. Low frequency = wider = more limited. High frequency = narrow = little limit. Algorithm keeps at least one beam that can see the bottom.
 
 **Enriched:** Forcing all 6 dirs + 3 frequencies is a valid **trainer** path when Auto has dropped beams needed for the bottom. Live firmware FFT sizes differ by beam (narrow vs wide). If Auto Range is on, Low may not “see” the bottom — orange line on Grades. Uncheck Automatic Beams Range only when you understand you may paint wall.
@@ -538,6 +566,8 @@ Hardware p. 10.
 
 If material reaches the **antenna**, buildup in the horn → errors or membrane damage.
 
+**Enriched:** torn foil / membrane and powder on a speaker — **Fix N** and **Damaged horn / tin-foil puncture** below.
+
 Measurements are to the **top of the body**. Neck extension / head-body split: adjust all distances to that reference.
 
 **Enriched:** Grade near index 0 is blanking/horn, not “material at the lid.” Mapping From=0 without a To short of the real surface is how people wipe the top of the curve and the true echo together.
@@ -622,6 +652,55 @@ Do not take beam/false-echo steps from this PDF.
 | Log empty after reboot | Historic log sampling resets — set it again in Advanced Parameters |
 | Demo data / no Low SNR text | Stop Demo, then **Fix B** / **Fix K** on a live Host |
 | Center / wall install, “software broken” | **Fix I** / remount (500 mm from wall, not center) |
+| One Echo Curve dir grey / empty, others pick | **Fix N** — inspect that horn (foil/membrane, powder, wetness) |
+
+---
+
+## Damaged horn / tin-foil puncture (support)
+
+There is **no** “bad transducer” flag in 3D Vision, firmware, or Capture. The scanner keeps scanning. That face stops returning a usable chirp, so firmware writes **empty Grade** for the beams that needed it.
+
+### Point of failure
+
+The **foil / membrane in the horn** — the acoustic face that keeps water and debris out — not the DSP, not Threshold, not mapping.
+
+Hardware manual: if material reaches the antenna, buildup in the horn causes errors or **membrane damage**. Three horns. Ridge **00** is antenna 1, aimed at vessel center.
+
+Firmware still runs the same chain: ADC → FFT → matched filter against the chirp → magnitude. That magnitude **is Grade**. Pick is **last Grade > Threshold**. No Grade above Threshold → that beam contributes no distance and no mapping hit. Maps cannot create Grade. They only change Threshold / the dashed marker.
+
+**High / Med / Low** fire **all three antennas at once**. One torn horn weakens those three; it does not always grey them out. **Dir 30 … 330** (Med, steered) are the tabs that go empty or grey when a face is dead. Software greys a beam tab when that beam’s Grade is all zeros. Auto Beam Selection can also drop dirs because of silo size — turn Auto off (**Fix N**) before you call hardware.
+
+### Field engineer excerpt — tin foil / water intrusion
+
+Quoted as given (field hardware, not a firmware formula):
+
+> It effects the receiving frequency, not the actual sending frequency. The smoother the reflection is received the better the signal. Just like if there is a medium size piece of material inside the transducer on a single wall. The frequency will then get distributed on the way back to be collected, it wont be collected as it was emitted. Any disruption causing the frequency to "change shapes" is the problem. Ripped foil doesnt have the surface area to receive as it was sent. Also, it acts as a guard to debris inside the transducer. If powder let's say enters into the transducer and lands on one of the speakers, it then is causing a frequency disruption as well as collection because it is interfering with the way the speaker emits the frequency
+
+In short: ripped foil does not collect the return the way it was sent. Foil also keeps powder off the speaker. Powder on a speaker (or material on one wall of a horn) changes the return shape and can change how that speaker emits.
+
+Do **not** write “definitely punctured” on a ticket. List possibles and inspect the horn.
+
+### Damaged beam vs material too close vs false echo
+
+You do not need extra tooling. Echo Curve already tells them apart.
+
+**False echo.** A huge Grade spike toward the material, with a small dashed vertical line on it, is a mapped false echo / near-field junk pick. The beam still has energy. Dragging the dashed line off the spike is mapping work (**Fix D**), not a dead transducer.
+
+**Material too close.** Same family: a massive near-field pile-up, often on several or all nine beams, pick jammed in the first few feet. Mapping hits cluster under the sensor. Energy is there; it is in the wrong place (**Fix C** / clean horns).
+
+**Disrupted receive path (foil / debris / packed wall).** The opposite picture. That one beam’s Grade is empty or flat, its tab greys out, and the other eight still look like real curves. That beam is missing from mapping hits. Do not call that hardware if all nine are weak, or if fill is only on one side of the silo.
+
+### What is not a horn test
+
+| Menu | What it really is |
+|---|---|
+| Device Activation → **Com Quality** | Wiring / polling. Not horns. |
+| Device Activation → **Factory Defaults** | Clears almost everything. You must re-define the silo. **Damping** and **Steepest Material Slope** stay. Not a beam test. |
+| **Restart** | New search. Rebuilds **auto** false echoes and damping. Use after mapping trouble, **not** factory, unless factory is actually needed. |
+| Debug / “QA” Echo Curve | Loads a `.bm4`. Not a puncture test. |
+| Capture **Sensor Recovery** | Factory reset, then writes settings back. No pause to inspect empty-head Grade. |
+
+Run **Fix N** (maps off, all nine beams forced) and read All Beams. Capture Scanner Check can list the same possibles from a `.bm4`; it must not name a puncture.
 
 ---
 
@@ -645,4 +724,5 @@ Keep `Troubleshooting_Manuals.md` as the PDF-only extract. If the **guide** is u
 - PDF extract: `3D Manuals/Troubleshooting_Manuals.md`
 - Firmware closed: `docs/firmware/RESEARCH-CLOSED.md`
 - Axis / 30° slope: `docs/engineering-notes-axis-slope.md`
+- Horn / foil / maps-off check: this file, **Fix N** and **Damaged horn / tin-foil puncture**
 )
