@@ -207,6 +207,10 @@
     showDesktopPanel();
   }
 
+  function signalVisionClientOpened() {
+    window.dispatchEvent(new CustomEvent("install-guide:vision-client-opened"));
+  }
+
   function finishVisionClientLaunch() {
     visionLoadingTimer = null;
     visionClientLoading = false;
@@ -216,6 +220,7 @@
       visionLoadingShell.classList.remove("app-shell--focused");
     }
     showAppWindow(appShell, taskbarBtnVision, "client");
+    signalVisionClientOpened();
   }
 
   function startVisionClientLaunch() {
@@ -225,6 +230,7 @@
     if (isWindowOpen(appShell)) {
       showVisionChrome();
       showAppWindow(appShell, taskbarBtnVision, "client");
+      signalVisionClientOpened();
       return;
     }
 
@@ -389,6 +395,11 @@
   function wireDesktopIcons() {
     if (desktopIcon) {
       desktopIcon.addEventListener("dblclick", launchFromDesktop);
+      desktopIcon.addEventListener("click", function () {
+        if (document.body.classList.contains("ig-track-login")) {
+          launchFromDesktop();
+        }
+      });
     }
     if (taskbarBtnVision) {
       taskbarBtnVision.addEventListener("click", function () {

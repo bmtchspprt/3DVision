@@ -233,6 +233,9 @@
     if (trigger.id === "mv-menu-device") {
       window.dispatchEvent(new CustomEvent("install-guide:device-menu-open"));
     }
+    if (trigger.id === "mv-menu-edit") {
+      window.dispatchEvent(new CustomEvent("install-guide:edit-menu-open"));
+    }
   }
 
   /** MainScreen.OnMenuEditOpened / EditingMenuEnabling */
@@ -690,6 +693,9 @@
           if (!subPopup.hidden && (subBtn.getAttribute("data-mv-menu-id") === "edit-add" || subBtn.getAttribute("data-mv-menu-id") === "edit-delete")) {
             updateEditingMenuEnabling();
           }
+          if (!subPopup.hidden && subBtn.getAttribute("data-mv-menu-id") === "edit-add") {
+            window.dispatchEvent(new CustomEvent("install-guide:edit-add-open"));
+          }
         }
         return;
       }
@@ -734,6 +740,9 @@
         item.getAttribute("data-mv-menu-id") === "edit-delete"
       ) {
         updateEditingMenuEnabling();
+      }
+      if (!popup.hidden && item.getAttribute("data-mv-menu-id") === "edit-add") {
+        window.dispatchEvent(new CustomEvent("install-guide:edit-add-open"));
       }
     });
   }

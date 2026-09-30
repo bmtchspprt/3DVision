@@ -4207,6 +4207,7 @@
           lockConnectionType(false);
         }
         goStep(2);
+        window.dispatchEvent(new CustomEvent("install-guide:add-vessel-opened"));
         return;
       }
 

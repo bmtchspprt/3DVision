@@ -1,7 +1,7 @@
 /**
  * Step-by-step Install & Setup guide for 3DInstallGuide fork.
  * Modes: Host (install + vessel/scanner setup) | Client (remote viewer) |
- * Already-installed vessel/scanner setup | Free (demo silos).
+ * Already-installed vessel/scanner setup | How to Login | New Scanner | Free (demo silos).
  * Host flow: blank browser → downloads → Custom + Service install → project →
  * connect scanner → Device Wizard → Advanced Parameters → Overview tape compare.
  */
@@ -18,7 +18,8 @@
   var pollTimer = null;
   var rebootWatchTimer = null;
   var resizeBound = null;
-  var guideTrack = "host"; // host | client | vessel | troubleshoot
+  var guideTrack = "host"; // host | client | vessel | login | scanner | troubleshoot
+  var addedVesselId = "";
   var tsSteps = [];
   var tsActiveId = "";
 
@@ -1024,6 +1025,126 @@
     },
   ].concat(cloneSteps(VESSEL_CORE_STEPS));
 
+  function buildLoginSteps() {
+    var steps = [
+      {
+        id: "login-open",
+        title: "Open 3D MultiVision",
+        body: "Click <strong>3DVision</strong> on the taskbar. The connection window is where you sign in.",
+        target: "#taskbarBtnVision",
+        advanceOn: "install-guide:vision-client-opened",
+        pointer: "right",
+      },
+    ].concat(
+      cloneSteps(STEPS_ADVANCED_START),
+      cloneSteps(CLIENT_HOST_IP_STEPS),
+      cloneSteps(STEPS_LOGIN_CONNECT)
+    );
+    var connectBtn = steps.filter(function (s) {
+      return s.id === "click-connect";
+    })[0];
+    if (connectBtn) {
+      connectBtn.body =
+        "Click <strong>Connect</strong>. You join the Host project as a viewer.";
+    }
+    return steps;
+  }
+
+  function buildScannerSteps() {
+    var devices = cloneSteps(
+      HOST_PROJECT_STEPS.filter(function (s) {
+        return (
+          s.id === "open-devices-tab" ||
+          s.id === "devices-connection-type" ||
+          s.id === "devices-connect"
+        );
+      })
+    );
+    var withPoll = [];
+    devices.forEach(function (step) {
+      withPoll.push(step);
+      if (step.id === "devices-connection-type") {
+        withPoll.push({
+          id: "scan-poll",
+          title: "Polling address",
+          body: "Each scanner on this project needs its own address. This new one already has the next free number. Leave it. Address <strong>0</strong> belongs to a scanner that is already here.",
+          target: "#mvDevicesPollCombo",
+          blocking: true,
+          primary: "Continue",
+          pointer: "none",
+        });
+      }
+    });
+    return [
+      {
+        id: "scanner-welcome",
+        phase: "setup",
+        title: "Add a scanner",
+        body: "This project already has silos. You will add one more, connect its scanner, then set it up from the defaults.",
+        blocking: true,
+        primary: "Start",
+        target: null,
+      },
+      {
+        id: "scan-edit",
+        phase: "setup",
+        title: "Open Edit",
+        body: "Click <strong>Edit</strong> on the menu bar.",
+        target: "#mv-menu-edit",
+        advanceOn: "install-guide:edit-menu-open",
+        pointer: "bottom",
+      },
+      {
+        id: "scan-add",
+        phase: "setup",
+        title: "Open Add",
+        body: "Click <strong>Add</strong>.",
+        target: '[data-mv-menu-id="edit-add"]',
+        advanceOn: "install-guide:edit-add-open",
+        pointer: "right",
+      },
+      {
+        id: "scan-vessel",
+        phase: "setup",
+        title: "Add a vessel",
+        body: "Click <strong>Vessel</strong> to add a silo to this project.",
+        target: '[data-mv-menu-id="edit-add-vessel"]',
+        advanceOn: "install-guide:add-vessel-opened",
+        pointer: "right",
+      },
+      {
+        id: "scan-finish",
+        phase: "setup",
+        title: "Finish the new silo",
+        body: "This silo starts at the project defaults: one scanner, and the same connection as the site. Click <strong>Finish</strong>.",
+        target: "#mvProjWizNext",
+        advanceOn: "install-guide:vessel-added",
+        pointer: "bottom",
+      },
+      {
+        id: "scan-open",
+        phase: "setup",
+        title: "Open the new silo",
+        body: "Click the new silo to open it. It stays offline until you connect the scanner.",
+        getTarget: function () {
+          if (!addedVesselId) return "#mvVesselsGrid .mv-vessel-panel";
+          return (
+            '#mvVesselStrip .mv-vessel-chip[data-vessel-id="' +
+            addedVesselId +
+            '"], #mvVesselsGrid .mv-vessel-panel[data-vessel-id="' +
+            addedVesselId +
+            '"]'
+          );
+        },
+        advanceOn: "install-guide:vessel-opened",
+        pointer: "bottom",
+      },
+    ].concat(withPoll, cloneSteps(VESSEL_CORE_STEPS));
+  }
+
+  var LOGIN_STEPS = buildLoginSteps();
+  var SCANNER_STEPS = buildScannerSteps();
+
   function buildHostSteps() {
     var steps = [].concat(
       cloneSteps(STEPS_THROUGH_USERS),
@@ -1080,7 +1201,9 @@
 
   function getSteps() {
     if (guideTrack === "client") return CLIENT_STEPS;
+    if (guideTrack === "login") return LOGIN_STEPS;
     if (guideTrack === "vessel") return VESSEL_STEPS;
+    if (guideTrack === "scanner") return SCANNER_STEPS;
     if (guideTrack === "troubleshoot") return tsSteps;
     return HOST_STEPS;
   }
@@ -1102,18 +1225,26 @@
       '<span class="ig-welcome-line ig-welcome-line--accent">3D MultiVision Setup Guide</span>' +
       "</h1>" +
       '<p class="ig-welcome-tagline">Choose how this PC is set up. Host installs the service and the vessel. Client joins that host.</p>' +
-      '<div class="ig-mode-list" role="list">' +
-      '<button type="button" class="ig-mode-option" data-mode="host" role="listitem">' +
+      '<div class="ig-mode-list">' +
+      '<button type="button" class="ig-mode-option" data-mode="host">' +
       '<span class="ig-mode-option-title">Host PC — Install + Vessel Setup</span>' +
       '<span class="ig-mode-option-sub">Install as a Service, connect the scanner, then configure the vessel.</span>' +
       "</button>" +
-      '<button type="button" class="ig-mode-option" data-mode="client" role="listitem">' +
+      '<button type="button" class="ig-mode-option" data-mode="client">' +
       '<span class="ig-mode-option-title">Client PC — Remote Viewer</span>' +
       '<span class="ig-mode-option-sub">Install the client on a second PC and join the Host project.</span>' +
       "</button>" +
-      '<button type="button" class="ig-mode-option ig-mode-option--secondary" data-mode="vessel" role="listitem">' +
+      '<button type="button" class="ig-mode-option ig-mode-option--secondary" data-mode="vessel">' +
       '<span class="ig-mode-option-title">Already installed — Vessel/Scanner Setup</span>' +
       '<span class="ig-mode-option-sub">Skip the install. Configure vessel dimensions, placement, and advanced parameters.</span>' +
+      "</button>" +
+      '<button type="button" class="ig-mode-option ig-mode-option--secondary" data-mode="login">' +
+      '<span class="ig-mode-option-title">How to Login</span>' +
+      '<span class="ig-mode-option-sub">Open 3D, choose Advanced Connection, enter the Host IP, and sign in.</span>' +
+      "</button>" +
+      '<button type="button" class="ig-mode-option ig-mode-option--secondary" data-mode="scanner">' +
+      '<span class="ig-mode-option-title">New Scanner?</span>' +
+      '<span class="ig-mode-option-sub">Add a silo to a project that is already there, then set it up from the defaults.</span>' +
       "</button>" +
       "</div>" +
       '<button type="button" class="ig-mode-free" data-mode="free">Free mode (installed, Demo silos)</button>' +
@@ -1339,9 +1470,20 @@
   }
 
   function setTrackClass() {
-    document.body.classList.remove("ig-track-host", "ig-track-client", "ig-track-vessel", "ig-track-troubleshoot");
-    if (guideTrack === "client") {
+    document.body.classList.remove(
+      "ig-track-host",
+      "ig-track-client",
+      "ig-track-vessel",
+      "ig-track-troubleshoot",
+      "ig-track-login",
+      "ig-track-scanner"
+    );
+    if (guideTrack === "login") {
+      document.body.classList.add("ig-track-client", "ig-track-login");
+    } else if (guideTrack === "client") {
       document.body.classList.add("ig-track-client");
+    } else if (guideTrack === "scanner") {
+      document.body.classList.add("ig-track-scanner");
     } else if (guideTrack === "vessel") {
       document.body.classList.add("ig-track-vessel");
     } else if (guideTrack === "troubleshoot") {
@@ -1468,6 +1610,14 @@
         step.id === "ts-device-item") &&
       e.target.closest &&
       e.target.closest("#mv-popup-device, #mv-menu-device")
+    ) {
+      return true;
+    }
+
+    if (
+      (step.id === "scan-edit" || step.id === "scan-add" || step.id === "scan-vessel") &&
+      e.target.closest &&
+      e.target.closest("#mvMenubar")
     ) {
       return true;
     }
@@ -1676,7 +1826,7 @@
       goNext();
       return;
     }
-    if (step.id === "vessel-welcome") {
+    if (step.id === "vessel-welcome" || step.id === "scanner-welcome") {
       goNext();
       return;
     }
@@ -2260,6 +2410,84 @@
     }
   }
 
+  function enterLoginMode() {
+    clearPoll();
+    if (resizeBound) {
+      window.removeEventListener("resize", resizeBound);
+      resizeBound = null;
+    }
+    guideTrack = "login";
+    setTrackClass();
+    hideModeMenu();
+    hideTsPanel();
+    document.body.classList.remove("ig-mode", "ig-tease");
+    stopTeaseBackground();
+    markInstalledUi();
+    setGuiding(true);
+    if (card) {
+      card.hidden = false;
+      card.classList.remove("ig-card--hidden");
+    }
+    stepIndex = 0;
+    guideHasSweeper = false;
+    wireResize();
+    renderStep();
+  }
+
+  function enterScannerMode() {
+    clearPoll();
+    if (resizeBound) {
+      window.removeEventListener("resize", resizeBound);
+      resizeBound = null;
+    }
+    guideTrack = "scanner";
+    addedVesselId = "";
+    setTrackClass();
+    hideModeMenu();
+    hideTsPanel();
+    document.body.classList.remove("ig-mode", "ig-tease");
+    markInstalledUi();
+    setGuiding(true);
+    if (card) {
+      card.hidden = false;
+      card.classList.remove("ig-card--hidden");
+    }
+    stepIndex = 0;
+    guideHasSweeper = false;
+    function startSteps() {
+      setGuiding(false);
+      var home = document.getElementById("mvSiteHome");
+      if (home) home.click();
+      setGuiding(true);
+      wireResize();
+      renderStep();
+      // Coach card sits on the top-left menu bar. Drop the project window below it
+      // so Edit → Add → Vessel can be clicked.
+      var shell = document.getElementById("multiVisionShell");
+      var coach = document.getElementById("igCard");
+      if (shell && coach) {
+        var coachRect = coach.getBoundingClientRect();
+        var shellRect = shell.getBoundingClientRect();
+        if (shellRect.top < coachRect.bottom - 8) {
+          shell.style.top = Math.round(coachRect.bottom + 8) + "px";
+        }
+      }
+    }
+    if (typeof window.openMultiVisionFromConnect === "function") {
+      window.openMultiVisionFromConnect({
+        userName: "demoUser",
+        serverHost: "127.0.0.1:22222",
+        viewTitle: "Aggregates",
+        isDemo: true,
+        blankProject: false,
+        instant: true,
+        onReady: startSteps,
+      });
+    } else {
+      startSteps();
+    }
+  }
+
   function wireResize() {
     if (resizeBound) return;
     resizeBound = function () {
@@ -2292,6 +2520,14 @@
     }
     if (mode === "vessel") {
       enterVesselMode();
+      return;
+    }
+    if (mode === "login") {
+      enterLoginMode();
+      return;
+    }
+    if (mode === "scanner") {
+      enterScannerMode();
       return;
     }
     hideTsPanel();
@@ -2358,6 +2594,21 @@
     ];
   }
 
+  function loginRecapItems() {
+    return [
+      "Opened 3D MultiVision from the taskbar.",
+      "Chose Advanced Connection and set the Host IP.",
+      "Signed in and connected to the Host project as a viewer.",
+    ];
+  }
+
+  function scannerRecapItems() {
+    return [
+      "Added a silo to the existing project from Edit, Add, Vessel.",
+      "Left the next free polling address and connected the scanner from Devices.",
+    ].concat(vesselRecapItems());
+  }
+
   function vesselRecapItems() {
     return [
       "Opened Device Configuration Wizard with the scanner already connected.",
@@ -2407,30 +2658,44 @@
     }
 
     var isClient = guideTrack === "client";
+    var isLogin = guideTrack === "login";
     var isVessel = guideTrack === "vessel";
+    var isScanner = guideTrack === "scanner";
     if (kicker) {
-      kicker.textContent = isVessel
-        ? "Vessel / Scanner Setup"
-        : isClient
-          ? "Client Remote Viewer"
-          : "Install & Setup — Host";
+      kicker.textContent = isScanner
+        ? "New Scanner"
+        : isLogin
+          ? "How to Login"
+          : isVessel
+            ? "Vessel / Scanner Setup"
+            : isClient
+              ? "Client Remote Viewer"
+              : "Install & Setup — Host";
     }
     if (title) {
       title.textContent = "You're done";
     }
     if (body) {
-      body.textContent = isVessel
-        ? "Vessel and scanner setup is finished. Dimensions, placement, advanced parameters, and the tape compare are complete."
-        : isClient
-          ? "The Client install guide is finished. You are connected to the Host as a remote viewer."
-          : "Host install and vessel/scanner setup are finished. The scanner is connected and Overview is ready.";
+      body.textContent = isScanner
+        ? "The new silo is on the project. Its scanner is connected, and dimensions, placement, and advanced parameters are set."
+        : isLogin
+          ? "You are signed in. This PC is connected to the Host project as a remote viewer."
+          : isVessel
+            ? "Vessel and scanner setup is finished. Dimensions, placement, advanced parameters, and the tape compare are complete."
+            : isClient
+              ? "The Client install guide is finished. You are connected to the Host as a remote viewer."
+              : "Host install and vessel/scanner setup are finished. The scanner is connected and Overview is ready.";
     }
     if (alert) {
-      alert.textContent = isVessel
-        ? "Use Replay guide anytime to run Vessel/Scanner Setup again."
-        : isClient
-          ? "Do not connect scanners from the Client PC — that stays on the Host."
-          : "Use Replay guide to return to the mode menu and run Install & Setup again.";
+      alert.textContent = isScanner
+        ? "Use Replay guide anytime to add and set up another scanner."
+        : isLogin
+          ? "Do not connect scanners from this login — that stays on the Host."
+          : isVessel
+            ? "Use Replay guide anytime to run Vessel/Scanner Setup again."
+            : isClient
+              ? "Do not connect scanners from the Client PC — that stays on the Host."
+              : "Use Replay guide to return to the mode menu and run Install & Setup again.";
     }
     if (recap) {
       recap.hidden = true;
@@ -2440,11 +2705,15 @@
       recapBtn.setAttribute("aria-expanded", "false");
     }
     if (recapList) {
-      var items = isVessel
-        ? vesselRecapItems()
-        : isClient
-          ? clientRecapItems()
-          : hostRecapItems();
+      var items = isScanner
+        ? scannerRecapItems()
+        : isLogin
+          ? loginRecapItems()
+          : isVessel
+            ? vesselRecapItems()
+            : isClient
+              ? clientRecapItems()
+              : hostRecapItems();
       recapList.innerHTML = items
         .map(function (t) {
           return "<li>" + t + "</li>";
@@ -2505,6 +2774,14 @@
     clearHighlight();
     if (guideTrack === "vessel") {
       enterVesselMode();
+      return;
+    }
+    if (guideTrack === "login") {
+      enterLoginMode();
+      return;
+    }
+    if (guideTrack === "scanner") {
+      enterScannerMode();
       return;
     }
     if (guideTrack === "troubleshoot") {
@@ -2744,7 +3021,11 @@
 
     var kicker = document.getElementById("igKicker");
     if (kicker) {
-      if (guideTrack === "client") {
+      if (guideTrack === "login") {
+        kicker.textContent = "How to Login";
+      } else if (guideTrack === "scanner") {
+        kicker.textContent = "New Scanner";
+      } else if (guideTrack === "client") {
         kicker.textContent = "Client Remote Viewer";
       } else if (guideTrack === "troubleshoot") {
         kicker.textContent = "Troubleshooting";
@@ -2970,6 +3251,34 @@
     if (step.id === "advanced-connection") {
       if (isAdvancedConnectionViewActive()) {
         window.dispatchEvent(new CustomEvent("install-guide:advanced-selected"));
+      }
+    }
+    if (step.id === "login-open") {
+      var clientShell = document.getElementById("appShell");
+      if (
+        clientShell &&
+        !clientShell.hidden &&
+        !clientShell.classList.contains("app-shell--minimized")
+      ) {
+        window.dispatchEvent(new CustomEvent("install-guide:vision-client-opened"));
+      }
+    }
+    if (step.id === "scan-edit") {
+      var editPopup = document.getElementById("mv-popup-edit");
+      if (editPopup && !editPopup.hidden) {
+        window.dispatchEvent(new CustomEvent("install-guide:edit-menu-open"));
+      }
+    }
+    if (step.id === "scan-add") {
+      var addItem = document.querySelector('[data-mv-menu-id="edit-add"]');
+      if (addItem && addItem.classList.contains("is-open")) {
+        window.dispatchEvent(new CustomEvent("install-guide:edit-add-open"));
+      }
+    }
+    if (step.id === "scan-vessel") {
+      var addWiz = document.getElementById("mv-dlg-project-wizard");
+      if (addWiz && !addWiz.hidden) {
+        window.dispatchEvent(new CustomEvent("install-guide:add-vessel-opened"));
       }
     }
     if (step.id === "blank-project") {
@@ -3242,7 +3551,10 @@
   function onGuideEvent(name) {
     var step = currentStep();
     if (step && step.advanceOn === name) {
-      if (name === "install-guide:connected" && guideTrack === "client") {
+      if (
+        name === "install-guide:connected" &&
+        (guideTrack === "client" || guideTrack === "login")
+      ) {
         showEndScreen();
         return;
       }
@@ -3261,6 +3573,9 @@
   }
 
   function wireEvents() {
+    window.addEventListener("install-guide:vessel-added", function (e) {
+      if (e.detail && e.detail.vesselId) addedVesselId = String(e.detail.vesselId);
+    });
     document.addEventListener("click", guideInteractionGuard, true);
     document.addEventListener("mousedown", guideInteractionGuard, true);
     document.addEventListener("pointerdown", guideInteractionGuard, true);
@@ -3302,6 +3617,11 @@
       "install-guide:new-project-opened",
       "install-guide:project-general-next",
       "install-guide:project-created",
+      "install-guide:vision-client-opened",
+      "install-guide:edit-menu-open",
+      "install-guide:edit-add-open",
+      "install-guide:add-vessel-opened",
+      "install-guide:vessel-added",
       "install-guide:vessel-opened",
       "install-guide:devices-tab",
       "install-guide:vessel-connected",
