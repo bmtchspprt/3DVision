@@ -1612,10 +1612,9 @@
 
     if (clickHitsSelector(e, sel)) return true;
 
-    // Vessel: keep Device menu popup clickable while choosing Wizard / Advanced
+    // Device menu: only the item this step is asking for.
     if (
-      (step.id === "open-device-wizard" ||
-        step.id === "ap-open" ||
+      (step.id === "ap-open" ||
         step.id === "ts-device-menu" ||
         step.id === "ts-device-item") &&
       e.target.closest &&
@@ -1623,11 +1622,28 @@
     ) {
       return true;
     }
-
     if (
-      (step.id === "scan-edit" || step.id === "scan-add" || step.id === "scan-vessel") &&
+      step.id === "open-device-wizard" &&
       e.target.closest &&
-      e.target.closest("#mvMenubar")
+      e.target.closest('[data-mv-menu-id="dev-wizard"]')
+    ) {
+      return true;
+    }
+
+    if (step.id === "scan-edit" && e.target.closest && e.target.closest("#mv-menu-edit")) {
+      return true;
+    }
+    if (
+      step.id === "scan-add" &&
+      e.target.closest &&
+      e.target.closest('[data-mv-menu-id="edit-add"]')
+    ) {
+      return true;
+    }
+    if (
+      step.id === "scan-vessel" &&
+      e.target.closest &&
+      e.target.closest('[data-mv-menu-id="edit-add-vessel"]')
     ) {
       return true;
     }
@@ -2475,17 +2491,6 @@
       setGuiding(true);
       wireResize();
       renderStep();
-      // Coach card sits on the top-left menu bar. Drop the project window below it
-      // so Edit → Add → Vessel can be clicked.
-      var shell = document.getElementById("multiVisionShell");
-      var coach = document.getElementById("igCard");
-      if (shell && coach) {
-        var coachRect = coach.getBoundingClientRect();
-        var shellRect = shell.getBoundingClientRect();
-        if (shellRect.top < coachRect.bottom - 8) {
-          shell.style.top = Math.round(coachRect.bottom + 8) + "px";
-        }
-      }
     }
     if (typeof window.openMultiVisionFromConnect === "function") {
       window.openMultiVisionFromConnect({

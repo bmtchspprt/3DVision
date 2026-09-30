@@ -1126,6 +1126,13 @@ body.ig-boot-ready #multiVisionShell.mv-shell--tease {
   pointer-events: auto;
 }
 
+/* New Scanner keeps the project window in its normal place, so the coach
+   sits above the taskbar instead of covering Edit / Device. */
+body.ig-track-scanner .ig-card {
+  top: auto;
+  bottom: 56px;
+}
+
 .ig-card.ig-card--deny {
   animation: ig-deny-shake 0.35s ease;
 }
