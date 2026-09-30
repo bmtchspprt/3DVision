@@ -598,10 +598,10 @@
 
 .ig-ts-panel {
   position: fixed;
-  top: 20px;
+  top: 120px;
   right: 16px;
   bottom: auto;
-  z-index: 6;
+  z-index: 12;
   width: 268px;
   max-height: min(68vh, 520px);
   display: flex;
@@ -737,6 +737,9 @@
   text-decoration: underline;
   cursor: pointer;
   text-align: center;
+}
+.ig-ts-home[hidden] {
+  display: none;
 }
 
 .ig-type-hint {

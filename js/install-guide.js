@@ -2023,6 +2023,39 @@
     });
   }
 
+  function placeTsPanel() {
+    var panel = document.getElementById("igTsPanel");
+    if (!panel) return;
+    var win = document.querySelector("#multiVisionShell .mv-window");
+    if (!win) return;
+    var rect = win.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    var top = Math.round(rect.top + rect.height * 0.097);
+    var height = Math.round(rect.height * 0.846);
+    var wrap = document.querySelector(".page-wrap");
+    var wrapRight = wrap ? wrap.getBoundingClientRect().right : rect.right + rect.width * 0.107;
+    var edge = 16;
+    var room = window.innerWidth - edge - wrapRight;
+    var width = Math.round(Math.min(rect.width * 0.351, Math.max(room, 0)));
+    var left = Math.round(wrapRight);
+    if (width < 220) {
+      width = Math.min(268, Math.round(rect.width * 0.28));
+      left = Math.round(Math.max(rect.right + 12, window.innerWidth - edge - width));
+    }
+    if (left + width > window.innerWidth - edge) {
+      width = Math.max(180, window.innerWidth - edge - left);
+    }
+    if (top + height > window.innerHeight - 8) {
+      height = Math.max(180, window.innerHeight - 8 - top);
+    }
+    panel.style.top = top + "px";
+    panel.style.left = left + "px";
+    panel.style.right = "auto";
+    panel.style.width = width + "px";
+    panel.style.height = height + "px";
+    panel.style.maxHeight = height + "px";
+  }
+
   function showTsPanel() {
     var panel = document.getElementById("igTsPanel");
     if (!panel) return;
@@ -2034,6 +2067,7 @@
     document.body.classList.add("ig-ts-mode");
     if (root) root.hidden = false;
     syncTsHome();
+    placeTsPanel();
   }
 
   function activateTsApp() {
@@ -3248,8 +3282,16 @@
     resetCardDock();
     clearHighlight();
     clearPoll();
-    hideTsPanel();
-    startTeaseBackground(finishBootReveal);
+    showTsPanel();
+    startTeaseBackground(function () {
+      finishBootReveal();
+      placeTsPanel();
+      window.setTimeout(placeTsPanel, 400);
+    });
+    if (!placeTsPanel.bound) {
+      placeTsPanel.bound = true;
+      window.addEventListener("resize", placeTsPanel);
+    }
   }
 
   function boot() {
