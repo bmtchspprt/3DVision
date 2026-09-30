@@ -1045,8 +1045,18 @@
     })[0];
     if (connectBtn) {
       connectBtn.body =
-        "Click <strong>Connect</strong>. You join the Host project as a viewer.";
+        "Click <strong>Connect</strong>. Wait while the Host project opens.";
     }
+    steps.push({
+      id: "login-in-project",
+      title: "You're in the project",
+      body: "The Host project is open. You are signed in as a viewer, and the silo is on screen. Click <strong>Finish</strong>.",
+      blocking: true,
+      primary: "Finish",
+      target: "#mvVesselsGrid",
+      allowInside: "#multiVisionShell",
+      pointer: "bottom",
+    });
     return steps;
   }
 
@@ -1828,6 +1838,10 @@
     }
     if (step.id === "vessel-welcome" || step.id === "scanner-welcome") {
       goNext();
+      return;
+    }
+    if (step.id === "login-in-project") {
+      showEndScreen();
       return;
     }
     if (step.id === "wiz-placement-explain") {
@@ -3551,10 +3565,7 @@
   function onGuideEvent(name) {
     var step = currentStep();
     if (step && step.advanceOn === name) {
-      if (
-        name === "install-guide:connected" &&
-        (guideTrack === "client" || guideTrack === "login")
-      ) {
+      if (name === "install-guide:connected" && guideTrack === "client") {
         showEndScreen();
         return;
       }
