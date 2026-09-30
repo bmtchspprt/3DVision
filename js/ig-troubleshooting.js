@@ -19,6 +19,14 @@
 
   var ITEMS = [
     {
+      id: "capture-3d",
+      title: "3D Capture",
+      blurb:
+        "Copies the 3D window to the clipboard. Paste that picture into the support email.",
+      explanation:
+        "Debug, Developer, Capture Screen by 2 Points. Click two corners of the 3D window. The picture is on the clipboard.",
+    },
+    {
       id: "snr-zero",
       title: "SNR Reading is 0",
       explanation:
@@ -103,15 +111,20 @@
   var ECHO_INSIDE = "#mv-dlg-echo-curve, #mv-dlg-echo-activate";
   var DEVICE_MENU = "#mv-popup-device, #mv-menu-device";
 
-  function doneStep(explanation) {
-    return click(
-      "ts-done",
-      "Do this",
-      p(explanation),
-      null,
-      null,
-      { blocking: true, primary: "Done", pointer: "none" }
-    );
+  function doneStep(line) {
+    return click("ts-done", "Done", line, null, null, {
+      blocking: true,
+      primary: "Done",
+      pointer: "none",
+    });
+  }
+
+  function nextStep(id, title, line) {
+    return click(id, title, line, null, null, {
+      blocking: true,
+      primary: "Next",
+      pointer: "none",
+    });
   }
 
   function deviceMenuThen(itemSel, itemTitle, itemBody, openedEvent) {
@@ -159,14 +172,10 @@
 
   function falseEchoResetSteps() {
     return [
-      click(
+      nextStep(
         "ts-fe-action",
         "Action Type",
-        p("Leave Action Type on Reset User and Auto False Echoes. From, To, and Threshold stay “-” for a reset.") +
-          "<p>The other actions are Scan and Manual Scan.</p>",
-        "#mvFeActionType",
-        null,
-        { blocking: true, pointer: "right", allowInside: FE_INSIDE }
+        "Leave <strong>Action Type</strong> on <strong>Reset User and Auto False Echoes</strong>."
       ),
       click(
         "ts-fe-reset",
@@ -282,15 +291,38 @@
     var steps = [];
     var id = item.id;
 
-    if (id === "snr-zero") {
+    if (id === "capture-3d") {
       steps = [
-        click(
+        nextStep(
+          "ts-cap-what",
+          "3D Capture",
+          "3D Capture copies the 3D window onto the clipboard."
+        ),
+        nextStep("ts-cap-debug", "Debug", "Click <strong>Debug</strong> on the menu bar."),
+        nextStep("ts-cap-dev", "Developer", "Click <strong>Developer</strong>."),
+        nextStep(
+          "ts-cap-item",
+          "Capture Screen by 2 Points",
+          "Click <strong>Capture Screen by 2 Points</strong>."
+        ),
+        nextStep(
+          "ts-cap-a",
+          "First corner",
+          "Click one corner of the 3D window."
+        ),
+        nextStep(
+          "ts-cap-b",
+          "Opposite corner",
+          "Click the opposite corner of the 3D window."
+        ),
+        doneStep("The picture is on the clipboard. Paste it into the support email."),
+      ];
+    } else if (id === "snr-zero") {
+      steps = [
+        nextStep(
           "ts-snr-see",
           "SNR is 0",
-          p("Overview SNR is 0.00 and shows Device in Low SNR. Continue to recover the signal."),
-          "#mvOverviewProblems",
-          null,
-          { blocking: true, pointer: "right", allowInside: "#mvOverview" }
+          "Overview shows <strong>SNR 0.00</strong> and <strong>Device in Low SNR</strong>."
         ),
       ];
       steps = steps.concat(
@@ -305,8 +337,7 @@
         typeStep(
           "ts-snr-damp",
           "Output Damping Time",
-          p("Change Output Dampening Power to 420.") +
-            "<p>In this window type <strong>Output Damping Time</strong>.</p>",
+          "Type <strong>420</strong> in <strong>Output Damping Time</strong>.",
           "mvApDamping",
           "420",
           AP_INSIDE
@@ -314,7 +345,7 @@
         typeStep(
           "ts-snr-fill",
           "Max Filling Rate",
-          p("Set Max Fill to 7.") + "<p>Type <strong>Max. Filling Rate</strong>.</p>",
+          "Type <strong>7</strong> in <strong>Max. Filling Rate</strong>.",
           "mvApFillRate",
           "7",
           AP_INSIDE
@@ -322,7 +353,7 @@
         typeStep(
           "ts-snr-empty",
           "Max Emptying Rate",
-          p("Set Max Empty to 8.") + "<p>Type <strong>Max. Emptying Rate</strong>.</p>",
+          "Type <strong>8</strong> in <strong>Max. Emptying Rate</strong>.",
           "mvApEmptyRate",
           "8",
           AP_INSIDE
@@ -350,9 +381,8 @@
         loadFromVesselStep(),
         click(
           "ts-snr-watch",
-          "Monitor SNR",
-          p("Finally click Load from Vessel and monitor SNR.") +
-            "<p>SNR is on the Overview pane at the left.</p>",
+          "Check SNR",
+          "Read <strong>SNR</strong> on the left.",
           "#mvOvSnr",
           null,
           { blocking: true, primary: "Done", pointer: "right", allowInside: "#mvOverview" }
@@ -371,8 +401,7 @@
         typeStep(
           "ts-full-dist",
           "Distance (Top)",
-          p("Change Distance (Top) to 1.64 ft. This is the sensor dead-zone minimum.") +
-            "<p>Type Full Calib <strong>Distance (Top)</strong>.</p>",
+          "Type <strong>1.64</strong> in Full Calib <strong>Distance (Top)</strong>.",
           "mvWizFullDist",
           "1.64",
           WIZ_INSIDE
@@ -380,13 +409,13 @@
         click(
           "ts-full-finish",
           "Finish",
-          "Click <strong>Finish</strong> to save the configuration.",
+          "Click <strong>Finish</strong>.",
           "#mvWizNext",
           "install-guide:wiz-uploaded",
           { pointer: "bottom", allowInside: WIZ_INSIDE }
         ),
         loadFromVesselStep(),
-        doneStep("Then click Load from Vessel to confirm the level reads correctly.")
+        doneStep("Check the level on Overview.")
       );
     } else if (id === "reset-after-map") {
       steps = deviceMenuThen(
@@ -396,32 +425,47 @@
         "install-guide:devices-act-opened"
       );
       steps.push(
-        click(
+        nextStep(
           "ts-reset-choice",
-          "Reset — not Factory",
-          p("Leave <strong>Reset (Restart) Device</strong> selected. Do not choose Reset to Factory Defaults.") +
-            "<p>Click <strong>Reset</strong>.</p>",
+          "Restart, not Factory",
+          "Leave <strong>Reset (Restart) Device</strong> selected. Do not choose <strong>Reset to Factory Defaults</strong>."
+        ),
+        click(
+          "ts-reset-go",
+          "Reset",
+          "Click <strong>Reset</strong>.",
           "#mvDevResetBtn",
           "install-guide:device-reset",
           { pointer: "right", allowInside: ACT_INSIDE }
         ),
         closeActStep(),
         loadFromVesselStep(),
-        doneStep("Watch for a temperature alert confirming the reboot. Then click Load from Vessel to confirm ~20 mA output.")
+        doneStep("Output current should be about <strong>20 mA</strong>.")
       );
     } else if (id === "controller-sleep") {
       steps = [
-        click(
-          "ts-sleep-start",
-          "Windows Start",
-          "On the controller PC, click the Start button (lower-left).",
-          "#winStartBtn",
-          "install-guide:start-open",
-          { pointer: "bottom", allowInside: "#winStartBtn, .win-taskbar, #winStartMenu, #winStartBackdrop" }
+        nextStep(
+          "ts-sleep-settings",
+          "Power settings",
+          "On the controller PC, open <strong>Settings</strong>."
         ),
-        doneStep(
-          "Expand Screen, sleep, and hibernation timeouts. Set “Make my device sleep after” to Never. Screen turning off is OK — only the sleep setting causes disconnects."
+        nextStep("ts-sleep-system", "System", "Click <strong>System</strong>."),
+        nextStep(
+          "ts-sleep-power",
+          "Power",
+          "Click <strong>Power &amp; sleep</strong>."
         ),
+        nextStep(
+          "ts-sleep-expand",
+          "Timeouts",
+          "Expand <strong>Screen, sleep, and hibernation timeouts</strong>."
+        ),
+        nextStep(
+          "ts-sleep-never",
+          "Sleep after",
+          "Set <strong>Make my device sleep after</strong> to <strong>Never</strong>."
+        ),
+        doneStep("Leave the screen timeout as it is. Screen off is OK."),
       ];
     } else if (id === "auto-beam") {
       steps = deviceMenuThen(
@@ -442,7 +486,7 @@
         click(
           "ts-beam-uncheck",
           "Auto Beam Selection",
-          "Uncheck <strong>Auto Beam Selection</strong> so you can pick beams by hand.",
+          "Uncheck <strong>Auto Beam Selection</strong>.",
           "#mvApAutoBeamSel",
           "install-guide:ap-beam-sel-off",
           { pointer: "right", allowInside: AP_INSIDE }
@@ -458,7 +502,7 @@
         click(
           "ts-beam-select-all",
           "Select All beams",
-          "Click <strong>Select All</strong> so every echo beam is checked.",
+          "Click <strong>Select All</strong>.",
           "#mvApBeamSelectAll",
           "install-guide:ap-beams-select-all",
           { pointer: "bottom", allowInside: AP_INSIDE }
@@ -473,7 +517,7 @@
         ),
         closeApStep("ts-beam-close"),
         loadFromVesselStep(),
-        doneStep("Then click Load from Vessel to confirm correct readings.")
+        doneStep("Check the reading on Overview.")
       );
     } else if (id === "echo-curve") {
       steps = [
@@ -496,28 +540,35 @@
         click(
           "ts-echo-curve",
           "Echo Curve window",
-          "Wait for the Echo Curve window to open.",
+          "Wait. The Echo Curve window opens on its own.",
           "#mv-dlg-echo-curve",
           "install-guide:echo-curve-opened",
           { pointer: "none", allowInside: ECHO_INSIDE }
         ),
-        click(
-          "ts-echo-read",
-          "How to read it",
-          p(item.explanation),
-          "#mv-dlg-echo-curve",
-          null,
-          {
-            blocking: true,
-            primary: "Continue",
-            pointer: "none",
-            allowInside: ECHO_INSIDE,
-          }
+        nextStep(
+          "ts-echo-left",
+          "Left to right",
+          "Lines start on the left (sensor) and move right (lower in the silo)."
+        ),
+        nextStep(
+          "ts-echo-feet",
+          "Bottom numbers",
+          "Numbers along the bottom are feet from the sensor."
+        ),
+        nextStep(
+          "ts-echo-good",
+          "Good curve",
+          "A tight group of lines, with no spike away from the group, is a good curve."
+        ),
+        nextStep(
+          "ts-echo-bad",
+          "False echo",
+          "A spike far from that group is a false echo."
         ),
         click(
           "ts-echo-close-curve",
           "Close Echo Curve",
-          "Close the Echo Curve window.",
+          "Click <strong>Close</strong> on the Echo Curve window.",
           '#mv-dlg-echo-curve [data-mv-dlg-close="mv-dlg-echo-curve"], #mv-dlg-echo-curve .title-btn.close',
           "install-guide:echo-curve-closed",
           { pointer: "bottom", allowInside: ECHO_INSIDE }
@@ -525,12 +576,12 @@
         click(
           "ts-echo-close-act",
           "Close analysis",
-          "Close Activate Echo Curve Analysis.",
+          "Click <strong>Close</strong> on Activate Echo Curve Analysis.",
           '#mv-dlg-echo-activate [data-mv-dlg-close="mv-dlg-echo-activate"], #mv-dlg-echo-activate .title-btn.close',
           "install-guide:echo-activate-closed",
           { pointer: "bottom", allowInside: ECHO_INSIDE }
         ),
-        doneStep(item.explanation),
+        doneStep("That is how you read the Echo Curve."),
       ];
     } else if (id === "reset-mapping") {
       steps = deviceMenuThen(
@@ -542,9 +593,7 @@
       steps = steps.concat(falseEchoResetSteps());
       steps.push(
         loadFromVesselStep(),
-        doneStep(
-          "This clears all stored false echo maps from the sensor. After Reset Mapping, click Load from Vessel in the toolbar to confirm the sensor is reading correctly."
-        )
+        doneStep("Check the reading on Overview.")
       );
     } else if (id === "wizard-deadzone") {
       steps = deviceMenuThen(
@@ -556,10 +605,15 @@
       steps = steps.concat(wizUnitSteps());
       steps = steps.concat(wizNextSteps());
       steps.push(
+        nextStep(
+          "ts-dz-min",
+          "Dead-zone",
+          "<strong>Distance (Top)</strong> cannot be under <strong>1.64 ft</strong>."
+        ),
         typeStep(
           "ts-dz-dist",
-          "Dead-zone (Distance Top)",
-          p(item.explanation),
+          "Distance (Top)",
+          "Type <strong>1.64</strong> in <strong>Distance (Top)</strong>.",
           "mvWizFullDist",
           "1.64",
           WIZ_INSIDE
@@ -567,12 +621,12 @@
         click(
           "ts-dz-finish",
           "Finish",
-          "Click <strong>Finish</strong> to save.",
+          "Click <strong>Finish</strong>.",
           "#mvWizNext",
           "install-guide:wiz-uploaded",
           { pointer: "bottom", allowInside: WIZ_INSIDE }
         ),
-        doneStep("Click Finish to save.")
+        doneStep("The dead-zone is saved.")
       );
     } else if (id === "ap-review") {
       steps = deviceMenuThen(
@@ -582,20 +636,10 @@
         "install-guide:advanced-params-opened"
       );
       steps.push(
-        click(
+        nextStep(
           "ts-ap-vessel",
           "Vessel tab",
-          p(
-            "On the Basic tab, confirm no values are negative or in the thousands — factory defaults work for most vessels; professional programming is needed for tuned adjustments."
-          ) + "<p>That review is on the <strong>Vessel</strong> tab in this window.</p>",
-          '.mv-ap-tab[data-tab="vessel"]',
-          null,
-          {
-            blocking: true,
-            primary: "Continue",
-            pointer: "bottom",
-            allowInside: AP_INSIDE,
-          }
+          "On the <strong>Vessel</strong> tab, check that no value is negative or in the thousands."
         ),
         click(
           "ts-ap-adv-tab",
@@ -608,7 +652,7 @@
         click(
           "ts-ap-auto-fe",
           "Auto False Echoes",
-          "Set <strong>Auto False Echoes</strong> to <strong>Disable</strong> (Deactivated).",
+          "Set <strong>Auto False Echoes</strong> to <strong>Disable</strong>.",
           "#mvApAutoFalseEchoes",
           "install-guide:ap-auto-false-off",
           { pointer: "right", allowInside: AP_INSIDE }
@@ -640,7 +684,7 @@
         click(
           "ts-ap-select-all",
           "Select All beams",
-          "Click <strong>Select All</strong> above the beam list.",
+          "Click <strong>Select All</strong>.",
           "#mvApBeamSelectAll",
           "install-guide:ap-beams-select-all",
           { pointer: "bottom", allowInside: AP_INSIDE }
@@ -648,13 +692,13 @@
         click(
           "ts-ap-upload",
           "Upload All",
-          "Click <strong>Upload All</strong> to apply all changes.",
+          "Click <strong>Upload All</strong>.",
           "#mvApUploadAll",
           "install-guide:ap-uploaded",
           { pointer: "bottom", allowInside: AP_INSIDE }
         ),
         closeApStep("ts-ap-close"),
-        doneStep(item.explanation)
+        doneStep("Advanced Parameters are uploaded.")
       );
     } else {
       steps = [doneStep(item.explanation || "")];
@@ -665,11 +709,16 @@
 
   function listHtml() {
     return ITEMS.map(function (item) {
+      var note = item.blurb
+        ? '<span class="ig-ts-blurb">' + esc(item.blurb) + "</span>"
+        : "";
       return (
         '<button type="button" class="ig-ts-item" data-ts-id="' +
         esc(item.id) +
-        '">' +
+        '"><span class="ig-ts-item-title">' +
         esc(item.title) +
+        "</span>" +
+        note +
         "</button>"
       );
     }).join("");

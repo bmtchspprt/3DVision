@@ -1090,14 +1090,11 @@
     root.className = "ig-root";
     root.id = "installGuideRoot";
     root.innerHTML =
+      '<div class="ig-side-dock" id="igSideDock">' +
       '<div class="ig-mode-menu" id="igModeMenu">' +
       '<div class="ig-mode-panel ig-mode-panel--setup" id="igModeMain">' +
-      '<button type="button" class="ig-welcome-ts" id="igWelcomeTs" aria-label="Troubleshooting">' +
-      '<img class="ig-welcome-ts-icon" src="assets/ui/troubleshoot-alert.png" alt="" width="42" height="42" draggable="false">' +
-      '<span class="ig-welcome-ts-label">Troubleshooting</span>' +
-      "</button>" +
       '<p class="ig-mode-kicker">3D MultiVision</p>' +
-      "<h1>Install &amp; Setup</h1>" +
+      "<h1>Setup</h1>" +
       '<div class="ig-mode-list" role="list">' +
       '<button type="button" class="ig-mode-option" data-mode="host" role="listitem">' +
       '<span class="ig-mode-option-title">Host PC — Install + Vessel Setup</span>' +
@@ -1122,7 +1119,7 @@
       "</div>" +
       '<div class="ig-ts-body" id="igTsBody"></div>' +
       '<button type="button" class="ig-ts-home" id="igTsHome">Back to setup menu</button>' +
-      "</div>" +
+      "</div></div>" +
       '<div class="ig-dim" aria-hidden="true"></div>' +
       '<div class="ig-spotlight ig-pulse" id="igSpotlight" hidden></div>' +
       '<div class="ig-pointer" id="igPointer" hidden>' +
@@ -1989,6 +1986,20 @@
     window.dispatchEvent(new CustomEvent("install-guide:free-mode"));
   }
 
+  function setupMenuVisible() {
+    return !!(
+      modeMenu &&
+      !modeMenu.hidden &&
+      !modeMenu.classList.contains("ig-mode-menu--hidden")
+    );
+  }
+
+  function syncTsHome() {
+    var home = document.getElementById("igTsHome");
+    if (!home) return;
+    home.hidden = setupMenuVisible();
+  }
+
   function hideTsPanel() {
     var panel = document.getElementById("igTsPanel");
     if (panel) {
@@ -2006,6 +2017,32 @@
     });
   }
 
+  function placeSideDock() {
+    var dock = document.getElementById("igSideDock");
+    if (!dock) return;
+    var win = document.querySelector("#multiVisionShell .mv-window");
+    var gap = 0;
+    var rect = null;
+    if (win) {
+      rect = win.getBoundingClientRect();
+      gap = window.innerWidth - rect.right;
+    }
+    if (rect && gap >= 220) {
+      var width = Math.min(300, Math.floor(gap - 16));
+      dock.style.width = width + "px";
+      dock.style.left = Math.round(rect.right + 8) + "px";
+      dock.style.right = "auto";
+      dock.style.top = Math.max(12, Math.round(rect.top)) + "px";
+    } else {
+      dock.style.width = "300px";
+      dock.style.left = "auto";
+      dock.style.right = "12px";
+      dock.style.top = "12px";
+    }
+    var topPx = parseInt(dock.style.top, 10) || 12;
+    dock.style.maxHeight = Math.max(240, window.innerHeight - topPx - 12) + "px";
+  }
+
   function showTsPanel() {
     var panel = document.getElementById("igTsPanel");
     if (!panel) return;
@@ -2016,6 +2053,25 @@
     panel.hidden = false;
     document.body.classList.add("ig-ts-mode");
     if (root) root.hidden = false;
+    syncTsHome();
+    placeSideDock();
+  }
+
+  function activateTsApp() {
+    document.body.classList.remove("ig-mode", "ig-tease");
+    document.body.classList.add("ig-free-mode");
+    markInstalledUi();
+    if (typeof window.openMultiVisionFromConnect === "function") {
+      window.openMultiVisionFromConnect({
+        userName: "demoUser",
+        serverHost: "127.0.0.1:22222",
+        viewTitle: "Aggregates",
+        isDemo: true,
+        blankProject: false,
+        openOverviewId: "lime-stone",
+        instant: true,
+      });
+    }
   }
 
   function applyTsSnrScene(id) {
@@ -2061,21 +2117,8 @@
     clearHighlight();
     guideTrack = "troubleshoot";
     setTrackClass();
-    document.body.classList.remove("ig-mode", "ig-tease");
-    document.body.classList.add("ig-free-mode");
-    markInstalledUi();
     showTsPanel();
-    if (typeof window.openMultiVisionFromConnect === "function") {
-      window.openMultiVisionFromConnect({
-        userName: "demoUser",
-        serverHost: "127.0.0.1:22222",
-        viewTitle: "Aggregates",
-        isDemo: true,
-        blankProject: false,
-        openOverviewId: "lime-stone",
-        instant: true,
-      });
-    }
+    activateTsApp();
   }
 
   function leaveTroubleshootMode() {
@@ -2112,6 +2155,7 @@
     guideTrack = "troubleshoot";
     setTrackClass();
     hideModeMenu();
+    activateTsApp();
     showTsPanel();
     if (root) root.hidden = false;
     setGuiding(true);
@@ -2126,6 +2170,7 @@
     modeMenu.hidden = true;
     modeMenu.classList.add("ig-mode-menu--hidden");
     modeMenu.setAttribute("aria-hidden", "true");
+    syncTsHome();
   }
 
   function revealModeMenu() {
@@ -2133,6 +2178,7 @@
     modeMenu.hidden = false;
     modeMenu.classList.remove("ig-mode-menu--hidden");
     modeMenu.setAttribute("aria-hidden", "false");
+    syncTsHome();
   }
 
   function enterVesselMode() {
@@ -2208,6 +2254,7 @@
       enterVesselMode();
       return;
     }
+    hideTsPanel();
     guideTrack = mode === "client" ? "client" : "host";
     setTrackClass();
     hideModeMenu();
@@ -2875,6 +2922,12 @@
         window.dispatchEvent(new CustomEvent("install-guide:device-menu-open"));
       }
     }
+    if (step.id === "ts-echo-curve") {
+      var echoOpenNow = document.getElementById("mv-dlg-echo-curve");
+      if (echoOpenNow && !echoOpenNow.hidden) {
+        window.dispatchEvent(new CustomEvent("install-guide:echo-curve-opened"));
+      }
+    }
     if (step.id === "open-device-wizard") {
       var wizDlg = document.getElementById("mv-dlg-device-wizard");
       if (wizDlg && !wizDlg.hidden && wizDlg.offsetParent !== null) {
@@ -3216,8 +3269,16 @@
     resetCardDock();
     clearHighlight();
     clearPoll();
-    hideTsPanel();
-    startTeaseBackground(finishBootReveal);
+    showTsPanel();
+    startTeaseBackground(function () {
+      finishBootReveal();
+      placeSideDock();
+      window.setTimeout(placeSideDock, 400);
+    });
+    if (!placeSideDock.bound) {
+      placeSideDock.bound = true;
+      window.addEventListener("resize", placeSideDock);
+    }
   }
 
   function boot() {

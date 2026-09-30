@@ -8,18 +8,31 @@
   font-family: "Segoe UI", Tahoma, sans-serif;
 }
 
-/* Full-screen install-type picker */
-.ig-mode-menu {
-  position: absolute;
-  inset: 0;
-  z-index: 10;
+/* Setup sits on the 3D view, above Troubleshooting */
+.ig-side-dock {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+  z-index: 4;
+  width: 300px;
+  max-height: calc(100vh - 24px);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  pointer-events: auto;
-  background:
-    linear-gradient(160deg, rgba(28, 36, 46, 0.62) 0%, rgba(42, 52, 63, 0.55) 45%, rgba(26, 34, 43, 0.68) 100%);
-  padding: 24px;
+  flex-direction: column;
+  gap: 8px;
+  overflow: auto;
+  pointer-events: none;
+}
+
+.ig-mode-menu {
+  position: relative;
+  inset: auto;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  flex: 0 0 auto;
+  pointer-events: none;
+  background: none;
+  padding: 0;
 }
 
 /* display:flex above beats bare [hidden] in some engines — force hide */
@@ -487,8 +500,33 @@
 
 .ig-mode-panel--setup {
   position: relative;
-  width: min(680px, 100%);
-  padding-top: 64px;
+  width: 100%;
+  padding: 12px 12px 8px;
+  pointer-events: auto;
+}
+
+.ig-mode-panel--setup .ig-mode-list {
+  gap: 6px;
+}
+
+.ig-mode-panel--setup .ig-mode-option {
+  padding: 8px 10px;
+  gap: 2px;
+}
+
+.ig-mode-panel--setup .ig-mode-option-title {
+  font-size: 13px;
+}
+
+.ig-mode-panel--setup .ig-mode-option-sub {
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.ig-mode-panel--setup .ig-mode-free {
+  margin-top: 8px;
+  padding: 4px 2px;
+  font-size: 11px;
 }
 
 .ig-welcome-ts {
@@ -564,12 +602,12 @@
 }
 
 .ig-ts-panel {
-  position: fixed;
-  right: 16px;
-  bottom: 56px;
+  position: relative;
+  right: auto;
+  bottom: auto;
   z-index: 3;
-  width: 248px;
-  max-height: min(72vh, 520px);
+  width: 100%;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   background: #fff;
@@ -633,6 +671,7 @@
 
 .ig-ts-body {
   overflow: auto;
+  max-height: min(46vh, 420px);
   padding: 8px;
   display: flex;
   flex-direction: column;
@@ -658,6 +697,19 @@
   font-size: 12px;
   font-weight: 600;
   line-height: 1.3;
+}
+
+.ig-ts-item-title,
+.ig-ts-blurb {
+  display: block;
+}
+
+.ig-ts-blurb {
+  margin-top: 3px;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .ig-ts-item:hover,
@@ -727,6 +779,11 @@
   font-weight: 700;
   color: #1a1f2a;
   line-height: 1.2;
+}
+
+.ig-mode-panel--setup h1 {
+  margin: 0 0 8px;
+  font-size: 16px;
 }
 
 .ig-mode-list {
