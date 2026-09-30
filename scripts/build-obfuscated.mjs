@@ -377,6 +377,13 @@ async function main() {
     const name = path.basename(rel);
     fs.copyFileSync(path.join(ROOT, rel), path.join(locDist, name));
   }
+  const gradesDist = path.join(DIST, "assets", "grades");
+  fs.mkdirSync(gradesDist, { recursive: true });
+  const goodCurve = path.join(ROOT, "assets", "grades", "good-curve.bm4");
+  if (fs.existsSync(goodCurve)) {
+    fs.copyFileSync(goodCurve, path.join(gradesDist, "good-curve.bm4"));
+  }
+
   const fuzzyDist = path.join(DIST, "data", "FuzzyTables");
   fs.mkdirSync(fuzzyDist, { recursive: true });
   const fuzzySrc = path.join(ROOT, "data", "FuzzyTables");
