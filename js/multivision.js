@@ -152,6 +152,12 @@
     return vessel && vessel.connectionStatus === VESSEL_CONNECTION.OFFLINE;
   }
 
+  // FlowManagerDeviceReset: command 159 reboots the scanner. While it is down,
+  // VesselDetails3D.ClearDisplay hides the picture. Readings are 0 until it returns.
+  function isRebootDown(vessel) {
+    return !!(vessel && vessel._rebootPhase === "down");
+  }
+
   /**
    * Vessel.FullNameConnected / FullNameNotConnected.
    * NameDisplay has no type suffix. Connected adds " (MV)" once.
@@ -221,7 +227,7 @@
           avg: vessel.avg,
           max: vessel.max,
           min: vessel.min,
-          connected: !isVesselOffline(vessel),
+          connected: !isVesselOffline(vessel) && !isRebootDown(vessel),
         });
         window.requestAnimationFrame(function () {
           fitOverviewScale();
@@ -1327,7 +1333,8 @@
     chip.dataset.vesselId = vessel.id;
     // connectionStatus: online (green, default) | offline (grey) — strip LED under blue bar
     var offline = isVesselOffline(vessel);
-    chip.dataset.connectionStatus = offline
+    var visualDown = offline || isRebootDown(vessel);
+    chip.dataset.connectionStatus = visualDown
       ? VESSEL_CONNECTION.OFFLINE
       : VESSEL_CONNECTION.ONLINE;
     // Icon wrap is silo-sized only so the silo stays optically centered; LED hangs to the right.
@@ -1336,11 +1343,11 @@
       '<span class="mv-vessel-chip-icon">' +
       vesselChipSiloSvg(vessel.id.replace(/[^a-z0-9]/gi, "_")) +
       '<span class="mv-vessel-chip-dot' +
-      (offline ? " is-offline" : "") +
+      (visualDown ? " is-offline" : "") +
       '" title="' +
-      (offline ? "Offline" : "Online") +
+      (visualDown ? "Offline" : "Online") +
       '" aria-label="' +
-      (offline ? "Offline" : "Online") +
+      (visualDown ? "Offline" : "Online") +
       '"></span>' +
       "</span>" +
       "</span>" +
@@ -1356,14 +1363,15 @@
   function renderVesselPanel(vessel) {
     ensureVesselParams(vessel);
     var offline = isVesselOffline(vessel);
+    var visualDown = offline || isRebootDown(vessel);
     var panel = document.createElement("article");
     panel.className = "mv-vessel-panel" + (vessel.id === selectedVesselId ? " is-selected" : "");
     panel.dataset.vesselId = vessel.id;
-    panel.dataset.connectionStatus = offline
+    panel.dataset.connectionStatus = visualDown
       ? VESSEL_CONNECTION.OFFLINE
       : VESSEL_CONNECTION.ONLINE;
     // HideVessel(true) when notConnected: remove Grid_Silo + Grid_Data — LightGray frame + LED + name only
-    var bodyHtml = offline
+    var bodyHtml = visualDown
       ? ""
       : '<div class="mv-vessel-panel-body">' +
         '<div class="mv-silo">' +
@@ -1376,9 +1384,9 @@
       '<span class="mv-vessel-panel-title">' +
       '<img class="mv-vessel-panel-dot" src="' +
       ASSET +
-      (offline ? "led_small_gray.png" : "led_small_green.png") +
+      (visualDown ? "led_small_gray.png" : "led_small_green.png") +
       '" alt="" width="10" height="10" title="' +
-      (offline ? "Offline" : "Online") +
+      (visualDown ? "Offline" : "Online") +
       '">' +
       "<span>" +
       (offline ? vesselOverviewTitle(vessel) : vessel.name) +
@@ -2550,6 +2558,8 @@
     ensureVesselParams(vessel);
     var metrics = vesselMetrics(vessel);
     var offline = isVesselOffline(vessel);
+    var rebootDown = isRebootDown(vessel);
+    var visualDown = offline || rebootDown;
     syncDisplayUnitChrome();
     // ModelWPFBase.NOT_DEFINED — shown when scanner.Connection.IsConnected is false
     var nd = "-";
@@ -2576,9 +2586,9 @@
     }
     // SiloComponent / VesselDetailsOverL imageStatus: green connected, gray notConnected
     if (ledEl) {
-      ledEl.src = ASSET + (offline ? "led_large_gray.png" : "led_large_green.png");
-      ledEl.title = offline ? "Not connected" : "Connected";
-      ledEl.alt = offline ? "Not connected" : "Connected";
+      ledEl.src = ASSET + (visualDown ? "led_large_gray.png" : "led_large_green.png");
+      ledEl.title = visualDown ? "Not connected" : "Connected";
+      ledEl.alt = visualDown ? "Not connected" : "Connected";
     }
     // Device in Low SNR is a compatibility warning: Brushes.DarkGoldenrod.
     // The SNR value itself is Brushes.Red when it is below Minimal SNR.
@@ -2586,7 +2596,7 @@
     var minSnr = minSnrEl ? parseFloat(minSnrEl.value) : 13;
     if (!isFinite(minSnr)) minSnr = 13;
     var snrNum = metrics ? Number(metrics.snr) : NaN;
-    var lowSnr = !offline && isFinite(snrNum) && snrNum < minSnr;
+    var lowSnr = !visualDown && !vessel._rebootPhase && isFinite(snrNum) && snrNum < minSnr;
     if (problemsEl) {
       problemsEl.textContent = lowSnr ? "Device in Low SNR" : "";
       problemsEl.hidden = !lowSnr;
@@ -2595,10 +2605,24 @@
     if (snrEl) snrEl.classList.toggle("is-alert", lowSnr);
     // Border_Frame: LightSteelBlue connected / LightGray notConnected
     if (siloBox) {
-      siloBox.classList.toggle("is-offline", offline);
+      siloBox.classList.toggle("is-offline", visualDown);
     }
-    // MaxScaleCVolume/Mass also return NOT_DEFINED when !IsConnected()
-    if (offline) {
+    // Reboot: picture is cleared and every reading is 0 until the scanner answers again.
+    // Not connected (no reboot): ModelWPFBase.NOT_DEFINED ("-").
+    if (rebootDown) {
+      setVal("mvOvAvg", "0.00");
+      setVal("mvOvMax", "0.00");
+      setVal("mvOvMin", "0.00");
+      setVal("mvOvAvgPct", "0.00");
+      setVal("mvOvVol", "0.00");
+      setVal("mvOvVolPct", "0.00");
+      setVal("mvOvMass", "0.00");
+      setVal("mvOvVolCap", "0.00");
+      setVal("mvOvMassCap", "0.00");
+      setVal("mvOvTemp", "0.00");
+      setVal("mvOvSnr", "0.00");
+      setVal("mvOvOut", "0.00");
+    } else if (offline) {
       setVal("mvOvAvg", nd);
       setVal("mvOvMax", nd);
       setVal("mvOvMin", nd);
@@ -2633,7 +2657,7 @@
 
     if (mvOverviewSilo) {
       // Vessel2DCommonHelper: HideVessel(true) when notConnected — no geometry, no fill
-      if (offline) {
+      if (visualDown) {
         mvOverviewSilo.innerHTML = "";
       } else {
         mvOverviewSilo.innerHTML =
@@ -2642,8 +2666,8 @@
     }
     // SurfaceUCSecondary inset (mini material) is cleared/hidden when not connected
     if (mvOverviewMini) {
-      mvOverviewMini.hidden = offline;
-      if (offline) {
+      mvOverviewMini.hidden = visualDown;
+      if (visualDown) {
         mvOverviewMini.innerHTML = "";
       }
     }
@@ -2677,7 +2701,7 @@
           avg: vessel.avg,
           max: vessel.max,
           min: vessel.min,
-          connected: !isVesselOffline(vessel),
+          connected: !isVesselOffline(vessel) && !isRebootDown(vessel),
         });
         window.requestAnimationFrame(function () {
           fitOverviewScale();
@@ -2796,7 +2820,7 @@
             avg: vessel.avg,
             max: vessel.max,
             min: vessel.min,
-            connected: !isVesselOffline(vessel),
+            connected: !isVesselOffline(vessel) && !isRebootDown(vessel),
           });
           window.requestAnimationFrame(function () {
             fitOverviewScale();
@@ -4024,6 +4048,149 @@
     if (mvStatusText) {
       mvStatusText.textContent = msg || formatStatusStamp();
     }
+  };
+
+  var deviceRebootTimer = null;
+  var deviceReboot3dAt = 0;
+
+  function rebootVesselList(ids) {
+    var seen = {};
+    var list = [];
+    (ids || []).forEach(function (id) {
+      var vessel = findVessel(id);
+      if (!vessel || seen[vessel.id]) return;
+      seen[vessel.id] = true;
+      list.push(vessel);
+    });
+    if (!list.length) {
+      var selected = findVessel(selectedVesselId);
+      if (selected) list.push(selected);
+    }
+    return list;
+  }
+
+  function snapshotReboot(vessel) {
+    ensureVesselParams(vessel);
+    if (vessel._rebootSnap) return;
+    vessel._rebootSnap = {
+      fill: vessel.fill,
+      avg: vessel.avg,
+      max: vessel.max,
+      min: vessel.min,
+      snr: vessel.snr,
+      temp: vessel.temp,
+      output: vessel.output,
+    };
+  }
+
+  function restoreRebootVessel(vessel) {
+    var snap = vessel._rebootSnap;
+    if (snap) {
+      vessel.fill = snap.fill;
+      vessel.avg = snap.avg;
+      vessel.max = snap.max;
+      vessel.min = snap.min;
+      vessel.snr = snap.snr;
+      vessel.temp = snap.temp;
+      vessel.output = snap.output;
+    }
+    vessel._rebootPhase = null;
+    vessel._rebootSnap = null;
+  }
+
+  function paintDeviceReboot(force3d) {
+    renderVessels();
+    var sel = findVessel(selectedVesselId);
+    if (!sel || !vesselDetailMode) return;
+    if (
+      currentMvView === "overview" ||
+      currentMvView === "devices" ||
+      currentMvView === "parameters"
+    ) {
+      fillOverviewLeft(sel);
+    }
+    if (currentMvView !== "overview") return;
+    var now = Date.now();
+    if (!force3d && now - deviceReboot3dAt < 420) return;
+    deviceReboot3dAt = now;
+    refreshOverviewForVessel(sel);
+  }
+
+  /** Command 159: scanner drops. ClearDisplay and zero the live readings. */
+  window.mvBeginDeviceReboot = function (vesselIds) {
+    if (deviceRebootTimer) {
+      clearTimeout(deviceRebootTimer);
+      deviceRebootTimer = null;
+    }
+    rebootVesselList(vesselIds).forEach(function (vessel) {
+      if (vessel._rebootPhase === "up") restoreRebootVessel(vessel);
+      snapshotReboot(vessel);
+      vessel._rebootPhase = "down";
+    });
+    paintDeviceReboot(true);
+  };
+
+  window.mvCancelDeviceReboot = function () {
+    if (deviceRebootTimer) {
+      clearTimeout(deviceRebootTimer);
+      deviceRebootTimer = null;
+    }
+    VESSELS.forEach(function (vessel) {
+      if (vessel._rebootPhase || vessel._rebootSnap) restoreRebootVessel(vessel);
+    });
+    paintDeviceReboot(true);
+  };
+
+  /**
+   * After the restart wait, command 0 resumes polling.
+   * Readings and the 3D surface climb from 0 back to the last measurement.
+   */
+  window.mvRecoverDeviceReboot = function () {
+    if (deviceRebootTimer) {
+      clearTimeout(deviceRebootTimer);
+      deviceRebootTimer = null;
+    }
+    var list = VESSELS.filter(function (vessel) {
+      return vessel._rebootSnap;
+    });
+    if (!list.length) return;
+    var holdUntil = Date.now() + 800;
+    var climbMs = 2800;
+    var climbStart = 0;
+    function applyFraction(fraction) {
+      list.forEach(function (vessel) {
+        var snap = vessel._rebootSnap;
+        if (!snap) return;
+        vessel._rebootPhase = "up";
+        vessel.fill = snap.fill * fraction;
+        vessel.avg = snap.avg * fraction;
+        vessel.max = snap.max * fraction;
+        vessel.min = snap.min * fraction;
+        vessel.snr = snap.snr * fraction;
+        vessel.temp = snap.temp * fraction;
+        vessel.output = snap.output * fraction;
+      });
+      paintDeviceReboot(false);
+    }
+    function tick() {
+      var now = Date.now();
+      if (now < holdUntil) {
+        deviceRebootTimer = setTimeout(tick, 100);
+        return;
+      }
+      if (!climbStart) climbStart = now;
+      var t = Math.min(1, (now - climbStart) / climbMs);
+      var eased = 1 - Math.pow(1 - t, 2);
+      if (t >= 1) {
+        list.forEach(restoreRebootVessel);
+        deviceRebootTimer = null;
+        paintDeviceReboot(true);
+        return;
+      }
+      applyFraction(eased);
+      deviceRebootTimer = setTimeout(tick, 200);
+    }
+    tick();
   };
 
   window.mvSetGuideLowSnr = function (on) {

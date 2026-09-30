@@ -2093,12 +2093,15 @@
           var closeBtn = e.target.closest('[data-mv-dlg-close="mv-dlg-progress"]');
           if (!closeBtn) return;
           if (batchProgressState) {
+            var resetDone =
+              batchProgressState.retrieveType === "reset" ? batchProgressState.onDone : null;
             batchProgressState.cancelled = true;
             if (batchProgressState.timer) {
               clearTimeout(batchProgressState.timer);
               batchProgressState.timer = null;
             }
             batchProgressState = null;
+            if (resetDone) resetDone(false);
           }
         },
         true
@@ -4684,8 +4687,18 @@
           "Selected operation is:" + label + ". \r\nAre you sure?",
           "3D MultiVision",
           function () {
+            var rebootIds = scanners.map(function (sc) {
+              return sc.vesselId;
+            });
+            // Command 159 drops the link: ClearDisplay, readings go to 0.
+            if (window.mvBeginDeviceReboot) window.mvBeginDeviceReboot(rebootIds);
             runBatchSetParamsProgress("reset", function (ok) {
-              if (!ok) return;
+              if (!ok) {
+                if (window.mvCancelDeviceReboot) window.mvCancelDeviceReboot();
+                return;
+              }
+              // After the restart wait, command 0 brings measurements back.
+              if (window.mvRecoverDeviceReboot) window.mvRecoverDeviceReboot();
               window.dispatchEvent(new CustomEvent("install-guide:device-reset"));
               status("Device reset.");
             });

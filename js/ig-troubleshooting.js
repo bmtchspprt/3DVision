@@ -41,7 +41,7 @@
       id: "reset-after-map",
       title: "Sensor Reset After Mapping Clear",
       explanation:
-        "Click Reset, then Yes on the confirmation. Do not choose Reset to Factory Defaults. Then click Load from Vessel to confirm about 20 mA output.",
+        "Click Reset, then Yes on the confirmation. Do not choose Reset to Factory Defaults. The sensor reboots, then click Load from Vessel.",
     },
     {
       id: "controller-sleep",
@@ -421,7 +421,7 @@
         ),
         closeActStep(),
         loadFromVesselStep(),
-        doneStep("Output current should be about <strong>20 mA</strong>.")
+        doneStep("<strong>Sensor Reset Complete!</strong>")
       );
     } else if (id === "controller-sleep") {
       var SLEEP_INSIDE = "#backdropPowerSettings, #winStartMenu";
