@@ -42,7 +42,7 @@
       id: "reset-after-map",
       title: "Sensor Reset After Mapping Clear",
       explanation:
-        "Click Reset — do NOT click Reset to Factory. Watch for a temperature alert confirming the reboot. Then click Load from Vessel to confirm ~20 mA output.",
+        "Click Reset. Do NOT click Reset to Factory. Watch for a temperature alert confirming the reboot. Then click Load from Vessel to confirm ~20 mA output.",
     },
     {
       id: "controller-sleep",
@@ -60,7 +60,7 @@
       id: "echo-curve",
       title: "How to Read the Echo Curve",
       explanation:
-        "The Echo Curve starts automatically. Look for a grouping of colored lines — these represent the sensor's frequencies reflecting off the material. Lines start higher on the left (sensor at top of silo) and move right toward lower levels. Numbers along the bottom are feet from the sensor. Each line in the group is a different beam frequency. If all lines form a tight cluster with no erratic spikes away from the group, this is a Good echo curve — the sensor is reading correctly. An isolated spike far from the main cluster indicates a false echo.",
+        "The Echo Curve starts automatically. Look for a grouping of colored lines. These represent the sensor's frequencies reflecting off the material. Lines start higher on the left (sensor at top of silo) and move right toward lower levels. Numbers along the bottom are feet from the sensor. Each line in the group is a different beam frequency. If all lines form a tight cluster with no erratic spikes away from the group, this is a Good echo curve. The sensor is reading correctly. An isolated spike far from the main cluster indicates a false echo.",
     },
     {
       id: "reset-mapping",
@@ -70,15 +70,15 @@
     },
     {
       id: "wizard-deadzone",
-      title: "Wizard — Confirm Dimensions & Dead-Zone",
+      title: "Wizard: Confirm Dimensions & Dead-Zone",
       explanation:
-        "Confirm all silo measurements on each step are accurate, clicking Next through each screen. On the final Full Calibration screen, the Distance (Top) value must be no less than 1.64 ft — this is the sensor dead-zone. If material comes within 1.64 ft of the sensor, the sensor will lock at its last reading. You may enter a higher value to trigger 100% output before overfilling, but 1.64 ft is the absolute minimum. Click Finish to save.",
+        "Confirm all silo measurements on each step are accurate, clicking Next through each screen. On the final Full Calibration screen, the Distance (Top) value must be no less than 1.64 ft. This is the sensor dead-zone. If material comes within 1.64 ft of the sensor, the sensor will lock at its last reading. You may enter a higher value to trigger 100% output before overfilling, but 1.64 ft is the absolute minimum. Click Finish to save.",
     },
     {
       id: "ap-review",
-      title: "Advanced Parameters — Full Review & Upload",
+      title: "Advanced Parameters: Full Review & Upload",
       explanation:
-        "On the Basic tab, confirm no values are negative or in the thousands — factory defaults work for most vessels; professional programming is needed for tuned adjustments. Click the Advanced tab and set Auto False Echoes to Deactivated. Then click the Beams tab: uncheck Auto Beam Selection and Automatic Beams Range, then click Select All above the beam list to activate all echo beams. Click Upload All to apply all changes to the sensor, then click Close.",
+        "On the Basic tab, confirm no values are negative or in the thousands. Factory defaults work for most vessels; professional programming is needed for tuned adjustments. Click the Advanced tab and set Auto False Echoes to Deactivated. Then click the Beams tab: uncheck Auto Beam Selection and Automatic Beams Range, then click Select All above the beam list to activate all echo beams. Click Upload All to apply all changes to the sensor, then click Close.",
     },
   ];
 
@@ -205,7 +205,7 @@
       lead +
       '<p class="ig-type-hint">Type <kbd>' +
       esc(value) +
-      "</kbd>. Yellow is the next key. Gray letters are not typed yet — the box starts empty.</p>"
+      "</kbd>. Yellow is the next key. Gray letters are not typed yet. The box starts empty.</p>"
     );
   }
 

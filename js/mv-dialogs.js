@@ -2609,7 +2609,14 @@
       };
     }
 
-    function syncCalibFromLevel() {
+    function distFieldBeingTyped(el) {
+      if (!el) return null;
+      if (el.id === "mvWizFullDist") return "full";
+      if (el.id === "mvWizEmptyDist") return "empty";
+      return null;
+    }
+
+    function syncCalibFromLevel(keepDist) {
       var total = vesselTotalHeight();
       var fullLevel = root.querySelector("#mvWizFullLevel");
       var fullDist = root.querySelector("#mvWizFullDist");
@@ -2626,33 +2633,33 @@
       if (fl < el) fl = el;
       if (fullLevel) fullLevel.value = String(+fl.toFixed(3));
       if (emptyLevel) emptyLevel.value = String(+el.toFixed(3));
-      if (fullDist) fullDist.value = String(+Math.max(0, total - fl).toFixed(3));
-      if (emptyDist) emptyDist.value = String(+Math.max(0, total - el).toFixed(3));
+      // Leave the box the user is typing in alone. Rewriting "1." back to "1"
+      // drops the decimal before the rest of the number can be entered.
+      if (fullDist && keepDist !== "full") fullDist.value = String(+Math.max(0, total - fl).toFixed(3));
+      if (emptyDist && keepDist !== "empty") emptyDist.value = String(+Math.max(0, total - el).toFixed(3));
       if (fullH) fullH.value = String(+total.toFixed(3));
       if (emptyH) emptyH.value = String(+total.toFixed(3));
     }
 
-    function syncCalibFromDist(which) {
+    function syncCalibFromDist(which, commit) {
       var total = vesselTotalHeight();
       var fullLevel = root.querySelector("#mvWizFullLevel");
       var fullDist = root.querySelector("#mvWizFullDist");
       var emptyLevel = root.querySelector("#mvWizEmptyLevel");
       var emptyDist = root.querySelector("#mvWizEmptyDist");
-      if (which === "full" && fullDist && fullLevel) {
-        var fd = parseFloat(fullDist.value);
-        if (isNaN(fd)) fd = 0.5;
-        fd = Math.max(0, Math.min(total, fd));
-        fullLevel.value = String(+Math.max(0, total - fd).toFixed(3));
-        fullDist.value = String(+fd.toFixed(3));
+      function apply(input, level, emptyFallback) {
+        if (!input || !level) return;
+        var raw = String(input.value || "");
+        var n = parseFloat(raw);
+        var typing = !commit && (raw === "" || /[.,]$/.test(raw) || isNaN(n));
+        if (isNaN(n)) n = emptyFallback;
+        n = Math.max(0, Math.min(total, n));
+        if (!typing) level.value = String(+Math.max(0, total - n).toFixed(3));
+        if (commit) input.value = String(+n.toFixed(3));
       }
-      if (which === "empty" && emptyDist && emptyLevel) {
-        var ed = parseFloat(emptyDist.value);
-        if (isNaN(ed)) ed = total;
-        ed = Math.max(0, Math.min(total, ed));
-        emptyLevel.value = String(+Math.max(0, total - ed).toFixed(3));
-        emptyDist.value = String(+ed.toFixed(3));
-      }
-      syncCalibFromLevel();
+      if (which === "full") apply(fullDist, fullLevel, 0.5);
+      if (which === "empty") apply(emptyDist, emptyLevel, total);
+      syncCalibFromLevel(commit ? null : which);
     }
 
     function syncCalibFields() {
@@ -2779,7 +2786,7 @@
         if (!e.target || !(e.target.matches("input") || e.target.matches("select"))) return;
         // Real Vision recalculates Z on every vessel-dimension edit (not only on page 2).
         syncDeviceFromXY();
-        if (step >= 4) syncCalibFromLevel();
+        if (step >= 4) syncCalibFromLevel(distFieldBeingTyped(e.target));
         else if (step === 1) {
           var total = vesselTotalHeight();
           var fullH = root.querySelector("#mvWizFullH");
@@ -3200,13 +3207,21 @@
     }
     if (fullDistEl) {
       fullDistEl.addEventListener("input", function () {
-        syncCalibFromDist("full");
+        syncCalibFromDist("full", false);
+        refresh3dKeepView();
+      });
+      fullDistEl.addEventListener("change", function () {
+        syncCalibFromDist("full", true);
         refresh3dKeepView();
       });
     }
     if (emptyDistEl) {
       emptyDistEl.addEventListener("input", function () {
-        syncCalibFromDist("empty");
+        syncCalibFromDist("empty", false);
+        refresh3dKeepView();
+      });
+      emptyDistEl.addEventListener("change", function () {
+        syncCalibFromDist("empty", true);
         refresh3dKeepView();
       });
     }
