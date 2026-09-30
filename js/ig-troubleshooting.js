@@ -451,7 +451,7 @@
           "Click <strong>Start</strong>.",
           "#winStartBtn",
           "install-guide:start-open",
-          { pointer: "left" }
+          { pointer: "right" }
         ),
         click(
           "ts-sleep-type",
@@ -480,10 +480,10 @@
         click(
           "ts-sleep-never",
           "Plugged in",
-          "Under <strong>Plugged in</strong>, set <strong>Make my device sleep after</strong> to <strong>Never</strong>.",
-          "#pwrSleepPlugged",
+          "Under <strong>Plugged in</strong>, click <strong>Never</strong>.",
+          "#pwrSleepOptNever",
           "install-guide:sleep-never",
-          { pointer: "left", allowInside: SLEEP_INSIDE }
+          { pointer: "bottom", allowInside: SLEEP_INSIDE }
         ),
         doneStep("Leave the screen timeout as it is. Screen off is OK."),
       ];

@@ -2778,8 +2778,8 @@
       if ((!pwrBd || !pwrBd.classList.contains("show")) && typeof window.showPowerSettings === "function") {
         window.showPowerSettings();
       }
-      if (step.id === "ts-sleep-never" && typeof window.expandPowerSleepTimeouts === "function") {
-        window.expandPowerSleepTimeouts();
+      if (step.id === "ts-sleep-never" && typeof window.openPowerSleepMenu === "function") {
+        window.openPowerSleepMenu();
       }
     }
     if (step.typeId && step.typeValue) {
@@ -3149,8 +3149,8 @@
       if (sleepBdNever && !sleepBdNever.classList.contains("show") && typeof window.showPowerSettings === "function") {
         window.showPowerSettings();
       }
-      if (typeof window.expandPowerSleepTimeouts === "function") {
-        window.expandPowerSleepTimeouts();
+      if (typeof window.openPowerSleepMenu === "function") {
+        window.openPowerSleepMenu();
       }
       var sleepSel = document.getElementById("pwrSleepPlugged");
       if (sleepSel && sleepSel.value === "never") {

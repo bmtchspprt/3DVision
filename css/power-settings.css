@@ -365,6 +365,51 @@
   font: inherit;
 }
 
+.pwr-select-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.pwr-opt-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 6;
+  min-width: 148px;
+  max-height: 220px;
+  overflow: auto;
+  background: #2b2b2b;
+  border: 1px solid #5a5a5a;
+  border-radius: 6px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+}
+
+.pwr-opt-menu[hidden] {
+  display: none !important;
+}
+
+.pwr-opt-menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 7px 12px;
+  border: none;
+  background: transparent;
+  color: #f3f3f3;
+  font: inherit;
+  cursor: pointer;
+}
+
+.pwr-opt-menu button:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.pwr-opt-menu button.is-target {
+  background: rgba(255, 204, 51, 0.35);
+  color: #fff6cc;
+  font-weight: 700;
+}
+
 .pwr-related {
   margin-top: 10px;
   font-size: 12px;

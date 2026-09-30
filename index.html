@@ -1171,7 +1171,7 @@
               <button type="button" class="pwr-nav-item" disabled><span class="pwr-nav-ico pwr-nav-ico--privacy" aria-hidden="true"></span>Privacy &amp; security</button>
               <button type="button" class="pwr-nav-item" disabled><span class="pwr-nav-ico pwr-nav-ico--update" aria-hidden="true"></span>Windows Update</button>
             </nav>
-            <div class="pwr-main">
+            <div class="pwr-main" data-ig-scroll>
               <div class="pwr-crumb">System <span aria-hidden="true">&gt;</span> Power &amp; battery</div>
               <div class="pwr-battery">
                 <span class="pwr-battery-pct">99%</span>
@@ -1216,7 +1216,10 @@
                       <div class="pwr-timeout-title">Make my device sleep after</div>
                       <div class="pwr-timeout-sub">Turn on sleep after 5 minutes to save energy. Higher settings use more energy</div>
                     </div>
-                    <select id="pwrSleepPlugged" aria-label="Make my device sleep after when plugged in"></select>
+                    <div class="pwr-select-wrap">
+                      <select id="pwrSleepPlugged" aria-label="Make my device sleep after when plugged in"></select>
+                      <div class="pwr-opt-menu" id="pwrSleepMenu" hidden role="listbox" aria-label="Make my device sleep after"></div>
+                    </div>
                   </div>
                   <h3 class="pwr-group">On battery</h3>
                   <div class="pwr-timeout-row">

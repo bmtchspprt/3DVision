@@ -20,6 +20,7 @@
   var timeoutsBtn = document.getElementById("pwrSleepTimeouts");
   var timeoutsBody = document.getElementById("pwrSleepTimeoutsBody");
   var pluggedSleep = document.getElementById("pwrSleepPlugged");
+  var sleepMenu = document.getElementById("pwrSleepMenu");
 
   function emit(name) {
     try {
@@ -41,6 +42,30 @@
       });
     }
     sel.value = value;
+    if (id === "pwrSleepPlugged") {
+      fillSleepMenu();
+    }
+  }
+
+  function fillSleepMenu() {
+    if (!sleepMenu) return;
+    sleepMenu.innerHTML = "";
+    TIMEOUTS.forEach(function (pair) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.setAttribute("data-pwr-sleep", pair[0]);
+      btn.textContent = pair[1];
+      if (pair[0] === "never") {
+        btn.id = "pwrSleepOptNever";
+        btn.className = "is-target";
+      }
+      sleepMenu.appendChild(btn);
+    });
+  }
+
+  function setSleepMenuOpen(open) {
+    if (!sleepMenu) return;
+    sleepMenu.hidden = !open;
   }
 
   function setExpanded(open, silent) {
@@ -54,6 +79,7 @@
 
   function resetForm() {
     setExpanded(false, true);
+    setSleepMenuOpen(false);
     fillSelect("pwrScreenPlugged", "120");
     fillSelect("pwrSleepPlugged", "30");
     fillSelect("pwrScreenBattery", "never");
@@ -73,6 +99,7 @@
     backdrop.classList.remove("show");
     backdrop.setAttribute("aria-hidden", "true");
     setExpanded(false, true);
+    setSleepMenuOpen(false);
   }
 
   function wire() {
@@ -86,8 +113,17 @@
     if (pluggedSleep) {
       pluggedSleep.addEventListener("change", function () {
         if (pluggedSleep.value === "never") {
+          setSleepMenuOpen(false);
           emit("install-guide:sleep-never");
         }
+      });
+    }
+    if (sleepMenu) {
+      sleepMenu.addEventListener("click", function (event) {
+        var btn = event.target.closest && event.target.closest("[data-pwr-sleep]");
+        if (!btn || !pluggedSleep) return;
+        pluggedSleep.value = btn.getAttribute("data-pwr-sleep");
+        pluggedSleep.dispatchEvent(new Event("change", { bubbles: true }));
       });
     }
     var closeBtn = document.getElementById("pwrSettingsClose");
@@ -101,5 +137,9 @@
   window.hidePowerSettings = hidePowerSettings;
   window.expandPowerSleepTimeouts = function () {
     setExpanded(true, true);
+  };
+  window.openPowerSleepMenu = function () {
+    setExpanded(true, true);
+    setSleepMenuOpen(true);
   };
 })();
