@@ -1573,7 +1573,7 @@
     if (
       step.id === "ap-false-echoes" &&
       e.target.closest &&
-      e.target.closest("#mvApAutoFalseEchoes")
+      e.target.closest("#mvApAutoFalseEchoes, #mvApAutoFalseEchoesMenu")
     ) {
       return true;
     }
@@ -3051,7 +3051,7 @@
         window.dispatchEvent(new CustomEvent("install-guide:ap-tab-beams"));
       }
     }
-    if (step.id === "ap-false-echoes" || step.id === "ts-ap-auto-fe") {
+    if (step.id === "ap-false-echoes") {
       var autoFalse = document.getElementById("mvApAutoFalseEchoes");
       if (autoFalse && /disable/i.test(autoFalse.value)) {
         window.dispatchEvent(new CustomEvent("install-guide:ap-auto-false-off"));
@@ -3067,18 +3067,6 @@
       var beamRange = document.getElementById("mvApAutoBeamRange");
       if (beamRange && !beamRange.checked) {
         window.dispatchEvent(new CustomEvent("install-guide:ap-beam-range-off"));
-      }
-    }
-    if (step.id === "ts-ap-select-all") {
-      var manual = document.getElementById("mvApBeamManual");
-      var boxes = manual ? manual.querySelectorAll('input[type="checkbox"]') : [];
-      var allOn = boxes.length > 0;
-      var bi;
-      for (bi = 0; bi < boxes.length; bi++) {
-        if (!boxes[bi].checked) allOn = false;
-      }
-      if (allOn) {
-        window.dispatchEvent(new CustomEvent("install-guide:ap-beams-select-all"));
       }
     }
     if (step.id === "ap-close" || step.id === "ts-ap-close" || step.id === "ts-snr-close" || step.id === "ts-beam-close") {
@@ -3317,6 +3305,7 @@
       "install-guide:sweeper-choice",
       "install-guide:ap-tab-adv",
       "install-guide:ap-tab-beams",
+      "install-guide:ap-auto-false-open",
       "install-guide:ap-auto-false-off",
       "install-guide:ap-beam-sel-off",
       "install-guide:ap-beam-range-off",

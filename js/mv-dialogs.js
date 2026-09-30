@@ -993,6 +993,31 @@
         return input;
       };
       var cb = function (opts, sel, id) {
+        if (id === "mvApAutoFalseEchoes") {
+          return (
+            '<span class="mv-ap-dd" id="mvApAutoFalseEchoesWrap">' +
+            '<button type="button" class="mv-ap-combo mv-ap-dd-btn" id="mvApAutoFalseEchoes" value="' +
+            sel +
+            '" aria-haspopup="listbox" aria-expanded="false">' +
+            sel +
+            "</button>" +
+            '<div class="mv-ap-dd-menu" id="mvApAutoFalseEchoesMenu" hidden role="listbox">' +
+            opts
+              .map(function (o) {
+                return (
+                  '<button type="button" class="mv-ap-dd-opt" role="option" data-afe="' +
+                  o +
+                  '"' +
+                  (o === "Disable" ? ' id="mvApAutoFalseEchoesDisable"' : "") +
+                  ">" +
+                  o +
+                  "</button>"
+                );
+              })
+              .join("") +
+            "</div></span>"
+          );
+        }
         return (
           '<select class="mv-ap-combo"' +
           (id ? ' id="' + id + '"' : "") +
@@ -1890,6 +1915,55 @@
   function wireAdvParamsBeams(root) {
     if (!root || root.id !== "mv-dlg-advanced-params" || root.__mvApBeamsWired) return;
     root.__mvApBeamsWired = true;
+
+    (function wireAutoFalseEchoesMenu() {
+      var btn = root.querySelector("#mvApAutoFalseEchoes");
+      var menu = root.querySelector("#mvApAutoFalseEchoesMenu");
+      if (!btn || !menu || btn.tagName !== "BUTTON") return;
+      function placeMenu() {
+        var r = btn.getBoundingClientRect();
+        menu.style.left = Math.round(r.left) + "px";
+        menu.style.top = Math.round(r.bottom) + "px";
+        menu.style.width = Math.round(r.width) + "px";
+      }
+      function closeMenu() {
+        menu.hidden = true;
+        btn.setAttribute("aria-expanded", "false");
+      }
+      function openMenu() {
+        if (menu.parentNode !== document.body) document.body.appendChild(menu);
+        placeMenu();
+        menu.hidden = false;
+        btn.setAttribute("aria-expanded", "true");
+        window.dispatchEvent(new CustomEvent("install-guide:ap-auto-false-open"));
+      }
+      btn.addEventListener("click", function (e) {
+        e.preventDefault();
+        if (menu.hidden) openMenu();
+        else closeMenu();
+      });
+      menu.addEventListener("click", function (e) {
+        var item = e.target.closest("[data-afe]");
+        if (!item) return;
+        var val = item.getAttribute("data-afe") || "";
+        btn.textContent = val;
+        btn.value = val;
+        closeMenu();
+        if (/disable/i.test(val)) {
+          window.dispatchEvent(new CustomEvent("install-guide:ap-auto-false-off"));
+        }
+      });
+      document.addEventListener("mousedown", function (e) {
+        if (menu.hidden) return;
+        if (
+          e.target.closest &&
+          e.target.closest("#mvApAutoFalseEchoesWrap, #mvApAutoFalseEchoesMenu, #igCard")
+        ) {
+          return;
+        }
+        closeMenu();
+      });
+    })();
 
     // Upload/Download All → MainScreenMngr.BatchStartSetParameters → ProgressWindow
     var uploadBtn = root.querySelector("#mvApUploadAll");

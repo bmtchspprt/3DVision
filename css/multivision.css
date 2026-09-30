@@ -4059,6 +4059,65 @@
 .mv-ap-combo {
   padding: 0 18px 0 3px;
 }
+.mv-ap-dd {
+  position: relative;
+  display: block;
+  width: 130px;
+  height: 23px;
+}
+.mv-ap-dd-btn {
+  position: relative;
+  display: block;
+  width: 130px;
+  text-align: left;
+  cursor: default;
+  padding-right: 16px;
+  background: #fff;
+}
+.mv-ap-dd-btn::after {
+  content: "";
+  position: absolute;
+  right: 6px;
+  top: 9px;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid #333;
+  pointer-events: none;
+}
+.mv-ap-dd-menu {
+  position: fixed;
+  z-index: 1600;
+  margin: 0;
+  padding: 1px 0;
+  background: #fff;
+  border: 1px solid #828790;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.28);
+  box-sizing: border-box;
+}
+.mv-ap-dd-menu[hidden] {
+  display: none !important;
+}
+.mv-ap-dd-opt {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  border: 0;
+  background: #fff;
+  color: #000;
+  font: inherit;
+  font-size: 12px;
+  line-height: 20px;
+  height: 22px;
+  padding: 0 8px;
+  cursor: default;
+}
+.mv-ap-dd-opt:hover,
+.mv-ap-dd-opt:focus {
+  background: #316ac5;
+  color: #fff;
+  outline: none;
+}
 .mv-ap-unit {
   font-size: 12px;
   color: #697477;

@@ -77,7 +77,7 @@
       id: "ap-review",
       title: "Advanced Parameters: Full Review & Upload",
       explanation:
-        "On the Basic tab, confirm no values are negative or in the thousands. Factory defaults work for most vessels; professional programming is needed for tuned adjustments. Click the Advanced tab and set Auto False Echoes to Deactivated. Then click the Beams tab: uncheck Auto Beam Selection and Automatic Beams Range, then click Select All above the beam list to activate all echo beams. Click Upload All to apply all changes to the sensor, then click Close.",
+        "On the Basic tab, confirm no values are negative or in the thousands. Factory defaults work for most vessels; professional programming is needed for tuned adjustments. Click the Advanced tab, open Auto False Echoes, and choose Disable. Then click the Beams tab and uncheck Auto Beam Selection and Automatic Beams Range. Click Upload All to apply all changes to the sensor, then click Close.",
     },
   ];
 
@@ -650,12 +650,20 @@
           { pointer: "bottom", allowInside: AP_INSIDE }
         ),
         click(
-          "ts-ap-auto-fe",
+          "ts-ap-auto-fe-open",
           "Auto False Echoes",
-          "Set <strong>Auto False Echoes</strong> to <strong>Disable</strong>.",
+          "Click the <strong>Auto False Echoes</strong> dropdown.",
           "#mvApAutoFalseEchoes",
+          "install-guide:ap-auto-false-open",
+          { pointer: "bottom", allowInside: AP_INSIDE }
+        ),
+        click(
+          "ts-ap-auto-fe",
+          "Disable",
+          "Click <strong>Disable</strong>.",
+          "#mvApAutoFalseEchoesDisable",
           "install-guide:ap-auto-false-off",
-          { pointer: "right", allowInside: AP_INSIDE }
+          { pointer: "bottom", allowInside: AP_INSIDE }
         ),
         click(
           "ts-ap-beams-tab",
@@ -680,14 +688,6 @@
           "#mvApAutoBeamRange",
           "install-guide:ap-beam-range-off",
           { pointer: "right", allowInside: AP_INSIDE }
-        ),
-        click(
-          "ts-ap-select-all",
-          "Select All beams",
-          "Click <strong>Select All</strong>.",
-          "#mvApBeamSelectAll",
-          "install-guide:ap-beams-select-all",
-          { pointer: "bottom", allowInside: AP_INSIDE }
         ),
         click(
           "ts-ap-upload",
