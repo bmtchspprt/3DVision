@@ -59,7 +59,7 @@
       id: "echo-curve",
       title: "How to Read the Echo Curve",
       explanation:
-        "The Echo Curve starts automatically. Look for a grouping of colored lines. These represent the sensor's frequencies reflecting off the material. Lines start higher on the left (sensor at top of silo) and move right toward lower levels. Numbers along the bottom are feet from the sensor. Each line in the group is a different beam frequency. If all lines form a tight cluster with no erratic spikes away from the group, this is a Good echo curve. The sensor is reading correctly. An isolated spike far from the main cluster indicates a false echo.",
+        "The Echo Curve starts automatically. Look for a grouping of colored lines. These represent the sensor's frequencies reflecting off the material. Lines start higher on the left (sensor at top of silo) and move right toward lower levels. Numbers along the bottom are feet from the sensor. Click All Beams. Each color is one beam. If all lines form a tight cluster with no erratic spikes away from the group, this is a Good echo curve. The sensor is reading correctly. An isolated spike far from the main cluster indicates a false echo.",
     },
     {
       id: "reset-mapping",
@@ -573,6 +573,19 @@
           "ts-echo-bad",
           "False echo",
           "A spike far from that group is a false echo."
+        ),
+        click(
+          "ts-echo-all",
+          "All Beams",
+          "Click <strong>All Beams</strong>. Each color is one beam.",
+          '[data-echo-beam="all"]',
+          "install-guide:echo-all-beams",
+          { pointer: "bottom" }
+        ),
+        nextStep(
+          "ts-echo-all-good",
+          "Same good curve",
+          "All beams together still form one tight group around the same distance. A spike away from that group is a false echo."
         ),
         click(
           "ts-echo-close-curve",

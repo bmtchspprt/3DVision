@@ -688,11 +688,25 @@
     }
 
     // Vertical BeamLines — SCIChartHelper CreateVerticalLineAnnotation StrokeDashArray {2,2}
+    // Single beam: BeamLines (orange measured + black/cyan picks).
+    // All Beams: BeamAllLines, FromBeamIndex uses that beam's chart color (ViewBeamAll).
     var lines =
-      beamIndex < 0 ? [] : (beamData.BeamLines && beamData.BeamLines[beamIndex]) || [];
+      beamIndex < 0
+        ? beamData.BeamAllLines || []
+        : (beamData.BeamLines && beamData.BeamLines[beamIndex]) || [];
+    function lineColor(ln) {
+      if (ln.color === "FromBeamIndex") {
+        if (ln.beamIndex < 0 || ln.beamIndex >= BEAM_ALL_COLORS.length) return null;
+        if (vis[BEAM_NAMES[ln.beamIndex]] === false) return null;
+        return BEAM_ALL_COLORS[ln.beamIndex];
+      }
+      return LINE_BRUSH[ln.color] || "#FFFFFF";
+    }
     for (bi = 0; bi < lines.length; bi++) {
       var ln = lines[bi];
-      ctx.strokeStyle = LINE_BRUSH[ln.color] || "#FFFFFF";
+      var stroke = lineColor(ln);
+      if (!stroke || stroke === "#FFFFFF") continue;
+      ctx.strokeStyle = stroke;
       ctx.setLineDash([2, 2]);
       ctx.lineWidth = 1.25;
       ctx.beginPath();
@@ -703,7 +717,16 @@
     }
 
     // Fuzzy scatter — always loaded; annotations only if Show Fuzzy (IsShowFuzzyData)
-    if (vis.Fuzzy !== false && beamIndex >= 0) {
+    if (beamIndex < 0) {
+      for (bi = 0; bi < lines.length; bi++) {
+        var mark = lines[bi];
+        var markColor = lineColor(mark);
+        if (!markColor || mark.BeamFuzzyFactor == null || mark.BeamFuzzyFactor <= 0) continue;
+        var fzAll = maxF * mark.BeamFuzzyFactor;
+        ctx.fillStyle = markColor;
+        ctx.fillRect(xOf(mark.val) - 3, yOf(fzAll) - 3, 6, 6);
+      }
+    } else if (vis.Fuzzy !== false && beamIndex >= 0) {
       ctx.fillStyle = "#000000";
       for (bi = 0; bi < lines.length; bi++) {
         if (lines[bi].color !== "Black" && lines[bi].color !== "Cyan") continue;

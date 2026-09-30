@@ -3532,6 +3532,12 @@
         window.dispatchEvent(new CustomEvent("install-guide:start-open"));
       }
     }
+    if (step.id === "ts-echo-all") {
+      var allTab = document.querySelector('#mv-dlg-echo-curve [data-echo-beam="all"].is-active');
+      if (allTab) {
+        window.dispatchEvent(new CustomEvent("install-guide:echo-all-beams"));
+      }
+    }
     if (step.advanceOn === "install-guide:echo-curve-opened") {
       var echoCurve = document.getElementById("mv-dlg-echo-curve");
       if (echoCurve && !echoCurve.hidden) {
@@ -3685,6 +3691,7 @@
       "install-guide:ap-beams-select-all",
       "install-guide:echo-started",
       "install-guide:echo-curve-opened",
+      "install-guide:echo-all-beams",
       "install-guide:echo-curve-closed",
       "install-guide:echo-activate-closed",
       "install-guide:start-open",

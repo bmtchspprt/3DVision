@@ -3782,6 +3782,9 @@
         var v = tab.getAttribute("data-echo-beam");
         echoCurveState.beamIndex = v === "all" ? -1 : parseInt(v, 10);
         refreshEchoCurveUi(root);
+        if (v === "all") {
+          window.dispatchEvent(new CustomEvent("install-guide:echo-all-beams"));
+        }
       });
     });
 
