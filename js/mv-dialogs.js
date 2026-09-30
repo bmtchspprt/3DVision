@@ -80,7 +80,10 @@
     if (no) no.hidden = true;
     overlay.__mvMsgOnYes = null;
     overlay.__mvMsgOnNo = null;
-    if (overlay) overlay.hidden = false;
+    if (overlay) {
+      overlay.style.zIndex = String(windowZ + 20);
+      overlay.hidden = false;
+    }
   }
 
   /** APMMessageBox.ShowQuestionMessage — Yes/No + Exclamation caption. */
@@ -99,6 +102,7 @@
     if (overlay) {
       overlay.__mvMsgOnYes = typeof onYes === "function" ? onYes : null;
       overlay.__mvMsgOnNo = typeof onNo === "function" ? onNo : null;
+      overlay.style.zIndex = String(windowZ + 20);
       overlay.hidden = false;
     }
   }
@@ -159,7 +163,11 @@
         /* ignore */
       }
     }
+    if (id === "mv-dlg-progress") {
+      el.classList.remove("is-no-buttons");
+    }
     if (id === "mv-dlg-devices-act" && wasOpen) {
+      stopDeviceActivationFlows();
       window.dispatchEvent(new CustomEvent("install-guide:devices-act-closed"));
     }
     if (id === "mv-dlg-false-echo" && wasOpen) {
@@ -225,6 +233,7 @@
       window.dispatchEvent(new CustomEvent("install-guide:false-echo-opened"));
     }
     if (id === "mv-dlg-devices-act") {
+      fillDeviceActivationTree(el);
       window.dispatchEvent(new CustomEvent("install-guide:devices-act-opened"));
     }
   }
@@ -1382,58 +1391,61 @@
     },
 
     "mv-dlg-devices-act": function () {
+      // DeviceActivationWin 700×700: ProjectTreeDeviceActivate | Reset / Firmware / Com. Quality
       var body =
-        '<div class="mv-device-act">' +
-        '<div class="mv-device-act-tree">' +
-        '<div class="node site">Aggregat</div>' +
-        '<div class="node vessel">Lime Stone</div>' +
-        '<div class="node scanner is-selected">Scanner 0</div>' +
-        '<div class="node vessel">Coke</div>' +
-        '<div class="node scanner">Scanner 1</div>' +
-        '<div class="node vessel">Sand</div>' +
-        '<div class="node scanner">Scanner 2</div>' +
-        '<div class="node vessel">Lime</div>' +
-        '<div class="node scanner">Scanner 3</div></div>' +
-        '<div class="mv-device-act-tabs">' +
-        '<div class="mv-params-tabs" role="tablist">' +
-        '<button type="button" class="mv-params-tab is-active" data-tab="reset">Devices Reset</button>' +
-        '<button type="button" class="mv-params-tab" data-tab="fw">Update Firmware</button>' +
-        '<button type="button" class="mv-params-tab" data-tab="com">Com. Quality</button></div>' +
-        '<div class="mv-params-panels" style="flex:1;padding:12px">' +
-        '<div data-panel="reset">' +
-        '<label class="mv-check"><input type="radio" name="mvDevReset" checked> Reset (Restart) Device</label>' +
-        '<label class="mv-check" id="mvDevResetFactoryLabel"><input type="radio" name="mvDevReset"> Reset to Factory Defaults</label>' +
-        '<label class="mv-check"><input type="radio" name="mvDevReset"> Reset Advanced Parameters and False Echoes</label>' +
-        '<div style="margin-top:16px"><button class="btn mv-params-btn" type="button" id="mvDevResetBtn" style="width:80px">Reset</button></div></div>' +
-        '<div data-panel="fw" hidden>' +
-        '<p style="color:#c00;font-weight:700;margin:0 0 4px">Warning!</p>' +
-        '<p style="color:#c00;margin:0 0 12px">Do not turn off the device or disconnect during firmware update.</p>' +
-        '<div class="mv-dialog-row"><label>File Name:</label><input type="text" style="flex:1"><button class="btn mv-params-btn" type="button" style="width:32px">...</button></div>' +
-        '<label class="mv-check"><input type="checkbox"> Recovery Mode</label>' +
-        '<div class="mv-dialog-row"><button class="btn mv-params-btn" type="button">Firmware Summary...</button></div>' +
-        '<div style="height:12px;background:#e0e0e0;border:1px solid #a0a0a0;margin:10px 0"><div style="width:0%;height:100%;background:#4a90b8"></div></div>' +
-        '<select size="4" style="width:100%;height:80px"></select>' +
-        '<div style="display:flex;gap:8px;margin-top:10px">' +
-        '<button class="btn mv-params-btn" type="button">Start Update</button>' +
-        '<button class="btn mv-params-btn" type="button">Cancel Update</button>' +
-        '<button class="btn mv-params-btn" type="button">Show Log</button></div></div>' +
-        '<div data-panel="com" hidden>' +
-        '<div style="height:12px;background:#e0e0e0;border:1px solid #a0a0a0;margin:0 0 10px"><div style="width:0%;height:100%;background:#4a90b8"></div></div>' +
-        '<div class="mv-dialog-row"><label>Num cycles:</label><input type="text" value="10" style="width:80px"></div>' +
-        '<div class="mv-dialog-row"><label>Data length:</label><input type="text" value="256" style="width:80px"></div>' +
-        '<select size="6" style="width:100%;height:120px;margin:8px 0"></select>' +
-        '<div style="display:flex;gap:8px">' +
-        '<button class="btn mv-params-btn" type="button">Start Test</button>' +
-        '<button class="btn mv-params-btn" type="button">Stop Test</button>' +
-        '<button class="btn mv-params-btn" type="button">Show Log</button></div></div>' +
+        '<div class="mv-da" id="mvDaRoot">' +
+        '<div class="mv-da-tree-wrap">' +
+        '<div class="mv-da-menu" id="mvDaMenu" hidden>' +
+        '<button type="button" data-da-menu="expand">Expand All</button>' +
+        '<button type="button" data-da-menu="find">Find Selected Vessel</button>' +
+        '<button type="button" data-da-menu="collapse">Collapse All</button></div>' +
+        '<div class="mv-da-tree" id="mvDaTree"></div></div>' +
+        '<div class="mv-da-main">' +
+        '<div class="mv-params-tabs mv-da-tabs" role="tablist">' +
+        '<button type="button" class="mv-params-tab mv-da-tab is-active" data-tab="reset">Devices Reset</button>' +
+        '<button type="button" class="mv-params-tab mv-da-tab" data-tab="fw">Update Firmware</button>' +
+        '<button type="button" class="mv-params-tab mv-da-tab" data-tab="com">Com. Quality</button></div>' +
+        '<div class="mv-params-panels mv-da-panels">' +
+        '<div class="mv-da-reset" data-panel="reset">' +
+        '<label class="mv-da-radio"><input type="radio" name="mvDevReset" id="mvDevResetRestart" value="restart" checked> Reset (Restart) Device</label>' +
+        '<label class="mv-da-radio" id="mvDevResetFactoryLabel"><input type="radio" name="mvDevReset" id="mvDevResetFactory" value="factory"> Reset to Factory Defaults</label>' +
+        '<label class="mv-da-radio"><input type="radio" name="mvDevReset" id="mvDevResetAdvanced" value="advanced"> Reset Advanced Parameters and False Echoes</label>' +
+        '<button class="mv-ap-simple-btn" type="button" id="mvDevResetBtn">Reset</button>' +
+        '<div class="mv-da-reset-status" id="mvDevResetStatus"></div></div>' +
+        '<div class="mv-da-fw" data-panel="fw" hidden>' +
+        '<div class="mv-da-fw-top">' +
+        '<div class="mv-da-fw-warn1">Warning!</div>' +
+        '<button class="mv-ap-simple-btn mv-da-fw-summary" type="button" id="mvDaFwSummary">Firmware Summary...</button>' +
+        '<div class="mv-da-fw-warn2">Do not turn off the device while updating.</div>' +
+        '<div class="mv-da-fw-hint">Select the file to be uploaded to the device</div>' +
+        '<label class="mv-da-fw-recovery"><input type="checkbox" id="mvDaFwRecovery"> Recovery Mode</label>' +
+        '<label class="mv-da-fw-file-lbl" for="mvDaFwFile">File Name:</label>' +
+        '<input type="text" class="mv-da-fw-file" id="mvDaFwFile" value="">' +
+        '<button class="mv-ap-simple-btn mv-da-fw-browse" type="button" id="mvDaFwBrowse">...</button>' +
+        '<input type="file" id="mvDaFwFilePick" accept=".ldr,.LDR" hidden></div>' +
+        '<div class="mv-da-fw-mid">' +
+        '<div class="mv-da-bar" id="mvDaFwBar"><div class="mv-da-bar-fill" id="mvDaFwFill"></div></div>' +
+        '<div class="mv-da-fw-status" id="mvDaFwStatus"></div>' +
+        '<select class="mv-da-log" id="mvDaFwList" size="6"></select></div>' +
+        '<div class="mv-da-actions">' +
+        '<button class="mv-ap-simple-btn" type="button" id="mvDaFwStart">Start Update</button>' +
+        '<button class="mv-ap-simple-btn" type="button" id="mvDaFwCancel">Cancel Update</button>' +
+        '<button class="mv-ap-simple-btn" type="button" id="mvDaFwLog">Show Log</button></div></div>' +
+        '<div class="mv-da-com" data-panel="com" hidden>' +
+        '<div class="mv-da-com-mid">' +
+        '<div class="mv-da-bar" id="mvDaComBar"><div class="mv-da-bar-fill" id="mvDaComFill"></div></div>' +
+        '<div class="mv-da-com-status" id="mvDaComStatus"></div>' +
+        '<label class="mv-da-com-lbl" for="mvDaComCycles">Number of test cycles on single device:</label>' +
+        '<input type="text" class="mv-da-com-val" id="mvDaComCycles" value="20">' +
+        '<label class="mv-da-com-lbl mv-da-com-lbl2" for="mvDaComLen">Data length to send:</label>' +
+        '<input type="text" class="mv-da-com-val mv-da-com-val2" id="mvDaComLen" value="248">' +
+        '<select class="mv-da-log mv-da-com-log" id="mvDaComList" size="6"></select></div>' +
+        '<div class="mv-da-actions">' +
+        '<button class="mv-ap-simple-btn" type="button" id="mvDaComStart">Start Test</button>' +
+        '<button class="mv-ap-simple-btn" type="button" id="mvDaComStop">Stop Test</button>' +
+        '<button class="mv-ap-simple-btn" type="button" id="mvDaComLog">Show Log</button></div></div>' +
         "</div></div></div>";
-      return wrapDialog(
-        "mv-dlg-devices-act",
-        "Devices Activation",
-        700,
-        body,
-        '<div class="mv-dialog-footer"><button class="btn mv-params-btn" type="button" data-mv-dlg-close="mv-dlg-devices-act" style="width:85px">Close</button></div>'
-      );
+      return wrapDialog("mv-dlg-devices-act", "Devices Activation", 700, body, "");
     },
 
     "mv-dlg-echo-activate": function () {
@@ -1948,11 +1960,16 @@
   var batchProgressState = null;
 
   function runBatchSetParamsProgress(retrieveType, onDone) {
-    // retrieveType: "upload" | "download" (BatchCommandRetrieveType)
+    // retrieveType: "upload" | "download" | "reset" (BatchCommandRetrieveType)
     var baseMsg =
       retrieveType === "download"
         ? "Performing parameters download."
-        : "Performing parameters upload.";
+        : retrieveType === "reset"
+          ? "Performing devices reset."
+          : "Performing parameters upload.";
+    // ResetDevices: showPercentageCompleted = false, ButtonsVisible = false.
+    var showPercent = retrieveType !== "reset";
+    var showButtons = retrieveType !== "reset";
 
     if (batchProgressState && batchProgressState.timer) {
       clearTimeout(batchProgressState.timer);
@@ -1965,11 +1982,13 @@
     var barEl = $("mvProgBar");
     var cancelBtn = $("mvProgCancel");
     var btns = $("mvProgBtns");
+    var progOverlay = $("mv-dlg-progress");
+    if (progOverlay) progOverlay.classList.toggle("is-no-buttons", !showButtons);
 
     if (statusEl) statusEl.value = baseMsg;
     if (fillEl) fillEl.style.width = "0%";
     if (barEl) barEl.setAttribute("aria-valuenow", "0");
-    if (btns) btns.hidden = false;
+    if (btns) btns.hidden = !showButtons;
     if (cancelBtn) {
       cancelBtn.textContent = " Cancel Operation  ";
       cancelBtn.disabled = false;
@@ -1991,20 +2010,40 @@
         state.timer = null;
       }
       if (batchProgressState === state) batchProgressState = null;
+      var overlay = $("mv-dlg-progress");
+      if (overlay) overlay.classList.remove("is-no-buttons");
       closeDialog("mv-dlg-progress");
       if (state.onDone) state.onDone(ok);
     }
 
     function setProgress(pct) {
       state.pct = pct;
-      // Exact C#: message + (int)percentageCompleted + " %"  (no space after period)
-      if (statusEl) statusEl.value = state.baseMsg + (pct | 0) + " %";
+      if (statusEl) {
+        // Upload/download: message + (int)percentage + " %" (no space after the period).
+        // Reset keeps BatchProgressResetDevicesMessage with no percent.
+        statusEl.value = showPercent ? state.baseMsg + (pct | 0) + " %" : state.baseMsg;
+      }
       if (fillEl) fillEl.style.width = Math.max(0, Math.min(100, pct)) + "%";
       if (barEl) barEl.setAttribute("aria-valuenow", String(pct | 0));
     }
 
     function tick() {
       if (state.cancelled || batchProgressState !== state) return;
+      if (!showPercent) {
+        // RetrieveBatchSetParamsCompletedImplBatch: Value += 10, wrap past 100.
+        state.ticks = (state.ticks || 0) + 1;
+        var wrapped = state.pct + 10;
+        if (wrapped > 100) wrapped = 10;
+        setProgress(wrapped);
+        if (state.ticks >= 12) {
+          state.timer = setTimeout(function () {
+            finish(true);
+          }, 180);
+          return;
+        }
+        state.timer = setTimeout(tick, 220);
+        return;
+      }
       // Virtualize server BatchCommandLastBatchPercentageCompleted increments.
       var step = 4 + Math.floor(Math.random() * 11);
       var next = Math.min(100, state.pct + step);
@@ -4320,6 +4359,545 @@
     prepare();
   }
 
+  function daEsc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function daVessels() {
+    return typeof global.mvGetVessels === "function" ? global.mvGetVessels() : [];
+  }
+
+  function daSelectedVessel() {
+    return typeof global.mvGetSelectedVessel === "function"
+      ? global.mvGetSelectedVessel()
+      : null;
+  }
+
+  function daOffline(vessel) {
+    return !!(vessel && vessel.connectionStatus === "offline");
+  }
+
+  function daScannerRows(vessel) {
+    var polls =
+      vessel.scannerPolls && vessel.scannerPolls.length
+        ? vessel.scannerPolls.slice()
+        : [vessel.poll || 0];
+    var base = vessel.scannerName || "";
+    return polls.map(function (poll, i) {
+      var name = base;
+      if (polls.length > 1 && i > 0) name = base ? base + " " + i : "";
+      return { poll: poll, name: name, label: name + " (" + poll + ")" };
+    });
+  }
+
+  function daCheckedScanners() {
+    var tree = $("mvDaTree");
+    if (!tree) return [];
+    var out = [];
+    tree.querySelectorAll('.mv-da-node[data-kind="scanner"] input:checked').forEach(function (box) {
+      var node = box.closest(".mv-da-node");
+      if (!node || box.disabled) return;
+      out.push({
+        vesselId: node.getAttribute("data-vessel") || "",
+        vessel: node.getAttribute("data-vessel-name") || "",
+        name: node.getAttribute("data-name") || "",
+        poll: node.getAttribute("data-poll") || "",
+        firmware: node.getAttribute("data-fw") || "",
+      });
+    });
+    return out;
+  }
+
+  function daSyncParents(box) {
+    var node = box && box.closest(".mv-da-node");
+    var kidsHost = node && node.parentElement;
+    var parent = kidsHost && kidsHost.closest(".mv-da-node");
+    if (!parent) return;
+    var parentBox = parent.querySelector(":scope > .mv-da-row input");
+    if (!parentBox) return;
+    var childBoxes = parent.querySelectorAll(
+      ":scope > .mv-da-kids > .mv-da-node > .mv-da-row input:not(:disabled)"
+    );
+    var checked = 0;
+    var total = childBoxes.length;
+    childBoxes.forEach(function (child) {
+      if (child.checked && !child.indeterminate) checked += 1;
+    });
+    if (!total || checked === 0) {
+      parentBox.checked = false;
+      parentBox.indeterminate = false;
+    } else if (checked === total) {
+      parentBox.checked = true;
+      parentBox.indeterminate = false;
+    } else {
+      parentBox.checked = false;
+      parentBox.indeterminate = true;
+    }
+    daSyncParents(parentBox);
+  }
+
+  function fillDeviceActivationTree(root) {
+    var tree = (root && root.querySelector("#mvDaTree")) || $("mvDaTree");
+    if (!tree) return;
+    var vessels = daVessels();
+    var selected = daSelectedVessel();
+    var checkId = selected && !daOffline(selected) ? selected.id : "";
+    if (!checkId) {
+      for (var i = 0; i < vessels.length; i++) {
+        if (!daOffline(vessels[i])) {
+          checkId = vessels[i].id;
+          break;
+        }
+      }
+    }
+    var sites = [];
+    vessels.forEach(function (vessel) {
+      var siteName =
+        vessel.siteName ||
+        (typeof global.mvGetCurrentSiteName === "function"
+          ? global.mvGetCurrentSiteName()
+          : "Site1");
+      var bucket = null;
+      for (var s = 0; s < sites.length; s++) {
+        if (sites[s].name === siteName) bucket = sites[s];
+      }
+      if (!bucket) {
+        bucket = { name: siteName, vessels: [] };
+        sites.push(bucket);
+      }
+      bucket.vessels.push(vessel);
+    });
+    if (!sites.length) {
+      sites.push({
+        name: "Site1",
+        vessels: [
+          { id: "vessel-1", short: "Vessel1", name: "Vessel1", poll: 0, scannerName: "" },
+          { id: "vessel-2", short: "Vessel2", name: "Vessel2", poll: 1, scannerName: "" },
+        ],
+      });
+      checkId = "vessel-1";
+    }
+    var html = sites
+      .map(function (site) {
+        var vesselHtml = site.vessels
+          .map(function (vessel) {
+            var offline = daOffline(vessel);
+            var vName = vessel.short || vessel.name || "Vessel";
+            var scanners = daScannerRows(vessel);
+            var scanHtml = scanners
+              .map(function (sc) {
+                var on = !offline && vessel.id === checkId;
+                return (
+                  '<div class="mv-da-node" data-kind="scanner" data-vessel="' +
+                  daEsc(vessel.id) +
+                  '" data-vessel-name="' +
+                  daEsc(vName) +
+                  '" data-name="' +
+                  daEsc(sc.name) +
+                  '" data-poll="' +
+                  daEsc(sc.poll) +
+                  '" data-fw="' +
+                  daEsc(vessel.firmware || "") +
+                  '"><div class="mv-da-row"><span class="mv-da-twist is-blank"></span>' +
+                  '<label><input type="checkbox"' +
+                  (on ? " checked" : "") +
+                  (offline ? " disabled" : "") +
+                  "> " +
+                  daEsc(sc.label) +
+                  "</label></div></div>"
+                );
+              })
+              .join("");
+            return (
+              '<div class="mv-da-node" data-kind="vessel" data-id="' +
+              daEsc(vessel.id) +
+              '"><div class="mv-da-row"><button type="button" class="mv-da-twist" aria-label="Expand">▼</button>' +
+              '<label><input type="checkbox"' +
+              (offline ? " disabled" : "") +
+              "> " +
+              daEsc(vName) +
+              "</label></div><div class=\"mv-da-kids\">" +
+              scanHtml +
+              "</div></div>"
+            );
+          })
+          .join("");
+        return (
+          '<div class="mv-da-node" data-kind="site"><div class="mv-da-row">' +
+          '<button type="button" class="mv-da-twist" aria-label="Expand">▼</button>' +
+          '<label><input type="checkbox"> ' +
+          daEsc(site.name) +
+          '</label></div><div class="mv-da-kids">' +
+          vesselHtml +
+          "</div></div>"
+        );
+      })
+      .join("");
+    tree.innerHTML = html;
+    tree.querySelectorAll('.mv-da-node[data-kind="scanner"] input').forEach(function (box) {
+      if (box.checked) daSyncParents(box);
+    });
+  }
+
+  var daFlow = null;
+
+  function stopDeviceActivationFlows() {
+    if (daFlow && daFlow.timer) clearTimeout(daFlow.timer);
+    daFlow = null;
+    var start = $("mvDaFwStart");
+    if (start) start.disabled = false;
+  }
+
+  function daLogLines(selectEl) {
+    if (!selectEl) return [];
+    return Array.prototype.map.call(selectEl.options, function (opt) {
+      return opt.text;
+    });
+  }
+
+  function daSetLog(selectEl, lines) {
+    if (!selectEl) return;
+    selectEl.innerHTML = lines
+      .map(function (line) {
+        return "<option>" + daEsc(line) + "</option>";
+      })
+      .join("");
+    if (selectEl.options.length) selectEl.selectedIndex = selectEl.options.length - 1;
+  }
+
+  function daShowLog(selectEl) {
+    var lines = daLogLines(selectEl);
+    showMessage(lines.join("\n"), "3D MultiVision");
+  }
+
+  function daNowStamp() {
+    var d = new Date();
+    return d.toLocaleDateString() + " " + d.toLocaleTimeString();
+  }
+
+  function daClock() {
+    return new Date().toLocaleTimeString();
+  }
+
+  function wireDevicesActivation(root) {
+    if (!root || root.id !== "mv-dlg-devices-act" || root.__mvDaWired) return;
+    root.__mvDaWired = true;
+
+    var tree = root.querySelector("#mvDaTree");
+    var menu = root.querySelector("#mvDaMenu");
+
+    function hideMenu() {
+      if (menu) menu.hidden = true;
+    }
+
+    function setCollapsed(collapsed) {
+      if (!tree) return;
+      tree.querySelectorAll(".mv-da-node").forEach(function (node) {
+        if (!node.querySelector(":scope > .mv-da-kids")) return;
+        node.classList.toggle("is-collapsed", collapsed);
+        var twist = node.querySelector(":scope > .mv-da-row .mv-da-twist");
+        if (twist && !twist.classList.contains("is-blank")) {
+          twist.textContent = collapsed ? "▶" : "▼";
+        }
+      });
+    }
+
+    if (tree) {
+      tree.addEventListener("change", function (e) {
+        var box = e.target;
+        if (!box || box.type !== "checkbox") return;
+        var node = box.closest(".mv-da-node");
+        if (!node) return;
+        var kids = node.querySelectorAll(".mv-da-kids input[type='checkbox']:not(:disabled)");
+        kids.forEach(function (child) {
+          child.checked = box.checked;
+          child.indeterminate = false;
+        });
+        box.indeterminate = false;
+        daSyncParents(box);
+      });
+      tree.addEventListener("click", function (e) {
+        var twist = e.target.closest(".mv-da-twist");
+        if (!twist || twist.classList.contains("is-blank")) return;
+        var node = twist.closest(".mv-da-node");
+        if (!node) return;
+        var collapsed = !node.classList.contains("is-collapsed");
+        node.classList.toggle("is-collapsed", collapsed);
+        twist.textContent = collapsed ? "▶" : "▼";
+      });
+      tree.addEventListener("contextmenu", function (e) {
+        if (!menu) return;
+        e.preventDefault();
+        menu.hidden = false;
+        menu.style.left = e.clientX + "px";
+        menu.style.top = e.clientY + "px";
+      });
+    }
+    if (menu) {
+      menu.addEventListener("click", function (e) {
+        var btn = e.target.closest("[data-da-menu]");
+        if (!btn) return;
+        var action = btn.getAttribute("data-da-menu");
+        hideMenu();
+        if (action === "expand") setCollapsed(false);
+        if (action === "collapse") setCollapsed(true);
+        if (action === "find" && tree) {
+          var selected = daSelectedVessel();
+          var id = selected && selected.id;
+          var node = id
+            ? tree.querySelector('.mv-da-node[data-kind="vessel"][data-id="' + id + '"]')
+            : null;
+          if (node) {
+            node.classList.remove("is-collapsed");
+            var site = node.parentElement && node.parentElement.closest(".mv-da-node");
+            if (site) site.classList.remove("is-collapsed");
+            node.scrollIntoView({ block: "nearest" });
+          }
+        }
+      });
+    }
+    document.addEventListener("mousedown", function (e) {
+      if (!menu || menu.hidden) return;
+      if (e.target.closest("#mvDaMenu")) return;
+      hideMenu();
+    });
+
+    var resetBtn = root.querySelector("#mvDevResetBtn");
+    if (resetBtn) {
+      resetBtn.addEventListener("click", function () {
+        var scanners = daCheckedScanners();
+        if (!scanners.length) {
+          showMessage("Select at least one device.", "3D MultiVision");
+          return;
+        }
+        var picked = root.querySelector('input[name="mvDevReset"]:checked');
+        var label = "Reset (Restart) Device";
+        if (picked && picked.value === "factory") label = "Reset to Factory Defaults";
+        if (picked && picked.value === "advanced") {
+          label = "Reset Advanced Parameters and False Echoes";
+        }
+        // Strings.SelectedOperationIs + option + ". \r\n" + Strings.AreYouSure
+        showQuestion(
+          "Selected operation is:" + label + ". \r\nAre you sure?",
+          "3D MultiVision",
+          function () {
+            runBatchSetParamsProgress("reset", function (ok) {
+              if (!ok) return;
+              window.dispatchEvent(new CustomEvent("install-guide:device-reset"));
+              status("Device reset.");
+            });
+          }
+        );
+      });
+    }
+
+    var filePick = root.querySelector("#mvDaFwFilePick");
+    var fileBox = root.querySelector("#mvDaFwFile");
+    var browse = root.querySelector("#mvDaFwBrowse");
+    if (browse && filePick) {
+      browse.addEventListener("click", function () {
+        filePick.click();
+      });
+      filePick.addEventListener("change", function () {
+        var file = filePick.files && filePick.files[0];
+        if (file && fileBox) fileBox.value = file.name;
+      });
+    }
+
+    var fwList = root.querySelector("#mvDaFwList");
+    var fwFill = root.querySelector("#mvDaFwFill");
+    var fwStatus = root.querySelector("#mvDaFwStatus");
+    var fwStart = root.querySelector("#mvDaFwStart");
+    var fwCancel = root.querySelector("#mvDaFwCancel");
+    var fwSummary = root.querySelector("#mvDaFwSummary");
+    var fwLog = root.querySelector("#mvDaFwLog");
+    var fwRecovery = root.querySelector("#mvDaFwRecovery");
+
+    function fwSetBar(pct) {
+      if (fwFill) fwFill.style.width = Math.max(0, Math.min(100, pct)) + "%";
+    }
+
+    if (fwSummary) {
+      fwSummary.addEventListener("click", function () {
+        open("mv-dlg-inventory-table");
+      });
+    }
+    if (fwLog) {
+      fwLog.addEventListener("click", function () {
+        daShowLog(fwList);
+      });
+    }
+    if (fwStart) {
+      fwStart.addEventListener("click", function () {
+        var scanners = daCheckedScanners();
+        if (!scanners.length) {
+          showMessage("Select at least one device.", "3D MultiVision");
+          return;
+        }
+        var fileName = fileBox ? String(fileBox.value || "").trim() : "";
+        if (!fileName) {
+          showMessage("Select the file to be uploaded to the device.", "3D MultiVision");
+          return;
+        }
+        var pickedFile = filePick && filePick.files && filePick.files[0];
+        var looksLikeLdr = /\.ldr$/i.test(fileName);
+        if (!pickedFile && !looksLikeLdr) {
+          showMessage("Selected file doesn't exist.", "3D MultiVision");
+          return;
+        }
+        stopDeviceActivationFlows();
+        fwStart.disabled = true;
+        var lines = [
+          "Start time:" + daNowStamp(),
+          fileName.replace(/^.*[\\/]/, ""),
+          scanners[0].firmware || "2.9.986",
+        ];
+        if (fwRecovery && fwRecovery.checked) lines.push("Recovery Mode");
+        var stageNames = [
+          "Start Device Reset",
+          "Device Reset Completed",
+          "Device Reconnecting",
+          "Firmware Transfer Begun",
+          "Erase in Progress",
+          "Erase Completed",
+          "Burn in Progress",
+          "Burn Completed",
+        ];
+        var step = 0;
+        fwSetBar(0);
+        function fwTick() {
+          if (!daFlow || daFlow.kind !== "fw") return;
+          var sc = scanners[Math.min(scanners.length - 1, 0)];
+          var pct = Math.min(100, Math.round(((step + 1) / stageNames.length) * 100));
+          fwSetBar(pct);
+          if (fwStatus) {
+            fwStatus.textContent =
+              "Vessel: " + sc.vessel + " (" + (sc.name || sc.poll) + ") [" + pct.toFixed(2) + "%]";
+          }
+          lines.push("======================================");
+          lines.push(
+            "Vessel: " +
+              sc.vessel +
+              " (" +
+              (sc.name || sc.poll) +
+              ") " +
+              stageNames[Math.min(step, stageNames.length - 1)]
+          );
+          lines.push("      " + daClock() + " " + stageNames[Math.min(step, stageNames.length - 1)]);
+          if (step >= stageNames.length - 1) {
+            lines.push("Firmware upload completed.");
+            lines.push("End time:" + daNowStamp());
+            lines.push("--------------------------------------");
+            daSetLog(fwList, lines);
+            if (fwStatus) fwStatus.textContent = "";
+            fwSetBar(100);
+            fwStart.disabled = false;
+            daFlow = null;
+            return;
+          }
+          daSetLog(fwList, lines);
+          step += 1;
+          daFlow.timer = setTimeout(fwTick, 420);
+        }
+        daFlow = { kind: "fw", timer: setTimeout(fwTick, 200) };
+        daSetLog(fwList, lines);
+      });
+    }
+    if (fwCancel) {
+      fwCancel.addEventListener("click", function () {
+        if (!daFlow || daFlow.kind !== "fw") {
+          showMessage("Firmware Update is not active.", "3D MultiVision");
+          return;
+        }
+        stopDeviceActivationFlows();
+        fwSetBar(0);
+        if (fwStatus) fwStatus.textContent = "";
+        var lines = daLogLines(fwList);
+        lines.push("Canceled");
+        daSetLog(fwList, lines);
+      });
+    }
+
+    var comList = root.querySelector("#mvDaComList");
+    var comFill = root.querySelector("#mvDaComFill");
+    var comStatus = root.querySelector("#mvDaComStatus");
+    var comCycles = root.querySelector("#mvDaComCycles");
+    var comLen = root.querySelector("#mvDaComLen");
+    var comStart = root.querySelector("#mvDaComStart");
+    var comStop = root.querySelector("#mvDaComStop");
+    var comLog = root.querySelector("#mvDaComLog");
+
+    function comMark(el, bad) {
+      if (el) el.classList.toggle("is-invalid", !!bad);
+    }
+
+    if (comLog) {
+      comLog.addEventListener("click", function () {
+        daShowLog(comList);
+      });
+    }
+    if (comStop) {
+      comStop.addEventListener("click", function () {
+        if (daFlow && daFlow.kind === "com") stopDeviceActivationFlows();
+      });
+    }
+    if (comStart) {
+      comStart.addEventListener("click", function () {
+        var scanners = daCheckedScanners();
+        if (!scanners.length) {
+          showMessage("Select at least one device.", "3D MultiVision");
+          return;
+        }
+        var cycles = parseInt(comCycles && comCycles.value, 10);
+        var length = parseInt(comLen && comLen.value, 10);
+        var cyclesBad = !isFinite(cycles) || cycles < 20 || cycles > 999;
+        var lengthBad = !isFinite(length) || length < 8 || length > 248;
+        comMark(comCycles, cyclesBad);
+        comMark(comLen, lengthBad);
+        if (cyclesBad || lengthBad) {
+          showMessage(
+            "Number of parameters are illegal (see red color sign). Please fix and retry.",
+            "3D MultiVision"
+          );
+          return;
+        }
+        stopDeviceActivationFlows();
+        var lines = [];
+        var step = 0;
+        var total = Math.max(1, scanners.length);
+        function comTick() {
+          if (!daFlow || daFlow.kind !== "com") return;
+          var sc = scanners[Math.min(step, scanners.length - 1)];
+          var pct = Math.round(((step + 1) / total) * 100);
+          if (comFill) comFill.style.width = pct + "%";
+          if (comStatus) comStatus.textContent = pct + " %";
+          var head = "Vessel: " + sc.vessel + " (" + (sc.name || sc.poll) + ") OK";
+          lines.push(head);
+          lines.push("Start:" + daClock());
+          lines.push("Average delay (mSec):" + (12 + step));
+          lines.push("% of packets not answered:0.00");
+          lines.push("% of packets received correctly:100.00");
+          lines.push("% of packets received with error:0.00");
+          lines.push("End:" + daClock());
+          lines.push("======================================");
+          daSetLog(comList, lines);
+          step += 1;
+          if (step >= scanners.length) {
+            daFlow = null;
+            return;
+          }
+          daFlow.timer = setTimeout(comTick, 500);
+        }
+        if (comFill) comFill.style.width = "0%";
+        if (comStatus) comStatus.textContent = "0 %";
+        daFlow = { kind: "com", timer: setTimeout(comTick, 200) };
+      });
+    }
+  }
+
   function wireDialogChrome(root) {
     if (!root || root.__mvWired) return;
     root.__mvWired = true;
@@ -4332,6 +4910,7 @@
     wireEchoActivate(root);
     wireEchoCurve(root);
     wireFalseEcho(root);
+    wireDevicesActivation(root);
     root.addEventListener("click", function (e) {
       var closeBtn = e.target.closest("[data-mv-dlg-close]");
       if (closeBtn) {
@@ -4347,11 +4926,6 @@
         onDialogOk(okBtn.getAttribute("data-mv-dlg-ok"));
         return;
       }
-      if (e.target.closest && e.target.closest("#mvDevResetBtn")) {
-        window.dispatchEvent(new CustomEvent("install-guide:device-reset"));
-        status("Device reset.");
-        return;
-      }
       var applyBtn = e.target.closest("[data-mv-dlg-apply]");
       if (applyBtn) {
         applyClientSettings();
@@ -4363,10 +4937,10 @@
         return;
       }
       var scanner = e.target.closest(
-        ".mv-device-act-tree .node.scanner, .mv-ba-tree .node.scanner, .mv-vbs-tree .node.scanner"
+        ".mv-ba-tree .node.scanner, .mv-vbs-tree .node.scanner"
       );
       if (scanner) {
-        var tree = scanner.closest(".mv-device-act-tree, .mv-ba-tree, .mv-vbs-tree");
+        var tree = scanner.closest(".mv-ba-tree, .mv-vbs-tree");
         if (tree) {
           tree.querySelectorAll(".node.scanner").forEach(function (n) {
             n.classList.toggle("is-selected", n === scanner);

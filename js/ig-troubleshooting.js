@@ -192,10 +192,10 @@
     return click(
       "ts-act-close",
       "Close Devices Activations",
-      "Click <strong>Close</strong>.",
+      "Click the window <strong>Close</strong> button.",
       '#mv-dlg-devices-act [data-mv-dlg-close="mv-dlg-devices-act"], #mv-dlg-devices-act .title-btn.close',
       "install-guide:devices-act-closed",
-      { pointer: "bottom", allowInside: ACT_INSIDE }
+      { pointer: "left", allowInside: ACT_INSIDE }
     );
   }
 
@@ -403,10 +403,13 @@
         click(
           "ts-reset-go",
           "Reset",
-          "Click <strong>Reset</strong>.",
+          "Click <strong>Reset</strong>, then <strong>Yes</strong>. Wait until the reset finishes.",
           "#mvDevResetBtn",
           "install-guide:device-reset",
-          { pointer: "right", allowInside: ACT_INSIDE }
+          {
+            pointer: "right",
+            allowInside: "#mv-dlg-devices-act, #mvMsgOverlay, #mv-dlg-progress",
+          }
         ),
         closeActStep(),
         loadFromVesselStep(),
