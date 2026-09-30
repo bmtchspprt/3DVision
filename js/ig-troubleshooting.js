@@ -478,9 +478,17 @@
           { pointer: "bottom", allowInside: SLEEP_INSIDE }
         ),
         click(
+          "ts-sleep-menu",
+          "Sleep after",
+          "Under <strong>Plugged in</strong>, click <strong>Make my device sleep after</strong>.",
+          "#pwrSleepPlugged",
+          "install-guide:sleep-menu-open",
+          { pointer: "bottom", allowInside: SLEEP_INSIDE }
+        ),
+        click(
           "ts-sleep-never",
-          "Plugged in",
-          "Under <strong>Plugged in</strong>, click <strong>Never</strong>.",
+          "Never",
+          "Click <strong>Never</strong>.",
           "#pwrSleepOptNever",
           "install-guide:sleep-never",
           { pointer: "bottom", allowInside: SLEEP_INSIDE }

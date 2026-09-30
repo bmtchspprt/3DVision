@@ -2773,13 +2773,16 @@
         sleepSearch.dispatchEvent(new Event("input", { bubbles: true }));
       }
     }
-    if (step.id === "ts-sleep-expand" || step.id === "ts-sleep-never") {
+    if (step.id === "ts-sleep-expand" || step.id === "ts-sleep-menu" || step.id === "ts-sleep-never") {
       var pwrBd = document.getElementById("backdropPowerSettings");
       if ((!pwrBd || !pwrBd.classList.contains("show")) && typeof window.showPowerSettings === "function") {
         window.showPowerSettings();
       }
-      if (step.id === "ts-sleep-never" && typeof window.openPowerSleepMenu === "function") {
-        window.openPowerSleepMenu();
+      if (step.id !== "ts-sleep-expand" && typeof window.expandPowerSleepTimeouts === "function") {
+        window.expandPowerSleepTimeouts();
+      }
+      if (step.id === "ts-sleep-never" && typeof window.scrollPowerSleepMenu === "function") {
+        window.scrollPowerSleepMenu();
       }
     }
     if (step.typeId && step.typeValue) {
@@ -3144,13 +3147,19 @@
         window.dispatchEvent(new CustomEvent("install-guide:sleep-timeouts-open"));
       }
     }
+    if (step.advanceOn === "install-guide:sleep-menu-open") {
+      var sleepMenu = document.getElementById("pwrSleepMenu");
+      if (sleepMenu && !sleepMenu.hidden) {
+        window.dispatchEvent(new CustomEvent("install-guide:sleep-menu-open"));
+      }
+    }
     if (step.advanceOn === "install-guide:sleep-never") {
       var sleepBdNever = document.getElementById("backdropPowerSettings");
       if (sleepBdNever && !sleepBdNever.classList.contains("show") && typeof window.showPowerSettings === "function") {
         window.showPowerSettings();
       }
-      if (typeof window.openPowerSleepMenu === "function") {
-        window.openPowerSleepMenu();
+      if (typeof window.scrollPowerSleepMenu === "function") {
+        window.scrollPowerSleepMenu();
       }
       var sleepSel = document.getElementById("pwrSleepPlugged");
       if (sleepSel && sleepSel.value === "never") {
@@ -3316,6 +3325,7 @@
       "install-guide:start-open",
       "install-guide:sleep-settings-opened",
       "install-guide:sleep-timeouts-open",
+      "install-guide:sleep-menu-open",
       "install-guide:sleep-never",
       "install-guide:typed-ok",
     ].forEach(function (name) {

@@ -66,6 +66,16 @@
   function setSleepMenuOpen(open) {
     if (!sleepMenu) return;
     sleepMenu.hidden = !open;
+    if (open) {
+      sleepMenu.scrollTop = 0;
+    }
+  }
+
+  function scrollSleepMenuToNever() {
+    var never = document.getElementById("pwrSleepOptNever");
+    if (!sleepMenu || sleepMenu.hidden || !never) return;
+    var top = never.offsetTop - (sleepMenu.clientHeight - never.offsetHeight - 6);
+    sleepMenu.scrollTop = top < 0 ? 0 : top;
   }
 
   function setExpanded(open, silent) {
@@ -111,6 +121,13 @@
       });
     }
     if (pluggedSleep) {
+      pluggedSleep.addEventListener("mousedown", function (event) {
+        event.preventDefault();
+        setSleepMenuOpen(!sleepMenu || sleepMenu.hidden);
+        if (sleepMenu && !sleepMenu.hidden) {
+          emit("install-guide:sleep-menu-open");
+        }
+      });
       pluggedSleep.addEventListener("change", function () {
         if (pluggedSleep.value === "never") {
           setSleepMenuOpen(false);
@@ -138,8 +155,5 @@
   window.expandPowerSleepTimeouts = function () {
     setExpanded(true, true);
   };
-  window.openPowerSleepMenu = function () {
-    setExpanded(true, true);
-    setSleepMenuOpen(true);
-  };
+  window.scrollPowerSleepMenu = scrollSleepMenuToNever;
 })();

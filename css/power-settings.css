@@ -377,7 +377,8 @@
   z-index: 6;
   min-width: 148px;
   max-height: 220px;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
   background: #2b2b2b;
   border: 1px solid #5a5a5a;
   border-radius: 6px;
