@@ -3069,7 +3069,7 @@
         window.dispatchEvent(new CustomEvent("install-guide:ap-beam-range-off"));
       }
     }
-    if (step.id === "ts-beam-select-all" || step.id === "ts-ap-select-all") {
+    if (step.id === "ts-ap-select-all") {
       var manual = document.getElementById("mvApBeamManual");
       var boxes = manual ? manual.querySelectorAll('input[type="checkbox"]') : [];
       var allOn = boxes.length > 0;

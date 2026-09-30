@@ -53,7 +53,7 @@
       id: "auto-beam",
       title: "Auto Beam Selection Issues",
       explanation:
-        "Verify all 6 beam checkboxes at the top are checked. Uncheck Auto Beam Selection at the bottom. Click Upload All to apply. Then click Load from Vessel to confirm correct readings.",
+        "Uncheck Auto Beam Selection and Automatic Beams Range. The beams are already on. Click Upload All to apply, then click Load from Vessel to confirm the reading.",
     },
     {
       id: "echo-curve",
@@ -499,14 +499,6 @@
           "#mvApAutoBeamRange",
           "install-guide:ap-beam-range-off",
           { pointer: "right", allowInside: AP_INSIDE }
-        ),
-        click(
-          "ts-beam-select-all",
-          "Select All beams",
-          "Click <strong>Select All</strong>.",
-          "#mvApBeamSelectAll",
-          "install-guide:ap-beams-select-all",
-          { pointer: "bottom", allowInside: AP_INSIDE }
         ),
         click(
           "ts-beam-upload",
