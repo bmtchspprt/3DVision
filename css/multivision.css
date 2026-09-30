@@ -3603,36 +3603,96 @@
   font-size: 12px;
   white-space: nowrap;
 }
-.mv-out-settings .mv-out-units-top {
+#mv-dlg-output-settings .mv-dialog {
+  width: 560px !important;
+}
+#mv-dlg-output-settings .mv-dialog-body {
+  padding: 6px 8px 4px;
+  overflow: hidden;
+}
+.mv-out-settings,
+.mv-out-settings * {
+  box-sizing: border-box;
+}
+.mv-out-settings .mv-out-units {
+  margin-bottom: 0;
+  padding: 6px 8px 8px;
+}
+.mv-out-settings .mv-out-units-grid {
   display: grid;
-  grid-template-columns: 96px 106px;
-  gap: 8px 0;
-  width: 255px;
-  margin-bottom: 8px;
+  grid-template-columns: 250px 14px 236px;
+  grid-template-rows: auto auto;
+  align-items: start;
 }
-.mv-out-settings .mv-out-units-nested {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
+.mv-out-settings .mv-out-units-dist {
+  grid-column: 1;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: 96px 110px;
+  gap: 8px 6px;
+  align-items: center;
+  padding: 4px 0 8px;
 }
-.mv-out-settings .mv-out-units-nested fieldset {
+.mv-out-settings .mv-out-units-dist select {
+  width: 92px;
+  height: 24px;
+}
+.mv-out-settings .mv-out-mass {
+  grid-column: 1;
+  grid-row: 2;
+  width: 250px;
   margin: 0;
-  min-width: 240px;
-  flex: 1;
+  padding: 8px 6px 8px;
+  overflow: hidden;
 }
-.mv-out-settings .mv-out-unit-row {
-  display: grid;
-  grid-template-columns: 110px 1fr;
-  align-items: center;
-  gap: 6px;
-  margin: 6px 0;
+.mv-out-settings .mv-out-volume {
+  grid-column: 3;
+  grid-row: 2;
+  width: 236px;
+  margin: 0;
+  padding: 8px 6px 8px;
+  overflow: hidden;
 }
-.mv-out-settings .mv-out-mass-density {
+.mv-out-settings .mv-out-mass-grid {
   display: grid;
-  grid-template-columns: 60px 75px 110px;
+  grid-template-columns: 58px 72px minmax(0, 1fr);
+  grid-template-rows: 32px 32px;
   align-items: center;
-  gap: 4px;
-  margin: 6px 0;
+  column-gap: 4px;
+}
+.mv-out-settings .mv-out-mass-label {
+  grid-column: 1 / span 2;
+}
+.mv-out-settings .mv-out-mass-grid select,
+.mv-out-settings .mv-out-vol-grid select,
+.mv-out-settings .mv-out-mass-grid input,
+.mv-out-settings .mv-out-vol-grid input {
+  width: 100%;
+  min-width: 0;
+  height: 24px;
+}
+.mv-out-settings #mvOutMass {
+  grid-column: 3;
+  grid-row: 1;
+}
+.mv-out-settings .mv-out-dens-label {
+  grid-column: 1;
+  grid-row: 2;
+}
+.mv-out-settings #mvOutDens {
+  grid-column: 2;
+  grid-row: 2;
+}
+.mv-out-settings #mvOutDensUnit {
+  grid-column: 3;
+  grid-row: 2;
+}
+.mv-out-settings .mv-out-vol-grid {
+  display: grid;
+  grid-template-columns: 100px minmax(0, 1fr);
+  grid-template-rows: 32px 32px;
+  align-items: center;
+  column-gap: 6px;
 }
 .mv-dialog-footer.mv-out-footer {
   justify-content: flex-start;

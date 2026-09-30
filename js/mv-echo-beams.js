@@ -76,6 +76,230 @@
     return displayUnits === "ft" ? "ft" : "m";
   }
 
+  function formatAmp(v) {
+    if (!isFinite(v)) return "0";
+    var a = Math.abs(v);
+    if (a >= 100) return String(Math.round(v));
+    if (a >= 10) return v.toFixed(1);
+    if (a >= 1) return v.toFixed(2);
+    if (a === 0) return "0";
+    return v.toFixed(3);
+  }
+
+  // BeamDataParser.ParseBeamFile (fastParsing, linear scale). Playback of a recorded .bm4.
+  var goodCurveData = null;
+  var goodCurvePromise = null;
+
+  function u32(buf, i) {
+    return (
+      (buf[i] | (buf[i + 1] << 8) | (buf[i + 2] << 16) | (buf[i + 3] << 24)) >>> 0
+    );
+  }
+  function i32(buf, i) {
+    return buf[i] | (buf[i + 1] << 8) | (buf[i + 2] << 16) | (buf[i + 3] << 24);
+  }
+  function u16(buf, i) {
+    return buf[i] | (buf[i + 1] << 8);
+  }
+  function f32(buf, i) {
+    var ab = new ArrayBuffer(4);
+    var v = new Uint8Array(ab);
+    v[0] = buf[i];
+    v[1] = buf[i + 1];
+    v[2] = buf[i + 2];
+    v[3] = buf[i + 3];
+    return new Float32Array(ab)[0];
+  }
+  function fract32(x) {
+    return (x / 2147483648) * 1000;
+  }
+  function arrayToFract(outcome) {
+    return outcome > 32768 ? (65536 - outcome) / 32768 : outcome / 32768;
+  }
+
+  function readTaggedSeries(buf, header, beam, stride, mmm) {
+    var gain = f32(buf, header.gainOff + beam * stride);
+    var pts = [];
+    if (!(gain > 0)) return pts;
+    var n = header.off + beam * stride;
+    var j;
+    for (j = 0; j < header.length; j++) {
+      var h = header.offset + j * header.res;
+      if (h > mmm) break;
+      var raw = u16(buf, n + j * 2);
+      pts.push({ h: h, f: arrayToFract(raw) * gain });
+    }
+    return pts;
+  }
+
+  function parseBeamArrayBuffer(buffer) {
+    var buf = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
+    var n = 0;
+    n += 4;
+    var numTables = u32(buf, n);
+    n += 4;
+    var numBeams = u32(buf, n);
+    n += 4;
+    var stride = u32(buf, n);
+    n += 4;
+    var headers = [];
+    var t;
+    for (t = 0; t < numTables; t++) {
+      var tag = "";
+      var j;
+      for (j = 8; j < 19 && buf[n + j]; j++) tag += String.fromCharCode(buf[n + j]);
+      headers.push({
+        tag: tag.trim(),
+        off: u32(buf, n),
+        length: u32(buf, n + 4),
+        offset: fract32(i32(buf, n + 20)),
+        res: fract32(i32(buf, n + 24)),
+        gainOff: u32(buf, n + 28),
+      });
+      n += 32;
+    }
+    var maximasOffset = u32(buf, n);
+    var maximasPtr = n + 4;
+    var tablesUsed = numTables > 6 ? 6 : numTables;
+    var byTag = {};
+    for (t = 0; t < tablesUsed; t++) byTag[headers[t].tag] = headers[t];
+    var beamsDataList = [];
+    var beamsHasDataList = [];
+    var beamsAllTableList = [];
+    var BeamLines = [];
+    var mmm = 0;
+    var b;
+    for (b = 0; b < numBeams; b++) {
+      var gradeHeader = byTag.Grade;
+      var orange = 0;
+      if (gradeHeader) {
+        orange = fract32(i32(buf, gradeHeader.off + b * stride - 4));
+        if (orange > mmm) mmm = orange;
+      }
+      var grade = gradeHeader ? readTaggedSeries(buf, gradeHeader, b, stride, mmm) : [];
+      var threshold = byTag.Threshold
+        ? readTaggedSeries(buf, byTag.Threshold, b, stride, mmm)
+        : [];
+      var afe = byTag.AFE ? readTaggedSeries(buf, byTag.AFE, b, stride, mmm) : [];
+      var falseE = byTag["False E."]
+        ? readTaggedSeries(buf, byTag["False E."], b, stride, mmm)
+        : [];
+      var has = false;
+      var pi;
+      for (pi = 0; pi < grade.length; pi++) {
+        if (grade[pi].f !== 0) {
+          has = true;
+          break;
+        }
+      }
+      beamsHasDataList.push(has);
+      beamsDataList.push([grade, threshold, afe, falseE]);
+      beamsAllTableList.push(grade.slice());
+      BeamLines.push(
+        orange
+          ? [{ color: "Orange", val: orange, BeamFuzzyFactor: 0, beamIndex: b }]
+          : []
+      );
+    }
+    var BeamAllLines = [];
+    n = maximasPtr;
+    if (n + 2 < buf.length) {
+      var maximaCount = u16(buf, n) - 1;
+      n += 4;
+      if (maximaCount >= 0 && n + 8 <= buf.length) {
+        var k2 = u16(buf, n);
+        n += 4;
+        var aux = u32(buf, n);
+        var dist = ((aux + maximasOffset) / 2147483648) * 1000;
+        n += 4;
+        var fuzzy = n + 4 <= buf.length ? f32(buf, n) : 0;
+        n += 4;
+        if (k2 >= 0 && k2 < BeamLines.length) {
+          var cyan = {
+            color: "Cyan",
+            val: dist,
+            BeamFuzzyFactor: fuzzy,
+            beamIndex: k2,
+          };
+          BeamLines[k2].push(cyan);
+          BeamAllLines.push(cyan);
+        }
+        var mi;
+        for (mi = 0; mi < maximaCount && n + 12 <= buf.length; mi++) {
+          k2 = u16(buf, n);
+          n += 4;
+          aux = u32(buf, n);
+          dist = ((aux + maximasOffset) / 2147483648) * 1000;
+          n += 4;
+          fuzzy = f32(buf, n);
+          n += 4;
+          if (k2 > BeamLines.length) k2 = 0;
+          if (k2 < 0 || k2 >= BeamLines.length) continue;
+          var black = {
+            color: "Black",
+            val: dist,
+            BeamFuzzyFactor: fuzzy,
+            beamIndex: k2,
+          };
+          BeamLines[k2].push(black);
+          BeamAllLines.push({
+            color: "FromBeamIndex",
+            val: dist,
+            BeamFuzzyFactor: fuzzy,
+            beamIndex: k2,
+          });
+        }
+      }
+    }
+    var gradeRes = byTag.Grade ? byTag.Grade.res : 0.0152587890625;
+    return {
+      bVersion4: true,
+      NumOfBeams: numBeams,
+      beamDataHeaderList: [
+        { representation_tag: "Grade", representation_offset: 0, representation_resulotion: gradeRes },
+        { representation_tag: "Threshold" },
+        { representation_tag: "AFE" },
+        { representation_tag: "False E." },
+      ],
+      beamsDataList: beamsDataList,
+      beamsHasDataList: beamsHasDataList,
+      beamsAllTableList: beamsAllTableList,
+      BeamLines: BeamLines,
+      BeamAllLines: BeamAllLines,
+      MaxHValue: mmm,
+      heightM: mmm,
+      resolution: gradeRes,
+      maxRange: mmm,
+      fileName: "0_2026-08-04 15-44-23.bm4",
+      pathLabel: "",
+      fromRecording: true,
+    };
+  }
+
+  function preloadGoodCurve() {
+    if (goodCurveData) return Promise.resolve(goodCurveData);
+    if (goodCurvePromise) return goodCurvePromise;
+    if (typeof fetch !== "function") return Promise.resolve(null);
+    goodCurvePromise = fetch("assets/grades/good-curve.bm4")
+      .then(function (res) {
+        if (!res.ok) throw new Error("bm4");
+        return res.arrayBuffer();
+      })
+      .then(function (ab) {
+        goodCurveData = parseBeamArrayBuffer(ab);
+        return goodCurveData;
+      })
+      .catch(function () {
+        goodCurvePromise = null;
+        return null;
+      });
+    return goodCurvePromise;
+  }
+
+  function getGoodCurve() {
+    return goodCurveData;
+  }
+
   function seededRand(seed) {
     var s = (seed >>> 0) || 1;
     return function () {
@@ -327,10 +551,10 @@
     var vis = (state && state.seriesVisible) || seriesVisibilityMap();
     var showFuzzyAnnot = !!(state && state.showFuzzy);
 
-    var padL = 40;
-    var padR = 8;
+    var padL = 52;
+    var padR = 10;
     var padT = 22;
-    var padB = 26;
+    var padB = 28;
     var plotW = Math.max(20, cssW - padL - padR);
     var plotH = Math.max(20, cssH - padT - padB);
 
@@ -347,7 +571,10 @@
     }
 
     var seriesList = [];
-    var xMaxM = beamData.heightM || beamData.MaxHValue || 16;
+    var xMaxM =
+      beamData.MaxHValue > 1
+        ? beamData.MaxHValue
+        : beamData.heightM || beamData.MaxHValue || 16;
     if (xMaxM < 1) xMaxM = 16;
     var maxF = 0;
     var bi;
@@ -429,8 +656,8 @@
       ctx.lineTo(xp, padT + plotH);
       ctx.stroke();
     }
-    for (gy = 0; gy <= 6; gy++) {
-      var yp = padT + (gy / 6) * plotH;
+    for (gy = 0; gy <= 4; gy++) {
+      var yp = padT + (gy / 4) * plotH;
       ctx.beginPath();
       ctx.moveTo(padL, yp);
       ctx.lineTo(padL + plotW, yp);
@@ -512,11 +739,13 @@
       padL + plotW / 2,
       cssH - 1
     );
-    // Y: SciChart left axis Min=0; fractional amps with integer format → "0"
     ctx.textAlign = "right";
-    for (gy = 0; gy <= 6; gy++) {
-      ctx.fillText("0", padL - 4, padT + (gy / 6) * plotH + 3);
+    ctx.textBaseline = "middle";
+    for (gy = 0; gy <= 4; gy++) {
+      var amp = yMax * (1 - gy / 4);
+      ctx.fillText(formatAmp(amp), padL - 6, padT + (gy / 4) * plotH);
     }
+    ctx.textBaseline = "alphabetic";
   }
 
   function buildLegendHtml(beamIndex, vis) {
@@ -585,5 +814,10 @@
     buildLegendHtml: buildLegendHtml,
     noiseRowsHtml: noiseRowsHtml,
     firstEnabledBeamIndex: firstEnabledBeamIndex,
+    parseBeamArrayBuffer: parseBeamArrayBuffer,
+    preloadGoodCurve: preloadGoodCurve,
+    getGoodCurve: getGoodCurve,
   };
+
+  preloadGoodCurve();
 })(typeof window !== "undefined" ? window : globalThis);

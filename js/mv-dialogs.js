@@ -186,6 +186,60 @@
     hideMessage();
   }
 
+  function showWizardInFeet(el) {
+    if (!el || el.__mvWizFeet) return;
+    el.__mvWizFeet = true;
+    var dist = el.querySelector("#mvWizDist");
+    var temp = el.querySelector("#mvWizTemp");
+    if (dist) dist.value = "ft";
+    if (temp) temp.value = "Fahrenheit";
+    var FT = 3.280839895;
+    [
+      "#mvWizTopH",
+      "#mvWizTopD",
+      "#mvWizCenH",
+      "#mvWizCenD",
+      "#mvWizCenX",
+      "#mvWizCenY",
+      "#mvWizBotH",
+      "#mvWizBotD",
+      "#mvWizDevZ",
+      "#mvWizFullLevel",
+      "#mvWizFullDist",
+      "#mvWizFullH",
+      "#mvWizEmptyDist",
+      "#mvWizEmptyH",
+    ].forEach(function (sel) {
+      var input = el.querySelector(sel);
+      if (!input) return;
+      if (input.tagName !== "INPUT") input = input.querySelector("input");
+      if (!input) return;
+      var n = parseFloat(input.value);
+      if (!isFinite(n) || n === 0) return;
+      input.value = String(Math.round(n * FT * 1000) / 1000);
+    });
+  }
+
+  function applyOutputSettingsUnits(root) {
+    if (!root) return;
+    var units =
+      typeof global.mvGetDisplayUnits === "function" ? global.mvGetDisplayUnits() : null;
+    var feet = !!(units && units.distance === "ft");
+    var fahr = !!(units && units.temperature === "F");
+    if (document.body.classList.contains("ig-track-troubleshoot")) {
+      feet = true;
+      fahr = true;
+    }
+    var dist = root.querySelector("#mvOutDist");
+    var temp = root.querySelector("#mvOutTemp");
+    var dens = root.querySelector("#mvOutDensUnit");
+    var scale = root.querySelector("#mvOutMaxScale");
+    if (dist) dist.value = feet ? "ft" : "m";
+    if (temp) temp.value = fahr ? "Fahrenheit" : "Celsius";
+    if (dens) dens.value = feet ? "ton/m^3" : "kg/m^3";
+    if (scale) scale.value = feet ? "1583.07" : "1039.08";
+  }
+
   function openDialog(id, opts) {
     ensureDialog(id);
     var el = $(id);
@@ -198,10 +252,7 @@
       // Troubleshooting already works in feet and Fahrenheit. The install guide
       // still starts on m / Celsius so those unit steps stay a real click.
       if (document.body.classList.contains("ig-track-troubleshoot")) {
-        var tsDist = el.querySelector("#mvWizDist");
-        var tsTemp = el.querySelector("#mvWizTemp");
-        if (tsDist) tsDist.value = "ft";
-        if (tsTemp) tsTemp.value = "Fahrenheit";
+        showWizardInFeet(el);
       }
       // New wizard session → DeviceDefinType starts Unknown (RotateFromTop only on first Vessel→Device).
       el.__mvWizDeviceDefin = "unknown";
@@ -222,6 +273,9 @@
     }
     if (id === "mv-dlg-adv-summary") {
       populateAdvSummary(el);
+    }
+    if (id === "mv-dlg-output-settings") {
+      applyOutputSettingsUnits(el);
     }
     if (id === "mv-dlg-echo-curve") {
       window.dispatchEvent(new CustomEvent("install-guide:echo-opened"));
@@ -1246,20 +1300,29 @@
         "<span></span><span></span>" +
         '<label class="mv-radio"><input type="radio" name="mvOutCalc" value="dvbd"> Distance-Variable Bulk Density</label>' +
         "</div></fieldset>" +
-        "<fieldset><legend>Measurement Units</legend>" +
-        '<div class="mv-out-units-top">' +
-        "<label>Distance:</label><select style=\"width:92px\"><option>m</option><option>ft</option></select>" +
-        "<label>Temperature:</label><select style=\"width:92px\"><option>Celsius</option><option>Fahrenheit</option></select>" +
+        '<fieldset class="mv-out-units"><legend>Measurement Units</legend>' +
+        '<div class="mv-out-units-grid">' +
+        '<div class="mv-out-units-dist">' +
+        '<label for="mvOutDist">Distance:</label>' +
+        '<select id="mvOutDist"><option>m</option><option>ft</option></select>' +
+        '<label for="mvOutTemp">Temperature:</label>' +
+        '<select id="mvOutTemp"><option>Celsius</option><option>Fahrenheit</option></select>' +
         "</div>" +
-        '<div class="mv-out-units-nested">' +
-        '<fieldset><legend>Mass</legend>' +
-        '<div class="mv-out-unit-row"><span>Display Units:</span><select><option>Tons (Metric)</option><option>Pounds</option><option>Kilograms</option></select></div>' +
-        '<div class="mv-out-mass-density"><span>Density</span><input type="text" value="0" style="width:70px"><select><option>lb/ft^3</option><option>kg/m^3</option><option>ton/m^3</option></select></div>' +
-        "</fieldset>" +
-        '<fieldset><legend>Volume</legend>' +
-        '<div class="mv-out-unit-row"><span>Display Units:</span><select><option>meter^3</option><option>ft^3</option><option>liter</option></select></div>' +
-        '<div class="mv-out-unit-row"><span>Max Scale</span><input type="text" value="1039.08" readonly disabled style="width:100%"></div>' +
-        "</fieldset></div></fieldset></div>";
+        '<fieldset class="mv-out-mass"><legend>Mass</legend>' +
+        '<div class="mv-out-mass-grid">' +
+        '<span class="mv-out-mass-label">Display Units:</span>' +
+        '<select id="mvOutMass"><option>Tons (Metric)</option><option>Pounds</option><option>Kilograms</option></select>' +
+        '<span class="mv-out-dens-label">Density</span>' +
+        '<input type="text" id="mvOutDens" value="0">' +
+        '<select id="mvOutDensUnit"><option>lb/ft^3</option><option>kg/m^3</option><option>ton/m^3</option></select>' +
+        "</div></fieldset>" +
+        '<fieldset class="mv-out-volume"><legend>Volume</legend>' +
+        '<div class="mv-out-vol-grid">' +
+        '<span>Display Units:</span>' +
+        '<select id="mvOutVol"><option>meter^3</option><option>ft^3</option><option>liter</option></select>' +
+        "<span>Max Scale</span>" +
+        '<input type="text" id="mvOutMaxScale" value="1039.08" readonly disabled>' +
+        "</div></fieldset></div></fieldset></div>";
       return wrapDialog(
         "mv-dlg-output-settings",
         "Output Settings...",
@@ -3542,6 +3605,12 @@
           ? vessel.short + "_0"
           : "Vessel1_0";
     var fileBase = String(sName).replace(/\s+/g, "");
+    var recorded = api && api.getGoodCurve ? api.getGoodCurve() : null;
+    if (recorded) {
+      recorded.pathLabel = site + "\\" + vName + "\\" + fileBase;
+      recorded.fileName = recorded.fileName || "0_2026-08-04 15-44-23.bm4";
+      return recorded;
+    }
     return api.buildBeamData({
       distanceM: distance,
       heightM: height,
@@ -3556,11 +3625,30 @@
     });
   }
 
+  var echoRecordingWaited = false;
   function openEchoCurveWindow() {
     var api = echoBeamsApi();
+    if (
+      !echoRecordingWaited &&
+      api &&
+      api.preloadGoodCurve &&
+      !(api.getGoodCurve && api.getGoodCurve())
+    ) {
+      echoRecordingWaited = true;
+      api.preloadGoodCurve().then(function () {
+        openEchoCurveWindow();
+      });
+      return;
+    }
     echoCurveState.data = buildEchoDataFromSession();
     echoCurveState.beamIndex = api ? api.firstEnabledBeamIndex(echoCurveState.data) : 0;
-    echoCurveState.unit = "m";
+    var displayUnits =
+      typeof global.mvGetDisplayUnits === "function" ? global.mvGetDisplayUnits() : null;
+    echoCurveState.unit =
+      (displayUnits && displayUnits.distance === "ft") ||
+      document.body.classList.contains("ig-track-troubleshoot")
+        ? "ft"
+        : "m";
     echoCurveState.seriesVisible = api ? api.seriesVisibilityMap() : null;
     openDialog("mv-dlg-echo-curve");
     window.dispatchEvent(new CustomEvent("install-guide:echo-curve-opened"));
@@ -3584,6 +3672,8 @@
     }
     openDialog("mv-dlg-echo-activate");
     window.dispatchEvent(new CustomEvent("install-guide:echo-opened"));
+    var act = $("mv-dlg-echo-activate");
+    if (act && typeof act.__mvEchoStart === "function") act.__mvEchoStart();
   }
 
   function wireEchoActivate(root) {
@@ -3615,18 +3705,18 @@
         durVal.disabled = !dur.checked;
       });
     }
-    if (startBtn) {
-      startBtn.addEventListener("click", function () {
-        if (typeof global.mvIsSelectedVesselConnected === "function" && !global.mvIsSelectedVesselConnected()) {
-          showMessage(
-            "All scanners are disconnected. Reconnect vessel and try again.",
-            "Echo Curve Analysis"
-          );
-          return;
-        }
-        startBtn.disabled = true;
-        if (stopBtn) stopBtn.disabled = false;
-        window.dispatchEvent(new CustomEvent("install-guide:echo-started"));
+    function beginEchoRun() {
+      if (runTimer) return;
+      if (typeof global.mvIsSelectedVesselConnected === "function" && !global.mvIsSelectedVesselConnected()) {
+        showMessage(
+          "All scanners are disconnected. Reconnect vessel and try again.",
+          "Echo Curve Analysis"
+        );
+        return;
+      }
+      if (startBtn) startBtn.disabled = true;
+      if (stopBtn) stopBtn.disabled = false;
+      window.dispatchEvent(new CustomEvent("install-guide:echo-started"));
         // StringsApplic.Grades_ServerActive
         if (statusEl) {
           statusEl.textContent = "Server is performing Echo Curve analysis.";
@@ -3657,9 +3747,10 @@
             status("Echo Curve Analysis started.");
             openEchoCurveWindow();
           }
-        }, 70);
-      });
+        }, 120);
     }
+    root.__mvEchoStart = beginEchoRun;
+    if (startBtn) startBtn.addEventListener("click", beginEchoRun);
     if (stopBtn) {
       stopBtn.addEventListener("click", function () {
         if (runTimer) {

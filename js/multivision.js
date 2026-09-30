@@ -4319,6 +4319,23 @@
   };
 
   /** Apply Device Configuration Wizard geometry to the open vessel (guide / upload). */
+  window.mvGetDisplayUnits = function () {
+    return { distance: displayDistanceUnit, temperature: displayTempUnit };
+  };
+
+  window.mvSetDisplayUnits = function (opts) {
+    opts = opts || {};
+    if (opts.distance === "ft" || opts.distance === "m") {
+      displayDistanceUnit = opts.distance;
+    }
+    if (opts.temperature === "F" || opts.temperature === "C") {
+      displayTempUnit = opts.temperature;
+    }
+    syncDisplayUnitChrome();
+    var vessel = selectedVesselId ? findVessel(selectedVesselId) : null;
+    if (vessel && vesselDetailMode) fillOverviewLeft(vessel);
+  };
+
   window.mvApplyGuideVesselGeometry = function (opts) {
     opts = opts || {};
     var vessel = selectedVesselId ? findVessel(selectedVesselId) : null;

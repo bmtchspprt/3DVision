@@ -541,18 +541,10 @@
         click(
           "ts-echo-open",
           "Echo Curve",
-          "Click <strong>Echo Curve</strong> on the toolbar.",
+          "Click <strong>Echo Curve</strong> on the toolbar. Analysis starts on its own.",
           "#mvToolbarEchoCurve",
           "install-guide:echo-opened",
           { pointer: "bottom" }
-        ),
-        click(
-          "ts-echo-start",
-          "Start analysis",
-          "Click <strong>Start</strong> to run Echo Curve Analysis.",
-          "#mvEchoActStart",
-          "install-guide:echo-started",
-          { pointer: "bottom", allowInside: ECHO_INSIDE }
         ),
         click(
           "ts-echo-curve",

@@ -2271,6 +2271,9 @@
     document.body.classList.remove("ig-mode", "ig-tease");
     document.body.classList.add("ig-free-mode");
     markInstalledUi();
+    if (typeof window.mvSetDisplayUnits === "function") {
+      window.mvSetDisplayUnits({ distance: "ft", temperature: "F" });
+    }
     if (typeof window.openMultiVisionFromConnect === "function") {
       window.openMultiVisionFromConnect({
         userName: "demoUser",
