@@ -3331,6 +3331,7 @@
       "install-guide:devices-act-opened",
       "install-guide:load-from-vessel",
       "install-guide:fe-action-ok",
+      "install-guide:device-reset-ask",
       "install-guide:device-reset",
       "install-guide:devices-act-closed",
       "install-guide:ap-beams-select-all",

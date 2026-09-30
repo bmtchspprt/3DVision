@@ -4691,6 +4691,7 @@
             });
           }
         );
+        window.dispatchEvent(new CustomEvent("install-guide:device-reset-ask"));
       });
     }
 

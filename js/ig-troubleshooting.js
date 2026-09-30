@@ -41,7 +41,7 @@
       id: "reset-after-map",
       title: "Sensor Reset After Mapping Clear",
       explanation:
-        "Click Reset. Do NOT click Reset to Factory. Watch for a temperature alert confirming the reboot. Then click Load from Vessel to confirm ~20 mA output.",
+        "Click Reset, then Yes on the confirmation. Do not choose Reset to Factory Defaults. Then click Load from Vessel to confirm about 20 mA output.",
     },
     {
       id: "controller-sleep",
@@ -195,7 +195,7 @@
       "Click the window <strong>Close</strong> button.",
       '#mv-dlg-devices-act [data-mv-dlg-close="mv-dlg-devices-act"], #mv-dlg-devices-act .title-btn.close',
       "install-guide:devices-act-closed",
-      { pointer: "left", allowInside: ACT_INSIDE }
+      { pointer: "bottom", allowInside: ACT_INSIDE }
     );
   }
 
@@ -403,12 +403,20 @@
         click(
           "ts-reset-go",
           "Reset",
-          "Click <strong>Reset</strong>, then <strong>Yes</strong>. Wait until the reset finishes.",
+          "Click <strong>Reset</strong>.",
           "#mvDevResetBtn",
+          "install-guide:device-reset-ask",
+          { pointer: "right", allowInside: "#mv-dlg-devices-act" }
+        ),
+        click(
+          "ts-reset-yes",
+          "Confirm reset",
+          "Click <strong>Yes</strong>. Wait until the reset finishes.",
+          "#btn-mv-msg-yes",
           "install-guide:device-reset",
           {
-            pointer: "right",
-            allowInside: "#mv-dlg-devices-act, #mvMsgOverlay, #mv-dlg-progress",
+            pointer: "bottom",
+            allowInside: "#mvMsgOverlay, #mv-dlg-progress, #mv-dlg-devices-act",
           }
         ),
         closeActStep(),
