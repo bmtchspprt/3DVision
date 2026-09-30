@@ -4771,8 +4771,8 @@
                 if (window.mvCancelDeviceReboot) window.mvCancelDeviceReboot();
                 return;
               }
-              // After the restart wait, command 0 brings measurements back.
-              if (window.mvRecoverDeviceReboot) window.mvRecoverDeviceReboot();
+              // Stay down. Command 0 (the picture and readings returning) waits
+              // until Load from Vessel, after the operator has watched the zeros.
               window.dispatchEvent(new CustomEvent("install-guide:device-reset"));
               status("Device reset.");
             });

@@ -4142,8 +4142,9 @@
   };
 
   /**
-   * After the restart wait, command 0 resumes polling.
+   * Load from Vessel after a reset: command 0 resumes polling.
    * Readings and the 3D surface climb from 0 back to the last measurement.
+   * The blank/zero period itself is the watch before this is called.
    */
   window.mvRecoverDeviceReboot = function () {
     if (deviceRebootTimer) {
@@ -4154,8 +4155,8 @@
       return vessel._rebootSnap;
     });
     if (!list.length) return;
-    var holdUntil = Date.now() + 800;
-    var climbMs = 2800;
+    var holdUntil = Date.now();
+    var climbMs = 4000;
     var climbStart = 0;
     function applyFraction(fraction) {
       list.forEach(function (vessel) {
@@ -4185,6 +4186,7 @@
         list.forEach(restoreRebootVessel);
         deviceRebootTimer = null;
         paintDeviceReboot(true);
+        window.dispatchEvent(new CustomEvent("install-guide:device-reboot-back"));
         return;
       }
       applyFraction(eased);

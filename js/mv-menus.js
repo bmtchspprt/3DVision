@@ -454,6 +454,8 @@
           dlg.runBatchSetParamsProgress("download", function (ok) {
             if (!ok) return;
             window.dispatchEvent(new CustomEvent("install-guide:load-from-vessel"));
+            // After a device reset this is the reconnect: readings climb back.
+            if (window.mvRecoverDeviceReboot) window.mvRecoverDeviceReboot();
           });
         } else {
           dlg.status("Load from Vessel completed.");

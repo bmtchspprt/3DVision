@@ -41,7 +41,7 @@
       id: "reset-after-map",
       title: "Sensor Reset After Mapping Clear",
       explanation:
-        "Click Reset, then Yes on the confirmation. Do not choose Reset to Factory Defaults. The sensor reboots, then click Load from Vessel.",
+        "Click Reset, then Yes on the confirmation. Do not choose Reset to Factory Defaults. The picture disappears and the readings stay at 0. Watch the vessel, then click Load from Vessel. The picture comes back after that.",
     },
     {
       id: "controller-sleep",
@@ -420,7 +420,23 @@
           }
         ),
         closeActStep(),
+        click(
+          "ts-reset-watch",
+          "Sensor is down",
+          "The picture is gone and every reading is <strong>0</strong>. Watch the vessel. It stays like this for about <strong>15 seconds</strong>.",
+          "#mvOverview3d",
+          "install-guide:device-reboot-watch",
+          { pointer: "bottom", allowInside: "#mvOverview" }
+        ),
         loadFromVesselStep(),
+        click(
+          "ts-reset-back",
+          "Sensor is answering",
+          "The picture and the readings come back after <strong>Load from Vessel</strong>.",
+          "#mvOverview3d",
+          "install-guide:device-reboot-back",
+          { pointer: "bottom", allowInside: "#mvOverview" }
+        ),
         doneStep("<strong>Sensor Reset Complete!</strong>")
       );
     } else if (id === "controller-sleep") {

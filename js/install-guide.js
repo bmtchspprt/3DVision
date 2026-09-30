@@ -16,6 +16,7 @@
   var card;
   var stepIndex = 0;
   var pollTimer = null;
+  var rebootWatchTimer = null;
   var resizeBound = null;
   var guideTrack = "host"; // host | client | vessel | troubleshoot
   var tsSteps = [];
@@ -2117,6 +2118,10 @@
     }
     clearHighlight();
     clearPoll();
+    if (rebootWatchTimer) {
+      clearTimeout(rebootWatchTimer);
+      rebootWatchTimer = null;
+    }
     tsSteps = [];
     stepIndex = 0;
     var items = document.querySelectorAll(".ig-ts-item.is-active");
@@ -2722,6 +2727,10 @@
   function renderStep() {
     ensureDom();
     clearPoll();
+    if (rebootWatchTimer) {
+      clearTimeout(rebootWatchTimer);
+      rebootWatchTimer = null;
+    }
     var step = currentStep();
     if (!step) return;
     var steps = getSteps();
@@ -2823,8 +2832,17 @@
     } else {
       clearAllApTypingCoaches();
     }
-    if (step.id === "ov-after-upload") {
+    if (step.id === "ov-after-upload" || step.id === "ts-reset-watch" || step.id === "ts-reset-back") {
       ensureOverviewVisible();
+    }
+    if (step.id === "ts-reset-watch") {
+      rebootWatchTimer = setTimeout(function () {
+        rebootWatchTimer = null;
+        var live = currentStep();
+        if (live && live.id === "ts-reset-watch") {
+          window.dispatchEvent(new CustomEvent("install-guide:device-reboot-watch"));
+        }
+      }, 15000);
     }
 
     var primary = document.getElementById("igPrimary");
@@ -3322,6 +3340,8 @@
       "install-guide:fe-action-ok",
       "install-guide:device-reset-ask",
       "install-guide:device-reset",
+      "install-guide:device-reboot-watch",
+      "install-guide:device-reboot-back",
       "install-guide:devices-act-closed",
       "install-guide:ap-beams-select-all",
       "install-guide:echo-started",
