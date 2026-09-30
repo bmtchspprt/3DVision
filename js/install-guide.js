@@ -1090,11 +1090,17 @@
     root.className = "ig-root";
     root.id = "installGuideRoot";
     root.innerHTML =
-      '<div class="ig-side-dock" id="igSideDock">' +
       '<div class="ig-mode-menu" id="igModeMenu">' +
       '<div class="ig-mode-panel ig-mode-panel--setup" id="igModeMain">' +
-      '<p class="ig-mode-kicker">3D MultiVision</p>' +
-      "<h1>Setup</h1>" +
+      '<button type="button" class="ig-welcome-ts" id="igWelcomeTs" aria-label="Troubleshooting">' +
+      '<img class="ig-welcome-ts-icon" src="assets/ui/troubleshoot-alert.png" alt="" width="42" height="42" draggable="false">' +
+      '<span class="ig-welcome-ts-label">Troubleshooting</span>' +
+      "</button>" +
+      '<h1 class="ig-welcome-title">' +
+      '<span class="ig-welcome-line">Welcome to the</span>' +
+      '<span class="ig-welcome-line ig-welcome-line--accent">3D MultiVision Setup Guide</span>' +
+      "</h1>" +
+      '<p class="ig-welcome-tagline">Choose how this PC is set up. Host installs the service and the vessel. Client joins that host.</p>' +
       '<div class="ig-mode-list" role="list">' +
       '<button type="button" class="ig-mode-option" data-mode="host" role="listitem">' +
       '<span class="ig-mode-option-title">Host PC — Install + Vessel Setup</span>' +
@@ -1119,7 +1125,7 @@
       "</div>" +
       '<div class="ig-ts-body" id="igTsBody"></div>' +
       '<button type="button" class="ig-ts-home" id="igTsHome">Back to setup menu</button>' +
-      "</div></div>" +
+      "</div>" +
       '<div class="ig-dim" aria-hidden="true"></div>' +
       '<div class="ig-spotlight ig-pulse" id="igSpotlight" hidden></div>' +
       '<div class="ig-pointer" id="igPointer" hidden>' +
@@ -2017,32 +2023,6 @@
     });
   }
 
-  function placeSideDock() {
-    var dock = document.getElementById("igSideDock");
-    if (!dock) return;
-    var win = document.querySelector("#multiVisionShell .mv-window");
-    var gap = 0;
-    var rect = null;
-    if (win) {
-      rect = win.getBoundingClientRect();
-      gap = window.innerWidth - rect.right;
-    }
-    if (rect && gap >= 220) {
-      var width = Math.min(300, Math.floor(gap - 16));
-      dock.style.width = width + "px";
-      dock.style.left = Math.round(rect.right + 8) + "px";
-      dock.style.right = "auto";
-      dock.style.top = Math.max(12, Math.round(rect.top)) + "px";
-    } else {
-      dock.style.width = "300px";
-      dock.style.left = "auto";
-      dock.style.right = "12px";
-      dock.style.top = "12px";
-    }
-    var topPx = parseInt(dock.style.top, 10) || 12;
-    dock.style.maxHeight = Math.max(240, window.innerHeight - topPx - 12) + "px";
-  }
-
   function showTsPanel() {
     var panel = document.getElementById("igTsPanel");
     if (!panel) return;
@@ -2054,7 +2034,6 @@
     document.body.classList.add("ig-ts-mode");
     if (root) root.hidden = false;
     syncTsHome();
-    placeSideDock();
   }
 
   function activateTsApp() {
@@ -3269,16 +3248,8 @@
     resetCardDock();
     clearHighlight();
     clearPoll();
-    showTsPanel();
-    startTeaseBackground(function () {
-      finishBootReveal();
-      placeSideDock();
-      window.setTimeout(placeSideDock, 400);
-    });
-    if (!placeSideDock.bound) {
-      placeSideDock.bound = true;
-      window.addEventListener("resize", placeSideDock);
-    }
+    hideTsPanel();
+    startTeaseBackground(finishBootReveal);
   }
 
   function boot() {
