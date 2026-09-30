@@ -154,20 +154,25 @@
 
   /**
    * Vessel.FullNameConnected / FullNameNotConnected.
-   * Offline: "{Name} 0/{scannerCount}" — connected: "{Name} (MV)" (single) or with count.
+   * NameDisplay has no type suffix. Connected adds " (MV)" once.
+   * Offline: "{Name} 0/{scannerCount}".
    */
   function vesselOverviewTitle(vessel) {
     if (!vessel) return "";
-    var name = vessel.name || vessel.short || "Vessel";
+    var type = vessel.deviceType || "MV";
+    var suffix = " (" + type + ")";
+    var name = vessel.short || vessel.name || "Vessel";
+    if (name.slice(-suffix.length) === suffix) {
+      name = name.slice(0, -suffix.length);
+    }
     var n = Math.max(1, parseInt(vessel.numDevices, 10) || 1);
     if (isVesselOffline(vessel)) {
       return name + " 0/" + n;
     }
-    var type = vessel.deviceType || "MV";
     if (n <= 1) {
-      return name + " (" + type + ")";
+      return name + suffix;
     }
-    return name + " (" + type + ") " + n + "/" + n;
+    return name + suffix + " " + n + "/" + n;
   }
 
   /** Guide helper: set strip LED online (green) or offline (grey). Re-renders vessels. */
