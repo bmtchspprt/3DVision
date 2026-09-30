@@ -23,7 +23,7 @@
       title: "3D Capture",
       blurb: "Open the BinMaster support page and use 3DCAPTURE.",
       explanation:
-        "3D Capture is on the BinMaster support site. Click Browser. That opens https://support.binmaster.com/kb/view/637b3236-68d8-4e7c-ba5b-d4b7308225b5. Use 3DCAPTURE on that page.",
+        "3D Capture is on the BinMaster support site. Click Open page. That opens https://support.binmaster.com/kb/view/637b3236-68d8-4e7c-ba5b-d4b7308225b5 in your browser. Use 3DCAPTURE on that page.",
     },
     {
       id: "snr-zero",
@@ -272,20 +272,20 @@
     if (id === "capture-3d") {
       steps = [
         click(
-          "ts-cap-browser",
+          "ts-cap-open",
           "3D Capture",
-          "3D Capture is on the BinMaster support site. Click <strong>Browser</strong>.",
-          "#taskbarBtnBrowser",
-          "install-guide:browser-opened",
-          { pointer: "right" }
+          "3D Capture is on the BinMaster support site. Click <strong>Open page</strong>.",
+          null,
+          null,
+          { blocking: true, primary: "Open page", pointer: "none" }
         ),
         click(
           "ts-cap-follow",
           "3D Capture",
-          "This page is where 3D Capture lives. Use <strong>3DCAPTURE</strong>.",
+          "Use <strong>3DCAPTURE</strong> on the page that opened in your browser.",
           null,
           null,
-          { blocking: true, primary: "Done", pointer: "none", allowInside: "#browserShell" }
+          { blocking: true, primary: "Done", pointer: "none" }
         ),
       ];
     } else if (id === "snr-zero") {

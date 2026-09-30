@@ -1649,6 +1649,21 @@
     var step = currentStep();
     if (!step) return;
     if (guideTrack === "troubleshoot") {
+      if (step.id === "ts-cap-open") {
+        var captureTab = window.open(
+          "https://support.binmaster.com/kb/view/637b3236-68d8-4e7c-ba5b-d4b7308225b5",
+          "_blank"
+        );
+        if (captureTab) {
+          try {
+            captureTab.opener = null;
+          } catch (err) {
+            /* ignore */
+          }
+        }
+        goNext();
+        return;
+      }
       var tsList = getSteps();
       if (step.id === "ts-done" || stepIndex >= tsList.length - 1) {
         finishTsWalkthrough();
@@ -2119,10 +2134,6 @@
     }
     if (typeof window.closeStartMenu === "function") {
       window.closeStartMenu();
-    }
-    window.__igOpenCapturePage = false;
-    if (typeof window.closeBrowser === "function") {
-      window.closeBrowser();
     }
   }
 
@@ -2767,10 +2778,6 @@
         Math.max(0, Math.min(100, ((stepIndex + 1) / steps.length) * 100)) + "%";
     }
 
-    window.__igOpenCapturePage = step.id === "ts-cap-browser";
-    if (step.id === "ts-cap-follow" && typeof window.openCaptureArticle === "function") {
-      window.openCaptureArticle();
-    }
     if (step.id === "ts-sleep-type" && typeof window.openStartMenu === "function") {
       window.openStartMenu();
     }

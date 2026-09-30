@@ -12,8 +12,6 @@
   var urlGhost = document.getElementById("browserUrlGhost");
   var blankPage = document.getElementById("browserPageBlank");
   var downloadsPage = document.getElementById("browserPageDownloads");
-  var externalPage = document.getElementById("browserPageExternal");
-  var externalFrame = document.getElementById("browserExternalFrame");
   var titleText = shell ? shell.querySelector(".title-bar-text") : null;
   var tabText = shell ? shell.querySelector(".browser-tab") : null;
   var downloaded = false;
@@ -23,8 +21,6 @@
   var DOWNLOADS_HOST = "support.binmaster.com";
   var DOWNLOADS_PATH = "/downloads";
   var TYPE_TARGET = "support.binmaster.com/downloads";
-  var CAPTURE_ARTICLE =
-    "https://support.binmaster.com/kb/view/637b3236-68d8-4e7c-ba5b-d4b7308225b5";
 
   function bringToFront() {
     if (!shell) return;
@@ -127,23 +123,8 @@
     currentView = "blank";
     if (blankPage) blankPage.hidden = false;
     if (downloadsPage) downloadsPage.hidden = true;
-    if (externalPage) externalPage.hidden = true;
     if (titleText) titleText.textContent = "New Tab";
     if (tabText) tabText.textContent = "New Tab";
-  }
-
-  function showExternal(url) {
-    currentView = "external";
-    setUrlTypingCoach(false);
-    if (blankPage) blankPage.hidden = true;
-    if (downloadsPage) downloadsPage.hidden = true;
-    if (externalPage) externalPage.hidden = false;
-    if (externalFrame && externalFrame.getAttribute("src") !== url) {
-      externalFrame.src = url;
-    }
-    if (urlInput) urlInput.value = url;
-    if (titleText) titleText.textContent = "3D Capture";
-    if (tabText) tabText.textContent = "3D Capture";
   }
 
   function showDownloads() {
@@ -151,7 +132,6 @@
     setUrlTypingCoach(false);
     if (blankPage) blankPage.hidden = true;
     if (downloadsPage) downloadsPage.hidden = false;
-    if (externalPage) externalPage.hidden = true;
     if (titleText) titleText.textContent = "Tools & Downloads — BinMaster Support";
     if (tabText) tabText.textContent = "Tools & Downloads";
     if (urlInput) {
@@ -207,14 +187,8 @@
     shell.hidden = false;
     shell.classList.remove("app-shell--minimized");
     placeBrowserLeft();
-    if (opts.url) {
-      // Sit beside the coach card so the support page stays readable.
-      shell.style.left = "352px";
-    }
     bringToFront();
-    if (opts.url) {
-      showExternal(opts.url);
-    } else if (opts.blank) {
+    if (opts.blank) {
       resetBrowserForGuide();
       if (opts.typingCoach) {
         setUrlTypingCoach(true);
@@ -272,10 +246,6 @@
     }
     if (taskbarBtn) {
       taskbarBtn.addEventListener("click", function () {
-        if (window.__igOpenCapturePage) {
-          openBrowser({ url: CAPTURE_ARTICLE });
-          return;
-        }
         openBrowser({
           blank: currentView === "blank" && !(urlInput && isDownloadsUrl(urlInput.value)),
         });
@@ -308,9 +278,6 @@
   showBlank();
 
   window.openBrowser = openBrowser;
-  window.openCaptureArticle = function () {
-    openBrowser({ url: CAPTURE_ARTICLE });
-  };
   window.closeBrowser = closeBrowser;
   window.resetBrowserForGuide = resetBrowserForGuide;
   window.navigateBrowserUrl = navigateFromUrlBar;
