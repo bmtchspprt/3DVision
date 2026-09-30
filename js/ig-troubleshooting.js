@@ -48,7 +48,7 @@
       id: "controller-sleep",
       title: "Controller Goes to Sleep",
       explanation:
-        "Expand Screen, sleep, and hibernation timeouts. Set “Make my device sleep after” to Never. Screen turning off is OK — only the sleep setting causes disconnects.",
+        "Search for sleep and open Power, sleep, and battery settings. Expand Screen, sleep, and hibernate timeouts. Under Plugged in, set Make my device sleep after to Never. Screen off is OK.",
     },
     {
       id: "auto-beam",
@@ -443,27 +443,47 @@
         doneStep("Output current should be about <strong>20 mA</strong>.")
       );
     } else if (id === "controller-sleep") {
+      var SLEEP_INSIDE = "#backdropPowerSettings, #winStartMenu";
       steps = [
-        nextStep(
-          "ts-sleep-settings",
-          "Power settings",
-          "On the controller PC, open <strong>Settings</strong>."
+        click(
+          "ts-sleep-start",
+          "Start",
+          "Click <strong>Start</strong>.",
+          "#winStartBtn",
+          "install-guide:start-open",
+          { pointer: "left" }
         ),
-        nextStep("ts-sleep-system", "System", "Click <strong>System</strong>."),
-        nextStep(
-          "ts-sleep-power",
-          "Power",
-          "Click <strong>Power &amp; sleep</strong>."
+        click(
+          "ts-sleep-type",
+          "Search sleep",
+          "Type <strong>sleep</strong> in the search box.",
+          "#winStartSearch",
+          "install-guide:typed-ok",
+          { pointer: "bottom", allowInside: "#winStartMenu", typeId: "winStartSearch", typeValue: "sleep" }
         ),
-        nextStep(
+        click(
+          "ts-sleep-open",
+          "Sleep settings",
+          "Click <strong>Power, sleep, and battery settings</strong>.",
+          "#winSearchHitSleep",
+          "install-guide:sleep-settings-opened",
+          { pointer: "right", allowInside: "#winSearchPanelSleep" }
+        ),
+        click(
           "ts-sleep-expand",
           "Timeouts",
-          "Expand <strong>Screen, sleep, and hibernation timeouts</strong>."
+          "Click <strong>Screen, sleep, &amp; hibernate timeouts</strong>.",
+          "#pwrSleepTimeouts",
+          "install-guide:sleep-timeouts-open",
+          { pointer: "bottom", allowInside: SLEEP_INSIDE }
         ),
-        nextStep(
+        click(
           "ts-sleep-never",
-          "Sleep after",
-          "Set <strong>Make my device sleep after</strong> to <strong>Never</strong>."
+          "Plugged in",
+          "Under <strong>Plugged in</strong>, set <strong>Make my device sleep after</strong> to <strong>Never</strong>.",
+          "#pwrSleepPlugged",
+          "install-guide:sleep-never",
+          { pointer: "left", allowInside: SLEEP_INSIDE }
         ),
         doneStep("Leave the screen timeout as it is. Screen off is OK."),
       ];

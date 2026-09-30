@@ -2113,6 +2113,12 @@
     if (typeof window.MvDialogs === "object" && window.MvDialogs.closeAll) {
       window.MvDialogs.closeAll();
     }
+    if (typeof window.hidePowerSettings === "function") {
+      window.hidePowerSettings();
+    }
+    if (typeof window.closeStartMenu === "function") {
+      window.closeStartMenu();
+    }
   }
 
   function enterTroubleshootMode() {
@@ -2756,6 +2762,26 @@
         Math.max(0, Math.min(100, ((stepIndex + 1) / steps.length) * 100)) + "%";
     }
 
+    if (step.id === "ts-sleep-type" && typeof window.openStartMenu === "function") {
+      window.openStartMenu();
+    }
+    if (step.id === "ts-sleep-open") {
+      if (typeof window.openStartMenu === "function") window.openStartMenu();
+      var sleepSearch = document.getElementById("winStartSearch");
+      if (sleepSearch && String(sleepSearch.value).trim().toLowerCase() !== "sleep") {
+        sleepSearch.value = "sleep";
+        sleepSearch.dispatchEvent(new Event("input", { bubbles: true }));
+      }
+    }
+    if (step.id === "ts-sleep-expand" || step.id === "ts-sleep-never") {
+      var pwrBd = document.getElementById("backdropPowerSettings");
+      if ((!pwrBd || !pwrBd.classList.contains("show")) && typeof window.showPowerSettings === "function") {
+        window.showPowerSettings();
+      }
+      if (step.id === "ts-sleep-never" && typeof window.expandPowerSleepTimeouts === "function") {
+        window.expandPowerSleepTimeouts();
+      }
+    }
     if (step.typeId && step.typeValue) {
       setApFieldTypingCoach(step.typeId, true, step.typeValue);
     } else if (step.id === "ap-max-capacity") {
@@ -3102,6 +3128,41 @@
         window.dispatchEvent(new CustomEvent("install-guide:fe-action-ok"));
       }
     }
+    if (step.advanceOn === "install-guide:sleep-settings-opened") {
+      var sleepBd = document.getElementById("backdropPowerSettings");
+      if (sleepBd && sleepBd.classList.contains("show")) {
+        window.dispatchEvent(new CustomEvent("install-guide:sleep-settings-opened"));
+      }
+    }
+    if (step.advanceOn === "install-guide:sleep-timeouts-open") {
+      var sleepBdExpand = document.getElementById("backdropPowerSettings");
+      if (sleepBdExpand && !sleepBdExpand.classList.contains("show") && typeof window.showPowerSettings === "function") {
+        window.showPowerSettings();
+      }
+      var sleepBody = document.getElementById("pwrSleepTimeoutsBody");
+      if (sleepBody && !sleepBody.hidden) {
+        window.dispatchEvent(new CustomEvent("install-guide:sleep-timeouts-open"));
+      }
+    }
+    if (step.advanceOn === "install-guide:sleep-never") {
+      var sleepBdNever = document.getElementById("backdropPowerSettings");
+      if (sleepBdNever && !sleepBdNever.classList.contains("show") && typeof window.showPowerSettings === "function") {
+        window.showPowerSettings();
+      }
+      if (typeof window.expandPowerSleepTimeouts === "function") {
+        window.expandPowerSleepTimeouts();
+      }
+      var sleepSel = document.getElementById("pwrSleepPlugged");
+      if (sleepSel && sleepSel.value === "never") {
+        window.dispatchEvent(new CustomEvent("install-guide:sleep-never"));
+      }
+    }
+    if (step.id === "ts-sleep-type") {
+      var sleepQuery = document.getElementById("winStartSearch");
+      if (sleepQuery && String(sleepQuery.value).trim().toLowerCase() === "sleep") {
+        window.dispatchEvent(new CustomEvent("install-guide:typed-ok"));
+      }
+    }
     if (step.advanceOn === "install-guide:start-open") {
       var startBtn = document.getElementById("winStartBtn");
       var startMenu = document.getElementById("winStartMenu");
@@ -3253,6 +3314,9 @@
       "install-guide:echo-curve-closed",
       "install-guide:echo-activate-closed",
       "install-guide:start-open",
+      "install-guide:sleep-settings-opened",
+      "install-guide:sleep-timeouts-open",
+      "install-guide:sleep-never",
       "install-guide:typed-ok",
     ].forEach(function (name) {
       window.addEventListener(name, function () {

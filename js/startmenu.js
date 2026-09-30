@@ -11,6 +11,7 @@
   var winSearchPanel3DVision = document.getElementById("winSearchPanel3DVision");
   var winSearchPanel3DVisionServer = document.getElementById("winSearchPanel3DVisionServer");
   var winSearchPanelPower = document.getElementById("winSearchPanelPower");
+  var winSearchPanelSleep = document.getElementById("winSearchPanelSleep");
   var winStartHomeContent = document.getElementById("winStartHomeContent");
   var winStartPowerBtn = document.getElementById("winStartPowerBtn");
   var winStartPowerMenu = document.getElementById("winStartPowerMenu");
@@ -47,15 +48,19 @@
     return n === "services" || n.indexOf("services") === 0;
   }
 
+  function isSleepQuery(q) {
+    var n = normalizeQuery(q);
+    return n === "sleep" || n.indexOf("sleep") === 0;
+  }
+
   function isPowerQuery(q) {
+    if (isSleepQuery(q)) return false;
     var n = normalizeQuery(q);
     return (
       n === "power" ||
       n.indexOf("power") === 0 ||
       n === "shutdown" ||
       n.indexOf("shut down") === 0 ||
-      n === "sleep" ||
-      n.indexOf("sleep") === 0 ||
       n === "restart" ||
       n.indexOf("restart") === 0 ||
       n === "lock" ||
@@ -106,8 +111,9 @@
     var isServices = isServicesQuery(q);
     var isVisionServer = isVisionServerQuery(q);
     var isVisionClient = isVisionClientQuery(q);
+    var isSleep = isSleepQuery(q);
     var isPower = isPowerQuery(q);
-    if (isServices || isVisionServer || isVisionClient || isPower) {
+    if (isServices || isVisionServer || isVisionClient || isPower || isSleep) {
       winSearchFlyout.hidden = false;
       winStartHomeContent.hidden = true;
       startMenu.classList.add("win-start-menu--search");
@@ -122,6 +128,9 @@
       }
       if (winSearchPanelPower) {
         winSearchPanelPower.hidden = !isPower;
+      }
+      if (winSearchPanelSleep) {
+        winSearchPanelSleep.hidden = !isSleep;
       }
     } else {
       winSearchFlyout.hidden = true;
@@ -138,6 +147,9 @@
       }
       if (winSearchPanelPower) {
         winSearchPanelPower.hidden = true;
+      }
+      if (winSearchPanelSleep) {
+        winSearchPanelSleep.hidden = true;
       }
     }
   }
@@ -195,6 +207,13 @@
     }
   }
 
+  function openPowerSettingsFromStart() {
+    closeStartMenu();
+    if (typeof window.showPowerSettings === "function") {
+      window.showPowerSettings();
+    }
+  }
+
   function openServicesFromStart() {
     closeStartMenu();
     if (typeof window.showServicesUac === "function") {
@@ -243,6 +262,10 @@
     if (isVisionClientQuery(q)) {
       event.preventDefault();
       open3DVisionClientFromStart();
+      return;
+    }
+    if (isSleepQuery(q)) {
+      event.preventDefault();
       return;
     }
     if (isPowerQuery(q)) {
@@ -297,6 +320,10 @@
           return;
         }
         if (target.closest && target.closest("#winSearchHitPower")) {
+          return;
+        }
+        if (target.closest && target.closest("[data-sim-sleep='open']")) {
+          openPowerSettingsFromStart();
           return;
         }
         var svcBtn = target.closest && target.closest("[data-sim-svc]");
@@ -390,4 +417,5 @@
 
   wire();
   window.closeStartMenu = closeStartMenu;
+  window.openStartMenu = openStartMenu;
 })();

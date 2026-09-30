@@ -30,6 +30,7 @@
   <link rel="stylesheet" href="css/ebob-filechooser.css">
   <link rel="stylesheet" href="css/ebob-services.css">
   <link rel="stylesheet" href="css/ebob-startmenu.css">
+  <link rel="stylesheet" href="css/power-settings.css">
   <link rel="stylesheet" href="css/ebob-uac.css">
   <link rel="stylesheet" href="css/installer.css">
   <link rel="stylesheet" href="css/multivision.css">
@@ -761,10 +762,10 @@
               <button type="button" class="win-search-filter-chip" disabled>Apps</button>
               <button type="button" class="win-search-filter-chip" disabled>Documents</button>
               <button type="button" class="win-search-filter-chip" disabled>Web</button>
-              <button type="button" class="win-search-filter-chip" disabled>Preferences</button>
+              <button type="button" class="win-search-filter-chip" disabled>Settings</button>
               <button type="button" class="win-search-filter-chip" disabled>People</button>
               <button type="button" class="win-search-filter-chip" disabled>Folders</button>
-              <button type="button" class="win-search-filter-chip" disabled>Images</button>
+              <button type="button" class="win-search-filter-chip" disabled>Photos</button>
               <span class="win-search-filters-spacer"></span>
               <button type="button" class="win-search-filter-more" disabled title="More filters" aria-label="More">&#8943;</button>
             </div>
@@ -886,6 +887,74 @@
                     <button type="button" data-power-action="shutdown"><span aria-hidden="true">&#9211;</span> Shut down</button>
                     <button type="button" data-power-action="restart"><span aria-hidden="true">&#8635;</span> Restart</button>
                   </div>
+                </div>
+              </div>
+            </div>
+            <div class="win-search-panel" id="winSearchPanelSleep" hidden>
+              <div class="win-search-split win-search-split--sleep">
+                <div class="win-search-left win-search-left--scroll">
+                  <div class="win-search-cat">Best match</div>
+                  <button type="button" class="win-search-hit" id="winSearchHitSleep" data-sim-sleep="open">
+                    <span class="win-search-hit-ico win-search-hit-ico-power" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42A6.95 6.95 0 0119 12a7 7 0 11-14 0 6.95 6.95 0 012.59-5.41L6.17 5.17A8.98 8.98 0 003 12a9 9 0 1018 0 8.98 8.98 0 00-2.17-6.83z"/></svg>
+                    </span>
+                    <span>
+                      <div>Power, sleep, and battery settings</div>
+                      <div class="win-search-hit-meta">System settings</div>
+                    </span>
+                  </button>
+                  <div class="win-search-cat win-search-cat--split"><span>Settings</span><span>7+</span></div>
+                  <button type="button" class="win-search-row" data-sim-sleep="open">
+                    <span class="win-search-row-ico" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42A6.95 6.95 0 0119 12a7 7 0 11-14 0 6.95 6.95 0 012.59-5.41L6.17 5.17A8.98 8.98 0 003 12a9 9 0 1018 0 8.98 8.98 0 00-2.17-6.83z"/></svg>
+                    </span>
+                    <span>Change when the PC sleeps when plugged in</span>
+                  </button>
+                  <button type="button" class="win-search-row" data-sim-sleep="open">
+                    <span class="win-search-row-ico" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42A6.95 6.95 0 0119 12a7 7 0 11-14 0 6.95 6.95 0 012.59-5.41L6.17 5.17A8.98 8.98 0 003 12a9 9 0 1018 0 8.98 8.98 0 00-2.17-6.83z"/></svg>
+                    </span>
+                    <span>View recent sleep time</span>
+                  </button>
+                  <button type="button" class="win-search-row" data-sim-sleep="open">
+                    <span class="win-search-row-ico" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42A6.95 6.95 0 0119 12a7 7 0 11-14 0 6.95 6.95 0 012.59-5.41L6.17 5.17A8.98 8.98 0 003 12a9 9 0 1018 0 8.98 8.98 0 00-2.17-6.83z"/></svg>
+                    </span>
+                    <span>Change what the sleep button does when plugged in</span>
+                  </button>
+                  <div class="win-search-row">
+                    <span class="win-search-row-ico" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M9 2h6v2h3v2H6V4h3V2zm-1 6h8l1 12H7L8 8z"/></svg>
+                    </span>
+                    <span>Night light</span>
+                  </div>
+                  <button type="button" class="win-search-row" data-sim-sleep="open">
+                    <span class="win-search-row-ico" aria-hidden="true">
+                      <svg viewBox="0 0 24 24"><path fill="currentColor" d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42A6.95 6.95 0 0119 12a7 7 0 11-14 0 6.95 6.95 0 012.59-5.41L6.17 5.17A8.98 8.98 0 003 12a9 9 0 1018 0 8.98 8.98 0 00-2.17-6.83z"/></svg>
+                    </span>
+                    <span>Choosing energy efficient sleep settings</span>
+                  </button>
+                  <div class="win-search-cat win-search-cat--split"><span>Search the web</span><span>10+</span></div>
+                  <div class="win-search-row"><span class="win-search-row-ico win-search-row-ico--web" aria-hidden="true">&#128269;</span><span>sleep mode <span class="win-search-hit-meta">See more search results</span></span></div>
+                  <div class="win-search-row"><span class="win-search-row-ico win-search-row-ico--web" aria-hidden="true">&#128269;</span><span>sleep settings</span></div>
+                  <div class="win-search-row"><span class="win-search-row-ico win-search-row-ico--web" aria-hidden="true">&#128269;</span><span>sleep</span></div>
+                  <div class="win-search-row"><span class="win-search-row-ico win-search-row-ico--web" aria-hidden="true">&#128269;</span><span>sleep timer</span></div>
+                  <div class="win-search-row"><span class="win-search-row-ico win-search-row-ico--web" aria-hidden="true">&#128269;</span><span>sleeping tool</span></div>
+                </div>
+                <div class="win-search-detail">
+                  <div class="win-search-detail-ico win-search-detail-ico-power" aria-hidden="true">
+                    <svg viewBox="0 0 24 24"><path fill="currentColor" d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42A6.95 6.95 0 0119 12a7 7 0 11-14 0 6.95 6.95 0 012.59-5.41L6.17 5.17A8.98 8.98 0 003 12a9 9 0 1018 0 8.98 8.98 0 00-2.17-6.83z"/></svg>
+                  </div>
+                  <h3>Power, sleep, and battery settings</h3>
+                  <p class="win-search-detail-sub">System settings</p>
+                  <div class="win-search-actions">
+                    <button type="button" data-sim-sleep="open"><span aria-hidden="true">&#8599;</span> Open</button>
+                  </div>
+                  <div class="win-search-help-label">Get quick help from web</div>
+                  <div class="win-search-help">Extending your battery life effectively</div>
+                  <div class="win-search-help">Shortening display turn-off duration</div>
+                  <div class="win-search-help">Adjusting power and sleep settings</div>
+                  <div class="win-search-help">Lock your Windows PC automatically</div>
                 </div>
               </div>
             </div>
@@ -1059,6 +1128,129 @@
               <div class="svc-msc-tabs" role="tablist">
                 <button type="button" role="tab" id="svcTabExtended" class="svc-tab-active" aria-selected="true">Extended</button>
                 <button type="button" role="tab" id="svcTabStandard" aria-selected="false">Standard</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="backdrop backdrop-power-settings" id="backdropPowerSettings" role="dialog" aria-modal="true" aria-labelledby="pwrSettingsTitle" aria-hidden="true">
+        <div class="pwr-window" id="pwrSettingsShell">
+          <div class="pwr-titlebar">
+            <button type="button" class="pwr-back" disabled aria-label="Back">&#8592;</button>
+            <h2 id="pwrSettingsTitle" class="sr-only">Settings</h2>
+            <div class="pwr-find">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M11 10.5a4.5 4.5 0 10-1 1l3.2 3.2.7-.7-3.2-3.2zm-5.5.5a4 4 0 110-8 4 4 0 010 8z"/></svg>
+              <input type="search" placeholder="Find a setting" disabled>
+            </div>
+            <div class="pwr-winbtns">
+              <button type="button" class="pwr-cap" disabled aria-label="Minimize">&#8211;</button>
+              <button type="button" class="pwr-cap" disabled aria-label="Maximize">&#9633;</button>
+              <button type="button" class="pwr-cap pwr-cap-close" id="pwrSettingsClose" aria-label="Close">&#10005;</button>
+            </div>
+          </div>
+          <div class="pwr-body">
+            <nav class="pwr-nav" aria-label="Settings">
+              <div class="pwr-account">
+                <span class="pwr-avatar" aria-hidden="true"></span>
+                <span>
+                  <span class="pwr-account-name">User</span>
+                  <span class="pwr-account-mail">Local account</span>
+                </span>
+              </div>
+              <button type="button" class="pwr-nav-item" disabled><span class="pwr-nav-ico pwr-nav-ico--home" aria-hidden="true"></span>Home</button>
+              <button type="button" class="pwr-nav-item is-on" disabled><span class="pwr-nav-ico pwr-nav-ico--system" aria-hidden="true"></span>System</button>
+              <button type="button" class="pwr-nav-item" disabled><span class="pwr-nav-ico pwr-nav-ico--bt" aria-hidden="true"></span>Bluetooth &amp; devices</button>
+              <button type="button" class="pwr-nav-item" disabled><span class="pwr-nav-ico pwr-nav-ico--net" aria-hidden="true"></span>Network &amp; internet</button>
+              <button type="button" class="pwr-nav-item" disabled><span class="pwr-nav-ico pwr-nav-ico--personal" aria-hidden="true"></span>Personalization</button>
+              <button type="button" class="pwr-nav-item" disabled><span class="pwr-nav-ico pwr-nav-ico--apps" aria-hidden="true"></span>Apps</button>
+              <button type="button" class="pwr-nav-item" disabled><span class="pwr-nav-ico pwr-nav-ico--accounts" aria-hidden="true"></span>Accounts</button>
+              <button type="button" class="pwr-nav-item" disabled><span class="pwr-nav-ico pwr-nav-ico--time" aria-hidden="true"></span>Time &amp; language</button>
+              <button type="button" class="pwr-nav-item" disabled><span class="pwr-nav-ico pwr-nav-ico--game" aria-hidden="true"></span>Gaming</button>
+              <button type="button" class="pwr-nav-item" disabled><span class="pwr-nav-ico pwr-nav-ico--access" aria-hidden="true"></span>Accessibility</button>
+              <button type="button" class="pwr-nav-item" disabled><span class="pwr-nav-ico pwr-nav-ico--privacy" aria-hidden="true"></span>Privacy &amp; security</button>
+              <button type="button" class="pwr-nav-item" disabled><span class="pwr-nav-ico pwr-nav-ico--update" aria-hidden="true"></span>Windows Update</button>
+            </nav>
+            <div class="pwr-main">
+              <div class="pwr-crumb">System <span aria-hidden="true">&gt;</span> Power &amp; battery</div>
+              <div class="pwr-battery">
+                <span class="pwr-battery-pct">99%</span>
+                <span class="pwr-battery-ico" aria-hidden="true"></span>
+              </div>
+              <div class="pwr-card pwr-card--static">
+                <span class="pwr-card-ico" aria-hidden="true">&#9672;</span>
+                <span class="pwr-card-text">
+                  <span class="pwr-card-title">Energy recommendations</span>
+                  <span class="pwr-card-sub">Lower your carbon footprint by applying these recommendations</span>
+                </span>
+                <span class="pwr-card-aside">3 of 9</span>
+              </div>
+              <div class="pwr-card pwr-card--static">
+                <span class="pwr-card-ico" aria-hidden="true">&#9681;</span>
+                <span class="pwr-card-text">
+                  <span class="pwr-card-title">Power Mode</span>
+                  <span class="pwr-card-sub">Optimize your device based on power use and performance</span>
+                </span>
+                <span class="pwr-card-aside">Best Performance</span>
+              </div>
+              <div class="pwr-card pwr-card--expand">
+                <button type="button" class="pwr-card-head" id="pwrSleepTimeouts" aria-expanded="false" aria-controls="pwrSleepTimeoutsBody">
+                  <span class="pwr-card-ico" aria-hidden="true">&#9711;</span>
+                  <span class="pwr-card-text">
+                    <span class="pwr-card-title">Screen, sleep, &amp; hibernate timeouts</span>
+                    <span class="pwr-card-sub">Choose what happens when your device is idle for a specified time</span>
+                  </span>
+                  <span class="pwr-chevron" aria-hidden="true"></span>
+                </button>
+                <div class="pwr-timeouts" id="pwrSleepTimeoutsBody" hidden>
+                  <h3 class="pwr-group">Plugged in</h3>
+                  <div class="pwr-timeout-row">
+                    <div>
+                      <div class="pwr-timeout-title">Turn my screen off after</div>
+                      <div class="pwr-timeout-sub">Turn off the screen after 5 minutes to save energy. Higher settings use more energy</div>
+                    </div>
+                    <select id="pwrScreenPlugged" aria-label="Turn my screen off after when plugged in"></select>
+                  </div>
+                  <div class="pwr-timeout-row">
+                    <div>
+                      <div class="pwr-timeout-title">Make my device sleep after</div>
+                      <div class="pwr-timeout-sub">Turn on sleep after 5 minutes to save energy. Higher settings use more energy</div>
+                    </div>
+                    <select id="pwrSleepPlugged" aria-label="Make my device sleep after when plugged in"></select>
+                  </div>
+                  <h3 class="pwr-group">On battery</h3>
+                  <div class="pwr-timeout-row">
+                    <div>
+                      <div class="pwr-timeout-title">Turn my screen off after</div>
+                      <div class="pwr-timeout-sub">Turn off the screen after 3 minutes to save energy. Higher settings use more energy</div>
+                    </div>
+                    <select id="pwrScreenBattery" aria-label="Turn my screen off after on battery"></select>
+                  </div>
+                  <div class="pwr-timeout-row">
+                    <div>
+                      <div class="pwr-timeout-title">Make my device sleep after</div>
+                      <div class="pwr-timeout-sub">Turn on sleep after 3 minutes to save energy. Higher settings use more energy</div>
+                    </div>
+                    <select id="pwrSleepBattery" aria-label="Make my device sleep after on battery"></select>
+                  </div>
+                  <div class="pwr-related">Related links <span>Choosing energy efficient sleep settings</span></div>
+                </div>
+              </div>
+              <div class="pwr-card pwr-card--static">
+                <span class="pwr-card-ico" aria-hidden="true">&#9644;</span>
+                <span class="pwr-card-text">
+                  <span class="pwr-card-title">Battery percentage</span>
+                  <span class="pwr-card-sub">Display battery percentage on taskbar</span>
+                </span>
+                <span class="pwr-toggle" aria-hidden="true"><span>Off</span><span class="pwr-switch"></span></span>
+              </div>
+              <div class="pwr-card pwr-card--static">
+                <span class="pwr-card-ico" aria-hidden="true">&#9644;</span>
+                <span class="pwr-card-text">
+                  <span class="pwr-card-title">Energy saver</span>
+                  <span class="pwr-card-sub">Reduce power consumption and increase battery life by limiting some background activities</span>
+                </span>
+                <span class="pwr-card-aside">Turns on at 30%</span>
               </div>
             </div>
           </div>
@@ -1606,6 +1798,7 @@
   <script src="js/locator/placement-full-flow.js"></script>
   <script src="js/locator/placement-api.js"></script>
   <script src="js/desktop.js"></script>
+  <script src="js/power-settings.js"></script>
   <script src="js/startmenu.js"></script>
   <script src="js/filechooser.js"></script>
   <script src="js/uac.js"></script>
