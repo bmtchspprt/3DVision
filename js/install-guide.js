@@ -1604,7 +1604,8 @@
         step.id === "ts-beam-upload" ||
         step.id === "ts-ap-upload" ||
         step.id === "ts-full-finish" ||
-        step.id === "ts-dz-finish") &&
+        step.id === "ts-dz-finish" ||
+        step.id === "ts-load-vessel") &&
       e.target.closest &&
       e.target.closest("#mv-dlg-progress")
     ) {
@@ -2118,6 +2119,10 @@
     }
     if (typeof window.closeStartMenu === "function") {
       window.closeStartMenu();
+    }
+    window.__igOpenCapturePage = false;
+    if (typeof window.closeBrowser === "function") {
+      window.closeBrowser();
     }
   }
 
@@ -2762,6 +2767,10 @@
         Math.max(0, Math.min(100, ((stepIndex + 1) / steps.length) * 100)) + "%";
     }
 
+    window.__igOpenCapturePage = step.id === "ts-cap-browser";
+    if (step.id === "ts-cap-follow" && typeof window.openCaptureArticle === "function") {
+      window.openCaptureArticle();
+    }
     if (step.id === "ts-sleep-type" && typeof window.openStartMenu === "function") {
       window.openStartMenu();
     }

@@ -21,10 +21,9 @@
     {
       id: "capture-3d",
       title: "3D Capture",
-      blurb:
-        "Copies the 3D window to the clipboard. Paste that picture into the support email.",
+      blurb: "Open the BinMaster support page and use 3DCAPTURE.",
       explanation:
-        "Debug, Developer, Capture Screen by 2 Points. Click two corners of the 3D window. The picture is on the clipboard.",
+        "3D Capture is on the BinMaster support site. Click Browser. That opens https://support.binmaster.com/kb/view/637b3236-68d8-4e7c-ba5b-d4b7308225b5. Use 3DCAPTURE on that page.",
     },
     {
       id: "snr-zero",
@@ -261,7 +260,7 @@
       "Click <strong>Load from Vessel</strong> on the toolbar.",
       "#mvToolbarLoadVessel",
       "install-guide:load-from-vessel",
-      { pointer: "bottom" }
+      { pointer: "bottom", allowInside: "#mv-dlg-progress" }
     );
   }
 
@@ -272,29 +271,22 @@
 
     if (id === "capture-3d") {
       steps = [
-        nextStep(
-          "ts-cap-what",
+        click(
+          "ts-cap-browser",
           "3D Capture",
-          "3D Capture copies the 3D window onto the clipboard."
+          "3D Capture is on the BinMaster support site. Click <strong>Browser</strong>.",
+          "#taskbarBtnBrowser",
+          "install-guide:browser-opened",
+          { pointer: "right" }
         ),
-        nextStep("ts-cap-debug", "Debug", "Click <strong>Debug</strong> on the menu bar."),
-        nextStep("ts-cap-dev", "Developer", "Click <strong>Developer</strong>."),
-        nextStep(
-          "ts-cap-item",
-          "Capture Screen by 2 Points",
-          "Click <strong>Capture Screen by 2 Points</strong>."
+        click(
+          "ts-cap-follow",
+          "3D Capture",
+          "This page is where 3D Capture lives. Use <strong>3DCAPTURE</strong>.",
+          null,
+          null,
+          { blocking: true, primary: "Done", pointer: "none", allowInside: "#browserShell" }
         ),
-        nextStep(
-          "ts-cap-a",
-          "First corner",
-          "Click one corner of the 3D window."
-        ),
-        nextStep(
-          "ts-cap-b",
-          "Opposite corner",
-          "Click the opposite corner of the 3D window."
-        ),
-        doneStep("The picture is on the clipboard. Paste it into the support email."),
       ];
     } else if (id === "snr-zero") {
       steps = [

@@ -434,7 +434,11 @@
         else dlg.status("Disconnect All completed.");
         break;
       case "comm-load-vessels":
-        dlg.status("Load from Vessels completed.");
+        if (typeof dlg.runBatchSetParamsProgress === "function") {
+          dlg.runBatchSetParamsProgress("download");
+        } else {
+          dlg.status("Load from Vessels completed.");
+        }
         break;
       case "comm-connect":
         if (typeof global.mvConnectSelected === "function") global.mvConnectSelected();
@@ -445,8 +449,16 @@
         else dlg.status("Vessel disconnected.");
         break;
       case "comm-load":
-        dlg.status("Load from Vessel completed.");
-        window.dispatchEvent(new CustomEvent("install-guide:load-from-vessel"));
+        // LoadFromVessel → DownLoadAllVesselParamsByBatch → ProgressWindow download.
+        if (typeof dlg.runBatchSetParamsProgress === "function") {
+          dlg.runBatchSetParamsProgress("download", function (ok) {
+            if (!ok) return;
+            window.dispatchEvent(new CustomEvent("install-guide:load-from-vessel"));
+          });
+        } else {
+          dlg.status("Load from Vessel completed.");
+          window.dispatchEvent(new CustomEvent("install-guide:load-from-vessel"));
+        }
         break;
 
       case "edit-add-site":

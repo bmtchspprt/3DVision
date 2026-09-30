@@ -1656,7 +1656,10 @@
       setVesselConnectionStatus(vesselId, VESSEL_CONNECTION.OFFLINE);
       updateMvStatus();
     } else if (action === "load-vessel") {
-      if (window.MvDialogs) window.MvDialogs.status("Load from Vessel completed.");
+      if (window.mvHandleMenuAction) window.mvHandleMenuAction("comm-load");
+      else if (window.MvDialogs && window.MvDialogs.runBatchSetParamsProgress) {
+        window.MvDialogs.runBatchSetParamsProgress("download");
+      }
     } else if (action === "wizard") {
       if (window.mvHandleMenuAction) window.mvHandleMenuAction("dev-wizard");
     } else if (action === "advanced") {
