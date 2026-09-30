@@ -225,27 +225,6 @@
     );
   }
 
-  function wizUnitSteps() {
-    return [
-      click(
-        "wiz-set-feet",
-        "Distance in feet",
-        "Change <strong>Distance</strong> from m to <strong>ft</strong>.",
-        "#mvWizDist",
-        "install-guide:wiz-feet",
-        { pointer: "right", allowInside: WIZ_INSIDE }
-      ),
-      click(
-        "wiz-set-fahrenheit",
-        "Temperature in Fahrenheit",
-        "Change <strong>Temperature</strong> to <strong>Fahrenheit</strong>.",
-        "#mvWizTemp",
-        "install-guide:wiz-fahrenheit",
-        { pointer: "right", allowInside: WIZ_INSIDE }
-      ),
-    ];
-  }
-
   function wizNextSteps() {
     return [
       click(
@@ -395,7 +374,6 @@
         "Click <strong>Device Configuration Wizard...</strong>.",
         "install-guide:device-wizard-opened"
       );
-      steps = steps.concat(wizUnitSteps());
       steps = steps.concat(wizNextSteps());
       steps.push(
         typeStep(
@@ -630,7 +608,6 @@
         "Click <strong>Device Configuration Wizard...</strong>.",
         "install-guide:device-wizard-opened"
       );
-      steps = steps.concat(wizUnitSteps());
       steps = steps.concat(wizNextSteps());
       steps.push(
         nextStep(

@@ -187,6 +187,14 @@
     bringToFront(id);
     wireWindowStacking(el);
     if (id === "mv-dlg-device-wizard" && typeof el.__mvWizRefresh === "function") {
+      // Troubleshooting already works in feet and Fahrenheit. The install guide
+      // still starts on m / Celsius so those unit steps stay a real click.
+      if (document.body.classList.contains("ig-track-troubleshoot")) {
+        var tsDist = el.querySelector("#mvWizDist");
+        var tsTemp = el.querySelector("#mvWizTemp");
+        if (tsDist) tsDist.value = "ft";
+        if (tsTemp) tsTemp.value = "Fahrenheit";
+      }
       // New wizard session → DeviceDefinType starts Unknown (RotateFromTop only on first Vessel→Device).
       el.__mvWizDeviceDefin = "unknown";
       el.__mvWizDeviceDefinPrev = "unknown";
