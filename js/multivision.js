@@ -2575,12 +2575,19 @@
       ledEl.title = offline ? "Not connected" : "Connected";
       ledEl.alt = offline ? "Not connected" : "Connected";
     }
-    // Low SNR warning (scanner Overview) — SNR below Minimal SNR (13), including 0.
+    // Device in Low SNR is a compatibility warning: Brushes.DarkGoldenrod.
+    // The SNR value itself is Brushes.Red when it is below Minimal SNR.
+    var minSnrEl = document.getElementById("mvApMinSnr");
+    var minSnr = minSnrEl ? parseFloat(minSnrEl.value) : 13;
+    if (!isFinite(minSnr)) minSnr = 13;
+    var snrNum = metrics ? Number(metrics.snr) : NaN;
+    var lowSnr = !offline && isFinite(snrNum) && snrNum < minSnr;
     if (problemsEl) {
-      var lowSnr = !offline && metrics && Number(metrics.snr) < 13;
       problemsEl.textContent = lowSnr ? "Device in Low SNR" : "";
       problemsEl.hidden = !lowSnr;
     }
+    var snrEl = document.getElementById("mvOvSnr");
+    if (snrEl) snrEl.classList.toggle("is-alert", lowSnr);
     // Border_Frame: LightSteelBlue connected / LightGray notConnected
     if (siloBox) {
       siloBox.classList.toggle("is-offline", offline);

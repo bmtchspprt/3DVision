@@ -621,7 +621,8 @@
   margin: 4px 0 0 0;
   font-size: 12px;
   font-weight: 700;
-  color: #dc1717;
+  /* VesselDetailsOverL compatibility warning, including "Device in Low SNR": Brushes.DarkGoldenrod */
+  color: #b8860b;
   min-height: 16px;
 }
 
@@ -776,6 +777,11 @@
   font-size: 12px;
   color: #000;
   text-align: right;
+}
+
+/* ForegroundColorSNR: Brushes.Red when SNR is below Minimal SNR */
+.mv-ov-field input.is-alert {
+  color: #ff0000;
 }
 
 .mv-ov-unit {
