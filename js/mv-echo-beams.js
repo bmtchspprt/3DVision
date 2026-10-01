@@ -834,7 +834,7 @@
       boxW: Math.max(28, boxR - boxL),
       boxH: Math.max(28, boxB - boxT),
       falseX: falseX,
-      axisY: Math.max(padT, cssH - 68),
+      axisY: Math.max(padT, cssH - 2),
     };
   }
 

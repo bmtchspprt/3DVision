@@ -1501,6 +1501,18 @@ body.ig-mode.ig-installed .win-start-tile[data-sim-app="3DVision Server"] {
   overflow: hidden;
 }
 
+.ig-echo-pop[data-mode="finger"] {
+  overflow: visible;
+}
+
+.mv-wb-charts:has(.ig-echo-pop[data-mode="finger"]),
+.mv-wb-chart-pane:has(.ig-echo-pop[data-mode="finger"]),
+.mv-wb-chart:has(.ig-echo-pop[data-mode="finger"]) {
+  overflow: visible;
+  position: relative;
+  z-index: 4;
+}
+
 .ig-echo-pop [data-part] {
   display: none;
 }
@@ -1583,7 +1595,7 @@ body.ig-mode.ig-installed .win-start-tile[data-sim-app="3DVision Server"] {
   position: absolute;
   left: var(--plot-l);
   top: var(--finger-y);
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 6px;
   animation: ig-echo-finger 3.4s ease-in-out infinite alternate;
 }
