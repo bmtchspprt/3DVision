@@ -567,6 +567,7 @@
       ctx.font = "12px Segoe UI, Tahoma, sans-serif";
       ctx.textAlign = "center";
       ctx.fillText("No beam data", cssW / 2, cssH / 2);
+      canvas.__mvGuide = null;
       return;
     }
 
@@ -769,6 +770,72 @@
       ctx.fillText(formatAmp(amp), padL - 6, padT + (gy / 4) * plotH);
     }
     ctx.textBaseline = "alphabetic";
+
+    // Tight peak window for the install-guide popups (same scale as this draw).
+    var boxL = Infinity;
+    var boxR = -Infinity;
+    var boxT = Infinity;
+    var boxB = -Infinity;
+    var minH = Infinity;
+    var saw = false;
+    var gi;
+    var gp;
+    for (gi = 0; gi < seriesList.length; gi++) {
+      var gser = seriesList[gi];
+      if (gser.name !== "Echo" && BEAM_NAMES.indexOf(gser.name) < 0) continue;
+      var peakF = 0;
+      var peakH = 0;
+      for (pi = 0; pi < gser.pts.length; pi++) {
+        gp = gser.pts[pi];
+        if (gp.h > xMaxM) break;
+        if (gp.f > peakF) {
+          peakF = gp.f;
+          peakH = gp.h;
+        }
+      }
+      if (!(peakF > 0)) continue;
+      var cut = peakF * 0.55;
+      for (pi = 0; pi < gser.pts.length; pi++) {
+        gp = gser.pts[pi];
+        if (gp.h > xMaxM) break;
+        if (gp.f < cut || Math.abs(gp.h - peakH) > 3.4) continue;
+        saw = true;
+        if (gp.h < minH) minH = gp.h;
+        var gx = xOf(gp.h);
+        var gy2 = yOf(gp.f);
+        if (gx < boxL) boxL = gx;
+        if (gx > boxR) boxR = gx;
+        if (gy2 < boxT) boxT = gy2;
+        if (gy2 > boxB) boxB = gy2;
+      }
+    }
+    if (!saw) {
+      boxL = padL + plotW * 0.35;
+      boxR = padL + plotW * 0.62;
+      boxT = padT + plotH * 0.12;
+      boxB = padT + plotH * 0.55;
+      minH = xMaxM * 0.4;
+    }
+    boxL = Math.max(padL, boxL - 10);
+    boxR = Math.min(padL + plotW, boxR + 10);
+    boxT = Math.max(padT, boxT - 10);
+    boxB = Math.min(padT + plotH - 4, Math.max(boxB + 16, padT + plotH * 0.78));
+    var falseM = Math.max(0.9, minH - 3.2);
+    if (falseM > minH - 1.2) falseM = Math.max(0.6, minH * 0.42);
+    var falseX = xOf(falseM);
+    if (falseX > boxL - 18) falseX = Math.max(padL + 12, boxL - 36);
+    canvas.__mvGuide = {
+      plotL: padL,
+      plotT: padT,
+      plotW: plotW,
+      plotH: plotH,
+      boxL: boxL,
+      boxT: boxT,
+      boxW: Math.max(28, boxR - boxL),
+      boxH: Math.max(28, boxB - boxT),
+      falseX: falseX,
+      axisY: Math.max(padT, cssH - 68),
+    };
   }
 
   function buildLegendHtml(beamIndex, vis) {

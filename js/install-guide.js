@@ -1826,6 +1826,20 @@
     var step = currentStep();
     if (!step) return;
     if (guideTrack === "troubleshoot") {
+      if (step.id === "ts-echo-all-good") {
+        var echoPop = document.getElementById("igEchoPop");
+        if (echoPop && !echoPop.classList.contains("is-cleared")) {
+          echoPop.classList.add("is-cleared");
+          var echoTitle = document.getElementById("igTitle");
+          var echoBody = document.getElementById("igBody");
+          if (echoTitle) echoTitle.textContent = "Cleared false echo";
+          if (echoBody) {
+            echoBody.innerHTML =
+              "Cleared false echo. The mark away from the group is gone. The tight group is the real reading.";
+          }
+          return;
+        }
+      }
       if (step.id === "ts-cap-open") {
         var captureTab = window.open(
           "https://support.binmaster.com/kb/view/637b3236-68d8-4e7c-ba5b-d4b7308225b5",
@@ -2170,6 +2184,7 @@
       card.classList.add("ig-card--hidden");
     }
     clearHighlight();
+    clearEchoPop();
     if (root) root.hidden = true;
     document.body.classList.remove("ig-mode", "ig-tease");
     document.body.classList.add("ig-free-mode");
@@ -2300,6 +2315,7 @@
       card.classList.add("ig-card--hidden");
     }
     clearHighlight();
+    clearEchoPop();
     clearPoll();
     if (rebootWatchTimer) {
       clearTimeout(rebootWatchTimer);
@@ -2593,6 +2609,7 @@
     // Stay in guide chrome: hide coach card only; do not return to install-type picker.
     if (card) card.hidden = true;
     clearHighlight();
+    clearEchoPop();
     window.dispatchEvent(new CustomEvent("install-guide:finished"));
   }
 
@@ -3023,6 +3040,79 @@
     return el;
   }
 
+  var ECHO_POP_HTML =
+    '<div class="ig-echo-sweep" data-part="silo"></div>' +
+    '<div class="ig-echo-tag ig-echo-tag--left" data-part="silo">Top Silo</div>' +
+    '<div class="ig-echo-tag ig-echo-tag--right" data-part="silo">Bottom Silo</div>' +
+    '<div class="ig-echo-finger-run" data-part="finger">' +
+    '<svg class="ig-echo-finger" viewBox="0 0 56 64" aria-hidden="true">' +
+    '<path fill="#ffe9a0" stroke="#1a1f2a" stroke-width="1.7" stroke-linejoin="round" d="M20 30c-7 1-12 7-11 14l3 12c1 4 5 7 10 7h16c5 0 9-4 9-9V36c0-4-3-7-7-7h-3V14c0-3-2-6-5-6s-5 3-5 6v16h-2V8c0-4-3-7-7-6-3 1-4 4-4 7v21z"/>' +
+    '<path fill="#fff" stroke="#1a1f2a" stroke-width="1.2" d="M24 6h6c1 0 2 1 2 2v5c0 1-1 2-2 2h-6c-1 0-2-1-2-2V8c0-1 1-2 2-2z"/>' +
+    "</svg>" +
+    '<div class="ig-echo-bubble">Numbers along the bottom are feet from the sensor.</div>' +
+    "</div>" +
+    '<div class="ig-echo-box" data-part="group"><span>Group</span></div>' +
+    '<div class="ig-echo-point" data-part="group" aria-hidden="true">' +
+    '<svg viewBox="0 0 48 48"><path fill="#ffcc33" stroke="#1a1f2a" stroke-width="1.5" d="M8 4l28 14-12 2 8 16-6 3-8-16-10 7z"/></svg>' +
+    "</div>" +
+    '<div class="ig-echo-dash" data-part="false"></div>' +
+    '<div class="ig-echo-callout ig-echo-callout--false" data-part="false">False echo</div>' +
+    '<div class="ig-echo-callout ig-echo-callout--cleared" data-part="cleared">Cleared false echo</div>';
+
+  function echoPopMode(step) {
+    if (!step) return "";
+    if (step.id === "ts-echo-left") return "silo";
+    if (step.id === "ts-echo-feet") return "finger";
+    if (step.id === "ts-echo-good") return "group";
+    if (step.id === "ts-echo-bad") return "false";
+    if (step.id === "ts-echo-all-good") return "false-clear";
+    return "";
+  }
+
+  function clearEchoPop() {
+    var old = document.getElementById("igEchoPop");
+    if (old && old.parentNode) old.parentNode.removeChild(old);
+  }
+
+  function applyEchoPopLayout(pop, g) {
+    pop.style.setProperty("--plot-l", g.plotL + "px");
+    pop.style.setProperty("--plot-t", g.plotT + "px");
+    pop.style.setProperty("--plot-w", g.plotW + "px");
+    pop.style.setProperty("--plot-h", g.plotH + "px");
+    pop.style.setProperty("--box-l", g.boxL + "px");
+    pop.style.setProperty("--box-t", g.boxT + "px");
+    pop.style.setProperty("--box-w", g.boxW + "px");
+    pop.style.setProperty("--box-h", g.boxH + "px");
+    pop.style.setProperty("--false-x", g.falseX + "px");
+    pop.style.setProperty("--finger-y", g.axisY + "px");
+    var travel = Math.max(40, g.plotW - 230);
+    pop.style.setProperty("--finger-travel", travel + "px");
+    pop.style.setProperty("--sweep-end", Math.max(40, g.plotW * 0.78) + "px");
+  }
+
+  function syncEchoPop(step) {
+    var mode = echoPopMode(step);
+    if (!mode) {
+      clearEchoPop();
+      return;
+    }
+    var chart = document.querySelector("#mv-dlg-echo-curve .mv-wb-chart");
+    var canvas = document.getElementById("mvEchoCanvas");
+    var guide = canvas && canvas.__mvGuide;
+    if (!chart || !guide) return;
+    var pop = document.getElementById("igEchoPop");
+    if (!pop || pop.getAttribute("data-mode") !== mode) {
+      clearEchoPop();
+      pop = document.createElement("div");
+      pop.id = "igEchoPop";
+      pop.className = "ig-echo-pop";
+      pop.setAttribute("data-mode", mode);
+      pop.innerHTML = ECHO_POP_HTML;
+      chart.appendChild(pop);
+    }
+    applyEchoPopLayout(pop, guide);
+  }
+
   function renderStep() {
     ensureDom();
     clearPoll();
@@ -3227,12 +3317,14 @@
       clearHighlight();
     }
 
+    syncEchoPop(step);
     pollTimer = setInterval(function () {
       var pollSel = stepTarget(step);
       // Skip clearHighlight spam on no-target steps (that looked like a flash).
       if (pollSel) {
         highlight(pollSel, stepPointer(step), { allowScroll: false });
       }
+      syncEchoPop(step);
       maybeAutoAdvance(step);
     }, 200);
   }

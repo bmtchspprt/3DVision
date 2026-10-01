@@ -1491,3 +1491,227 @@ body.ig-mode.ig-installed .win-start-tile[data-sim-app="3DVision"],
 body.ig-mode.ig-installed .win-start-tile[data-sim-app="3DVision Server"] {
   display: inline-flex;
 }
+
+/* Echo Curve walkthrough marks. They live on the chart and leave with the step. */
+.ig-echo-pop {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.ig-echo-pop [data-part] {
+  display: none;
+}
+
+.ig-echo-pop[data-mode="silo"] [data-part="silo"] {
+  display: block;
+}
+
+.ig-echo-pop[data-mode="finger"] [data-part="finger"] {
+  display: flex;
+}
+
+.ig-echo-pop[data-mode="group"] [data-part="group"] {
+  display: block;
+}
+
+.ig-echo-pop[data-mode="false"] [data-part="false"],
+.ig-echo-pop[data-mode="false-clear"] [data-part="false"] {
+  display: block;
+}
+
+.ig-echo-pop[data-mode="false-clear"] [data-part="false"] {
+  transition: opacity 0.45s ease;
+}
+
+.ig-echo-pop[data-mode="false-clear"] [data-part="cleared"] {
+  display: block;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+}
+
+.ig-echo-pop.is-cleared [data-part="false"] {
+  opacity: 0;
+}
+
+.ig-echo-pop.is-cleared [data-part="cleared"] {
+  opacity: 1;
+}
+
+.ig-echo-sweep {
+  position: absolute;
+  left: var(--plot-l);
+  top: var(--plot-t);
+  width: 22%;
+  height: var(--plot-h);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 204, 51, 0),
+    rgba(255, 204, 51, 0.72),
+    rgba(255, 204, 51, 0)
+  );
+  animation: ig-echo-sweep 2.4s ease-in-out infinite;
+}
+
+.ig-echo-tag {
+  position: absolute;
+  bottom: 34px;
+  padding: 4px 10px;
+  background: #fff;
+  color: #1a1f2a;
+  border: 2px solid #ffcc33;
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+  font: 700 13px "Segoe UI", Tahoma, sans-serif;
+  white-space: nowrap;
+  animation: ig-echo-flash 2.4s ease-in-out infinite;
+}
+
+.ig-echo-tag--left {
+  left: calc(var(--plot-l) + 8px);
+}
+
+.ig-echo-tag--right {
+  left: calc(var(--plot-l) + var(--plot-w) - 8px);
+  transform: translateX(-100%);
+  animation-delay: 1.2s;
+}
+
+.ig-echo-finger-run {
+  position: absolute;
+  left: var(--plot-l);
+  top: var(--finger-y);
+  align-items: flex-end;
+  gap: 6px;
+  animation: ig-echo-finger 3.4s ease-in-out infinite alternate;
+}
+
+.ig-echo-finger {
+  width: 36px;
+  height: 42px;
+  flex: 0 0 auto;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.45));
+}
+
+.ig-echo-bubble,
+.ig-echo-callout,
+.ig-echo-box span {
+  background: #fff;
+  color: #1a1f2a;
+  border: 2px solid #ffcc33;
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.28);
+  font: 700 12px "Segoe UI", Tahoma, sans-serif;
+  padding: 4px 8px;
+  white-space: nowrap;
+}
+
+.ig-echo-box {
+  position: absolute;
+  left: var(--box-l);
+  top: var(--box-t);
+  width: var(--box-w);
+  height: var(--box-h);
+  border: 3px solid #ffcc33;
+  border-radius: 8px;
+  background: rgba(255, 204, 51, 0.14);
+  box-shadow:
+    0 0 0 4px rgba(255, 204, 51, 0.35),
+    0 0 16px rgba(255, 204, 51, 0.45);
+  animation: ig-pulse 1.2s ease-in-out infinite;
+}
+
+.ig-echo-box span {
+  position: absolute;
+  left: 8px;
+  bottom: 6px;
+}
+
+.ig-echo-point {
+  position: absolute;
+  left: calc(var(--box-l) + var(--box-w) - 4px);
+  top: calc(var(--box-t) + var(--box-h) * 0.42);
+  width: 42px;
+  height: 42px;
+  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.45));
+  animation: ig-point 1s ease-in-out infinite;
+}
+
+.ig-echo-point svg {
+  width: 42px;
+  height: 42px;
+  display: block;
+}
+
+.ig-echo-dash {
+  position: absolute;
+  left: var(--false-x);
+  top: var(--plot-t);
+  width: 3px;
+  height: var(--plot-h);
+  background: repeating-linear-gradient(
+    to bottom,
+    #111 0 6px,
+    transparent 6px 11px
+  );
+  box-shadow: 1px 0 0 #fff, -1px 0 0 #fff;
+}
+
+.ig-echo-callout--false {
+  position: absolute;
+  left: calc(var(--false-x) + 12px);
+  bottom: 72px;
+}
+
+.ig-echo-callout--false::before {
+  content: "";
+  position: absolute;
+  left: -10px;
+  top: 8px;
+  border: 6px solid transparent;
+  border-right-color: #ffcc33;
+}
+
+.ig-echo-callout--cleared {
+  position: absolute;
+  left: calc(var(--box-l) + var(--box-w) / 2);
+  top: calc(var(--box-t) + var(--box-h) - 10px);
+  transform: translate(-50%, -100%);
+}
+
+@keyframes ig-echo-sweep {
+  0% {
+    transform: translateX(0);
+    opacity: 0.25;
+  }
+  45% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(var(--sweep-end));
+    opacity: 0.2;
+  }
+}
+
+@keyframes ig-echo-flash {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(255, 204, 51, 0.2);
+  }
+  50% {
+    opacity: 0.45;
+    box-shadow: 0 0 0 6px rgba(255, 204, 51, 0.45);
+  }
+}
+
+@keyframes ig-echo-finger {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(var(--finger-travel));
+  }
+}
