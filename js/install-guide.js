@@ -1218,6 +1218,49 @@
     return HOST_STEPS;
   }
 
+  function welcomeShowcaseHtml() {
+    if (typeof window.mvBuildSiloSvg !== "function" || typeof window.mvDemoVessels !== "function") {
+      return "";
+    }
+    var cards = window
+      .mvDemoVessels()
+      .map(function (v) {
+        return (
+          '<div class="ig-showcase-card">' +
+          '<div class="ig-showcase-card-head">' +
+          '<img src="assets/images/multivision/led_small_green.png" alt="" width="9" height="9">' +
+          "<span>" +
+          v.name +
+          "</span></div>" +
+          '<div class="ig-showcase-silo">' +
+          window.mvBuildSiloSvg(v, "_welcome") +
+          "</div>" +
+          '<div class="ig-showcase-card-name">' +
+          v.short +
+          "</div>" +
+          "</div>"
+        );
+      })
+      .join("");
+    return (
+      '<div class="ig-welcome-showcase" aria-hidden="true">' +
+      '<div class="ig-showcase-win">' +
+      '<div class="ig-showcase-bar">' +
+      '<img src="assets/images/logo_icon.ico" alt="" width="14" height="14">' +
+      "<span>3D MultiVision</span>" +
+      "</div>" +
+      '<div class="ig-showcase-head">' +
+      '<img src="assets/images/multivision/binmaster-header.png" alt="">' +
+      "<span>3D MultiVision</span>" +
+      "</div>" +
+      '<div class="ig-showcase-grid">' +
+      cards +
+      "</div>" +
+      "</div>" +
+      "</div>"
+    );
+  }
+
   function ensureDom() {
     if (root) return;
     root = document.createElement("div");
@@ -1230,6 +1273,8 @@
       '<img class="ig-welcome-ts-icon" src="assets/ui/troubleshoot-alert.png" alt="" width="42" height="42" draggable="false">' +
       '<span class="ig-welcome-ts-label">Troubleshooting</span>' +
       "</button>" +
+      welcomeShowcaseHtml() +
+      '<div class="ig-welcome-copy">' +
       '<h1 class="ig-welcome-title">' +
       '<span class="ig-welcome-line">Welcome to the</span>' +
       '<span class="ig-welcome-line ig-welcome-line--accent">3D MultiVision Setup Guide</span>' +
@@ -1258,7 +1303,7 @@
       "</button>" +
       "</div>" +
       '<button type="button" class="ig-mode-free" data-mode="free">Free mode (installed, Demo silos)</button>' +
-      "</div></div>" +
+      "</div></div></div>" +
       '<div class="ig-ts-panel" id="igTsPanel" hidden>' +
       '<div class="ig-ts-hdr">' +
       '<img class="ig-ts-hdr-ico" src="assets/ui/troubleshoot-alert.png" alt="" width="22" height="22">' +
@@ -2164,17 +2209,16 @@
       done();
       return;
     }
-    window.requestAnimationFrame(function () {
-      window.openMultiVisionFromConnect({
-        userName: "demoUser",
-        serverHost: "127.0.0.1:22222",
-        viewTitle: "Aggregates",
-        isDemo: true,
-        blankProject: false,
-        tease: true,
-        instant: true,
-        onReady: done,
-      });
+    window.openMultiVisionFromConnect({
+      userName: "demoUser",
+      serverHost: "127.0.0.1:22222",
+      viewTitle: "Aggregates",
+      isDemo: true,
+      blankProject: false,
+      tease: true,
+      instant: true,
+      openOverviewId: "lime-stone",
+      onReady: done,
     });
   }
 

@@ -2900,7 +2900,6 @@
     if (!multiVisionShell) {
       return;
     }
-    fitMultiVisionToDesktop();
     applyWindowPosition(multiVisionShell, windowDefaults.left, windowDefaults.top);
     if (mvTitleBar) {
       mvTitleBar.textContent = buildSessionTitle(connection, true);
@@ -3461,6 +3460,10 @@
   };
 
   window.closeMultiVision = closeMultiVision;
+  window.mvBuildSiloSvg = buildSiloSvg;
+  window.mvDemoVessels = function () {
+    return VESSELS_DEMO.slice();
+  };
   window.setVesselFill = setVesselFill;
   // Guide: setVesselConnectionStatus("lime-stone", VESSEL_CONNECTION.OFFLINE) → grey strip LED
   window.VESSEL_CONNECTION = VESSEL_CONNECTION;
