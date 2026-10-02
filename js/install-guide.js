@@ -3059,17 +3059,8 @@
     return el;
   }
 
-  var HAND_SVG =
-    '<svg viewBox="0 0 64 88" aria-hidden="true">' +
-    '<g fill="#FFE7A3" stroke="#1A2332" stroke-width="2" stroke-linejoin="round">' +
-    '<rect x="16" y="48" width="36" height="34" rx="15"/>' +
-    '<rect x="25" y="4" width="16" height="52" rx="8"/>' +
-    '<rect x="26" y="44" width="14" height="14" fill="#FFE7A3" stroke="none"/>' +
-    '<ellipse cx="13" cy="60" rx="9" ry="13" transform="rotate(-32 13 60)"/>' +
-    "</g>" +
-    '<rect x="28.5" y="8" width="9" height="12" rx="4.5" fill="#FFF6DC" stroke="#1A2332" stroke-width="1.3"/>' +
-    '<path d="M29 27h8" fill="none" stroke="#1A2332" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/>' +
-    "</svg>";
+  var HAND_UP = "\uD83D\uDC46";
+  var HAND_LEFT = "\uD83D\uDC48";
 
   var ECHO_POP_HTML =
     '<div class="ig-echo-sweep" data-part="silo"></div>' +
@@ -3077,19 +3068,19 @@
     '<div class="ig-echo-tag ig-echo-tag--right" data-part="silo">Bottom Silo</div>' +
     '<div class="ig-echo-finger-run" data-part="finger">' +
     '<span class="ig-hand ig-hand--up">' +
-    HAND_SVG +
+    HAND_UP +
     "</span>" +
     '<div class="ig-echo-bubble">Numbers along the bottom are feet from the sensor.</div>' +
     "</div>" +
     '<div class="ig-echo-box" data-part="group"><span>Group</span></div>' +
     '<div class="ig-echo-point" data-part="group" aria-hidden="true">' +
     '<span class="ig-hand ig-hand--into">' +
-    HAND_SVG +
+    HAND_LEFT +
     "</span></div>" +
     '<div class="ig-echo-dash" data-part="false"></div>' +
     '<div class="ig-echo-at-false" data-part="false" aria-hidden="true">' +
     '<span class="ig-hand ig-hand--left">' +
-    HAND_SVG +
+    HAND_LEFT +
     "</span></div>" +
     '<div class="ig-echo-callout ig-echo-callout--false" data-part="false">False echo</div>' +
     '<div class="ig-echo-callout ig-echo-callout--cleared" data-part="cleared">Cleared false echo</div>';

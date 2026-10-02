@@ -21,7 +21,6 @@
     {
       id: "capture-3d",
       title: "3D Capture",
-      blurb: "Open the BinMaster support page and use 3DCAPTURE.",
       explanation:
         "3D Capture is on the BinMaster support site. Click Open page. That opens https://support.binmaster.com/kb/view/637b3236-68d8-4e7c-ba5b-d4b7308225b5 in your browser. Use 3DCAPTURE on that page.",
     },
@@ -64,7 +63,6 @@
     {
       id: "map-false-echo",
       title: "Remove a False Echo",
-      blurb: "Scan off the spike closer to the sensor.",
       explanation:
         "Open Device False Echo Mapping and choose Scan. From stays 0 ft. Set To to 15 ft so the scan covers the false echo near 12 ft and stops before the real group. Click Start Scanning. When the status says Completed, close the window and click Load from Vessel.",
     },

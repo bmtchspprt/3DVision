@@ -1603,25 +1603,13 @@ body.ig-mode.ig-installed .win-start-tile[data-sim-app="3DVision Server"] {
 .ig-hand {
   display: block;
   width: 40px;
-  height: 54px;
+  height: 40px;
   flex: 0 0 auto;
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.45));
-}
-
-.ig-hand svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.ig-hand--into svg {
-  transform: rotate(-68deg);
-  transform-origin: 48% 14%;
-}
-
-.ig-hand--left svg {
-  transform: rotate(-90deg);
-  transform-origin: 50% 12%;
+  font-family: "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+  font-size: 34px;
+  line-height: 40px;
+  text-align: center;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.35));
 }
 
 .ig-echo-bubble,
@@ -1660,19 +1648,19 @@ body.ig-mode.ig-installed .win-start-tile[data-sim-app="3DVision Server"] {
 
 .ig-echo-point {
   position: absolute;
-  left: calc(var(--box-l) + var(--box-w) - 2px);
-  top: calc(var(--box-t) + var(--box-h) * 0.52);
-  width: 44px;
-  height: 58px;
+  left: calc(var(--box-l) + var(--box-w) - 46px);
+  top: calc(var(--box-t) + var(--box-h) * 0.42);
+  width: 40px;
+  height: 40px;
   animation: ig-point 1s ease-in-out infinite;
 }
 
 .ig-echo-at-false {
   position: absolute;
-  left: calc(var(--false-x) - 52px);
-  bottom: 70px;
-  width: 48px;
-  height: 64px;
+  left: calc(var(--false-x) - 18px);
+  bottom: 58px;
+  width: 40px;
+  height: 40px;
   animation: ig-echo-nudge 1s ease-in-out infinite;
 }
 
@@ -1692,8 +1680,8 @@ body.ig-mode.ig-installed .win-start-tile[data-sim-app="3DVision Server"] {
 
 .ig-echo-callout--false {
   position: absolute;
-  left: calc(var(--false-x) + 16px);
-  bottom: 92px;
+  left: calc(var(--false-x) + 44px);
+  bottom: 64px;
 }
 
 .ig-echo-callout--cleared {
