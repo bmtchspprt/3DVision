@@ -2900,6 +2900,7 @@
     if (!multiVisionShell) {
       return;
     }
+    fitMultiVisionToDesktop();
     applyWindowPosition(multiVisionShell, windowDefaults.left, windowDefaults.top);
     if (mvTitleBar) {
       mvTitleBar.textContent = buildSessionTitle(connection, true);
