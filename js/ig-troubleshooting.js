@@ -62,6 +62,13 @@
         "The Echo Curve starts automatically. Look for a grouping of colored lines. These represent the sensor's frequencies reflecting off the material. Lines start higher on the left (sensor at top of silo) and move right toward lower levels. Numbers along the bottom are feet from the sensor. Click All Beams. Each color is one beam. If all lines form a tight cluster with no erratic spikes away from the group, this is a Good echo curve. The sensor is reading correctly. An isolated spike far from the main cluster indicates a false echo.",
     },
     {
+      id: "map-false-echo",
+      title: "Remove a False Echo",
+      blurb: "Scan off the spike closer to the sensor.",
+      explanation:
+        "Open Device False Echo Mapping and choose Scan. From stays 0 ft. Set To to 15 ft so the scan covers the false echo near 12 ft and stops before the real group. Click Start Scanning. When the status says Completed, close the window and click Load from Vessel.",
+    },
+    {
       id: "reset-mapping",
       title: "Reset Sensor Mapping",
       explanation:
@@ -167,6 +174,49 @@
       "install-guide:false-echo-closed",
       { pointer: "bottom", allowInside: FE_INSIDE }
     );
+  }
+
+  function falseEchoScanSteps() {
+    return [
+      click(
+        "ts-fe-scan-type",
+        "Scan",
+        "Open <strong>Action Type</strong> and choose <strong>Scan</strong>.",
+        "#mvFeActionType",
+        "install-guide:fe-scan-type",
+        { pointer: "bottom", allowInside: FE_INSIDE }
+      ),
+      nextStep(
+        "ts-fe-from",
+        "From",
+        "<strong>From</strong> is <strong>0</strong> ft. The scan starts at the sensor."
+      ),
+      typeStep(
+        "ts-fe-to",
+        "To",
+        "Type <strong>15</strong> in <strong>To</strong>. The false echo sat near 12 ft. 15 ft covers that spike and stops before the real group.",
+        "mvFeTo",
+        "15",
+        FE_INSIDE
+      ),
+      click(
+        "ts-fe-scan-start",
+        "Start Scanning",
+        "Click <strong>Start Scanning</strong>.",
+        "#mvFeResetBtn",
+        "install-guide:false-echo-scan-started",
+        { pointer: "bottom", allowInside: FE_INSIDE }
+      ),
+      click(
+        "ts-fe-scan-wait",
+        "Scanning",
+        "Wait until the status says <strong>Completed</strong>.",
+        "#mvFeStatus",
+        "install-guide:false-echo-scanned",
+        { pointer: "none", allowInside: FE_INSIDE }
+      ),
+      closeFeStep(),
+    ];
   }
 
   function falseEchoResetSteps() {
@@ -603,8 +653,29 @@
           "install-guide:echo-activate-closed",
           { pointer: "bottom", allowInside: ECHO_INSIDE }
         ),
-        doneStep("That is how you read the Echo Curve."),
+        click(
+          "ts-echo-done",
+          "Done",
+          "That is how you read the Echo Curve." +
+            '<p class="ig-guide-jump-note">Removing that false echo is its own guide.</p>' +
+            '<button type="button" class="ig-btn ig-guide-jump" id="igOpenMapFalseEcho">Remove a False Echo</button>',
+          null,
+          null,
+          { blocking: true, primary: "Done", pointer: "none" }
+        ),
       ];
+    } else if (id === "map-false-echo") {
+      steps = deviceMenuThen(
+        '[data-mv-menu-id="dev-false-echo"]',
+        "False Echo Mapping",
+        "Click <strong>Device False Echo Mapping...</strong>.",
+        "install-guide:false-echo-opened"
+      );
+      steps = steps.concat(falseEchoScanSteps());
+      steps.push(
+        loadFromVesselStep(),
+        doneStep("The false echo closer to the sensor is mapped out. Check the reading on Overview.")
+      );
     } else if (id === "reset-mapping") {
       steps = deviceMenuThen(
         '[data-mv-menu-id="dev-false-echo"]',

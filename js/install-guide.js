@@ -1327,6 +1327,12 @@
     pointer = document.getElementById("igPointer");
     card = document.getElementById("igCard");
     document.getElementById("igPrimary").addEventListener("click", onPrimary);
+    document.getElementById("igCard").addEventListener("click", function (e) {
+      var jump = e.target.closest && e.target.closest("#igOpenMapFalseEcho");
+      if (!jump) return;
+      e.preventDefault();
+      startTroubleshootItem("map-false-echo");
+    });
     document.getElementById("igEndClose").addEventListener("click", onEndClose);
     document.getElementById("igEndRecapBtn").addEventListener("click", onEndRecapToggle);
     card.addEventListener("click", onScannerCountClick);
@@ -3040,22 +3046,38 @@
     return el;
   }
 
+  var HAND_SVG =
+    '<svg viewBox="0 0 64 88" aria-hidden="true">' +
+    '<g fill="#FFE7A3" stroke="#1A2332" stroke-width="2" stroke-linejoin="round">' +
+    '<rect x="16" y="48" width="36" height="34" rx="15"/>' +
+    '<rect x="25" y="4" width="16" height="52" rx="8"/>' +
+    '<rect x="26" y="44" width="14" height="14" fill="#FFE7A3" stroke="none"/>' +
+    '<ellipse cx="13" cy="60" rx="9" ry="13" transform="rotate(-32 13 60)"/>' +
+    "</g>" +
+    '<rect x="28.5" y="8" width="9" height="12" rx="4.5" fill="#FFF6DC" stroke="#1A2332" stroke-width="1.3"/>' +
+    '<path d="M29 27h8" fill="none" stroke="#1A2332" stroke-width="1.3" stroke-linecap="round" opacity="0.5"/>' +
+    "</svg>";
+
   var ECHO_POP_HTML =
     '<div class="ig-echo-sweep" data-part="silo"></div>' +
     '<div class="ig-echo-tag ig-echo-tag--left" data-part="silo">Top Silo</div>' +
     '<div class="ig-echo-tag ig-echo-tag--right" data-part="silo">Bottom Silo</div>' +
     '<div class="ig-echo-finger-run" data-part="finger">' +
-    '<svg class="ig-echo-finger" viewBox="0 0 56 64" aria-hidden="true">' +
-    '<path fill="#ffe9a0" stroke="#1a1f2a" stroke-width="1.7" stroke-linejoin="round" d="M20 30c-7 1-12 7-11 14l3 12c1 4 5 7 10 7h16c5 0 9-4 9-9V36c0-4-3-7-7-7h-3V14c0-3-2-6-5-6s-5 3-5 6v16h-2V8c0-4-3-7-7-6-3 1-4 4-4 7v21z"/>' +
-    '<path fill="#fff" stroke="#1a1f2a" stroke-width="1.2" d="M24 6h6c1 0 2 1 2 2v5c0 1-1 2-2 2h-6c-1 0-2-1-2-2V8c0-1 1-2 2-2z"/>' +
-    "</svg>" +
+    '<span class="ig-hand ig-hand--up">' +
+    HAND_SVG +
+    "</span>" +
     '<div class="ig-echo-bubble">Numbers along the bottom are feet from the sensor.</div>' +
     "</div>" +
     '<div class="ig-echo-box" data-part="group"><span>Group</span></div>' +
     '<div class="ig-echo-point" data-part="group" aria-hidden="true">' +
-    '<svg viewBox="0 0 48 48"><path fill="#ffcc33" stroke="#1a1f2a" stroke-width="1.5" d="M8 4l28 14-12 2 8 16-6 3-8-16-10 7z"/></svg>' +
-    "</div>" +
+    '<span class="ig-hand ig-hand--into">' +
+    HAND_SVG +
+    "</span></div>" +
     '<div class="ig-echo-dash" data-part="false"></div>' +
+    '<div class="ig-echo-at-false" data-part="false" aria-hidden="true">' +
+    '<span class="ig-hand ig-hand--left">' +
+    HAND_SVG +
+    "</span></div>" +
     '<div class="ig-echo-callout ig-echo-callout--false" data-part="false">False echo</div>' +
     '<div class="ig-echo-callout ig-echo-callout--cleared" data-part="cleared">Cleared false echo</div>';
 
@@ -3569,6 +3591,18 @@
         window.dispatchEvent(new CustomEvent(step.advanceOn));
       }
     }
+    if (step.advanceOn === "install-guide:fe-scan-type") {
+      var feScanType = document.getElementById("mvFeActionType");
+      if (feScanType && feScanType.value === "scan") {
+        window.dispatchEvent(new CustomEvent("install-guide:fe-scan-type"));
+      }
+    }
+    if (step.advanceOn === "install-guide:false-echo-scanned") {
+      var feScanStatus = document.getElementById("mvFeStatus");
+      if (feScanStatus && /completed/i.test(feScanStatus.textContent || "")) {
+        window.dispatchEvent(new CustomEvent("install-guide:false-echo-scanned"));
+      }
+    }
     if (step.advanceOn === "install-guide:fe-action-ok") {
       var feAct = document.getElementById("mvFeActionType");
       var feVal = feAct && (feAct.value || (feAct.options[feAct.selectedIndex] && feAct.options[feAct.selectedIndex].text) || "");
@@ -3772,6 +3806,9 @@
       "install-guide:false-echo-opened",
       "install-guide:false-echo-reset",
       "install-guide:false-echo-closed",
+      "install-guide:fe-scan-type",
+      "install-guide:false-echo-scan-started",
+      "install-guide:false-echo-scanned",
       "install-guide:devices-act-opened",
       "install-guide:load-from-vessel",
       "install-guide:fe-action-ok",

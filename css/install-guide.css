@@ -1600,11 +1600,28 @@ body.ig-mode.ig-installed .win-start-tile[data-sim-app="3DVision Server"] {
   animation: ig-echo-finger 3.4s ease-in-out infinite alternate;
 }
 
-.ig-echo-finger {
-  width: 36px;
-  height: 42px;
+.ig-hand {
+  display: block;
+  width: 40px;
+  height: 54px;
   flex: 0 0 auto;
   filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.45));
+}
+
+.ig-hand svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ig-hand--into svg {
+  transform: rotate(-68deg);
+  transform-origin: 48% 14%;
+}
+
+.ig-hand--left svg {
+  transform: rotate(-90deg);
+  transform-origin: 50% 12%;
 }
 
 .ig-echo-bubble,
@@ -1643,18 +1660,20 @@ body.ig-mode.ig-installed .win-start-tile[data-sim-app="3DVision Server"] {
 
 .ig-echo-point {
   position: absolute;
-  left: calc(var(--box-l) + var(--box-w) - 4px);
-  top: calc(var(--box-t) + var(--box-h) * 0.42);
-  width: 42px;
-  height: 42px;
-  filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.45));
+  left: calc(var(--box-l) + var(--box-w) - 2px);
+  top: calc(var(--box-t) + var(--box-h) * 0.52);
+  width: 44px;
+  height: 58px;
   animation: ig-point 1s ease-in-out infinite;
 }
 
-.ig-echo-point svg {
-  width: 42px;
-  height: 42px;
-  display: block;
+.ig-echo-at-false {
+  position: absolute;
+  left: calc(var(--false-x) - 52px);
+  bottom: 70px;
+  width: 48px;
+  height: 64px;
+  animation: ig-echo-nudge 1s ease-in-out infinite;
 }
 
 .ig-echo-dash {
@@ -1673,17 +1692,8 @@ body.ig-mode.ig-installed .win-start-tile[data-sim-app="3DVision Server"] {
 
 .ig-echo-callout--false {
   position: absolute;
-  left: calc(var(--false-x) + 12px);
-  bottom: 72px;
-}
-
-.ig-echo-callout--false::before {
-  content: "";
-  position: absolute;
-  left: -10px;
-  top: 8px;
-  border: 6px solid transparent;
-  border-right-color: #ffcc33;
+  left: calc(var(--false-x) + 16px);
+  bottom: 92px;
 }
 
 .ig-echo-callout--cleared {
@@ -1716,6 +1726,34 @@ body.ig-mode.ig-installed .win-start-tile[data-sim-app="3DVision Server"] {
   50% {
     opacity: 0.45;
     box-shadow: 0 0 0 6px rgba(255, 204, 51, 0.45);
+  }
+}
+
+.ig-guide-jump-note {
+  margin-top: 8px;
+}
+
+.ig-guide-jump {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  text-align: center;
+  font-weight: 700;
+  border: 2px solid #ffcc33;
+  background: #fff8e1;
+}
+
+.ig-guide-jump:hover {
+  background: #ffefb0;
+}
+
+@keyframes ig-echo-nudge {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(-5px);
   }
 }
 

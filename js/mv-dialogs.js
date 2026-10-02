@@ -4522,8 +4522,10 @@
           return;
         }
         setStatus(prefix + "Calculating...", true);
+        window.dispatchEvent(new CustomEvent("install-guide:false-echo-scan-started"));
         window.setTimeout(function () {
           setStatus("Completed", true);
+          window.dispatchEvent(new CustomEvent("install-guide:false-echo-scanned"));
         }, 700);
       });
     }
