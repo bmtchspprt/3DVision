@@ -53,7 +53,7 @@
       id: "auto-beam",
       title: "Auto Beam Selection Issues",
       explanation:
-        "Uncheck Auto Beam Selection and Automatic Beams Range. The beams are already on. Click Upload All to apply, then click Load from Vessel to confirm the reading.",
+        "Open Advanced Parameters. On the Advanced tab, set Auto False Echoes to Disable. Auto false echoes are not permitted for 3D use. Then open Beams Activation and uncheck Auto Beam Selection and Automatic Beams Range. Click Upload All to apply, then click Load from Vessel.",
     },
     {
       id: "echo-curve",
@@ -551,6 +551,30 @@
       );
       steps.push(
         click(
+          "ts-ap-adv-tab",
+          "Advanced",
+          "Click the <strong>Advanced</strong> tab.",
+          '.mv-ap-tab[data-tab="adv"]',
+          "install-guide:ap-tab-adv",
+          { pointer: "bottom", allowInside: AP_INSIDE }
+        ),
+        click(
+          "ts-ap-auto-fe-open",
+          "Auto False Echoes",
+          "Click the <strong>Auto False Echoes</strong> dropdown.",
+          "#mvApAutoFalseEchoes",
+          "install-guide:ap-auto-false-open",
+          { pointer: "bottom", allowInside: AP_INSIDE }
+        ),
+        click(
+          "ts-ap-auto-fe",
+          "Disable",
+          "Click <strong>Disable</strong>. Auto False Echoes is not permitted for 3D use.",
+          "#mvApAutoFalseEchoesDisable",
+          "install-guide:ap-auto-false-off",
+          { pointer: "bottom", allowInside: AP_INSIDE + ", #mvApAutoFalseEchoesMenu" }
+        ),
+        click(
           "ts-beam-tab",
           "Beams Activation",
           "Click the <strong>Beams Activation</strong> tab.",
@@ -752,10 +776,10 @@
         click(
           "ts-ap-auto-fe",
           "Disable",
-          "Click <strong>Disable</strong>.",
+          "Click <strong>Disable</strong>. Auto False Echoes is not permitted for 3D use.",
           "#mvApAutoFalseEchoesDisable",
           "install-guide:ap-auto-false-off",
-          { pointer: "bottom", allowInside: AP_INSIDE }
+          { pointer: "bottom", allowInside: AP_INSIDE + ", #mvApAutoFalseEchoesMenu" }
         ),
         click(
           "ts-ap-beams-tab",

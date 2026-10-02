@@ -1754,7 +1754,7 @@
       return true;
     }
     if (
-      step.id === "ap-false-echoes" &&
+      (step.id === "ap-false-echoes" || step.id === "ts-ap-auto-fe") &&
       e.target.closest &&
       e.target.closest("#mvApAutoFalseEchoes, #mvApAutoFalseEchoesMenu")
     ) {
@@ -2272,6 +2272,19 @@
     panel.style.width = width + "px";
     panel.style.height = height + "px";
     panel.style.maxHeight = height + "px";
+    var body = document.getElementById("igTsBody");
+    if (body && !panel.classList.contains("is-mini")) {
+      var extra = body.scrollHeight - body.clientHeight;
+      if (extra > 0) {
+        var downRoom = Math.max(180, window.innerHeight - 8 - top) - height;
+        var grow = Math.min(extra + 6, Math.max(downRoom, 0));
+        if (grow > 0) {
+          height += grow;
+          panel.style.height = height + "px";
+          panel.style.maxHeight = height + "px";
+        }
+      }
+    }
   }
 
   function showTsPanel() {
@@ -3514,7 +3527,7 @@
         window.dispatchEvent(new CustomEvent("install-guide:ap-tab-beams"));
       }
     }
-    if (step.id === "ap-false-echoes") {
+    if (step.id === "ap-false-echoes" || step.id === "ts-ap-auto-fe") {
       var autoFalse = document.getElementById("mvApAutoFalseEchoes");
       if (autoFalse && /disable/i.test(autoFalse.value)) {
         window.dispatchEvent(new CustomEvent("install-guide:ap-auto-false-off"));
