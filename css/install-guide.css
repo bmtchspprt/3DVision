@@ -1657,7 +1657,7 @@ body.ig-mode.ig-installed .win-start-tile[data-sim-app="3DVision Server"] {
 
 .ig-echo-at-false {
   position: absolute;
-  left: calc(var(--false-x) - 18px);
+  left: calc(var(--false-x) + 16px);
   bottom: 58px;
   width: 40px;
   height: 40px;
@@ -1680,7 +1680,7 @@ body.ig-mode.ig-installed .win-start-tile[data-sim-app="3DVision Server"] {
 
 .ig-echo-callout--false {
   position: absolute;
-  left: calc(var(--false-x) + 44px);
+  left: calc(var(--false-x) + 64px);
   bottom: 64px;
 }
 
@@ -1741,7 +1741,7 @@ body.ig-mode.ig-installed .win-start-tile[data-sim-app="3DVision Server"] {
     transform: translateX(0);
   }
   50% {
-    transform: translateX(-5px);
+    transform: translateX(4px);
   }
 }
 
