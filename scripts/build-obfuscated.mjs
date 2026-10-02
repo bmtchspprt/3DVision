@@ -50,6 +50,7 @@ const JS_LOCATOR = [
 
 const JS_APP = [
   "js/mv-overview-3d.js",
+  "js/welcome-3d.js",
   "js/mv-wizard-3d.js",
   ...JS_LOCATOR,
   "js/desktop.js",

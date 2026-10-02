@@ -1257,6 +1257,7 @@
       cards +
       "</div>" +
       "</div>" +
+      '<div class="ig-showcase-3d" id="igWelcome3d"></div>' +
       "</div>"
     );
   }
@@ -1366,6 +1367,13 @@
       '<button type="button" class="ig-end-btn ig-end-btn--primary" id="igEndClose">Close guide</button>' +
       "</div></div></div>";
     document.body.appendChild(root);
+    if (typeof window.mountWelcome3D === "function") {
+      try {
+        window.mountWelcome3D(document.getElementById("igWelcome3d"));
+      } catch (err) {
+        /* WebGL unavailable: the vessels window still shows */
+      }
+    }
     modeMenu = document.getElementById("igModeMenu");
     dim = root.querySelector(".ig-dim");
     spot = document.getElementById("igSpotlight");

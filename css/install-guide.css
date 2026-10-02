@@ -628,6 +628,30 @@
   font-weight: 700;
 }
 
+/* 3D view panel, rendered like SurfaceUCMain (welcome-3d.js) */
+.ig-showcase-3d {
+  width: 210px;
+  margin: 16px auto 0;
+  overflow: hidden;
+  background: #f0f3f5;
+  border: 1px solid #8a9aab;
+  border-radius: 6px;
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.26);
+  animation:
+    ig-showcase-3d-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both,
+    ig-showcase-float 4.8s ease-in-out 1.6s infinite;
+}
+
+.ig-showcase-3d:empty {
+  display: none;
+}
+
+.ig-showcase-3d canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 /* Single column: a short banner (black header + four silos) so the choices stay on screen */
 @media (max-width: 1359px), (max-height: 659px) {
   .ig-mode-panel--setup {
@@ -636,8 +660,22 @@
   }
 
   .ig-welcome-showcase {
-    max-width: 280px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    max-width: 384px;
     margin: 0 0 14px;
+  }
+
+  .ig-showcase-win {
+    flex: 0 0 280px;
+  }
+
+  .ig-showcase-3d {
+    flex: 0 0 90px;
+    width: 90px;
+    margin: 0;
+    border-radius: 4px;
   }
 
   .ig-welcome-tagline {
@@ -699,6 +737,17 @@
   }
 }
 
+@keyframes ig-showcase-3d-in {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @keyframes ig-showcase-float {
   0%,
   100% {
@@ -721,12 +770,18 @@
   }
 
   .ig-welcome-showcase {
+    align-self: start;
     max-width: none;
     margin: 0;
   }
 
   .ig-showcase-silo {
     max-width: 84px;
+  }
+
+  .ig-showcase-3d {
+    width: 230px;
+    margin-top: 18px;
   }
 
   .ig-showcase-card-head {
@@ -740,7 +795,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .ig-welcome-showcase,
-  .ig-showcase-win {
+  .ig-showcase-win,
+  .ig-showcase-3d {
     animation: none;
   }
 }
