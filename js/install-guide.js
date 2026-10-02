@@ -1225,6 +1225,7 @@
     root.id = "installGuideRoot";
     root.innerHTML =
       '<div class="ig-mode-menu" id="igModeMenu">' +
+      '<div class="ig-welcome-stage" id="igWelcomeStage" aria-hidden="true"></div>' +
       '<div class="ig-mode-panel ig-mode-panel--setup" id="igModeMain">' +
       '<button type="button" class="ig-welcome-ts" id="igWelcomeTs" aria-label="Troubleshooting">' +
       '<img class="ig-welcome-ts-icon" src="assets/ui/troubleshoot-alert.png" alt="" width="42" height="42" draggable="false">' +
@@ -1322,6 +1323,9 @@
       "</div></div></div>";
     document.body.appendChild(root);
     modeMenu = document.getElementById("igModeMenu");
+    if (typeof window.mountWelcomeVessels === "function") {
+      window.mountWelcomeVessels(document.getElementById("igWelcomeStage"));
+    }
     dim = root.querySelector(".ig-dim");
     spot = document.getElementById("igSpotlight");
     pointer = document.getElementById("igPointer");
